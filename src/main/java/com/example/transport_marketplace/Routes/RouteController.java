@@ -1,9 +1,11 @@
-package com.example.transport_marketplace;
-
+package com.example.transport_marketplace.Routes;
+import com.example.transport_marketplace.Routes.Exceptions.BadRequestException;
+import com.example.transport_marketplace.Routes.Exceptions.RouteNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 public class RouteController {
     @Autowired
     private RouteService routeService;
+    RouteController(RouteService routeService){
+        this.routeService = routeService;
+    }
 
 
     // Получение всех маршрутов
@@ -23,6 +28,23 @@ public class RouteController {
         List<Route> routes = routeService.getRoutes();
         return new ResponseEntity<>(routes, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Route> getRouteById(@PathVariable String id){
+        if(id == null || id.isBlank()){
+            throw new BadRequestException();
+        }
+        try{
+            int routeId = Integer.parseInt(id);
+            Route route = routeService.getRoutesId(routeId)
+                    .orElseThrow(() -> new RouteNotFoundException(routeId));
+            return new ResponseEntity<>(route, HttpStatus.OK);
+        }
+        catch (NumberFormatException e){
+            throw new BadRequestException();
+        }
+    }
+
     // Добавление маршрута (POST)
     @PostMapping
     public ResponseEntity<Route> addRoute(@RequestBody Route route){
@@ -42,8 +64,10 @@ public class RouteController {
     @PutMapping("/{id}")
     public ResponseEntity<Route> updateRoute(@PathVariable int id, @RequestBody Route updatedRoute){
         Route route = routeService.updateRoute(id, updatedRoute);
-        return route != null ? new ResponseEntity<>(route, HttpStatus.OK)
-                            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(route == null){
+            throw new RouteNotFoundException(id);
+        }
+         return new ResponseEntity<>(route, HttpStatus.OK);
     }
     // Поиск маршрутов по дате
     @GetMapping("/searchByDate")

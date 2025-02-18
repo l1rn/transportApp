@@ -1,4 +1,4 @@
-package com.example.transport_marketplace;
+package com.example.transport_marketplace.Routes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

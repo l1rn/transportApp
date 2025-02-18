@@ -1,4 +1,4 @@
-package com.example.transport_marketplace;
+package com.example.transport_marketplace.Bookings;
 
 public class Booking {
     private int id;

@@ -24,7 +24,12 @@
 <input @bind="searchTimeTo" type="time" />
 
 <button @onclick="SearchRoutes">Искать</button>
-
+<ul>
+	@foreach(var i in routes)
+	{
+		<li>Маршрут: @i.RouteName Дата: @i.Date Транспорт: @i.Transport Время: @i.Time</li>
+	}
+</ul>
 @code {
 	private List<Route> routes = new();
 	private string searchRoute;

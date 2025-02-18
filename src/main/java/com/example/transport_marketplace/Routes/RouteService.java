@@ -1,9 +1,8 @@
-package com.example.transport_marketplace;
+package com.example.transport_marketplace.Routes;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.util.RouteMatcher;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +52,11 @@ public class RouteService {
         routes.add(route);
         saveRoutes();
         return route;
+    }
+    public synchronized Optional<Route> getRoutesId(int id){
+        return routes.stream()
+                .filter(route -> route.getId() == id)
+                .findFirst();
     }
 
 
