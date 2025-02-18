@@ -1,0 +1,71 @@
+﻿@page "/bookings"
+@inject HttpClient Http
+
+<h3>Бронирование билетов</h3>
+
+<!-- Форма для бронирования -->
+<div>
+    <label>Маршрут ID:</label>
+    <input @bind="newBooking.RouteId" type="number" />
+
+    <label>Имя пассажира:</label>
+    <input @bind="newBooking.PassengerName" type="text" />
+
+    <button @onclick="CreateBooking">Забронировать</button>
+</div>
+
+<h3>Список бронирований</h3>
+<button @onclick="LoadBookings">Обновить список</button>
+
+<ul>
+    @foreach (var booking in bookings)
+    {
+        <li>@booking.PassengerName забронировал маршрут #@booking.RouteId</li>
+    }
+</ul>
+
+@code {
+    private List<Booking> bookings = new();
+    private Booking newBooking = new Booking();
+
+    private async Task LoadBookings()
+    {
+        try
+        {
+            bookings = await Http.GetFromJsonAsync<List<Booking>>("bookings");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Ошибка загрузки бронирований: " + ex.Message);
+        }
+    }
+
+    private async Task CreateBooking()
+    {
+        try
+        {
+            HttpResponseMessage response = await Http.PostAsJsonAsync("bookings", newBooking);
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Бронирование успешно!");
+                newBooking = new Booking(); // Очистить форму
+                await LoadBookings(); // Обновить список
+            }
+            else
+            {
+                Console.WriteLine("Ошибка бронирования: " + response.ReasonPhrase);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Ошибка отправки запроса: " + ex.Message);
+        }
+    }
+
+    public class Booking
+    {
+        public int Id { get; set; }
+        public int RouteId { get; set; }
+        public string PassengerName { get; set; }
+    }
+}

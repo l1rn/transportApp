@@ -1,0 +1,57 @@
+﻿@page "/routes"
+@inject HttpClient Http
+
+<h3>Поиск маршрутов</h3>
+
+<label>Маршрут:</label>
+<input @bind="searchRoute" type="text" />
+
+<label>Дата: </label>
+<input @bind="searchDate" type="date" />
+
+<label>Транспорт:</label>
+<select @bind="searchTransport">
+	<option value="">Все</option>
+	<option>Авиа</option>
+	<option>Ж/Д</option>
+	<option>Автобус</option>
+</select>
+
+<label>Время отправления: от</label>
+<input @bind="searchTimeFrom" type="time" />
+
+<label>до</label>
+<input @bind="searchTimeTo" type="time" />
+
+<button @onclick="SearchRoutes">Искать</button>
+
+@code {
+	private List<Route> routes = new();
+	private string searchRoute;
+	private DateTime? searchDate { get; set; } // ✅ делаешь
+	private TimeOnly? searchTimeFrom { get; set; } 
+	private TimeOnly? searchTimeTo { get; set; }
+	private string searchTransport;
+
+	private async Task SearchRoutes()
+	{
+		var queryParams = new List<string>();
+		if (!string.IsNullOrEmpty(searchRoute)) queryParams.Add($"route={searchRoute}");
+		if (searchDate.HasValue) queryParams.Add($"date={searchDate.Value:yyyy-MM-dd}");
+		if (!string.IsNullOrEmpty(searchTransport)) queryParams.Add($"transport={searchTransport}");
+		if (searchTimeFrom.HasValue) queryParams.Add($"timeFrom={searchTimeFrom.Value:HH:mm}");
+		if (searchTimeTo.HasValue) queryParams.Add($"timeTo={searchTimeTo.Value:HH:mm}");
+
+		string queryString = queryParams.Count > 0 ? "?" + string.Join("&", queryParams) : "";
+		routes = await Http.GetFromJsonAsync<List<Route>>($"routes/search{queryString}");
+	}
+
+	public class Route
+	{
+		public int Id { get; set; }
+		public string RouteName { get; set; }
+		public string Date { get; set; }
+		public string Time { get; set; }
+		public string Transport { get; set; }
+	}
+}
