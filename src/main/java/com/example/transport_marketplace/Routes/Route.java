@@ -1,15 +1,30 @@
 package com.example.transport_marketplace.Routes;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Route {
     private int id;
-    private String route;
+    private String routeFrom;
+    private String routeTo;
     private String date;
-    private String time;
     private String transport;
+    private String time;
+    private String arrivalTime;
     private double price;
+
+    public Route(){}
+
+    public Route(int id, String routeFrom, String routeTo, String date, String transport, String time, String arrivalTime, double price){
+        this.id = id;
+        this.routeFrom = routeFrom;
+        this.routeTo = routeTo;
+        this.date = date;
+        this.transport = transport;
+        this.time = time;
+        this.arrivalTime = arrivalTime;
+        this.price = price;
+    }
+
     @JsonProperty
     // id
     public int getId(){
@@ -19,11 +34,20 @@ public class Route {
         this.id = id;
     }
 
-    // route
-    public String getRoute() { return route; }
-    public void setRoute(String route) { this.route = (route == null) ? "" : route; }
+    @JsonProperty
+    public String getRouteFrom() { return routeFrom; }
+    public void setRouteFrom(String routeFrom) {
+        this.routeFrom = (routeFrom == null) ? "" : routeFrom;
+    }
 
-    // date
+    @JsonProperty
+    public String getRouteTo(){return routeTo;}
+
+    public void setRouteTo(String routeTo){
+        this.routeTo = (routeTo == null) ? "" : routeTo;
+    }
+
+    @JsonProperty
     public String getDate(){
         return date;
     }
@@ -31,7 +55,7 @@ public class Route {
         this.date = date;
     }
 
-    // time
+    @JsonProperty
     public String getTime(){
         return time;
     }
@@ -39,6 +63,14 @@ public class Route {
         this.time = time;
     }
 
+    @JsonProperty
+    public String getArrivalTime(){
+        return arrivalTime;
+    }
+    public void setArrivalTime(String arrivalTime){
+        this.arrivalTime = arrivalTime;
+    }
+    @JsonProperty
     // transport
     public String getTransport(){
         return transport;
@@ -48,7 +80,7 @@ public class Route {
     }
 
     // price
-
+    @JsonProperty
     public double getPrice(){
         return price;
     }

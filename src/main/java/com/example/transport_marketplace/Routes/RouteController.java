@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import java.time.format.DateTimeParseException;
 @RestController
 @RequestMapping("/routes")
 @CrossOrigin(origins = "*")
@@ -30,9 +31,9 @@ public class RouteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Route> getRouteById(@PathVariable String id){
+    public ResponseEntity<?> getRouteById(@PathVariable String id){
         if(id == null || id.isBlank()){
-            throw new BadRequestException();
+            return ResponseEntity.badRequest().body("Invalid request: ID cannot be empty.");
         }
         try{
             int routeId = Integer.parseInt(id);
@@ -89,18 +90,19 @@ public class RouteController {
 
     // Поиск маршрутов
     @GetMapping("/search")
-    public ResponseEntity<List<Route>> searchRoutes(
-            @RequestParam(required = false) String route,
+    public ResponseEntity<?> searchRoutes(
+            @RequestParam(required = false) String routeFrom,
+            @RequestParam(required = false) String routeTo,
             @RequestParam(required = false) String date,
             @RequestParam(required = false) String transport,
-            @RequestParam(required = false) String timeFrom,
-            @RequestParam(required = false) String timeTo) {
+            @RequestParam(required = false) String time,
+            @RequestParam(required = false) String arrivalTime) {
 
         System.out.println("Получен запрос на поиск!");
-        System.out.println("Параметры: route=" + route + ", date=" + date + ", transport=" + transport +
-                ", timeFrom=" + timeFrom + ", timeTo=" + timeTo);
+        System.out.println("Параметры: routeFrom=" + routeFrom + "routeTo=" + routeTo + ", date=" + date + ", transport=" + transport +
+                ", timeFrom=" + time + ", timeTo=" + arrivalTime);
 
-        List<Route> filteredRoutes = routeService.searchRoutes(route, date, transport, timeFrom, timeTo);
+        List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, date, transport, time, arrivalTime);
         System.out.println("Найдено маршрутов: " + filteredRoutes.size());
 
         return new ResponseEntity<>(filteredRoutes, HttpStatus.OK);

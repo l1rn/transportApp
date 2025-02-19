@@ -3,8 +3,11 @@
 
 <h3>Поиск маршрутов</h3>
 
-<label>Маршрут:</label>
-<input @bind="searchRoute" type="text" />
+<label>Откуда:</label>
+<input @bind="routeFrom" type="text" />
+
+<label>Куда:</label>
+<InputText @bind-Value="routeTo"/>
 
 <label>Дата: </label>
 <input @bind="searchDate" type="date" />
@@ -16,37 +19,50 @@
 	<option>Ж/Д</option>
 	<option>Автобус</option>
 </select>
-
 <label>Время отправления: от</label>
-<input @bind="searchTimeFrom" type="time" />
+<input @bind="time" type="time" />
 
 <label>до</label>
-<input @bind="searchTimeTo" type="time" />
+<input @bind="arrivalTime" type="time" />
+
 
 <button @onclick="SearchRoutes">Искать</button>
 <ul>
+
 	@foreach(var i in routes)
 	{
-		<li>Маршрут: @i.RouteName Дата: @i.Date Транспорт: @i.Transport Время: @i.Time</li>
+		<li>
+			Маршрут: @i.RouteFrom - @i.RouteTo 
+			Дата: @i.Date 
+			Транспорт: @i.Transport 
+			Отлет: @i.Time
+			Прилет: @i.ArrivalTime
+			Цена: @i.Price
+
+		</li>
 	}
 </ul>
 @code {
 	private List<Route> routes = new();
-	private string searchRoute;
-	private DateTime? searchDate { get; set; } // ✅ делаешь
-	private TimeOnly? searchTimeFrom { get; set; } 
-	private TimeOnly? searchTimeTo { get; set; }
+	private string routeFrom;
+	private string routeTo;
+	private DateTime? searchDate { get; set; }
+	private TimeOnly? time { get; set; }
+	private TimeOnly? arrivalTime { get; set; }
 	private string searchTransport;
+	private double price;
+
+
 
 	private async Task SearchRoutes()
 	{
 		var queryParams = new List<string>();
-		if (!string.IsNullOrEmpty(searchRoute)) queryParams.Add($"route={searchRoute}");
+		if (!string.IsNullOrEmpty(routeFrom)) queryParams.Add($"routeFrom={routeFrom}");
+		if (!string.IsNullOrEmpty(routeTo)) queryParams.Add($"routeTo={routeTo}");
 		if (searchDate.HasValue) queryParams.Add($"date={searchDate.Value:yyyy-MM-dd}");
 		if (!string.IsNullOrEmpty(searchTransport)) queryParams.Add($"transport={searchTransport}");
-		if (searchTimeFrom.HasValue) queryParams.Add($"timeFrom={searchTimeFrom.Value:HH:mm}");
-		if (searchTimeTo.HasValue) queryParams.Add($"timeTo={searchTimeTo.Value:HH:mm}");
-
+		if (time.HasValue) queryParams.Add($"time={time.Value:HH:mm}");
+		if (arrivalTime.HasValue) queryParams.Add($"arrivalTime={arrivalTime.Value:HH:mm}");
 		string queryString = queryParams.Count > 0 ? "?" + string.Join("&", queryParams) : "";
 		routes = await Http.GetFromJsonAsync<List<Route>>($"routes/search{queryString}");
 	}
@@ -54,9 +70,27 @@
 	public class Route
 	{
 		public int Id { get; set; }
-		public string RouteName { get; set; }
+		public string RouteFrom { get; set; }
+		public string RouteTo { get; set; }
 		public string Date { get; set; }
-		public string Time { get; set; }
 		public string Transport { get; set; }
+		public double Price { get; set; }
+		private string _time;
+		public string Time 
+		{
+			get => _time;
+			set => _time = ConvertToLocalTime(value);
+		}
+		private string _arrivalTime;
+		public string ArrivalTime
+		{
+			get => _arrivalTime;
+			set => _arrivalTime = ConvertToLocalTime(value);
+		}
+		private string ConvertToLocalTime(string utcTime)
+		{
+			DateTimeOffset parsedTime = DateTimeOffset.Parse(utcTime);
+			return parsedTime.ToLocalTime().ToString("HH:mm");
+		}
 	}
 }
