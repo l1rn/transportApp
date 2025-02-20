@@ -1,4 +1,4 @@
-package com.example.transport_marketplace.Bookings;
+package com.example.transport_marketplace.bookings;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

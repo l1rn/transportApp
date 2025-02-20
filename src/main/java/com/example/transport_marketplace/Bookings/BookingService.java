@@ -1,4 +1,4 @@
-package com.example.transport_marketplace.Bookings;
+package com.example.transport_marketplace.bookings;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

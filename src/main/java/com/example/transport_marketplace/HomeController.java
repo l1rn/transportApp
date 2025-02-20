@@ -1,6 +1,6 @@
 package com.example.transport_marketplace;
 
-import com.example.transport_marketplace.Routes.Exceptions.BadRequestException;
+import com.example.transport_marketplace.routes.Exceptions.BadRequestException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

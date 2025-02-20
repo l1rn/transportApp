@@ -1,17 +1,15 @@
-package com.example.transport_marketplace.Routes;
-import com.example.transport_marketplace.Routes.Exceptions.BadRequestException;
-import com.example.transport_marketplace.Routes.Exceptions.RouteNotFoundException;
+package com.example.transport_marketplace.routes;
+import com.example.transport_marketplace.routes.Exceptions.BadRequestException;
+import com.example.transport_marketplace.routes.Exceptions.RouteNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.time.format.DateTimeParseException;
+
 @RestController
 @RequestMapping("/routes")
 @CrossOrigin(origins = "*")
