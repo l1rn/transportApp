@@ -1,29 +1,25 @@
 package com.example.transport_marketplace.bookings;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
+
+@Entity
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "booking")
 public class Booking {
+    @Id
+    @Column(name = "id")
     private int id;
+    @Column(name = "route-id", nullable = false)
     private int routeId;
+    @Column(name = "passenger-name", unique = true, nullable = false)
     private String passengerName;
-    public Booking(){
-
-    }
-    public Booking(int id, int routeId, String passengerName){
-        this.id = id;
-        this.routeId = routeId;
-        this.passengerName = passengerName;
-    }
-    public int getId(){return id;};
-    public void setId(int id){
-        this.id = id;
-    }
-    public int getRouteId(){return routeId;}
-    public void setRouteId(int routeId){
-        this.routeId = routeId;
-    }
-    public String getPassengerName(){return passengerName;}
-    public void setPassengerName(String passengerName){
-        this.passengerName = passengerName;
-    }
-
 
 }
