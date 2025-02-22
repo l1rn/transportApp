@@ -7,6 +7,7 @@ import com.example.transport_marketplace.entity.users.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,11 @@ import java.util.Optional;
 
 @Service
 public class BookingService {
+    @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
     private RouteRepository routeRepository;
+    @Autowired
     private UserRepository userRepository;
 
     public List<Booking> getBookingByUserId(int userId){

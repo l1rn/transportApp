@@ -1,6 +1,6 @@
 package com.example.transport_marketplace.entity.bookings;
 
-import com.example.transport_marketplace.entity.routes.Route;
+
 import com.example.transport_marketplace.entity.routes.RouteRepository;
 import com.example.transport_marketplace.entity.users.User;
 import jakarta.transaction.Transactional;
@@ -21,24 +21,24 @@ import java.util.Optional;
 public class BookingController {
     @Autowired
     private BookingService bookingService;
-    private RouteRepository routeRepository;
     // получение всех броней
+
+
+    @GetMapping("/my")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<Booking>> getMyBooking(){
+        User current = getCurrentUser();
+        List<Booking> bookings = bookingService.getBookingByUserId(current.getId());
+        return ResponseEntity.ok(bookings);
+    }
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Booking>> getAllBookings(){
+    public ResponseEntity<List<Booking>> getAllBookingsForUserTest(){
         return ResponseEntity.ok(bookingService.getAllBooking());
     }
 
-    @GetMapping("/my")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<Booking>> getMyBooking(int userId){
-        User current = getCurrentUser();
-        List<Booking> bookings = bookingService.getBookingByUserId(userId);
-        return ResponseEntity.ok(bookings);
-    }
-
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createBooking(@RequestBody BookingRequest request){
         User currentUser = getCurrentUser();
         try {
@@ -51,7 +51,7 @@ public class BookingController {
     }
 
     @PatchMapping("/{id}/cancel")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> cancelBooking(@PathVariable int id){
         User currentUser = getCurrentUser();
         Optional<Booking> bookingOpt = bookingService.getBookingById(id);
@@ -68,7 +68,7 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Бронирование не найдено.");
     }
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getBookingId(@PathVariable int id){
         User currentUser = getCurrentUser();
         Optional<Booking> bookingOpt = bookingService.getBookingById(id);

@@ -1,5 +1,7 @@
 package com.example.transport_marketplace;
 
+import com.example.transport_marketplace.entity.users.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,4 +15,9 @@ public class MainController {
         // Выполняем перенаправление на /routes
         return new RedirectView("/routes");
     }
+//    @GetMapping("*/booking")
+//    public RedirectView responseIfNonUser(){
+//        User currentUser = new User();
+//        if(currentUser.ha)
+//    }
 }
