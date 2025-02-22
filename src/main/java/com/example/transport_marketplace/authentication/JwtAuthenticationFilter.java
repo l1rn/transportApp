@@ -1,6 +1,7 @@
-package com.example.transport_marketplace;
+package com.example.transport_marketplace.authentication;
 
-import com.example.transport_marketplace.entity.UserService;
+import com.example.transport_marketplace.JwtService;
+import com.example.transport_marketplace.entity.users.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,4 +62,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request,response);
     }
+
 }

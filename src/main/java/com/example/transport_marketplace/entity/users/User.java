@@ -1,4 +1,4 @@
-package com.example.transport_marketplace.entity;
+package com.example.transport_marketplace.entity.users;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,9 +20,8 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
-    @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "username", unique = true, nullable = false)
     private String username;
@@ -58,10 +57,7 @@ public class User implements UserDetails {
         return true;
     }
 
-    public enum Role{
-        ROLE_USER,
-        ROLE_ADMIN
-    }
+
 
 }
 

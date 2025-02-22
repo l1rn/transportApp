@@ -1,4 +1,5 @@
-package com.example.transport_marketplace;
+package com.example.transport_marketplace.authentication;
+import com.example.transport_marketplace.JwtAuthenticationResponse;
 import com.example.transport_marketplace.enter.SignInRequest;
 import com.example.transport_marketplace.enter.SignUpRequest;
 import io.swagger.v3.oas.annotations.Operation;

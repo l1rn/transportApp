@@ -1,5 +1,5 @@
-package com.example.transport_marketplace.entity;
-import com.example.transport_marketplace.TransportMarketplaceApplication;
+package com.example.transport_marketplace.entity.users;
+import com.example.transport_marketplace.entity.bookings.Booking;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,9 +23,10 @@ public class UserService {
         return repository.save(user);
     }
 
+
+
     public User getByUsername(String username){
         Optional<User> optionalUser = repository.findByUsername(username);
-
         if(optionalUser.isPresent()){
             return optionalUser.get();
         }
@@ -45,7 +46,7 @@ public class UserService {
     @Deprecated
     public void getAdmin(){
         var user = getCurrentUser();
-        user.setRole(User.Role.ROLE_ADMIN);
+        user.setRole(Role.ROLE_ADMIN);
         save(user);
     }
 }

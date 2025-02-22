@@ -1,4 +1,4 @@
-package com.example.transport_marketplace.routes.Exceptions;
+package com.example.transport_marketplace.entity.routes.Exceptions;
 
 public class RouteNotFoundException extends RuntimeException{
 

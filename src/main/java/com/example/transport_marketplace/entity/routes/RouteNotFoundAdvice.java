@@ -1,7 +1,7 @@
-package com.example.transport_marketplace.routes;
+package com.example.transport_marketplace.entity.routes;
 
-import com.example.transport_marketplace.routes.Exceptions.BadRequestException;
-import com.example.transport_marketplace.routes.Exceptions.RouteNotFoundException;
+import com.example.transport_marketplace.entity.routes.Exceptions.BadRequestException;
+import com.example.transport_marketplace.entity.routes.Exceptions.RouteNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

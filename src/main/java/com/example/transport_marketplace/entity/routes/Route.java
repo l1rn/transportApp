@@ -1,9 +1,6 @@
-package com.example.transport_marketplace.routes;
+package com.example.transport_marketplace.entity.routes;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -15,11 +12,12 @@ import lombok.*;
 @Table(name = "routes")
 public class Route {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name = "route-from", unique = false, nullable = false)
+    @Column(name = "route_from", unique = false, nullable = false)
     private String routeFrom;
-    @Column(name = "route-to", unique = false, nullable = false)
+    @Column(name = "route_to", unique = false, nullable = false)
     private String routeTo;
     @Column(name = "date", unique = false, nullable = false)
     private String date;
@@ -27,8 +25,10 @@ public class Route {
     private String transport;
     @Column(name = "time", unique = false, nullable = false)
     private String time;
-    @Column(name = "arrival-time", unique = false, nullable = false, updatable = true)
+    @Column(name = "arrival_time", unique = false, nullable = false, updatable = true)
     private String arrivalTime;
+    @Column(name = "available_seats", unique = false, nullable = true)
+    private int availableSeats;
     @Column(name = "price", unique = false, nullable = false, updatable = true)
     private double price;
 }

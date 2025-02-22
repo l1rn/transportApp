@@ -1,6 +1,6 @@
-package com.example.transport_marketplace.routes;
-import com.example.transport_marketplace.routes.Exceptions.BadRequestException;
-import com.example.transport_marketplace.routes.Exceptions.RouteNotFoundException;
+package com.example.transport_marketplace.entity.routes;
+import com.example.transport_marketplace.entity.routes.Exceptions.BadRequestException;
+import com.example.transport_marketplace.entity.routes.Exceptions.RouteNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +35,7 @@ public class RouteController {
         }
         try{
             int routeId = Integer.parseInt(id);
-            Route route = routeService.getRoutesId(routeId)
+            Route route = routeService.getRouteById(routeId)
                     .orElseThrow(() -> new RouteNotFoundException(routeId));
             return new ResponseEntity<>(route, HttpStatus.OK);
         }
@@ -92,15 +92,9 @@ public class RouteController {
             @RequestParam(required = false) String routeFrom,
             @RequestParam(required = false) String routeTo,
             @RequestParam(required = false) String date,
-            @RequestParam(required = false) String transport,
-            @RequestParam(required = false) String time,
-            @RequestParam(required = false) String arrivalTime) {
+            @RequestParam(required = false) String transport){
 
-        System.out.println("Получен запрос на поиск!");
-        System.out.println("Параметры: routeFrom=" + routeFrom + "routeTo=" + routeTo + ", date=" + date + ", transport=" + transport +
-                ", timeFrom=" + time + ", timeTo=" + arrivalTime);
-
-        List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, date, transport, time, arrivalTime);
+        List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, date, transport);
         System.out.println("Найдено маршрутов: " + filteredRoutes.size());
 
         return new ResponseEntity<>(filteredRoutes, HttpStatus.OK);

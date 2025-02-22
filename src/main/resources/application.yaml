@@ -1,18 +1,30 @@
 spring:
-  application:
-    name: security-security
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   datasource:
     url: jdbc:h2:mem:security-security
     driverClassName: org.h2.Driver
     username: root
     password: root
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 5
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-stacktrace: always
 
 token:
   signing:

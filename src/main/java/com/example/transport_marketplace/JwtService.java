@@ -1,6 +1,6 @@
 package com.example.transport_marketplace;
 
-import com.example.transport_marketplace.entity.User;
+import com.example.transport_marketplace.entity.users.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -62,6 +62,9 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token){
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("JWT token is missing or empty");
+        }
         return Jwts.parser()
                 .setSigningKey(getSigningKey())
                 .build()

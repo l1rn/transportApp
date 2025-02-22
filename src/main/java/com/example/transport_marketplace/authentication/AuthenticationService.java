@@ -1,9 +1,12 @@
-package com.example.transport_marketplace;
+package com.example.transport_marketplace.authentication;
 
+import com.example.transport_marketplace.JwtAuthenticationResponse;
+import com.example.transport_marketplace.JwtService;
 import com.example.transport_marketplace.enter.SignInRequest;
 import com.example.transport_marketplace.enter.SignUpRequest;
-import com.example.transport_marketplace.entity.User;
-import com.example.transport_marketplace.entity.UserService;
+import com.example.transport_marketplace.entity.users.Role;
+import com.example.transport_marketplace.entity.users.User;
+import com.example.transport_marketplace.entity.users.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +26,7 @@ public class AuthenticationService {
         var user = User.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(User.Role.ROLE_USER)
+                .role(Role.ROLE_USER)
                 .build();
 
         userService.create(user);
