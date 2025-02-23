@@ -2,4 +2,4 @@
 mvn spring-boot:run
 
 ## Запуск фронтенда:
-1213
+npm run build
