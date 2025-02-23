@@ -35,6 +35,10 @@ namespace clientApp.Pages.auth
                 ((CustomAuthStateProvider)_authStateProvider).NotifyUserAuthentication(token);
             }
         }
+        public async Task Profile()
+        {
+
+        }
         public async Task LogoutAsync()
         {
             await _jSRuntime.InvokeVoidAsync("localStorage.removeItem", "authtoken");
