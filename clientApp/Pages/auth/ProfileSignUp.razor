@@ -1,0 +1,41 @@
+﻿@page "/auth/sign-up"
+@inject HttpClient http
+
+<h3>Регистрация</h3>
+<EditForm Model="@formModel" OnValidSubmit="@SignUp">
+	<DataAnnotationsValidator />
+	<div>
+		<label>Имя пользователя</label>
+		<InputText @bind-Value="formModel.Username" />
+	</div>
+
+	<div>
+		<label>Пароль</label>
+		<InputText @bind-Value="formModel.Password" type="password"/>
+	</div>
+
+	<button type="submit">Зарегистрироваться</button>
+</EditForm>
+@if (message is not null)
+{
+	<p>@message</p>
+}
+
+@code {
+	private User formModel = new();
+	private string message;
+
+	private async Task SignUp()
+	{
+		var response = await http.PostAsJsonAsync("auth/sign-up", formModel);
+		if (response.IsSuccessStatusCode)
+		{
+			message = "Регистрация прошла успешно!";
+		}
+		else
+		{
+			message = "Ошибка регистрации!";
+		}
+	}
+
+}

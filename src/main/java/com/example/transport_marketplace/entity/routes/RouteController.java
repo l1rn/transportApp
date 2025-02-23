@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 public class RouteController {
     @Autowired
     private RouteService routeService;
+    @Autowired
+    private RouteRepository routeRepository;
     RouteController(RouteService routeService){
         this.routeService = routeService;
     }

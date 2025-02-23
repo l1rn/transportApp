@@ -1,0 +1,57 @@
+﻿@page "/auth/profile"
+@using Blazored.LocalStorage
+@inject HttpClient http;
+@inject ILocalStorageService localStorage;
+<h1>Профиль</h1>
+<button @onclick="ProfileDetails">
+	Подробные детали о юзере
+</button>
+@if(user != null)
+{
+	<ul>
+		<li>Username: @user.Username</li>
+		<li>Role: @user.Password</li>
+	</ul>
+}
+else
+{
+	<p>Загрузка...</p>
+}
+@code {
+	private User user;
+
+
+
+	private async Task ProfileDetails()
+	{
+		var token = await localStorage.GetItemAsync<string>("authToken");
+
+		if (string.IsNullOrEmpty(token))
+		{
+			Console.WriteLine("No token found");
+			return;
+		}
+		Console.WriteLine($"Token: {token}");
+		http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+		try
+		{
+			user = await http.GetFromJsonAsync<User>("/auth/profile");
+		}
+		catch(HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+		{
+			Console.WriteLine("Unauthorized: Invalid or expired token");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Ошибка при получении профиля: {ex.Message}");
+		}
+	}
+
+	private async Task Logout()
+	{
+		await localStorage.RemoveItemAsync("authToken");
+		http.DefaultRequestHeaders.Authorization = null;
+		user = null;
+	}
+}

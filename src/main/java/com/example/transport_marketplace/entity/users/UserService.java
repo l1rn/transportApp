@@ -1,11 +1,11 @@
 package com.example.transport_marketplace.entity.users;
-import com.example.transport_marketplace.entity.bookings.Booking;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 @RequiredArgsConstructor
@@ -23,7 +23,9 @@ public class UserService {
         return repository.save(user);
     }
 
-
+    public List<User> getAllUsers(){
+        return repository.findAll();
+    }
 
     public User getByUsername(String username){
         Optional<User> optionalUser = repository.findByUsername(username);
