@@ -1,14 +1,10 @@
 package com.example.transport_marketplace.entity.bookings;
 
 
-import com.example.transport_marketplace.entity.routes.RouteRepository;
-import com.example.transport_marketplace.entity.users.User;
-import jakarta.transaction.Transactional;
+import com.example.transport_marketplace.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,30 +15,46 @@ import java.util.Optional;
 @RequestMapping("/profile/bookings")
 @CrossOrigin(origins = "*")
 public class BookingController {
+    public static final String BEARER_PREFIX = "Bearer ";
+
     @Autowired
     private BookingService bookingService;
     // получение всех броней
-
+    @Autowired
+    private JwtService jwtService;
 
     @GetMapping("/my")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<Booking>> getMyBooking(){
-        User current = getCurrentUser();
-        List<Booking> bookings = bookingService.getBookingByUserId(current.getId());
+    public ResponseEntity<?> getMyBooking(@RequestHeader("Authorization") String authHeader){
+        var token = authHeader.substring(7);
+        Integer userId = jwtService.extractUserId(token);
+        if(userId == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не авторизован.");
+        }
+        List<Booking> bookings = bookingService.getBookingByUserId(userId);
         return ResponseEntity.ok(bookings);
     }
+    // need to delete after tests
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Booking>> getAllBookingsForUserTest(){
         return ResponseEntity.ok(bookingService.getAllBooking());
     }
+    //
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createBooking(@RequestBody BookingRequest request){
-        User currentUser = getCurrentUser();
+    public ResponseEntity<?> createBooking(@RequestHeader(value = "Authorization", required = false) String authHeader, @RequestBody BookingRequest request){
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Требуется токен в заголовке Authorization");
+        }
+        var token = authHeader.substring(BEARER_PREFIX.length());
+        Integer userId = jwtService.extractUserId(token);
+        System.out.println("Authorization Header: " + authHeader);
+
+        if(userId == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не авторизован.");
+        }
+
         try {
-            Booking newBooking = bookingService.createBooking(request.getRouteId(), currentUser.getId());
+            Booking newBooking = bookingService.createBooking(request.getRouteId(), userId);
             return ResponseEntity.status(HttpStatus.CREATED).body(newBooking);
         }
         catch (RuntimeException e){
@@ -51,13 +63,17 @@ public class BookingController {
     }
 
     @PatchMapping("/{id}/cancel")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> cancelBooking(@PathVariable int id){
-        User currentUser = getCurrentUser();
+    public ResponseEntity<?> cancelBooking(@RequestHeader("Authorization") String authHeader, @PathVariable int id){
+        var token = authHeader.substring(BEARER_PREFIX.length());
+        Integer userId = jwtService.extractUserId(token);
+//        String role = jwtService.extractRole(token);
+        if(userId == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не авторизован.");
+        }
         Optional<Booking> bookingOpt = bookingService.getBookingById(id);
         if(bookingOpt.isPresent()){
             Booking booking = bookingOpt.get();
-            if(booking.getUser().getId() == currentUser.getId() || currentUser.getRole().equals("ADMIN"))
+            if(booking.getUser().getId() == userId)
                 if(bookingService.cancelBooking(id)){
                     return ResponseEntity.ok("Бронирование отменено");
                 }
@@ -68,13 +84,17 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Бронирование не найдено.");
     }
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> getBookingId(@PathVariable int id){
-        User currentUser = getCurrentUser();
+    public ResponseEntity<?> getBookingId(@RequestHeader("Authorization") String authHeader, @PathVariable int id){
+        var token = authHeader.substring(BEARER_PREFIX.length());
+        Integer userId = jwtService.extractUserId(token);
+//        String role = jwtService.extractRole(token);
+        if(userId == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не авторизован.");
+        }
         Optional<Booking> bookingOpt = bookingService.getBookingById(id);
         if(bookingOpt.isPresent()){
             Booking booking = bookingOpt.get();
-            if(booking.getUser().getId() == currentUser.getId() || currentUser.getRole().equals("ADMIN")){
+            if(booking.getUser().getId() == userId){
                 return ResponseEntity.ok(booking);
             }
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Нет доступа к этой брони");
@@ -82,7 +102,4 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Такой брони не существует");
     }
 
-    private User getCurrentUser(){
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
 }

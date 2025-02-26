@@ -37,14 +37,15 @@ public class SecurityConfiguration {
                     corsConfiguration.setAllowedOriginPatterns(List.of("*"));
                     corsConfiguration.setAllowedMethods(List.of("POST", "GET", "PUT", "DELETE", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
-                    corsConfiguration.setAllowedOrigins(Arrays.asList("https://localhost:7216"));
+                    corsConfiguration.setAllowedOrigins(Arrays.asList("https://localhost:8081"));
                     corsConfiguration.setAllowCredentials(true);
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(request-> request
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/routes/**").permitAll()
-                        .requestMatchers("/bookings/**").hasRole("USER")
+                        .requestMatchers("/bookings/**").authenticated()
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/endpoint", "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
