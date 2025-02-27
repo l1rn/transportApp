@@ -44,6 +44,8 @@ export default {
         },
         async addbook(){
             try{
+                console.log(localStorage.getItem("token"));
+
                 const token = localStorage.getItem('token');
                 const response = await BookingService.addBooking(this.routeId, {
                     headers:{

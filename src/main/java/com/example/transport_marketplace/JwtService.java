@@ -26,9 +26,9 @@ public class JwtService {
     public Integer extractUserId(String token) {
         return extractClaim(token, claims -> claims.get("id", Integer.class));
     }
-//    public String extractRole(String token) {
-//        return extractClaim(token, claims -> claims.get("role", String.class));
-//    }
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
+    }
     public String generateToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
         if(userDetails instanceof User customUserDetails){

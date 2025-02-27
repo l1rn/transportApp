@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/profile/bookings")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BookingController {
     public static final String BEARER_PREFIX = "Bearer ";
 
@@ -41,7 +41,7 @@ public class BookingController {
     //
 
     @PostMapping
-    public ResponseEntity<?> createBooking(@RequestHeader(value = "Authorization", required = false) String authHeader, @RequestBody BookingRequest request){
+    public ResponseEntity<?> createBooking(@RequestHeader(value = "Authorization") String authHeader, @RequestBody BookingRequest request){
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Требуется токен в заголовке Authorization");
         }
@@ -66,14 +66,14 @@ public class BookingController {
     public ResponseEntity<?> cancelBooking(@RequestHeader("Authorization") String authHeader, @PathVariable int id){
         var token = authHeader.substring(BEARER_PREFIX.length());
         Integer userId = jwtService.extractUserId(token);
-//        String role = jwtService.extractRole(token);
+        String role = jwtService.extractRole(token);
         if(userId == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не авторизован.");
         }
         Optional<Booking> bookingOpt = bookingService.getBookingById(id);
         if(bookingOpt.isPresent()){
             Booking booking = bookingOpt.get();
-            if(booking.getUser().getId() == userId)
+            if(booking.getUser().getId() == userId || "ADMIN".equals(role))
                 if(bookingService.cancelBooking(id)){
                     return ResponseEntity.ok("Бронирование отменено");
                 }
@@ -87,14 +87,14 @@ public class BookingController {
     public ResponseEntity<?> getBookingId(@RequestHeader("Authorization") String authHeader, @PathVariable int id){
         var token = authHeader.substring(BEARER_PREFIX.length());
         Integer userId = jwtService.extractUserId(token);
-//        String role = jwtService.extractRole(token);
+        String role = jwtService.extractRole(token);
         if(userId == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не авторизован.");
         }
         Optional<Booking> bookingOpt = bookingService.getBookingById(id);
         if(bookingOpt.isPresent()){
             Booking booking = bookingOpt.get();
-            if(booking.getUser().getId() == userId){
+            if(booking.getUser().getId() == userId || "ADMIN".equals(role)){
                 return ResponseEntity.ok(booking);
             }
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Нет доступа к этой брони");
