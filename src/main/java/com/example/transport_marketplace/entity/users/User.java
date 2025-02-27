@@ -30,7 +30,7 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
-
+//    private String refreshToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -56,8 +56,5 @@ public class User implements UserDetails {
     public boolean isEnabled(){
         return true;
     }
-
-
-
 }
 

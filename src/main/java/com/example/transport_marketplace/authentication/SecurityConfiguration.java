@@ -37,7 +37,7 @@ public class SecurityConfiguration {
                     corsConfiguration.setAllowedOriginPatterns(List.of("*"));
                     corsConfiguration.setAllowedMethods(List.of("POST", "GET", "PUT", "DELETE", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
-                    corsConfiguration.setAllowedOrigins(Arrays.asList("https://localhost:8081"));
+                    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8081/"));
                     corsConfiguration.setAllowCredentials(true);
                     return corsConfiguration;
                 }))
@@ -45,8 +45,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/routes/**").permitAll()
                         .requestMatchers("/bookings/**").authenticated()
-                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/endpoint", "/admin/**").hasRole("ADMIN")
+                        .requestMatchers("swagger-ui/index.html/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

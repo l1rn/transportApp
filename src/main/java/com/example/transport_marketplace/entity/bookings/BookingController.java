@@ -2,6 +2,7 @@ package com.example.transport_marketplace.entity.bookings;
 
 
 import com.example.transport_marketplace.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class BookingController {
     @Autowired
     private JwtService jwtService;
 
+    @Operation(summary = "Отображение только тех броней, что выбрал пользователей")
     @GetMapping("/my")
     public ResponseEntity<?> getMyBooking(@RequestHeader("Authorization") String authHeader){
         var token = authHeader.substring(7);
@@ -33,13 +35,24 @@ public class BookingController {
         List<Booking> bookings = bookingService.getBookingByUserId(userId);
         return ResponseEntity.ok(bookings);
     }
-    // need to delete after tests
+
+    @Operation(summary = "Все брони пользователей только для админа")
     @GetMapping
-    public ResponseEntity<List<Booking>> getAllBookingsForUserTest(){
-        return ResponseEntity.ok(bookingService.getAllBooking());
+    public ResponseEntity<?> getAllBookingsForUserTest(@RequestHeader(value = "Authorization") String authHeader){
+        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Требуется токен в заголовке Authorization");
+        }
+        var token = authHeader.substring(7);
+        String role = jwtService.extractRole(token);
+        if("ADMIN".equals(role)){
+            return ResponseEntity.ok(bookingService.getAllBooking());
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Недостаточно прав для данной процедуры");
+        }
     }
     //
-
+    @Operation(summary = "Забронировать только для авторизованных")
     @PostMapping
     public ResponseEntity<?> createBooking(@RequestHeader(value = "Authorization") String authHeader, @RequestBody BookingRequest request){
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -62,7 +75,8 @@ public class BookingController {
         }
     }
 
-    @PatchMapping("/{id}/cancel")
+    @Operation(summary = "Отмена брони")
+    @PatchMapping("/my/{id}/cancel")
     public ResponseEntity<?> cancelBooking(@RequestHeader("Authorization") String authHeader, @PathVariable int id){
         var token = authHeader.substring(BEARER_PREFIX.length());
         Integer userId = jwtService.extractUserId(token);
@@ -83,6 +97,8 @@ public class BookingController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Бронирование не найдено.");
     }
+
+    @Operation(summary = "Поиск брони по id")
     @GetMapping("/{id}")
     public ResponseEntity<?> getBookingId(@RequestHeader("Authorization") String authHeader, @PathVariable int id){
         var token = authHeader.substring(BEARER_PREFIX.length());

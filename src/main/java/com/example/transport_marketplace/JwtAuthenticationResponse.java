@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Токен доступа")
 public class JwtAuthenticationResponse {
     @Schema(description = "token", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikpva...")
-    private String token;
+    private String accessToken;
+//    private String refreshToken;
 }

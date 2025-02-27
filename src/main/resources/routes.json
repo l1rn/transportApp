@@ -1,1 +1,0 @@
-[{"id":1,"routeFrom":"London","routeTo":"Madrid","date":"2025-06-20","transport":"bus","time":"2025-06-20T09:00:00Z","arrivalTime":"2025-06-20T18:30:00Z","price":75.0},{"id":2,"routeFrom":"Tokyo","routeTo":"Osaka","date":"2025-07-01","transport":"train","time":"2025-07-01T06:45:00Z","arrivalTime":"2025-07-01T10:30:00Z","price":95.0}]

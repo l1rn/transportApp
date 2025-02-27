@@ -1,7 +1,12 @@
 package com.example.transport_marketplace.entity.routes;
 import com.example.transport_marketplace.entity.routes.Exceptions.BadRequestException;
 import com.example.transport_marketplace.entity.routes.Exceptions.RouteNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,14 +27,26 @@ public class RouteController {
         this.routeService = routeService;
     }
 
+//    @Operation(summary = "Получение всех маршрутов")
+//    @GetMapping
+//    public ResponseEntity<Page<Route>> getRoutes(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size,
+//            @RequestParam(required = false) String sortBy
+//    ){
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+//        Page<Route> routes = routeService.getAllRoutes(pageable);
+//        return ResponseEntity.ok(routes);
+//    }
+    @Operation(summary = "Получение всех маршрутов")
 
-    // Получение всех маршрутов
     @GetMapping
     public ResponseEntity<List<Route>> getRoutes() throws IOException{
         List<Route> routes = routeService.getRoutes();
         return new ResponseEntity<>(routes, HttpStatus.OK);
     }
 
+    @Operation(summary = "Поиск маршрута по id")
     @GetMapping("/{id}")
     public ResponseEntity<?> getRouteById(@PathVariable String id){
         if(id == null || id.isBlank()){
@@ -46,14 +63,14 @@ public class RouteController {
         }
     }
 
-    // Добавление маршрута (POST)
+    @Operation(summary = "Добавление маршрута")
     @PostMapping
     public ResponseEntity<Route> addRoute(@RequestBody Route route){
         Route savedRoute = routeService.addRoute(route);
         return new ResponseEntity<>(savedRoute, HttpStatus.CREATED);
     }
 
-    // Удаление маршрута по ID
+    @Operation(summary = "Удаление маршрута")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoute(@PathVariable int id){
         boolean deleted = routeService.deleteRoute(id);
@@ -61,7 +78,6 @@ public class RouteController {
                         : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // Обновление маршрута по ID
     @PutMapping("/{id}")
     public ResponseEntity<Route> updateRoute(@PathVariable int id, @RequestBody Route updatedRoute){
         Route route = routeService.updateRoute(id, updatedRoute);
@@ -70,7 +86,7 @@ public class RouteController {
         }
          return new ResponseEntity<>(route, HttpStatus.OK);
     }
-    // Поиск маршрутов по дате
+    @Operation(summary = "Поиск маршрутов по дате")
     @GetMapping("/searchByDate")
     public ResponseEntity<List<Route>> searchByDate(@RequestParam String date){
         List<Route> filteredRoutes = routeService.getRoutes().stream()
@@ -79,7 +95,7 @@ public class RouteController {
         return new ResponseEntity<>(filteredRoutes, HttpStatus.OK);
     }
 
-    // Поиск маршрута по транспорту
+    @Operation(summary = "Поиск маршрута по транспорту")
     @GetMapping("/searchByTransport")
     public ResponseEntity<List<Route>> searchByTransport(@RequestParam String transport){
         List<Route> filteredRoutes = routeService.getRoutes().stream()
@@ -88,7 +104,7 @@ public class RouteController {
         return new ResponseEntity<>(filteredRoutes, HttpStatus.OK);
     }
 
-    // Поиск маршрутов
+    @Operation(summary = "Поиск маршрутов")
     @GetMapping("/search")
     public ResponseEntity<?> searchRoutes(
             @RequestParam(required = false) String routeFrom,

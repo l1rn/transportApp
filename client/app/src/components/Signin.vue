@@ -1,8 +1,25 @@
 <template>
-    <div>
-        <input v-model="username">
-        <input v-model="password" type="password">
-        <button @click="signIn">submit</button>
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4 custom-form">
+            <h2 class="text-center mb-4">Авторизация</h2>
+            <form>
+                <!-- User -->
+                <div class="mb-3">
+                    <label class="form-label">Имя пользователя</label>
+                    <input class="form-control" v-model="username" placeholder="Username"/>
+                </div>
+                <!-- Pwd -->
+
+                <div class="mb-3">
+                    <label class="form-label">Пароль</label>
+                    <input class="form-control" v-model="password" placeholder="Password" type="password" required/>
+                </div>
+
+                <!-- Submit -->
+
+                <button class="btn btn-primary w-100" @click="signin">Войти</button>
+            </form>
+        </div>
     </div>
 </template>
 <script>
@@ -35,6 +52,11 @@ export default {
     } 
 }
 </script>
-<style lang="">
-    
+<style>
+
+.btn-primary {
+    background-color: #eb811e;
+    border: none;
+    color:rgb(255, 255, 255);
+}
 </style>

@@ -5,18 +5,19 @@
         <h1 class="text-center"> Все маршруты</h1>
         <table class="table table-striped">
             <thead>
-                <th>from</th>
-                <th>to</th>
-                <th>time from</th>
-                <th>arrival time</th>
+                <th>откуда</th>
+                <th>куда</th>
+                <th>время посадки</th>
+                <th>время прибытия</th>
+                <th>свободных мест</th>
             </thead>
             <tbody>
                  <tr v-for="route in routes" :key="route.id">
-                    <td>{{ route.id }}</td> 
                     <td>{{ route.routeFrom }}</td> 
                     <td>{{ route.routeTo }}</td>
                     <td>{{ route.time }}</td>
                     <td>{{ route.arrivalTime }}</td>
+                    <td>{{ route.availableSeats }}</td>
                     <button @click="addbook()">book</button>
                  </tr>   
             </tbody>
