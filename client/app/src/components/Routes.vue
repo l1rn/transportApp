@@ -2,7 +2,17 @@
 <template>
    
     <div class="container">
-        <h1 class="text-center"> Все маршруты</h1>
+        <BNavbar>
+            <BNavbarBrand class="brand" href="/routes">ololotravel</BNavbarBrand>
+            <BNavbarNav>
+                <BNavItemDropdown text="Профиль" right>
+                    <BDropdownItem href="/auth/sign-up">Регистрация</BDropdownItem>
+                    <BDropdownItem href="/auth/sign-in">Авторизация</BDropdownItem>
+                    <BDropdownItem href="/auth/logout">Выйти</BDropdownItem>
+                    <BDropdownItem href="/auth/profile">Профиль</BDropdownItem>
+                </BNavItemDropdown>
+            </BNavbarNav>
+        </BNavbar>
         <table class="table table-striped">
             <thead>
                 <th>откуда</th>
@@ -28,12 +38,20 @@
 <script>
 import RoutesService from '@/services/RoutesService';
 import BookingService from '@/services/BookingService'
+import { BDropdownItem, BNavbar, BNavbarBrand, BNavbarNav, BNavItemDropdown } from 'bootstrap-vue-next';
 export default {
     name: 'AppRoutes',
+    components:{
+        BNavbar,
+        BNavbarBrand,
+        BNavbarNav,
+        BNavItemDropdown,
+        BDropdownItem
+    },
     data(){
         return{
+            
             routeId: 1,
-            userId: 1,
             routes: []
         }
     },
@@ -55,8 +73,10 @@ export default {
                     },
                 });
                 console.log(response.data);
+                this.$router.push('/auth/profile');
             }
             catch(error){
+                this.$router.push('/auth/sign-up');
                 console.log(error.message);
             } 
         }
@@ -66,6 +86,22 @@ export default {
     }
 }
 </script>
-<style lang="">
-    
+<style scoped>
+/* overflow-x:hidden - chrome, firefox, IE, edge, safari, opera*/
+::v-deep .dropdown-menu {
+  overflow-y: hidden; 
+  scrollbar-width: none;
+  -ms-overflow-style: none; 
+}
+
+::v-deep .dropdown-menu::-webkit-scrollbar {
+  display: none;
+}
+.container{
+    font-family: Montserrat;
+}
+.brand{
+    color: rgb(27, 27, 27);
+    font-size: large;
+}
 </style>

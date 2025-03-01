@@ -75,7 +75,6 @@ public class AuthenticationService {
     }
     public JwtAuthenticationResponse deleteToken(RefreshTokenRequest request){
         String refreshToken = request.getRefreshToken();
-
         return refreshTokenService.findByToken(refreshToken)
                 .map(token ->{
                     User user = token.getUser();

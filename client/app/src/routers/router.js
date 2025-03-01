@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory} from 'vue-router';
-import Home from '@/components/Home.vue';
 import Routes from '@/components/Routes.vue';
 import GetBooking from '@/components/GetBooking.vue';
 import Signup from '@/components/Signup.vue';
@@ -7,7 +6,7 @@ import Signin from '@/components/Signin.vue';
 import Profile from '@/components/Profile.vue';
 
 const routes = [
-    { path: '/', component: Home},
+    {path: '/', redirect: '/routes'},
     { path: '/routes', component: Routes},
     { path: '/profile', component: Profile},
     { path: '/profile/bookings/my', component: GetBooking},

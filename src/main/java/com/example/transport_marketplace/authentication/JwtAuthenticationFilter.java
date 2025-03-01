@@ -1,6 +1,5 @@
 package com.example.transport_marketplace.authentication;
 
-import com.example.transport_marketplace.entity.tokens.TokenBlacklist;
 import com.example.transport_marketplace.entity.users.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String HEADER_NAME = "Authorization";
     private final JwtService jwtService;
     private final UserService userService;
-    private final TokenBlacklist tokenBlacklist;
+//    private final TokenBlacklist tokenBlacklist;
 
     @Override
     protected void doFilterInternal(
@@ -36,12 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException{
         var authHeader = request.getHeader(HEADER_NAME);
 
-        String token = authHeader.substring(BEARER_PREFIX.length());
 
-        if(tokenBlacklist.isRevoked(token)){
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token revoked");
-            return;
-        }
+//        if(tokenBlacklist.isRevoked(token)){
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token revoked");
+//            return;
+//        }
         if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, BEARER_PREFIX)) {
             filterChain.doFilter(request, response);
             return;

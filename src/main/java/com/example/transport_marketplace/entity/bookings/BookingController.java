@@ -2,6 +2,7 @@ package com.example.transport_marketplace.entity.bookings;
 
 
 import com.example.transport_marketplace.authentication.JwtService;
+import com.example.transport_marketplace.entity.tokens.RefreshTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,8 @@ public class BookingController {
     // получение всех броней
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    RefreshTokenService refreshTokenService;
 
     @Operation(summary = "Отображение только тех броней, что выбрал пользователей")
     @GetMapping("/my")
@@ -70,7 +73,7 @@ public class BookingController {
             Booking newBooking = bookingService.createBooking(request.getRouteId(), userId);
             return ResponseEntity.status(HttpStatus.CREATED).body(newBooking);
         }
-        catch (RuntimeException e){
+            catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

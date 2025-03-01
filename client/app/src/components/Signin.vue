@@ -2,34 +2,61 @@
     <div class="container mt-5">
         <div class="card shadow-lg p-4 custom-form">
             <h2 class="text-center mb-4">Авторизация</h2>
-            <form>
-                <!-- User -->
-                <div class="mb-3">
-                    <label class="form-label">Имя пользователя</label>
-                    <input class="form-control" v-model="username" placeholder="Username"/>
-                </div>
-                <!-- Pwd -->
+            <BForm @submit.prevent="signIn">
+                <BFormGroup
+                    id="bformgr-1"
+                    label="Имя пользователя"
+                    label-for="input-username"
+                    class="mb-3">
+                    
+                    <BFormInput 
+                        id="input-username"
+                        v-model:="username"
+                        placeholder="введите имя пользователя"
+                        required
+                    />
+                </BFormGroup>
 
-                <div class="mb-3">
-                    <label class="form-label">Пароль</label>
-                    <input class="form-control" v-model="password" placeholder="Password" type="password" required/>
-                </div>
-
-                <!-- Submit -->
-
-                <button class="btn btn-primary w-100" @click="signin">Войти</button>
-            </form>
+                    <BFormGroup
+                    id="bformgr-2"
+                    label="Пароль"
+                    label-for="input-password"
+                    class="mb-3">
+                        
+                    <BFormInput 
+                        id="input-password"
+                        v-model:="user.password"
+                        placeholder="введите пароль"
+                        type="password"
+                        class="mb-2"
+                        required
+                    />
+                    <BFormText v-if="badresponse" text-variant="danger">Неверное имя или пароль, попробуйте еще!</BFormText>
+                    <button type="submit" class="btn btn-primary w-100 mt-3">Авторизация</button>
+                </BFormGroup>
+            </BForm>
         </div>
     </div>
 </template>
 <script>
 import SigninUserService from '@/services/SigninUsersService'
+import { BForm, BFormGroup, BFormInput, BFormText } from 'bootstrap-vue-next';
+
 export default {
     name: "AppUsersSignIn",
+    components:{
+        BForm,
+        BFormGroup,
+        BFormInput,
+        BFormText
+    },
     data(){
         return{
-        username: '',
-        password: ''
+            user:{
+                username: '',
+                password: ''
+            },
+            badresponse: false,
         }
     },
     methods:{
@@ -44,19 +71,31 @@ export default {
                 });
                 console.log(response.data);
                 localStorage.setItem('token', response.data.token);
+                this.badresponse = false;
+                this.$router.push('/routes');
             }
             catch(error){
                 console.log(error.message);
+                this.badresponse = true;
             }
         }     
     } 
 }
 </script>
-<style>
-
+<style scoped>
+.container{
+    font-family: Montserrat;
+}
 .btn-primary {
-    background-color: #eb811e;
+    font-family: Montserrat;
+    font-size: large;
+    background-color: #089754;
     border: none;
-    color:rgb(255, 255, 255);
+    color:#f7d206;
+    transition: transform 0.2s ease-in, background-color 0.2s ease-in-out, color 0.2s ease;
+}
+
+.btn-primary:hover{
+    transform: scale(1.01) translateY(1px);
 }
 </style>

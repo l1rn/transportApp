@@ -4,18 +4,12 @@ import com.example.transport_marketplace.enter.SignInRequest;
 import com.example.transport_marketplace.enter.SignUpRequest;
 import com.example.transport_marketplace.entity.tokens.RefreshTokenService;
 
-import com.example.transport_marketplace.entity.tokens.TokenBlacklist;
-import com.example.transport_marketplace.entity.users.User;
 import com.example.transport_marketplace.entity.users.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "Аутентификация")
 public class AuthController {
-    private final TokenBlacklist tokenBlacklist;
+//    private final TokenBlacklist tokenBlacklist;
     private final AuthenticationService authenticationService;
     @Autowired
     private JwtService jwtService;
@@ -52,12 +46,7 @@ public class AuthController {
 
     @Operation(summary = "Выход из системы")
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(
-            @RequestHeader("Authorization") String authHeader,
-            @RequestBody @Valid RefreshTokenRequest request){
-        String accessToken = authHeader.substring(7);
-
-        tokenBlacklist.revoke(accessToken);
+    public ResponseEntity<Void> logout(@RequestBody @Valid RefreshTokenRequest request){
 
         authenticationService.deleteByToken(request.getRefreshToken());
 
