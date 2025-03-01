@@ -11,10 +11,11 @@ spring:
     hikari:
       minimum-idle: 1
       maximum-pool-size: 5
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
+  spring:
+    jpa:
+      open-in-view: false
+      hibernate:
+        ddl-auto: validate
     show-sql: true
     properties:
       hibernate:

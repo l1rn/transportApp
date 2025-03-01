@@ -11,10 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [11, 17, 21]
+        java: [17, 21] # JDK 21 требует Spring Boot >= 3.2
         distribution: [temurin]
-
-    name: Build on JDK ${{ matrix.java }} (${{ matrix.distribution }})
 
     steps:
       - uses: actions/checkout@v4
@@ -23,8 +21,8 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
-          distribution: ${{ matrix.distribution }} 
-          cache: maven
+          distribution: ${{ matrix.distribution }}
+          cache: 'maven'
 
-      - name: Build and test
+      - name: Build with Maven
         run: mvn -B verify
