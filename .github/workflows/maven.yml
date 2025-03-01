@@ -1,19 +1,20 @@
-name: Advanced Java CI
+name: Java CI
 
 on:
   push:
-    paths:
-      - '**.java'
-      - 'pom.xml'
-  workflow_dispatch:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
 
 jobs:
   build:
-    name: Build on JDK ${{ matrix.java }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 11, 17, 21 ]
+        java: [11, 17, 21]
+        distribution: [temurin]
+
+    name: Build on JDK ${{ matrix.java }} (${{ matrix.distribution }})
 
     steps:
       - uses: actions/checkout@v4
@@ -22,16 +23,8 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
-          cache: 'maven'
+          distribution: ${{ matrix.distribution }} 
+          cache: maven
 
-      - name: Build
-        run: mvn -B clean compile
-
-      - name: Run tests
-        run: mvn -B test
-        env:
-          CI: true
-
-      - name: Code coverage
-        uses: codecov/codecov-action@v4
-        if: success()
+      - name: Build and test
+        run: mvn -B verify
