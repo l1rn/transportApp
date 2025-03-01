@@ -1,17 +1,23 @@
 package com.example.transport_marketplace.authentication;
-import com.example.transport_marketplace.JwtAuthenticationResponse;
-import com.example.transport_marketplace.JwtService;
+import com.example.transport_marketplace.enter.RefreshTokenRequest;
 import com.example.transport_marketplace.enter.SignInRequest;
 import com.example.transport_marketplace.enter.SignUpRequest;
+import com.example.transport_marketplace.entity.tokens.RefreshTokenService;
+
+import com.example.transport_marketplace.entity.tokens.TokenBlacklist;
 import com.example.transport_marketplace.entity.users.User;
 import com.example.transport_marketplace.entity.users.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,11 +25,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "Аутентификация")
 public class AuthController {
+    private final TokenBlacklist tokenBlacklist;
     private final AuthenticationService authenticationService;
     @Autowired
     private JwtService jwtService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private RefreshTokenService refreshTokenService;
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
     public JwtAuthenticationResponse signUp(@RequestBody @Valid SignUpRequest request){
@@ -34,19 +43,24 @@ public class AuthController {
     public JwtAuthenticationResponse signIn(@RequestBody @Valid SignInRequest request){
         return authenticationService.signIn(request);
     }
-    @Operation(summary = "Профиль")
-    @GetMapping("/profile")
-    public ResponseEntity<User> getProfile(@RequestHeader("Authorization") String authHeader){
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        String token = authHeader.substring(7);
-        String username = jwtService.extractUsername(token);
-        User user = userService.getByUsername(username);
-        if(user == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(user);
+
+    @Operation(summary = "refresh tokens")
+    @PostMapping("/refresh")
+    public JwtAuthenticationResponse refreshToken(@RequestBody @Valid RefreshTokenRequest request){
+        return authenticationService.refreshToken(request);
     }
 
+    @Operation(summary = "Выход из системы")
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody @Valid RefreshTokenRequest request){
+        String accessToken = authHeader.substring(7);
+
+        tokenBlacklist.revoke(accessToken);
+
+        authenticationService.deleteByToken(request.getRefreshToken());
+
+        return ResponseEntity.noContent().build();
+    }
 }

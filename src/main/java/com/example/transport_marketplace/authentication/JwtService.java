@@ -1,4 +1,4 @@
-package com.example.transport_marketplace;
+package com.example.transport_marketplace.authentication;
 
 import com.example.transport_marketplace.entity.users.User;
 import io.jsonwebtoken.Claims;
@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
 @Service
 public class JwtService {
     @Value("${token.signing.key}")
@@ -53,7 +53,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 30L * 24 * 60 * 60 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + 7L * 24 * 60 * 60 * 1000))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -80,5 +80,36 @@ public class JwtService {
     private Key getSigningKey(){
         byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    @Value("${jwt.refresh-token-expiration}")
+    private long refreshExpirationMs;
+
+    @Value("${jwt.access-token-expiration}")
+    private long accessExpirationMs;
+
+    public String generateAccessToken(UserDetails userDetails){
+        return buildToken(userDetails, accessExpirationMs);
+    }
+    public String generateRefreshToken(UserDetails userDetails){
+        return buildToken(userDetails, refreshExpirationMs);
+    }
+
+    public long getRefreshExpirationMs() {
+        return refreshExpirationMs;
+    }
+
+    private String buildToken(UserDetails userDetails, long expiration){
+        Map<String, Object> claims = new HashMap<>();
+        if(userDetails instanceof User customUserDetails){
+            claims.put("id", customUserDetails.getId());
+            claims.put("role", customUserDetails.getRole());
+        }
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 }

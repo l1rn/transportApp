@@ -24,7 +24,6 @@ spring:
         mode: always
         schema-locations: classpath:schema.sql
         data-locations: classpath:data.sql
-
 server:
   port: 8080
   error:
@@ -33,4 +32,7 @@ server:
 
 token:
   signing:
-    key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
+    key: 4ca9f2b1d0481c33acb8dcbeaf08a6d1aba6cc2e0a24401493365361308677998b291cda035f59e1587fa3b847e477b4e9baf200e9a748856845c3f65c71db98
+jwt:
+  access-token-expiration: 900000
+  refresh-token-expiration: 604800000

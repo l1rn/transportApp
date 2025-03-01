@@ -1,7 +1,7 @@
 package com.example.transport_marketplace.entity.bookings;
 
 
-import com.example.transport_marketplace.JwtService;
+import com.example.transport_marketplace.authentication.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
