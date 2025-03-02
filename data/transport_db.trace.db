@@ -1444,3 +1444,6 @@ Caused by: java.lang.AssertionError
 2025-03-02 14:45:18.074232+05:00 jdbc[4]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM REFRESH_TOKENS"; expected "identifier"; SQL statement:
 DELETE * FROM REFRESH_TOKENS [42001-232]
+2025-03-02 16:43:51.908464+05:00 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "delete [*]table routes"; expected "identifier"; SQL statement:
+delete table routes [42001-232]

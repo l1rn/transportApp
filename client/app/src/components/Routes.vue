@@ -1,53 +1,62 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-   
-    <div class="container">
-        <BNavbar class="p-fixed">
-            <BNavbarBrand class="brand" href="/routes">ololotravel</BNavbarBrand>
-            <BNavbarNav>
-                    <BNavItemDropdown v-model="textProfile" text="Профиль" right>
-                    <BDropdownItem href="/auth/profile">Мои заказы</BDropdownItem>
-                    <BDropdownItem @click="formCheck.showLoginForm = true">Авторизация</BDropdownItem>
-                    <BDropdownItem href="/auth/logout">Выйти</BDropdownItem>
-                </BNavItemDropdown>
-            </BNavbarNav>
-        </BNavbar>
-        <div class="header-container">
-            <h1 class="text-align-center">Здесь самые дешевые билеты</h1>
-            <div class="d-flex gap-2">
+    <div class="header-container-custom">
+        <div class="navbar-custom fixed-top">
+            <BNavbar>
+                <BNavbarBrand class="brand" href="/#">ololotravel</BNavbarBrand>
+                
+                <BNavbarNav>
+                    <BNavItemDropdown v-model="textProfile" text="👤Профиль">
+                        <BNav align="center">
+                            <BDropdownItem href="/auth/profile">Мои заказы</BDropdownItem>
+                            <BDropdownItem @click="formCheck.showLoginForm = true">Авторизация</BDropdownItem>
+                            <BDropdownItem href="/auth/logout">Выйти</BDropdownItem>
+                        </BNav>
+                    </BNavItemDropdown>
+                </BNavbarNav>
+            </BNavbar>
+            
+            <BNavbar >
+                <BNav>
+                    <BNavbarNav class="ms-auto">
+                        <BNavItemDropdown 
+                            text="Транспорт"
+                            toggle-class="transport-btn"
+                            right
+                            menu-class="transport-menu">
+                            <BDropdownItem class="transport-item" @click="selectTransport('Поезд')">
+                                <span class="emoji">🚂</span> Поезд
+                            </BDropdownItem>
+                            <BDropdownItem class="transport-item" @click="selectTransport('Автобус')">
+                                <span class="emoji">🚌</span> Автобус
+                            </BDropdownItem>
+                            <BDropdownItem class="transport-item" @click="selectTransport('Авиа')">
+                                <span class="emoji">✈️</span> Авиа
+                            </BDropdownItem>
+                        </BNavItemDropdown>
+                    </BNavbarNav>
+                </BNav>
                 <BInput placeholder="Откуда"></BInput>
-                <BInput placeholder="Куда"></BInput>
-                <Datepicker v-model="date"
+                <BInput class="ms-1" placeholder="Куда"></BInput>
+                <Datepicker class="ms-1" v-model="date"
                 placeholder="Когда"
                 :format="'dd-MM-yyyy'"
                 :dark="false"
                 :enable-time-picker="false" />
-                <Datepicker v-model="arrivalDate"
+                <Datepicker class="ms-1" v-model="arrivalDate"
                 placeholder="Обратно"
                 :format="'dd-MM-yyyy'"
                 :enable-time-picker="false" />
-            </div>
-            <div class="d-flex gap-4"></div>
-        </div>
-        <table class="table table-striped">
-            <thead>
-                <th>откуда</th>
-                <th>куда</th>
-                <th>время посадки</th>
-                <th>время прибытия</th>
-                <th>свободных мест</th>
-            </thead>
-            <tbody>
-                 <tr v-for="route in routes" :key="route.id">
-                    <td>{{ route.routeFrom }}</td> 
-                    <td>{{ route.routeTo }}</td>
-                    <td>{{ route.time }}</td>
-                    <td>{{ route.arrivalTime }}</td>
-                    <td>{{ route.availableSeats }}</td>
-                    <button @click="addbook()">book</button>
-                 </tr>   
-            </tbody>
-        </table>
+                <BButton class="search-button-custom ms-1">Подобрать билеты</BButton>
+            </BNavbar>
+            <BNavbar>
+                <BNavbarBrand></BNavbarBrand>
+                <BNavbarNav style="font-family: Montserrat; margin-right: 20px;" v-if="itemTransport != ''" 
+                v-model="itemTransport">Ваш транспорт: {{ itemTransport }}</BNavbarNav>
+            </BNavbar>
+        </div>  
+    </div>
+
         <BModal v-model="formCheck.showLoginForm" title="Регистрация профиля" class="xl" hide-footer>
             <BForm v-if="formCheck.showSubRegisterForm" @submit.prevent="signup">
                 <!-- User -->
@@ -143,8 +152,14 @@
                 formCheck.showSubLoginForm=false; formCheck.showRegisterButton=false">Регистрация</BButton>
             </BNav>
         </BModal>
+    <div class="main-container">
+        <div class="container-route-to-search">
+            <BImg>12123</BImg>
+        </div>
+        <div class="container-to-see-all-routes">
+            
+        </div>
     </div>
-
 </template>
 <script>
 import SigninUsersService from '@/services/SigninUsersService';
@@ -155,7 +170,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 
 
 import {  BButton, BDropdownItem, BForm, BFormGroup, BFormInput, BFormText,
-     BInput, BModal, BNavbar, BNavbarBrand, BNavbarNav, BNavItemDropdown,
+     BInput, BModal, BNav, BNavbar, BNavbarBrand, BNavbarNav, BNavItemDropdown,
      } from 'bootstrap-vue-next';
 export default {
     name: 'AppRoutes',
@@ -172,7 +187,8 @@ export default {
         BFormText,
         BButton,
         BInput,
-        Datepicker
+        Datepicker,
+        BNav
     },
     data(){
         return{
@@ -197,11 +213,12 @@ export default {
                 showRegisterButton: true,
                 loginSuccess: false,
                 registerSuccess: false,
+                textLoginSuccess: '',
             },
-                textProfile: 'Профиль',
                 routes: [],
                 date: null,
                 arrivalDate: null,
+                itemTransport: '',
         }
     },
     methods:{
@@ -218,6 +235,9 @@ export default {
                     console.log(response.data.token);
                     localStorage.setItem('token', response.data.token);
                     this.registerSuccess = true;
+                    this.userRegister.username = '';
+                    this.userRegister.password = '';
+                    this.userRegister.confirmPassword = '';
                 }
                 
             }
@@ -237,11 +257,13 @@ export default {
                 console.log(response.data);
                 localStorage.setItem('token', response.data.token);
                 this.formCheck.badresponse = false;
+                this.formCheck.loginSuccess = true;
                 this.userLogin.username = '';
                 this.userLogin.password = '';
             }
             catch(error){
                 console.log(error.message);
+                this.formCheck.loginSuccess = false;
                 this.badresponse = true;
             }
         },
@@ -265,7 +287,9 @@ export default {
                 console.log(error.message);
             } 
         },
-
+        selectTransport(transport){
+            this.itemTransport = transport;
+        }
     },
     watch: {
         "user.confirmPassword"(newValue){
@@ -286,6 +310,7 @@ export default {
 }
 </script>
 <style scoped>
+
 /* overflow-x:hidden - chrome, firefox, IE, edge, safari, opera*/
 ::v-deep .dropdown-menu {
   overflow-y: hidden; 
@@ -296,19 +321,60 @@ export default {
 ::v-deep .dropdown-menu::-webkit-scrollbar {
   display: none;
 }
-.container{
-    font-family: Montserrat;
+/*  */
+/* header */
+/*  */
+.navbar-custom{
+    z-index: 1030;
+    height: 17vh;
+    background: white;
+    box-shadow: 0 2px 0 rgba(0,0,0, 0.06);
+    padding-left: 15%;
+    padding-right: 15%;
 }
-.fade-alert {
-  animation: fadeOut 4s ease-in-out;
+.search-button-custom{
+    border: none;
+    max-height: 45px;
+    min-width: 200px;
 }
-
-@keyframes fadeOut {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
+/* logo */
 .brand{
     color: rgb(27, 27, 27);
     font-size: large;
 }
+.header-container-custom{
+    font-family: Montserrat;
+    height: 17vh;
+}
+
+/*  */
+/* main  */
+/*  */
+
+.main-container{
+    height: 200vh;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #ffdde1);
+    padding-top: 5vh;
+}
+
+/* container to search - first task */
+.container-route-to-search{
+    border-radius: 15px;
+    height: 40vh;
+    background-color: white;
+    margin-top: 5vh;
+    margin-right: 15%;
+    margin-left: 15%;
+}
+
+/* see all routes and sort it - second task */
+.container-to-see-all-routes{
+    border-radius: 15px;
+    height: 40vh;
+    background-color: white;
+    margin-top: 20vh;
+    margin-right: 15%;
+    margin-left: 15%;
+}
+
 </style>
