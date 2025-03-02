@@ -1441,3 +1441,6 @@ Caused by: java.lang.AssertionError
 	at org.h2.mvstore.FileStore.executeFileStoreOperation(FileStore.java:1893)
 	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:922)
 	... 19 more
+2025-03-02 14:45:18.074232+05:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM REFRESH_TOKENS"; expected "identifier"; SQL statement:
+DELETE * FROM REFRESH_TOKENS [42001-232]
