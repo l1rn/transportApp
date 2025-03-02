@@ -35,7 +35,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException{
         var authHeader = request.getHeader(HEADER_NAME);
 
-
 //        if(tokenBlacklist.isRevoked(token)){
 //            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token revoked");
 //            return;

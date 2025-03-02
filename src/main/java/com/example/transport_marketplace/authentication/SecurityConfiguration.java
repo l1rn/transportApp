@@ -35,7 +35,8 @@ public class SecurityConfiguration {
                     corsConfiguration.setAllowedOriginPatterns(List.of("*"));
                     corsConfiguration.setAllowedMethods(List.of("POST", "GET", "PUT", "DELETE", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
-                    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8081/"));
+                    corsConfiguration.setExposedHeaders(List.of("Set-Cookie"));
+                    corsConfiguration.setAllowedOrigins(List.of("http://localhost:8081/"));
                     corsConfiguration.setAllowCredentials(true);
                     return corsConfiguration;
                 }))

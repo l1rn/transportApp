@@ -2,6 +2,7 @@ package com.example.transport_marketplace.entity.bookings;
 
 
 import com.example.transport_marketplace.authentication.JwtService;
+import com.example.transport_marketplace.enter.BookingRequest;
 import com.example.transport_marketplace.entity.tokens.RefreshTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +28,7 @@ public class BookingController {
     private JwtService jwtService;
     @Autowired
     RefreshTokenService refreshTokenService;
+
 
     @Operation(summary = "Отображение только тех броней, что выбрал пользователей")
     @GetMapping("/my")
@@ -57,13 +60,18 @@ public class BookingController {
     //
     @Operation(summary = "Забронировать только для авторизованных")
     @PostMapping
-    public ResponseEntity<?> createBooking(@RequestHeader(value = "Authorization") String authHeader, @RequestBody BookingRequest request){
+    public ResponseEntity<?> createBooking(@RequestHeader(value = "Authorization") String authHeader,
+                                           @CookieValue(name = "refreshToken", required = false) String refreshToken,
+                                           @RequestBody BookingRequest request){
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Требуется токен в заголовке Authorization");
         }
-        var token = authHeader.substring(BEARER_PREFIX.length());
+        if (refreshToken == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Требуется авторизация");
+        }
+        var token = authHeader.substring(7);
         Integer userId = jwtService.extractUserId(token);
-        System.out.println("Authorization Header: " + authHeader);
 
         if(userId == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не авторизован.");
@@ -80,7 +88,23 @@ public class BookingController {
 
     @Operation(summary = "Отмена брони")
     @PatchMapping("/my/{id}/cancel")
-    public ResponseEntity<?> cancelBooking(@RequestHeader("Authorization") String authHeader, @PathVariable int id){
+    public ResponseEntity<?> cancelBooking(@RequestHeader("Authorization") String authHeader,
+                                           @CookieValue(name = "refreshToken", required = false) String refreshToken
+                                        , @PathVariable int id)
+    {
+        if(refreshToken == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Для отмены брони нужно авторизоваться");
+        }
+
+        boolean isRefreshTokenValid = refreshTokenService.findByToken(refreshToken)
+                .map(t -> !t.getExpiryDate().isBefore(Instant.now()))
+                .orElse(false);
+        if(!isRefreshTokenValid){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Время доступа истекло");
+        }
+
         var token = authHeader.substring(BEARER_PREFIX.length());
         Integer userId = jwtService.extractUserId(token);
         String role = jwtService.extractRole(token);

@@ -1,5 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
+    <!-- header  -->
     <div class="header-container-custom">
         <div class="navbar-custom fixed-top">
             <BNavbar>
@@ -57,8 +58,11 @@
         </div>  
     </div>
 
+    <!-- auth form -->
         <BModal v-model="formCheck.showLoginForm" title="Регистрация профиля" class="xl" hide-footer>
+            <!-- REGISTER  -->
             <BForm v-if="formCheck.showSubRegisterForm" @submit.prevent="signup">
+                <p v-if="formCheck.registerSuccess" style="color:green">Вы зарегистрированы!</p>
                 <!-- User -->
                 <BFormGroup 
                     id="username"
@@ -86,7 +90,7 @@
                         v-model="userRegister.password"
                         placeholder="пароль"
                         type="password"
-                        class="form-control mb-3"
+                        class="form-control mb-3" 
                         required
                     />
                 </BFormGroup>
@@ -106,13 +110,16 @@
                         class="form-control mb-3"
                         required
                     />
-                    <BFormText v-if="formCheck.passwordError" text-variant="danger">
-                        {{ formCheck.passwordError }}
+                    <BFormText v-if="passwordError" text-variant="danger">
+                        {{ passwordError }}
                     </BFormText>
-                    <button :disabled="formCheck.passwordError" type="submit" class="btn btn-primary w-100 mt-3">Регистрация</button>
+                    <button :disabled="passwordError" type="submit" class="btn btn-primary w-100 mt-3">Регистрация</button>
                 </BFormGroup>
             </BForm>
+
+            <!-- AUTHORIZATION  -->
             <BForm v-if="formCheck.showSubLoginForm" @submit.prevent="signIn">
+                
                 <BFormGroup
                     id="bformgr-1"
                     label="Имя пользователя"
@@ -152,6 +159,8 @@
                 formCheck.showSubLoginForm=false; formCheck.showRegisterButton=false">Регистрация</BButton>
             </BNav>
         </BModal>
+
+    <!-- section after header  -->
     <div class="main-container">
         <div class="container-route-to-search">
             <BImg>12123</BImg>
@@ -205,20 +214,20 @@ export default {
             },
             formCheck:
             {
-                passwordError: null,
                 showLoginForm: false,
                 badresponse: false,
                 showSubLoginForm: true,
                 showSubRegisterForm: false,
                 showRegisterButton: true,
-                loginSuccess: false,
                 registerSuccess: false,
+                loginSuccess: false,
                 textLoginSuccess: '',
             },
                 routes: [],
                 date: null,
                 arrivalDate: null,
                 itemTransport: '',
+                passwordError: null
         }
     },
     methods:{
@@ -230,11 +239,11 @@ export default {
 
         async signup(){
             try{
-                if(!this.formCheck.passwordError){
+                if(!this.passwordError){
                     const response = await SignupUsersService.signupUser(this.userRegister.username, this.userRegister.password);
                     console.log(response.data.token);
                     localStorage.setItem('token', response.data.token);
-                    this.registerSuccess = true;
+                    this.formCheck.registerSuccess = true;
                     this.userRegister.username = '';
                     this.userRegister.password = '';
                     this.userRegister.confirmPassword = '';
@@ -255,7 +264,6 @@ export default {
                     },
                 });
                 console.log(response.data);
-                localStorage.setItem('token', response.data.token);
                 this.formCheck.badresponse = false;
                 this.formCheck.loginSuccess = true;
                 this.userLogin.username = '';
@@ -292,12 +300,12 @@ export default {
         }
     },
     watch: {
-        "user.confirmPassword"(newValue){
-            if(newValue !== this.user.password){
-                this.formCheck.passwordError = "Пароли не совпадают!";
+        "userRegister.confirmPassword"(newValue){
+            if(newValue !== this.userRegister.password){
+                this.passwordError = "Пароли не совпадают!";
             }
             else{
-                this.formCheck.passwordError = null;
+                this.passwordError = null;
             }
         }
     },

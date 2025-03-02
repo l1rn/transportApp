@@ -25,7 +25,6 @@ public class RefreshTokenService {
         refreshToken.setExpiryDate(Instant.now().plusMillis(jwtService.getRefreshExpirationMs()));
         return refreshTokenRepository.save(refreshToken);
     }
-
     public Optional<RefreshToken> findByToken(String token){
         return refreshTokenRepository.findByToken(token);
     }
