@@ -18,6 +18,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class AuthenticationService {
@@ -47,9 +50,21 @@ public class AuthenticationService {
                 request.getPassword()
         ));
 
-        var user = userService.userDetailsService().loadUserByUsername(request.getUsername());
+        User user = (User) userService.userDetailsService().loadUserByUsername(request.getUsername());
+
+        Optional<Token> existingToken = tokenService.findByUser( user);
+        Token refreshToken;
+        if(existingToken.isPresent() && !isTokenExpired(existingToken.get())){
+            refreshToken = existingToken.get();
+        }
+        else {
+            if(existingToken.isPresent()){
+                tokenService.deleteByUser(user);
+            }
+            refreshToken = tokenService.createRefreshToken(user);
+        }
         var accessToken = jwtService.generateAccessToken(user);
-        var refreshToken = tokenService.createRefreshToken((User) user);
+
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getToken())
                 .httpOnly(true)
@@ -67,14 +82,16 @@ public class AuthenticationService {
     }
 
 
-    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest request, HttpServletResponse response){
-        String refreshToken = request.getRefreshToken();
+    public JwtAuthenticationResponse refreshToken(String refreshToken, HttpServletResponse response){
         Token verifiedToken = tokenService.findByToken(refreshToken)
                 .map(tokenService::verifyExpiration)
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
         tokenService.deleteByUser(verifiedToken.getUser());
+
         String newAccessToken = jwtService.generateAccessToken(verifiedToken.getUser());
         String newRefreshToken = jwtService.generateRefreshToken(verifiedToken.getUser());
+
+        tokenService.createRefreshToken(verifiedToken.getUser());
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", newRefreshToken)
                 .httpOnly(true)
@@ -95,6 +112,10 @@ public class AuthenticationService {
         String username = jwtService.extractUsername(refreshToken);
         User user = (User) userService.userDetailsService().loadUserByUsername(username);
         tokenService.deleteByUser(user);
+    }
+
+    private boolean isTokenExpired(Token token){
+        return token.getExpiryDate().isBefore(Instant.now());
     }
 
 }

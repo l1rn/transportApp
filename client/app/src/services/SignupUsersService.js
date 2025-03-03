@@ -9,7 +9,9 @@ class SignupUsersService{
             username: username,
             password: password
         };
-        return axios.post(USERS_SIGNUP_API_BASE_URL, signupData);
+        return axios.post(USERS_SIGNUP_API_BASE_URL, signupData,
+           { withCredentials: true }    
+        );
     }
 }
 

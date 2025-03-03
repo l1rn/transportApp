@@ -5,6 +5,7 @@ import BootstrapVueNext from 'bootstrap-vue-next';
 import { MotionPlugin } from '@vueuse/motion';
 import Datepicker from '@vuepic/vue-datepicker';
 
+import './store/auth.js';
 import '@vuepic/vue-datepicker/dist/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css'
@@ -15,3 +16,5 @@ app.use(routerApp);
 app.use(MotionPlugin);
 app.use(Datepicker);
 app.mount('#app');
+
+

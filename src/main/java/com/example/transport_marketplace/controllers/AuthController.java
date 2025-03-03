@@ -9,6 +9,8 @@ import com.example.transport_marketplace.enter.JwtAuthenticationResponse;
 import com.example.transport_marketplace.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/auth")
@@ -41,8 +45,13 @@ public class AuthController {
 
     @Operation(summary = "refresh tokens")
     @PostMapping("/refresh")
-    public JwtAuthenticationResponse refreshToken(@RequestBody @Valid RefreshTokenRequest request, HttpServletResponse response){
-        return authenticationService.refreshToken(request, response);
+    public JwtAuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response){
+        String refreshToken = Arrays.stream(request.getCookies())
+                .filter(cookie -> "refreshToken".equals(cookie.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+        return authenticationService.refreshToken(refreshToken, response);
     }
 
     @Operation(summary = "Выход из системы")

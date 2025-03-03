@@ -5,11 +5,16 @@
         <div class="navbar-custom fixed-top">
             <BNavbar>
                 <BNavbarBrand class="brand" href="/#">ololotravel</BNavbarBrand>
-                
+                <div class="custom-popup" v-if="showPopup" :class="{ fadeOut: isFadingOut }">
+                    <div class="popup-content">
+                        <p>{{ popupMessage }}</p>
+                        <button @click="showPopup = false">OK</button>
+                    </div>
+                </div>
                 <BNavbarNav>
                     <BNavItemDropdown v-model="textProfile" text="👤Профиль">
                         <BNav align="center">
-                            <BDropdownItem href="/auth/profile">Мои заказы</BDropdownItem>
+                            <BDropdownItem @click="121">Мои заказы</BDropdownItem>
                             <BDropdownItem @click="formCheck.showLoginForm = true">Авторизация</BDropdownItem>
                             <BDropdownItem @click="1231">Выйти</BDropdownItem>
                         </BNav>
@@ -60,7 +65,7 @@
     
     <!-- auth form -->
         <BModal v-model="formCheck.showLoginForm" title="Регистрация профиля" class="xl" hide-footer>
-            <!-- REGISTER  -->
+        <!-- REGISTER  -->
             <BForm v-if="formCheck.showSubRegisterForm" @submit.prevent="signup">
                 <p v-if="formCheck.registerSuccess" style="color:green">Вы зарегистрированы!</p>
                 <!-- User -->
@@ -116,9 +121,8 @@
                     <button :disabled="passwordError" type="submit" class="btn btn-primary w-100 mt-3">Регистрация</button>
                 </BFormGroup>
             </BForm>
-
             <!-- LOGIN  -->
-            <BForm v-if="formCheck.showSubLoginForm" @submit.prevent="signIn">
+            <BForm @submit.prevent="signIn">
                 
                 <BFormGroup
                     id="bformgr-1"
@@ -152,12 +156,12 @@
                     <button type="submit" class="btn btn-primary w-100 mt-3">Войти</button>
                 </BFormGroup>
             </BForm>
-            <BNav>
+            <!-- <BNav>
                 <BButton v-if="!formCheck.showRegisterButton" class="mt-3" @click="formCheck.showSubRegisterForm=false;
                 formCheck.showSubLoginForm=true; formCheck.showRegisterButton=true">Войти</BButton>
                 <BButton v-if="formCheck.showRegisterButton" class="mt-3" @click="formCheck.showSubRegisterForm=true;
                 formCheck.showSubLoginForm=false; formCheck.showRegisterButton=false">Регистрация</BButton>
-            </BNav>
+            </BNav> -->
         </BModal>
 
     <!-- section after header  -->
@@ -169,14 +173,15 @@
             
         </div>
     </div>
+    <div class="footer-container">
+
+    </div>
 </template>
 <script>
 import { ref, reactive, watch, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 import SigninUsersService from '@/services/SigninUsersService';
 import SignupUsersService from '@/services/SignupUsersService';
 import RoutesService from '@/services/RoutesService';
-import BookingService from '@/services/BookingService';
 import Datepicker from '@vuepic/vue-datepicker';
 import {
   BButton,
@@ -213,7 +218,6 @@ export default {
     Datepicker
   },
   setup() {
-    const router = useRouter();
 
     // Реактивные данные с ref
     const userRegister = reactive({
@@ -234,16 +238,15 @@ export default {
       showSubRegisterForm: false,
       showRegisterButton: true,
       registerSuccess: false,
-      loginSuccess: false,
-      textLoginSuccess: ''
     });
-
+    const isFadingOut = ref(false);
+    const showPopup = ref(false);
+    const popupMessage = ref('');
     const routes = ref([]);
     const date = ref(null);
     const arrivalDate = ref(null);
     const itemTransport = ref('');
     const passwordError = ref(null);
-    const routeId = ref(null); // Добавлено для addbook, так как в оригинале не было определено
 
     // Методы
     const getRoutes = async () => {
@@ -259,7 +262,7 @@ export default {
       if (passwordError.value) return;
       try {
         const response = await SignupUsersService.signupUser(userRegister.username, userRegister.password);
-        localStorage.setItem('token', response.data.token);
+        sessionStorage.setItem('accessToken', response.data.accessToken);
         formCheck.registerSuccess = true;
         userRegister.username = '';
         userRegister.password = '';
@@ -271,40 +274,35 @@ export default {
 
     const signIn = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('accessToken');
         const response = await SigninUsersService.signinUser(userLogin.username, userLogin.password, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         });
-        localStorage.setItem('accessToken', response.data.accessToken);
+        sessionStorage.setItem('accessToken', response.data.accessToken);
         formCheck.badresponse = false;
-        formCheck.loginSuccess = true;
-        formCheck.textLoginSuccess = 'Успешный вход!';
+
+        popupMessage.value = 'Регистрация успешна!';
+        showPopup.value = true;
+
+        setTimeout(() => {
+          isFadingOut.value = true;
+          setTimeout(() => {
+            showPopup.value = false;
+            isFadingOut.value = false;
+          }, 500);
+        }, 3000);
+
+        formCheck.showLoginForm = false;
         userLogin.username = '';
         userLogin.password = '';
-      } catch (error) {
-        console.error('Sign-in failed:', error.message);
-        formCheck.loginSuccess = false;
-        formCheck.badresponse = true;
-      }
-    };
 
-    const addbook = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await BookingService.addBooking(routeId.value, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        console.log('Booking created:', response.data);
-        router.push('/auth/profile');
-      } catch (error) {
-        console.error('Booking failed:', error.message);
-        router.push('/auth/sign-up');
+      } 
+      catch (error) {
+        console.error('Sign-in failed:', error.message);
+        formCheck.badresponse = true;
       }
     };
 
@@ -312,7 +310,6 @@ export default {
       itemTransport.value = transport;
     };
 
-    // Watch для проверки пароля
     watch(() => userRegister.confirmPassword, (newValue) => {
       if (newValue !== userRegister.password) {
         passwordError.value = "Пароли не совпадают!";
@@ -321,7 +318,6 @@ export default {
       }
     });
 
-    // Загрузка маршрутов при монтировании
     onMounted(() => {
       getRoutes();
     });
@@ -334,13 +330,14 @@ export default {
       date,
       arrivalDate,
       itemTransport,
-      routeId,
       passwordError,
       getRoutes,
       signup,
       signIn,
-      addbook,
-      selectTransport
+      selectTransport,
+      showPopup,
+      popupMessage,
+      isFadingOut
     };
   }
 };
@@ -389,7 +386,7 @@ export default {
 /*  */
 
 .main-container{
-    height: 200vh;
+    height: 160vh;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #ffdde1);
     padding-top: 5vh;
 }
@@ -413,5 +410,76 @@ export default {
     margin-right: 15%;
     margin-left: 15%;
 }
+
+/* custom toast  */
+
+.custom-popup {
+  position: fixed;
+  top: 10%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s ease-in-out;
+  z-index: 1000;
+}
+
+.fadeOut {
+  animation: fadeOut 0.5s ease-in-out forwards;
+}
+
+.popup-content {
+  text-align: center;
+}
+
+.popup-content p {
+  font-size: 16px;
+  color: #333;
+}
+
+.popup-content button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  border: none;
+  background-color: #00611d;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  background-color: #004d15;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+}
+
+/* footer */
+.footer-container{
+    height: 20vh;
+    background: #333;
+}
+
 
 </style>

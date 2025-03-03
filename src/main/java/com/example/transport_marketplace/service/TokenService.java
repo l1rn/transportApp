@@ -29,7 +29,7 @@ public class TokenService {
     public Optional<Token> findByToken(String token){
         return refreshTokenRepository.findByToken(token);
     }
-
+    public Optional<Token> findByUser(User user) { return refreshTokenRepository.findByUser(user);}
     public Token verifyExpiration(Token token){
         if(token.getExpiryDate().compareTo(Instant.now()) < 0){
             refreshTokenRepository.delete(token);
@@ -42,7 +42,4 @@ public class TokenService {
         refreshTokenRepository.deleteByUser(user);
     }
 
-//    public void deleteByUserId(int userId){
-//        refreshTokenRepository.deleteByUserId(userId);
-//    }
 }

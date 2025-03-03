@@ -39,6 +39,9 @@ public class UserService {
             throw new UsernameNotFoundException("Такого пользователя нет!");
         }
     }
+    public Optional<User> findByUsername(String username) {
+        return repository.findByUsername(username);
+    }
 
     public UserDetailsService userDetailsService(){
         return this::getByUsername;

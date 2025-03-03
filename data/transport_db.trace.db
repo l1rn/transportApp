@@ -1491,3 +1491,9 @@ Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection wa
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 16 more
+2025-03-03 21:53:11.548624+05:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REFRESH_ROUTES" not found; SQL statement:
+delete refresh_routes [42102-232]
+2025-03-03 21:53:12.495575+05:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REFRESH_ROUTES" not found; SQL statement:
+delete refresh_routes [42102-232]
