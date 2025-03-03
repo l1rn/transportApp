@@ -37,10 +37,8 @@ public class AuthenticationService {
 
         userService.create(user);
         var accessToken = jwtService.generateAccessToken(user);
-        var refreshToken = tokenService.createRefreshToken(user);
         return JwtAuthenticationResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken.getToken())
                 .build();
     }
     public JwtAuthenticationResponse signIn(SignInRequest request, HttpServletResponse response) {
@@ -53,7 +51,6 @@ public class AuthenticationService {
         var accessToken = jwtService.generateAccessToken(user);
         var refreshToken = tokenService.createRefreshToken((User) user);
 
-        // Создаем cookie для refreshToken
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getToken())
                 .httpOnly(true)
                 .secure(false)
@@ -91,7 +88,6 @@ public class AuthenticationService {
 
         return JwtAuthenticationResponse.builder()
                 .accessToken(newAccessToken)
-                .refreshToken(newRefreshToken)
                 .build();
     }
     @Transactional

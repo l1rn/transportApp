@@ -11,7 +11,7 @@
                         <BNav align="center">
                             <BDropdownItem href="/auth/profile">Мои заказы</BDropdownItem>
                             <BDropdownItem @click="formCheck.showLoginForm = true">Авторизация</BDropdownItem>
-                            <BDropdownItem href="/auth/logout">Выйти</BDropdownItem>
+                            <BDropdownItem @click="1231">Выйти</BDropdownItem>
                         </BNav>
                     </BNavItemDropdown>
                 </BNavbarNav>
@@ -57,7 +57,7 @@
             </BNavbar>
         </div>  
     </div>
-
+    
     <!-- auth form -->
         <BModal v-model="formCheck.showLoginForm" title="Регистрация профиля" class="xl" hide-footer>
             <!-- REGISTER  -->
@@ -95,7 +95,7 @@
                     />
                 </BFormGroup>
                  
-                <!-- Password -->
+                <!-- Confirm Password -->
                 <BFormGroup 
                     id="confirm-password"
                     label="Подтверждение пароля"
@@ -117,7 +117,7 @@
                 </BFormGroup>
             </BForm>
 
-            <!-- AUTHORIZATION  -->
+            <!-- LOGIN  -->
             <BForm v-if="formCheck.showSubLoginForm" @submit.prevent="signIn">
                 
                 <BFormGroup
@@ -171,152 +171,181 @@
     </div>
 </template>
 <script>
+import { ref, reactive, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import SigninUsersService from '@/services/SigninUsersService';
 import SignupUsersService from '@/services/SignupUsersService';
 import RoutesService from '@/services/RoutesService';
-import BookingService from '@/services/BookingService'
+import BookingService from '@/services/BookingService';
 import Datepicker from '@vuepic/vue-datepicker';
+import {
+  BButton,
+  BDropdownItem,
+  BForm,
+  BFormGroup,
+  BFormInput,
+  BFormText,
+  BInput,
+  BModal,
+  BNav,
+  BNavbar,
+  BNavbarBrand,
+  BNavbarNav,
+  BNavItemDropdown
+} from 'bootstrap-vue-next';
 
-
-import {  BButton, BDropdownItem, BForm, BFormGroup, BFormInput, BFormText,
-     BInput, BModal, BNav, BNavbar, BNavbarBrand, BNavbarNav, BNavItemDropdown,
-     } from 'bootstrap-vue-next';
 export default {
-    name: 'AppRoutes',
-    components:{
-        BNavbar,
-        BNavbarBrand,
-        BNavbarNav,
-        BNavItemDropdown,
-        BDropdownItem,
-        BModal,
-        BForm,
-        BFormGroup,
-        BFormInput,
-        BFormText,
-        BButton,
-        BInput,
-        Datepicker,
-        BNav
-    },
-    data(){
-        return{
-            userRegister: 
-            { 
-                username: '', 
-                password: '', 
-                confirmPassword: ''
-            },
-            userLogin: 
-            {
-                username: '', 
-                password: ''
-            },
-            formCheck:
-            {
-                showLoginForm: false,
-                badresponse: false,
-                showSubLoginForm: true,
-                showSubRegisterForm: false,
-                showRegisterButton: true,
-                registerSuccess: false,
-                loginSuccess: false,
-                textLoginSuccess: '',
-            },
-                routes: [],
-                date: null,
-                arrivalDate: null,
-                itemTransport: '',
-                passwordError: null
-        }
-    },
-    methods:{
-        getRoutes(){
-            RoutesService.getRoutes().then((response) =>{
-                this.routes = response.data
-            });
-        },
+  name: 'AppRoutes',
+  components: {
+    BButton,
+    BDropdownItem,
+    BForm,
+    BFormGroup,
+    BFormInput,
+    BFormText,
+    BInput,
+    BModal,
+    BNav,
+    BNavbar,
+    BNavbarBrand,
+    BNavbarNav,
+    BNavItemDropdown,
+    Datepicker
+  },
+  setup() {
+    const router = useRouter();
 
-        async signup(){
-            try{
-                if(!this.passwordError){
-                    const response = await SignupUsersService.signupUser(this.userRegister.username, this.userRegister.password);
-                    console.log(response.data.token);
-                    localStorage.setItem('token', response.data.token);
-                    this.formCheck.registerSuccess = true;
-                    this.userRegister.username = '';
-                    this.userRegister.password = '';
-                    this.userRegister.confirmPassword = '';
-                }
-                
-            }
-            catch(error){
-                console.log(error.message);
-            }
-        },
-        async signIn(){
-            try{
-                const token = localStorage.getItem('token');
-                const response = await SigninUsersService.signinUser(this.userLogin.username, this.userLogin.password, {
-                    headers:{
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                console.log(response.data);
-                this.formCheck.badresponse = false;
-                this.formCheck.loginSuccess = true;
-                this.userLogin.username = '';
-                this.userLogin.password = '';
-            }
-            catch(error){
-                console.log(error.message);
-                this.formCheck.loginSuccess = false;
-                this.badresponse = true;
-            }
-        },
-        async addbook(){
-            try{
-                console.log(localStorage.getItem("token"));
+    // Реактивные данные с ref
+    const userRegister = reactive({
+      username: '',
+      password: '',
+      confirmPassword: ''
+    });
 
-                const token = localStorage.getItem('token');
-                const response = await BookingService.addBooking(this.routeId, {
-                    headers:{
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                console.log(response.data);
-                this.$router.push('/auth/profile');
-            }
-            catch(error){
-                
-                this.$router.push('/auth/sign-up');
-                console.log(error.message);
-            } 
-        },
-        selectTransport(transport){
-            this.itemTransport = transport;
-        }
-    },
-    watch: {
-        "userRegister.confirmPassword"(newValue){
-            if(newValue !== this.userRegister.password){
-                this.passwordError = "Пароли не совпадают!";
-            }
-            else{
-                this.passwordError = null;
-            }
-        }
-    },
-    computed:{
-        
-    },
-    created(){
-        this.getRoutes();
-    }
-}
+    const userLogin = reactive({
+      username: '',
+      password: ''
+    });
+
+    const formCheck = reactive({
+      showLoginForm: false,
+      badresponse: false,
+      showSubLoginForm: true,
+      showSubRegisterForm: false,
+      showRegisterButton: true,
+      registerSuccess: false,
+      loginSuccess: false,
+      textLoginSuccess: ''
+    });
+
+    const routes = ref([]);
+    const date = ref(null);
+    const arrivalDate = ref(null);
+    const itemTransport = ref('');
+    const passwordError = ref(null);
+    const routeId = ref(null); // Добавлено для addbook, так как в оригинале не было определено
+
+    // Методы
+    const getRoutes = async () => {
+      try {
+        const response = await RoutesService.getRoutes();
+        routes.value = response.data;
+      } catch (error) {
+        console.error('Failed to fetch routes:', error);
+      }
+    };
+
+    const signup = async () => {
+      if (passwordError.value) return;
+      try {
+        const response = await SignupUsersService.signupUser(userRegister.username, userRegister.password);
+        localStorage.setItem('token', response.data.token);
+        formCheck.registerSuccess = true;
+        userRegister.username = '';
+        userRegister.password = '';
+        userRegister.confirmPassword = '';
+      } catch (error) {
+        console.error('Signup failed:', error.message);
+      }
+    };
+
+    const signIn = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await SigninUsersService.signinUser(userLogin.username, userLogin.password, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        localStorage.setItem('accessToken', response.data.accessToken);
+        formCheck.badresponse = false;
+        formCheck.loginSuccess = true;
+        formCheck.textLoginSuccess = 'Успешный вход!';
+        userLogin.username = '';
+        userLogin.password = '';
+      } catch (error) {
+        console.error('Sign-in failed:', error.message);
+        formCheck.loginSuccess = false;
+        formCheck.badresponse = true;
+      }
+    };
+
+    const addbook = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await BookingService.addBooking(routeId.value, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        console.log('Booking created:', response.data);
+        router.push('/auth/profile');
+      } catch (error) {
+        console.error('Booking failed:', error.message);
+        router.push('/auth/sign-up');
+      }
+    };
+
+    const selectTransport = (transport) => {
+      itemTransport.value = transport;
+    };
+
+    // Watch для проверки пароля
+    watch(() => userRegister.confirmPassword, (newValue) => {
+      if (newValue !== userRegister.password) {
+        passwordError.value = "Пароли не совпадают!";
+      } else {
+        passwordError.value = null;
+      }
+    });
+
+    // Загрузка маршрутов при монтировании
+    onMounted(() => {
+      getRoutes();
+    });
+
+    return {
+      userRegister,
+      userLogin,
+      formCheck,
+      routes,
+      date,
+      arrivalDate,
+      itemTransport,
+      routeId,
+      passwordError,
+      getRoutes,
+      signup,
+      signIn,
+      addbook,
+      selectTransport
+    };
+  }
+};
 </script>
+
 <style scoped>
 
 /* overflow-x:hidden - chrome, firefox, IE, edge, safari, opera*/
