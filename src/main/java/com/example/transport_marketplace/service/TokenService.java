@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -20,11 +21,14 @@ public class TokenService {
 
 
     public Token createRefreshToken(User user){
-        Token token = new Token();
-        token.setUser(user);
-        token.setToken(jwtService.generateRefreshToken(user));
-        token.setExpiryDate(Instant.now().plusMillis(jwtService.getRefreshExpirationMs()));
-        return refreshTokenRepository.save(token);
+        refreshTokenRepository.deleteByUser(user);
+        String token = jwtService.generateRefreshToken(user);
+        Token refreshToken = Token.builder()
+                .token(token)
+                .user(user)
+                .expiryDate(Instant.now().plus(7, ChronoUnit.DAYS))
+                .build();
+        return refreshTokenRepository.save(refreshToken);
     }
     public Optional<Token> findByToken(String token){
         return refreshTokenRepository.findByToken(token);

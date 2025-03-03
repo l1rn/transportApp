@@ -64,6 +64,7 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<?> createBooking(@RequestHeader(value = "Authorization") String authHeader,
                                            @RequestBody BookingRequest request){
+        System.out.println(authHeader);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Требуется токен в заголовке Authorization");
         }

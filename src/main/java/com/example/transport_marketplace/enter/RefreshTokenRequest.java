@@ -7,9 +7,6 @@ import lombok.Data;
 @Data
 @Schema(description = "Обновление токена")
 public class RefreshTokenRequest {
-    @Schema(description = "Refresh Token")
-    @NotBlank
-    private String refreshToken;
     @Schema(description = "Access Token")
     @NotBlank
     private String accessToken;

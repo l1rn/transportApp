@@ -9,6 +9,7 @@ import com.example.transport_marketplace.enter.JwtAuthenticationResponse;
 import com.example.transport_marketplace.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,21 +42,14 @@ public class AuthController {
 
     @Operation(summary = "refresh tokens")
     @PostMapping("/refresh")
-    public JwtAuthenticationResponse refreshToken(@RequestBody @Valid RefreshTokenRequest request, HttpServletResponse response){
+    public JwtAuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response){
         return authenticationService.refreshToken(request, response);
     }
 
     @Operation(summary = "Выход из системы")
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestBody @Valid RefreshTokenRequest request){
-        String refreshToken = request.getRefreshToken();
-        String accessToken = request.getAccessToken();
-
-        tokenBlacklist.revoke(accessToken);
-        tokenBlacklist.revoke(refreshToken);
-        authenticationService.deleteTokenByUser(request.getRefreshToken());
-
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response){
+        return authenticationService.logout(response,request);
     }
 
 }

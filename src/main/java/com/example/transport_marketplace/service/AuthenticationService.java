@@ -8,11 +8,14 @@ import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.enter.JwtAuthenticationResponse;
 import com.example.transport_marketplace.jwt.JwtService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,8 +56,8 @@ public class AuthenticationService {
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getToken())
                 .httpOnly(true)
-                .secure(false)
-                .sameSite("Lax")
+                .secure(true)
+                .sameSite("Strict")
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
@@ -62,24 +65,38 @@ public class AuthenticationService {
 
         return JwtAuthenticationResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken.getToken()) // можно вернуть для клиентской логики, если нужно
                 .build();
     }
 
+    @Transactional
+    public JwtAuthenticationResponse refreshToken(HttpServletRequest httpServletRequest, HttpServletResponse response){
+        Cookie[] cookies = httpServletRequest.getCookies();
+        String refreshToken = null;
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals("refreshToken")){
+                    refreshToken = cookie.getValue();
+                    break;
+                }
+            }
+        }
 
-    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest request, HttpServletResponse response){
-        String refreshToken = request.getRefreshToken();
+        if(refreshToken == null){
+            throw new RuntimeException("No refresh token found");
+        }
+
         Token verifiedToken = tokenService.findByToken(refreshToken)
                 .map(tokenService::verifyExpiration)
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
         tokenService.deleteByUser(verifiedToken.getUser());
         String newAccessToken = jwtService.generateAccessToken(verifiedToken.getUser());
-        String newRefreshToken = jwtService.generateRefreshToken(verifiedToken.getUser());
-
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", newRefreshToken)
+        Token newRefreshToken = tokenService.createRefreshToken(verifiedToken.getUser());
+        String newRefreshTokenString = newRefreshToken.getToken();
+        
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", newRefreshTokenString)
                 .httpOnly(true)
-                .secure(false)
-                .sameSite("Lax")
+                .secure(true)
+                .sameSite("Strict")
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
@@ -91,10 +108,30 @@ public class AuthenticationService {
                 .build();
     }
     @Transactional
-    public void deleteTokenByUser(String refreshToken){
-        String username = jwtService.extractUsername(refreshToken);
-        User user = (User) userService.userDetailsService().loadUserByUsername(username);
-        tokenService.deleteByUser(user);
-    }
+    public ResponseEntity<Void> logout(HttpServletResponse response, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
 
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals("refreshToken")){
+                    String refreshToken = cookie.getValue();
+                    tokenService.findByToken(refreshToken).ifPresent(
+                            token -> {
+                                tokenService.deleteByUser(token.getUser());
+                            });
+                    break;
+                }
+            }
+        }
+        ResponseCookie deleteCookie = ResponseCookie.from("refreshCookie", "")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("Strict")
+                .path("/")
+                .maxAge(0)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, deleteCookie.toString());
+
+        return ResponseEntity.noContent().build();
+    }
 }
