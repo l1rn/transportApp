@@ -1,8 +1,7 @@
-package com.example.transport_marketplace.entity.routes;
+package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
-import com.example.transport_marketplace.service.RouteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -1,6 +1,5 @@
-package com.example.transport_marketplace.entity.routes;
+package com.example.transport_marketplace.model;
 
-import com.example.transport_marketplace.model.Route;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

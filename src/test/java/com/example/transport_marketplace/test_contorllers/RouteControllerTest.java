@@ -1,4 +1,4 @@
-package com.example.transport_marketplace;
+package com.example.transport_marketplace.test_contorllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

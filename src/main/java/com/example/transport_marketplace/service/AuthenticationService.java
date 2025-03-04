@@ -101,5 +101,10 @@ public class AuthenticationService {
 
         return new JwtAuthenticationResponse(newAccessToken, newRefreshToken);
     }
+    @Transactional
+    public void deleteTokenByUser(String refreshToken) {
+        refreshTokenRepository.findByToken(refreshToken)
+                .ifPresent(token -> refreshTokenRepository.deleteByUser(token.getUser()));
+    }
 
 }

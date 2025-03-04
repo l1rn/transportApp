@@ -24,7 +24,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailsService;
-
+    private final TokenBlacklist tokenBlacklist;
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -33,7 +33,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtService.validateToken(jwt)) {
+
+            if (jwt != null){
+                if (tokenBlacklist.isRevoked(jwt)) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token revoked");
+                    return;
+                }
+            }
+            if(jwtService.validateToken(jwt)) {
                 String username = jwtService.getUsernameFromToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 

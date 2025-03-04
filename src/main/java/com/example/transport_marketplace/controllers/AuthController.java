@@ -1,10 +1,8 @@
 package com.example.transport_marketplace.controllers;
-import com.example.transport_marketplace.enter.RefreshTokenRequest;
-import com.example.transport_marketplace.enter.SignInRequest;
-import com.example.transport_marketplace.enter.SignUpRequest;
+import com.example.transport_marketplace.enter.*;
+import com.example.transport_marketplace.jwt.TokenBlacklist;
 import com.example.transport_marketplace.service.TokenService;
 
-import com.example.transport_marketplace.enter.JwtAuthenticationResponse;
 import com.example.transport_marketplace.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,8 +23,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 @Tag(name = "Аутентификация")
 public class AuthController {
-    @Autowired
-    private final TokenService tokenService;
+    private final TokenBlacklist tokenBlacklist;
     private final AuthenticationService authenticationService;
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
@@ -43,6 +40,13 @@ public class AuthController {
     public ResponseEntity<JwtAuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
         return ResponseEntity.ok(authenticationService.refreshToken(request.getRefreshToken()));
     }
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody LogoutRequest request) {
+        tokenBlacklist.revoke(request.getAccessToken());
 
+        authenticationService.deleteTokenByUser(request.getRefreshToken());
+
+        return ResponseEntity.noContent().build();
+    }
 
 }

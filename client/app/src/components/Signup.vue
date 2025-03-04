@@ -88,14 +88,21 @@ export default{
     
     methods:{
         async signup(){
-
+            if(this.passwordError) return;
             try{
-                if(!this.passwordError){
-                    this.$emit('userRegistered', {...this.user });
-                    // const response = await SignupUsersService.signupUser(this.user.username, this.user.password);
-                    // sessionStorage.setItem('token', response.data.token);
+                
+                 this.$emit('userRegistered',{
+                    username: this.user.username,
+                    password: this.user.password
+                });
+
+                this.user = {
+                username: '',
+                password: '',
+                confirmPassword: '',
                 }
                 
+                this.$emit('close');
             }
             catch(error){
                 console.log(error.message);
