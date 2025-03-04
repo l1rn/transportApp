@@ -1,6 +1,7 @@
 package com.example.transport_marketplace.controllers;
 
 
+import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.enter.BookingRequest;
 import com.example.transport_marketplace.model.Booking;
@@ -53,17 +54,18 @@ public class BookingController {
 
     @Operation(summary = "Все брони пользователей только для админа")
     @GetMapping
-    public ResponseEntity<?> getAllBookingsForUserTest(@RequestHeader(value = "Authorization") String authHeader){
-        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Требуется токен в заголовке Authorization");
+    public ResponseEntity<?> getAllBookingsForUserTest(@RequestHeader(value = "Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Требуется токен");
         }
-        var token = authHeader.substring(7);
+        String token = authHeader.substring(7);
         String role = jwtService.extractRole(token);
-        if("ADMIN".equals(role)){
+
+        // Используйте Enum для проверки роли
+        if (Role.ROLE_ADMIN.name().equals(role)) {
             return ResponseEntity.ok(bookingService.getAllBooking());
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Недостаточно прав для данной процедуры");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Недостаточно прав");
         }
     }
     //
@@ -88,26 +90,36 @@ public class BookingController {
 
     @Operation(summary = "Отмена брони")
     @PatchMapping("/my/{id}/cancel")
-    public ResponseEntity<?> cancelBooking(@RequestHeader("Authorization") String authHeader, @PathVariable int id)
-    {
-        var token = authHeader.substring(BEARER_PREFIX.length());
+    public ResponseEntity<?> cancelBooking(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable int id
+    ) {
+        String token = authHeader.substring(BEARER_PREFIX.length());
         Integer userId = jwtService.extractUserId(token);
         String role = jwtService.extractRole(token);
-        if(userId == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не авторизован.");
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не авторизован");
         }
+
         Optional<Booking> bookingOpt = bookingService.getBookingById(id);
-        if(bookingOpt.isPresent()){
-            Booking booking = bookingOpt.get();
-            if(booking.getUser().getId() == userId || "ADMIN".equals(role))
-                if(bookingService.cancelBooking(id)){
-                    return ResponseEntity.ok("Бронирование отменено");
-                }
+        if (bookingOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Бронирование не найдено");
         }
-        else{
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Вы не можете отменить это бронирование");
+
+        Booking booking = bookingOpt.get();
+        boolean isAdmin = Role.ROLE_ADMIN.name().equals(role);
+        boolean isOwner = booking.getUser().getId() == userId;
+
+        if (!isOwner && !isAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Нет прав");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Бронирование не найдено.");
+
+        if (bookingService.cancelBooking(id)) {
+            return ResponseEntity.ok("Бронирование отменено");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка отмены");
+        }
     }
 
     @Operation(summary = "Поиск брони по id")

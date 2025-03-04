@@ -35,6 +35,7 @@ public class BookingService {
     }
     @Transactional
     public Booking createBooking(int routeId, int userId){
+
         Route route = routeRepository.findById(routeId)
                 .orElseThrow(() -> new RuntimeException("Маршрут не найден"));
         if(route.getAvailableSeats() <= 0){

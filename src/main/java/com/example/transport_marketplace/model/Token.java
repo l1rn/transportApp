@@ -23,11 +23,10 @@ public class Token {
     @Column(nullable = false, unique = true)
     private String token;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
     @Column(nullable = false)
     private Instant expiryDate;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

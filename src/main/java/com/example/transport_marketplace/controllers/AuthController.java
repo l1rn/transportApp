@@ -1,5 +1,4 @@
 package com.example.transport_marketplace.controllers;
-import com.example.transport_marketplace.TokenBlacklist;
 import com.example.transport_marketplace.enter.RefreshTokenRequest;
 import com.example.transport_marketplace.enter.SignInRequest;
 import com.example.transport_marketplace.enter.SignUpRequest;
@@ -28,43 +27,22 @@ import java.util.Arrays;
 public class AuthController {
     @Autowired
     private final TokenService tokenService;
-    private final TokenBlacklist tokenBlacklist;
     private final AuthenticationService authenticationService;
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
-    public JwtAuthenticationResponse signUp(@RequestBody @Valid SignUpRequest request){
-        return authenticationService.signUp(request);
+    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request){
+        authenticationService.signUp(request);
+        return ResponseEntity.ok("Пользователь зарегистрирован");
     }
-    @Operation(summary = "Авторизация пользователя")
     @PostMapping("/sign-in")
-    public JwtAuthenticationResponse signIn(@RequestBody @Valid SignInRequest request,
-                                            HttpServletResponse response) {
-        return authenticationService.signIn(request, response);
+    public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody SignInRequest request) {
+        return ResponseEntity.ok(authenticationService.signIn(request));
     }
 
-
-    @Operation(summary = "refresh tokens")
     @PostMapping("/refresh")
-    public JwtAuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response){
-        String refreshToken = Arrays.stream(request.getCookies())
-                .filter(cookie -> "refreshToken".equals(cookie.getName()))
-                .findFirst()
-                .map(Cookie::getValue)
-                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
-        return authenticationService.refreshToken(refreshToken, response);
+    public ResponseEntity<JwtAuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
+        return ResponseEntity.ok(authenticationService.refreshToken(request.getRefreshToken()));
     }
 
-    @Operation(summary = "Выход из системы")
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestBody @Valid RefreshTokenRequest request){
-        String refreshToken = request.getRefreshToken();
-        String accessToken = request.getAccessToken();
-
-        tokenBlacklist.revoke(accessToken);
-        tokenBlacklist.revoke(refreshToken);
-        authenticationService.deleteTokenByUser(request.getRefreshToken());
-
-        return ResponseEntity.noContent().build();
-    }
 
 }

@@ -30,14 +30,9 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User getByUsername(String username){
-        Optional<User> optionalUser = repository.findByUsername(username);
-        if(optionalUser.isPresent()){
-            return optionalUser.get();
-        }
-        else{
-            throw new UsernameNotFoundException("Такого пользователя нет!");
-        }
+    public User getByUsername(String username) {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
     public Optional<User> findByUsername(String username) {
         return repository.findByUsername(username);
