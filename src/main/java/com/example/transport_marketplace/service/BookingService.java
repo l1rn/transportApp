@@ -27,7 +27,13 @@ public class BookingService {
         return bookingRepository.findByUserId(userId);
     }
 
-    public List<Booking> getAllBooking(){
+    public List<Booking> getBookingByUser(String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        return bookingRepository.findByUser(user);
+    }
+
+    public List<Booking> getAllBooking() {
         return bookingRepository.findAll();
     }
     public Optional<Booking> getBookingById(int id){
@@ -43,7 +49,6 @@ public class BookingService {
         }
 
         User user = userRepository.findById(userId).orElseThrow(() ->new RuntimeException("Такого пользователя нет"));
-
         route.setAvailableSeats(route.getAvailableSeats() - 1);
         routeRepository.save(route);
 

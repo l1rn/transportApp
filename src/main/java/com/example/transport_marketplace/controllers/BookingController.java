@@ -44,12 +44,17 @@ public class BookingController {
     @GetMapping("/my")
     public ResponseEntity<?> getMyBooking(@RequestHeader("Authorization") String authHeader){
         var token = authHeader.substring(7);
-        Integer userId = jwtService.extractUserId(token);
-        if(userId == null){
+        String user = jwtService.getUsernameFromToken(token);
+        if(user == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не авторизован.");
         }
-        List<Booking> bookings = bookingService.getBookingByUserId(userId);
-        return ResponseEntity.ok(bookings);
+        try{
+            List<Booking> bookings = bookingService.getBookingByUser(user);
+            return ResponseEntity.ok(bookings);
+        }
+        catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @Operation(summary = "Все брони пользователей только для админа")
@@ -61,14 +66,17 @@ public class BookingController {
         String token = authHeader.substring(7);
         String role = jwtService.extractRole(token);
 
-        // Используйте Enum для проверки роли
+        String username = jwtService.getUsernameFromToken(token);
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         if (Role.ROLE_ADMIN.name().equals(role)) {
             return ResponseEntity.ok(bookingService.getAllBooking());
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Недостаточно прав");
+            return ResponseEntity.ok(bookingService.getBookingByUser(username));
         }
     }
-    //
+
     @Operation(summary = "Забронировать только для авторизованных")
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")

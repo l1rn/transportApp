@@ -2,7 +2,7 @@
     <div class="container mt-5">
         <div class="card shadow-lg p-4 custom-form">
             <h2 class="text-center mb-4">Авторизация</h2>
-            <BForm @submit.prevent="signIn">
+            <BForm @submit.prevent="">
                 <BFormGroup
                     id="bformgr-1"
                     label="Имя пользователя"
@@ -11,7 +11,7 @@
                     
                     <BFormInput 
                         id="input-username"
-                        v-model:="username"
+                        v-model:="user.username"
                         placeholder="введите имя пользователя"
                         required
                     />
@@ -32,18 +32,17 @@
                         required
                     />
                     <BFormText v-if="badresponse" text-variant="danger">Неверное имя или пароль, попробуйте еще!</BFormText>
-                    <button type="submit" class="btn btn-primary w-100 mt-3">Авторизация</button>
+                    <button type="submit" @click="signIn" class="btn btn-primary w-100 mt-3">Авторизация</button>
                 </BFormGroup>
             </BForm>
         </div>
     </div>
 </template>
 <script>
-import SigninUserService from '@/services/SigninUsersService'
 import { BForm, BFormGroup, BFormInput, BFormText } from 'bootstrap-vue-next';
 
 export default {
-    name: "sign-up",
+    name: "sign-in",
     components:{
         BForm,
         BFormGroup,
@@ -56,28 +55,28 @@ export default {
                 username: '',
                 password: ''
             },
-            badresponse: false,
         }
     },
     methods:{
         async signIn(){
             try{
-                const token = sessionStorage.getItem('token');
-                const response = await SigninUserService.signinUser(this.username, this.password, {
-                    headers:{
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                console.log(response.data);
-                sessionStorage.setItem('token', response.data.token);
-                this.badresponse = false;
+               const userData = {
+                 username: this.user.username,
+                 password: this.user.password,
+               };
+                this.$emit('userLogined', userData);
+                this.resetForm();
             }
             catch(error){
                 console.log(error.message);
-                this.badresponse = true;
             }
-        }     
+        },
+        resetForm(){
+          this.user = {
+            username: '',
+            password: '',
+          }
+        }
     } 
 }
 </script>

@@ -60,10 +60,9 @@
     </div>
 </template>
 <script>
-// import SignupUsersService from '@/services/SignupUsersService';
 import { BForm, BFormGroup, BFormInput, BFormText } from 'bootstrap-vue-next';
 export default{
-    name: 'sign-in',
+    name: 'sign-up',
     components:{
         BForm,
         BFormGroup,
@@ -73,15 +72,12 @@ export default{
 
     data(){
         return{
-            fields:[
-                { key: 'username', label: 'пользователь'},
-                { key: 'password', label: 'пароль' }
-            ],
             user:{
                 username: '',
                 password: '',
                 confirmPassword: '',
             },
+            success: false,
             passwordError: null,
         };
     },
@@ -90,29 +86,30 @@ export default{
         async signup(){
             if(this.passwordError) return;
             try{
-                
-                 this.$emit('userRegistered',{
-                    username: this.user.username,
-                    password: this.user.password
-                });
+                const userData = {
+                  username: this.user.username,
+                  password: this.user.password
+                };
+                this.$emit('user-registered', userData);
 
-                this.user = {
-                username: '',
-                password: '',
-                confirmPassword: '',
-                }
-                
-                this.$emit('close');
+                this.resetForm();
             }
             catch(error){
                 console.log(error.message);
             }
+        },
+      resetForm(){
+        this.user = {
+          username: '',
+          password: '',
+          confirmPassword: '',
         }
+      }
     },
     
     watch: {
         "user.confirmPassword"(newValue){
-            if(newValue !== this.user.password){
+            if(newValue !== this.user.password || this.user.confirmPassword === ''){
                 this.passwordError = "Пароли не совпадают!";
             }
             else{
@@ -141,6 +138,6 @@ export default{
 .btn-primary:hover{
     transform: scale(1.01) translateY(1px);
 }
-
-
 </style>
+
+

@@ -30,6 +30,7 @@ public class JwtService {
     public String generateAccessToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
+                .claim("id", user.getId())
                 .claim("role", user.getRole().name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessExpirationMs))
