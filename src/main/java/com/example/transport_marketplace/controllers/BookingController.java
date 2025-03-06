@@ -17,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -61,7 +62,10 @@ public class BookingController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> createBooking(@RequestBody BookingRequest request,
-                                           @AuthenticationPrincipal User user){
+                                           @AuthenticationPrincipal UserDetails userDetails){
+        String username = userDetails.getUsername();
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         try {
             Booking newBooking = bookingService.createBooking(request.getRouteId(), user.getId());
             return ResponseEntity.status(HttpStatus.CREATED).body(newBooking);

@@ -1,0 +1,187 @@
+*
+    font-family: Montserrat
+    color: #2C3E50
+
+success-message, .error-message
+    position: fixed
+    top: 20px
+    right: 20px
+    padding: 12px 20px
+    border-radius: 8px
+    z-index: 1000
+    margin-bottom: 10px
+
+
+.success-message
+    background: #e3fcef
+    color: #006644
+
+
+.error-message
+    background: #fce3e3
+    color: #660000
+
+
+.slide-enter-active
+    animation: slideIn 0.3s ease-out
+
+
+.slide-leave-active
+    animation: slideOut 0.3s ease-in
+
+
+@keyframes slideIn
+    from
+        transform: translateX(100%)
+    to
+        transform: translateX(0)
+
+
+@keyframes slideOut
+    from
+        transform: translateX(0)
+    to
+        transform: translateX(100%)
+
+/* overflow-x:hidden - chrome, firefox, IE, edge, safari, opera*/
+::v-deep .dropdown-menu
+    overflow-y: hidden
+    scrollbar-width: none
+    -ms-overflow-style: none
+
+::v-deep .dropdown-menu::-webkit-scrollbar
+    display: none
+
+/*  */
+/* header */
+/*  */
+.custom-transport-label
+    color: #ff0808
+.search-button-custom
+    border: none
+    max-height: 45px
+    background: #FFA666FF
+    min-width: 200px
+    &:hover
+        animation: swinging 2s ease infinite
+
+@keyframes swinging
+    0%
+        background: hsl(25, 100%, 70%)
+    25%
+        background: hsl(30, 100%, 65%)
+    50%
+        background: hsl(30, 90%, 68%)
+    75%
+        background: hsl(33, 100%, 65%)
+    100%
+        background: hsl(25, 100%, 70%)
+
+.navbar-custom
+    z-index: 1030
+    height: 17vh
+    background: #ECF0F1
+    padding-left: 15%
+    padding-right: 15%
+
+.header-container-custom
+  height: 17vh
+
+/* logo */
+.brand
+    color: rgb(27, 27, 27)
+    font-size: large
+
+/*  */
+/* main  */
+/*  */
+
+.main-container
+    height: 160vh
+    padding-top: 5vh
+
+
+/* container to search - first task */
+.container-route-to-search
+    border-radius: 15px
+    height: 40vh
+    background-color: white
+    margin-top: 5vh
+    margin-right: 15%
+    margin-left: 15%
+
+
+/* see all routes and sort it - second task */
+.container-to-see-all-routes
+    border-radius: 15px
+    height: 40vh
+    background-color: white
+    margin-top: 20vh
+    margin-right: 15%
+    margin-left: 15%
+
+
+/* custom toast  */
+.custom-popup
+    position: fixed
+    top: 10%
+    left: 90%
+    transform: translate(-50%, -50%)
+    background: white
+    padding: 20px
+    border-radius: 10px
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2)
+    animation: fadeIn 0.5s ease-in-out
+    z-index: 1000
+
+
+.fadeOut
+    animation: fadeOut 0.5s ease-in-out forwards
+
+
+.popup-content
+    text-align: center
+
+
+.popup-content p
+    font-size: 16px
+    color: #333
+
+
+.popup-content button
+    margin-top: 10px
+    padding: 8px 16px
+    border: none
+    background-color: #00611d
+    color: white
+    border-radius: 5px
+    cursor: pointer
+
+.popup-content button:hover
+    background-color: #004d15
+
+
+@keyframes fadeIn
+    from
+        opacity: 0
+        transform: translate(-50%, -60%)
+
+    to
+        opacity: 1
+        transform: translate(-50%, -50%)
+
+
+
+@keyframes fadeOut
+    from
+        opacity: 1
+        transform: translate(-50%, -50%)
+
+    to
+        opacity: 0
+        transform: translate(-50%, -60%)
+
+/* footer */
+.footer-container
+    height: 20vh
+    background: #333

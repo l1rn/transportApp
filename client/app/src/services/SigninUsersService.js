@@ -9,7 +9,6 @@ class SigninUserService{
             password: userData.password
             }
         );
-    // logoutuser();
     }
 }
 

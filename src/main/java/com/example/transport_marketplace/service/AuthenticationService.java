@@ -99,7 +99,7 @@ public class AuthenticationService {
     @Transactional
     public void deleteTokenByUser(String refreshToken) {
         refreshTokenRepository.findByToken(refreshToken)
-                .ifPresent(token -> refreshTokenRepository.deleteByUser(token.getUser()));
+                .ifPresent(refreshTokenRepository::delete);
     }
 
 }

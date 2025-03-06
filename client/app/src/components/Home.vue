@@ -5,7 +5,6 @@
   <div class="header-container-custom">
     <div class="navbar-custom fixed-top shadow-navbar-custom">
       <BNavbar>
-
         <BNavbarBrand class="brand" href="/#">ololotravel</BNavbarBrand>
         <div class="custom-popup" v-if="showPopup" :class="{ fadeOut: isFadingOut }">
           <div class="popup-content">
@@ -19,17 +18,12 @@
           </div>
         </transition>
         <BNavbarNav>
-          <BNavItemDropdown v-model="textProfile" text="👤Профиль">
-            <BNav align="center">
-              <BDropdownItem @click="this.$router.replace('/profile');">Мои заказы</BDropdownItem>
-              <BDropdownItem @click="showLoginForm = true">Авторизация</BDropdownItem>
-              <BDropdownItem @click="1231">Выйти</BDropdownItem>
-            </BNav>
-          </BNavItemDropdown>
+          <custom-profile @open-auth="showLoginForm = true"
+                          @logout="userLogout" />
         </BNavbarNav>
       </BNavbar>
 
-      <BNavbar >
+      <BNavbar>
         <BNav>
           <BNavbarNav class="ms-auto">
             <BNavItemDropdown
@@ -88,30 +82,22 @@
     <b-tabs content-class="mt-3" fill>
       <b-tab title="Войти">
         <sign-in
-            @userLogined="handleUserLogined"
+            @logined="handleUserLogined"
             @close="showLoginForm = false"
         />
 
       </b-tab>
-      <b-tab title="Зарегистрироваться"><sign-up
-          @userRegistered="handleUseregistered"
-      /></b-tab>
+      <b-tab title="Зарегистрироваться">
+        <sign-up
+          @registered="handleUserRegistered"
+        />
+      </b-tab>
     </b-tabs>
 
   </BModal>
 
   <!-- section after header  -->
-  <div class="main-container">
-    <div class="container-route-to-search">
-      <BImg>12123</BImg>
-    </div>
-    <div class="container-to-see-all-routes">
 
-    </div>
-  </div>
-  <div class="footer-container">
-  </div>
-  <redirect-view></redirect-view>
 </template>
 <script>
 
@@ -125,16 +111,18 @@ import {
   BNavbar,
   BNavbarBrand,
   BNavbarNav,
-  BNavItemDropdown, BTab, BTabs
+  BNavItemDropdown,
+  BTab,
+  BTabs
 } from 'bootstrap-vue-next';
-import Signup from '@/components/Signup.vue';
-import Signin from "@/components/Signin.vue";
-import "@/assets/home.css";
-import SignupUsersService from "@/services/SignupUsersService";
-import SigninUsersService from "@/services/SigninUsersService";
+import Signup from '@/components/UI/Signup.vue';
+import Signin from "@/components/UI/Signin.vue";
+import CustomProfile from "@/components/bookings/Profile.vue";
+import LogoutService from "@/services/LogoutService";
 export default {
   name: 'AppRoutes',
   components: {
+    CustomProfile,
     BButton,
     BDropdownItem,
     BInput,
@@ -161,13 +149,25 @@ export default {
           register: false,
           login: false
         },
-        error:null
+        error:null,
+        haveToken: false,
       }
+    }
+  },
+  setup(){
+
+    return {
+      isAuth: false,
+      token: localStorage.getItem("refreshToken"),
+    };
+  },
+  watch: {
+    token(newVal){
+      this.isAuth = !!newVal;
     }
   },
   methods:{
     showMessage(type, message, timeout = 3000) {
-      // Сброс сообщений
       if(type.includes('success')) {
         this.responses.error = null;
       } else {
@@ -175,7 +175,6 @@ export default {
         this.responses.success.login = false;
       }
 
-      // Установка нового сообщения
       const [category, subType] = type.split(':');
       if(category === 'success') {
         this.responses.success[subType] = message;
@@ -183,7 +182,6 @@ export default {
         this.responses.error = message;
       }
 
-      // Автоскрытие
       if(timeout > 0) {
         setTimeout(() => {
           if(category === 'success') {
@@ -194,30 +192,38 @@ export default {
         }, timeout);
       }
     },
-    async handleUseregistered(userData){
-      try{
-        const response = await SignupUsersService.signupUser(userData);
-        console.log(response);
+    async handleUserRegistered(result){
+      if(result.success){
+        this.showMessage('success:register', result.message, 3000);
         this.showLoginForm = true;
-        this.showMessage('success:register', '✅ Успешная регистрация!', 2000);
-        this.error = null;
-      }
-      catch(error){
-        this.responses.success.register = false;
-        const message = error.response?.data?.message || 'Ошибка регистрации';
-        this.showMessage('error', `❌ ${message}`, 4000);
+      }else{
+        this.showMessage('error', `❌ ${result.message}`, 3000);
       }
     },
-    async handleUserLogined(userDataLogin){
-      try{
-        const response = await SigninUsersService.signinUser(userDataLogin);
-        this.saveTokens(response);
-        this.showMessage('success:login', '✅ Успешный вход!', 2000);
-        this.responses.success.login = true;
+
+    async handleUserLogined(result){
+      if(result.success){
+        this.showMessage('success:login', ` ${result.message}`, 3000);
         this.showLoginForm = false;
       }
+      else {
+        this.showMessage('error', `❌ ${result.message}`, 4000);
+      }
+    },
+
+    async userLogout(){
+      try {
+        const success = await LogoutService.logoutUser(
+            localStorage.getItem('accessToken'),
+            localStorage.getItem('refreshToken')
+        );
+        if(success){
+          this.showMessage('success:login', '✅ Успешный выход!', 3000);
+          this.$router.push('/');
+        }
+      }
       catch(error){
-        const message = error.response?.data?.message || 'Ошибка входа';
+        const message = error.response?.data?.message || 'Ошибка выхода';
         this.showMessage('error', `❌ ${message}`, 4000);
       }
     },
@@ -225,16 +231,13 @@ export default {
       this.$emit.responses.register = false;
       this.itemTransport = transport;
     },
-    saveTokens(tokens){
-      localStorage.setItem('accessToken', tokens.accessToken);
-      localStorage.setItem('refreshToken', tokens.refreshToken);
-    }
   }
 
-}
 
+}
 </script>
 
-<style scoped>
+<style scoped lang="sass">
+@import "@/assets/styles/home.sass"
 
 </style>

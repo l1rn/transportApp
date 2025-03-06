@@ -61,6 +61,7 @@
 </template>
 <script>
 import { BForm, BFormGroup, BFormInput, BFormText } from 'bootstrap-vue-next';
+import SignupUsersService from "@/services/SignupUsersService";
 export default{
     name: 'sign-up',
     components:{
@@ -78,6 +79,7 @@ export default{
                 confirmPassword: '',
             },
             success: false,
+            isLoading: false,
             passwordError: null,
         };
     },
@@ -86,16 +88,28 @@ export default{
         async signup(){
             if(this.passwordError) return;
             try{
+                this.isLoading = true;
+
                 const userData = {
                   username: this.user.username,
                   password: this.user.password
                 };
-                this.$emit('user-registered', userData);
-
+                const response = await SignupUsersService.signupUser(userData);
+                console.log(response);
+                this.$emit('registered', {
+                  success: true,
+                  message: '✅ Успешная регистрация!',
+                });
                 this.resetForm();
             }
             catch(error){
-                console.log(error.message);
+              this.$emit('registered', {
+                success: false,
+                message: error.response?.data?.message || error.message || 'Ошибка регистрации'
+              });
+            }
+            finally {
+              this.isLoading = false;
             }
         },
       resetForm(){

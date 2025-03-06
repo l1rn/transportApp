@@ -40,6 +40,7 @@
 </template>
 <script>
 import { BForm, BFormGroup, BFormInput, BFormText } from 'bootstrap-vue-next';
+import SigninUsersService from "@/services/SigninUsersService";
 
 export default {
     name: "sign-in",
@@ -55,29 +56,36 @@ export default {
                 username: '',
                 password: ''
             },
+          isAuthenticated:false,
         }
     },
     methods:{
         async signIn(){
             try{
-               const userData = {
-                 username: this.user.username,
-                 password: this.user.password,
-               };
-                this.$emit('userLogined', userData);
-                this.resetForm();
+                const userData = {
+                  username: this.user.username,
+                  password: this.user.password,
+                };
+                const response = await SigninUsersService.signinUser(userData);
+
+                localStorage.setItem("accessToken", response.data.accessToken);
+                localStorage.setItem("refreshToken", response.data.refreshToken);
+
+                this.$emit('logined', {
+                  success: true,
+                  message: '✅ Успешная вход!',
+                  }
+                );
             }
             catch(error){
-                console.log(error.message);
+              this.$emit('logined', {
+                success: false,
+                message: error.response?.data?.message || error.message || 'Ошибка входа'
+              })
             }
         },
-        resetForm(){
-          this.user = {
-            username: '',
-            password: '',
-          }
-        }
-    } 
+    },
+
 }
 </script>
 <style scoped>

@@ -10,7 +10,4 @@ public class LogoutRequest {
     @Schema(description = "Refresh Token")
     @NotBlank
     private String refreshToken;
-    @Schema(description = "Access Token")
-    @NotBlank
-    private String accessToken;
 }

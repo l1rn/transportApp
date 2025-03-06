@@ -23,8 +23,6 @@
       </b-navbar>
     </div>
   </div>
-
-
 </template>
 <script>
 import BookingContainer from "@/components/bookings/BookingContainer.vue";
@@ -42,7 +40,8 @@ export default {
     name: 'AppProfile',
   methods: {
 
-  }
+  },
+
 }
 </script>
 <style>

@@ -123,7 +123,6 @@ public class AuthControllerTest {
     @Test
     void testLogout() throws Exception {
         LogoutRequest request = new LogoutRequest();
-        request.setAccessToken("access-token");
         request.setRefreshToken("refresh-token");
 
         doNothing().when(tokenBlacklist).revoke("access-token");
