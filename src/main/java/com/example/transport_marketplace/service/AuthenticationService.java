@@ -1,6 +1,5 @@
 package com.example.transport_marketplace.service;
 
-import com.example.transport_marketplace.enter.RefreshTokenRequest;
 import com.example.transport_marketplace.enter.SignInRequest;
 import com.example.transport_marketplace.enter.SignUpRequest;
 import com.example.transport_marketplace.model.Token;
@@ -10,18 +9,14 @@ import com.example.transport_marketplace.enter.JwtAuthenticationResponse;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.repo.RefreshTokenRepository;
 import com.example.transport_marketplace.repo.UserRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
