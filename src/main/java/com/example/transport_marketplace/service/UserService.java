@@ -34,6 +34,7 @@ public class UserService {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
+
     public Optional<User> findByUsername(String username) {
         return repository.findByUsername(username);
     }
@@ -43,9 +44,14 @@ public class UserService {
     }
 
     public User getCurrentUser(){
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return getByUsername(username);
+        String username = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
+
     @Deprecated
     public void getAdmin(){
         var user = getCurrentUser();

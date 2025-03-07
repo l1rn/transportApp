@@ -5,24 +5,19 @@
   <div class="header-container-custom">
     <div class="navbar-custom fixed-top shadow-navbar-custom">
       <BNavbar>
-        <BNavbarBrand class="brand" href="/#">ololotravel</BNavbarBrand>
-        <div class="custom-popup" v-if="showPopup" :class="{ fadeOut: isFadingOut }">
-          <div class="popup-content">
-            <p>{{ popupMessage }}</p>
-            <button @click="showPopup = false">OK</button>
-          </div>
-        </div>
-        <transition name="slide">
-          <div v-if="responses.success.login" class="success-message">
-            Успешный вход!
-          </div>
-        </transition>
+        <BNavbarBrand class="brand" @click="this.$router.replace('/home')">ololotravel</BNavbarBrand>
         <BNavbarNav>
           <custom-profile @open-auth="showLoginForm = true"
-                          @logout="userLogout" />
+                          @logout="userLogout"
+                          :is-authenticated="isAuthenticated"
+          />
         </BNavbarNav>
       </BNavbar>
-
+      <transition name="slide">
+        <div v-if="responses.success.login" class="success-message">
+          Успешный вход!
+        </div>
+      </transition>
       <BNavbar>
         <BNav>
           <BNavbarNav class="ms-auto">
@@ -150,20 +145,14 @@ export default {
           login: false
         },
         error:null,
-        haveToken: false,
+        haveToken: !!localStorage.getItem("refreshToken"),
+        token: localStorage.getItem("refreshToken"),
       }
     }
   },
-  setup(){
-
-    return {
-      isAuth: false,
-      token: localStorage.getItem("refreshToken"),
-    };
-  },
-  watch: {
-    token(newVal){
-      this.isAuth = !!newVal;
+  computed:{
+    isAuthenticated(){
+      return !!this.responses.token;
     }
   },
   methods:{
@@ -204,6 +193,8 @@ export default {
     async handleUserLogined(result){
       if(result.success){
         this.showMessage('success:login', ` ${result.message}`, 3000);
+        this.responses.token = result.refreshToken;
+        this.responses.haveToken = !!this.responses.token;
         this.showLoginForm = false;
       }
       else {
@@ -219,6 +210,8 @@ export default {
         );
         if(success){
           this.showMessage('success:login', '✅ Успешный выход!', 3000);
+          this.responses.token = null ;
+          this.responses.haveToken = false;
           this.$router.push('/');
         }
       }

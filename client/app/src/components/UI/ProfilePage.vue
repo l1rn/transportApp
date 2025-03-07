@@ -1,49 +1,62 @@
 <template>
-  <div class="header-container-custom">
-    <div class="navbar-custom d-flex flex-row align-items-center justify-content-between">
-      <b-nav @click="this.$router.replace('/profile')">
-        <BNavItem>
-          <h1>Профиль</h1>
-        </BNavItem>
-      </b-nav>
+  <div class="profile-page">
+    <button @click="this.$router.replace('/home')" class="button-back">Назад</button>
+    <div class="header-profile">
+      <div class="header-profile__title">
+        <h1>Профиль</h1>
+      </div>
+    </div>
 
-      <BButton size="md" class="" @click="this.$router.replace('/home')">Назад</BButton>
+    <div class="main-container-profile">
+      <div class="nav-tabs">
+        <button class="nav-link"
+        :class="{ active: nav.chooseOrders}"
+        @click="chooseNav('orders')">
+          Мои заказы
+        </button>
+        <button class="nav-link"
+        :class="{ active: nav.chooseSettings}"
+        @click="chooseNav('settings')">
+          Настройки
+        </button>
+      </div>
     </div>
-    <div class="container d-flex flex-column align-items-center">
-      <b-tabs no-fade>
-        <b-tab title="Мои заказы">
-        </b-tab>
-        <b-tab title="Настройки">
-        </b-tab>
-      </b-tabs>
-    </div>
-    <div class="container d-flex flex-column align-items-center">
-      <b-navbar>
-        <BookingContainer></BookingContainer>
-      </b-navbar>
+
+    <div class="tab-content">
+      <div v-if="!nav.chooseSettings">
+        <BookingContainer>
+        </BookingContainer>
+      </div>
+      <div v-if="nav.chooseSettings">
+        Настройки профиля
+      </div>
     </div>
   </div>
+
 </template>
 <script>
 import BookingContainer from "@/components/bookings/BookingContainer.vue";
-import {BNavbar, BTab, BTabs, BButton, BNav, BNavItem} from "bootstrap-vue-next";
 export default {
   components: {
-    'b-nav': BNav,
-    'b-navbar': BNavbar,
-    'b-tabs': BTabs,
-    'b-tab': BTab,
-    BNavItem,
-    BButton,
     BookingContainer
   },
-    name: 'AppProfile',
-  methods: {
-
+  name: 'AppProfile',
+  data(){
+    return {
+      nav:{
+        chooseOrders: true,
+        chooseSettings: false,
+      }
+    }
   },
-
+  methods: {
+    chooseNav(type){
+      this.nav.chooseOrders = type === 'orders'
+      this.nav.chooseSettings = type === 'settings'
+    },
+  },
 }
 </script>
-<style>
-
+<style scoped lang="sass">
+@import '@/assets/styles/profilepage.sass'
 </style>

@@ -49,6 +49,14 @@ public class JwtService {
                 .getBody()
                 .getSubject();
     }
+    public String getRoleFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
+    }
     public long getRefreshExpirationMs() {
         return refreshExpirationMs;
     }
@@ -60,14 +68,7 @@ public class JwtService {
             return false;
         }
     }
-    public String getRoleFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("role", String.class);
-    }
+
 
 
     private Key getSigningKey() {

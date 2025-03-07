@@ -74,6 +74,8 @@ export default {
                 this.$emit('logined', {
                   success: true,
                   message: '✅ Успешная вход!',
+                  accessToken: response.data.accessToken,
+                  refreshToken: response.data.refreshToken
                   }
                 );
             }

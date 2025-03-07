@@ -55,15 +55,14 @@ export default {
       if(!this.$refs.profileDropdown?.contains(event.target)) {
         this.closeMenu();
       }
-    }
+    },
   },
 
   mounted() {
-    this.isAuth = !!this.token;
     document.addEventListener('click', this.handleClickOutside);
   },
-  beforeMount() {
-    document.addEventListener('click', this.handleClickOutside);
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleClickOutside);
   }
 }
 </script>
@@ -86,6 +85,8 @@ export default {
       >
         <slot name="menu-items">
           <div
+              v-if="isAuthenticated"
+
               class="menu-item"
               @logined-auth="handleLogout"
               @click="handleMenuItemClick('orders')"
@@ -93,7 +94,7 @@ export default {
             📖 Мои заказы
           </div>
           <div
-              v-if="isAuth"
+              v-if="isAuthenticated"
               class="menu-item"
               @click="handleMenuItemClick('logout');
               this.$router.push({path:'/'});"

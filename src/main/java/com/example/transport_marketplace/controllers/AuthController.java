@@ -2,11 +2,13 @@ package com.example.transport_marketplace.controllers;
 import com.example.transport_marketplace.enter.*;
 import com.example.transport_marketplace.jwt.TokenBlacklist;
 
+import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,4 +52,5 @@ public class AuthController {
         authenticationService.deleteTokenByUser(request.getRefreshToken());
         return ResponseEntity.noContent().build();
     }
+
 }
