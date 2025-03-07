@@ -15,6 +15,7 @@
     "bootstrap-vue-next": "^0.27.0",
     "core-js": "^3.8.3",
     "date-fns": "^4.1.0",
+    "jwt-decode": "^4.0.0",
     "vue": "^3.2.13",
     "vue-router": "^4.5.0",
     "vuex": "^4.1.0"
@@ -27,6 +28,7 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "prettier": "3.5.3",
     "sass": "^1.85.1",
     "sass-loader": "^16.0.5"
   },

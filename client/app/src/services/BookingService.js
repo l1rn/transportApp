@@ -10,8 +10,14 @@ class BookingService{
         };
         return axios.post(BOOKING_API_BASE_URL, bookingData, config);
     }
-    getMyBooking(config){
-        return axios.get(MY_BOOKING_API_BASE_URL, config);
+    getMyBooking(){
+        return axios.get(MY_BOOKING_API_BASE_URL,
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+                    "Content-Type": "application/json",
+                },
+            });
     }
 }
 

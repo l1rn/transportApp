@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
 
   <!-- header  -->
@@ -84,7 +83,7 @@
       </b-tab>
       <b-tab title="Зарегистрироваться">
         <sign-up
-          @registered="handleUserRegistered"
+            @registered="handleUserRegistered"
         />
       </b-tab>
     </b-tabs>
@@ -114,6 +113,7 @@ import Signup from '@/components/UI/Signup.vue';
 import Signin from "@/components/UI/Signin.vue";
 import CustomProfile from "@/components/bookings/Profile.vue";
 import LogoutService from "@/services/LogoutService";
+import {cancelTokenRefresh, scheduleTokenRefresh} from "@/services/api";
 export default {
   name: 'AppRoutes',
   components: {
@@ -193,6 +193,9 @@ export default {
     async handleUserLogined(result){
       if(result.success){
         this.showMessage('success:login', ` ${result.message}`, 3000);
+        localStorage.setItem("refreshToken", result.refreshToken);
+        localStorage.setItem("accessToken", result.accessToken);
+        scheduleTokenRefresh();
         this.responses.token = result.refreshToken;
         this.responses.haveToken = !!this.responses.token;
         this.showLoginForm = false;
@@ -209,7 +212,10 @@ export default {
             localStorage.getItem('refreshToken')
         );
         if(success){
+          cancelTokenRefresh();
           this.showMessage('success:login', '✅ Успешный выход!', 3000);
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
           this.responses.token = null ;
           this.responses.haveToken = false;
           this.$router.push('/');
@@ -224,6 +230,11 @@ export default {
       this.$emit.responses.register = false;
       this.itemTransport = transport;
     },
+  },
+  mounted() {
+    if (localStorage.getItem("refreshToken")) {
+      scheduleTokenRefresh();
+    }
   }
 
 

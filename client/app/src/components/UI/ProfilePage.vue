@@ -35,10 +35,10 @@
 
 </template>
 <script>
-import BookingContainer from "@/components/bookings/BookingContainer.vue";
+import BookingCard from "@/components/bookings/booking/BookingCard.vue";
 export default {
   components: {
-    BookingContainer
+    BookingContainer: BookingCard
   },
   name: 'AppProfile',
   data(){
