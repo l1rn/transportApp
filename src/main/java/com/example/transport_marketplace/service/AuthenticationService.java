@@ -17,6 +17,7 @@
     import org.springframework.stereotype.Service;
 
     import java.time.Instant;
+    import java.util.List;
 
     @Service
     @AllArgsConstructor
@@ -40,6 +41,7 @@
             userRepository.save(user);
         }
 
+        @Transactional
         public JwtAuthenticationResponse signIn(SignInRequest request) {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -49,6 +51,7 @@
             );
             User user = userRepository.findByUsername(request.getUsername())
                     .orElseThrow(() -> new RuntimeException("User not found"));
+
             refreshTokenRepository.deleteByUser(user);
 
             String accessToken = jwtService.generateAccessToken(user);

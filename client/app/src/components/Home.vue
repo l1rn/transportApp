@@ -17,7 +17,7 @@
           Успешный вход!
         </div>
       </transition>
-      <BNavbar>
+      <BNavbar class="navbar-custom">
         <BNav>
           <BNavbarNav class="ms-auto">
             <BNavItemDropdown
@@ -37,8 +37,8 @@
             </BNavItemDropdown>
           </BNavbarNav>
         </BNav>
-        <BInput placeholder="Откуда"></BInput>
-        <BInput class="ms-1" placeholder="Куда"></BInput>
+        <BInput class="b-form-input" placeholder="Откуда"></BInput>
+        <BInput class="b-form-input ms-1" placeholder="Куда"></BInput>
         <Datepicker class="ms-1" v-model="date"
                     placeholder="Когда"
                     :format="'dd-MM-yyyy'"
@@ -48,7 +48,13 @@
                     placeholder="Обратно"
                     :format="'dd-MM-yyyy'"
                     :enable-time-picker="false" />
-        <BButton class="search-button-custom ms-1">Подобрать билеты</BButton>
+        <button class="search-button-custom btn"
+        :class="{'opacity-50': loading}"
+        :disabled="loading">
+        <span v-if="!loading">Поиск</span>
+        <span v-else>⌛</span>
+        <span class="search-icon">🔍</span>
+        </button>
       </BNavbar>
       <BNavbar>
         <BNavbarBrand></BNavbarBrand>
@@ -59,7 +65,7 @@
   </div>
 
   <!-- auth form -->
-  <BModal v-model="showLoginForm" title="Регистрация профиля" size="xl" no-footer no-stacking>
+  <BModal class="b-modal" v-model="showLoginForm" title="Регистрация профиля" size="xl" no-footer no-stacking>
     <div class="status-messages">
       <transition name="slide">
         <div v-if="responses.success.register" class="success-message">
@@ -73,15 +79,15 @@
         </div>
       </transition>
     </div>
-    <b-tabs content-class="mt-3" fill>
-      <b-tab title="Войти">
+    <b-tabs class="b-tabs" content-class="mt-3" fill>
+      <b-tab class="nav-link" title="Войти">
         <sign-in
             @logined="handleUserLogined"
             @close="showLoginForm = false"
         />
 
       </b-tab>
-      <b-tab title="Зарегистрироваться">
+      <b-tab class="nav-link" title="Зарегистрироваться">
         <sign-up
             @registered="handleUserRegistered"
         />
@@ -97,7 +103,6 @@
 
 import Datepicker from '@vuepic/vue-datepicker';
 import {
-  BButton,
   BDropdownItem,
   BInput,
   BModal,
@@ -118,7 +123,6 @@ export default {
   name: 'AppRoutes',
   components: {
     CustomProfile,
-    BButton,
     BDropdownItem,
     BInput,
     BModal,
@@ -227,7 +231,6 @@ export default {
       }
     },
     selectTransport(transport){
-      this.$emit.responses.register = false;
       this.itemTransport = transport;
     },
   },
@@ -236,12 +239,10 @@ export default {
       scheduleTokenRefresh();
     }
   }
-
-
 }
 </script>
 
 <style scoped lang="sass">
-@import "@/assets/styles/home.sass"
+@import '@/assets/styles/home.sass'
 
 </style>

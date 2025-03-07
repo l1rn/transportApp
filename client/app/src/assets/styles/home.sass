@@ -1,165 +1,264 @@
+$primary: #2563eb
+$secondary: #f59e0b
+$accent: #3b82f6
+$background: #f8fafc
+$text: #1e293b
+$success: #10b981
+$error: #ef4444
+$transition: all 0.3 cubic-bezier(0.4, 0, 0.2, 1)
+
+@mixin glass-effect
+    background: rgba(255, 255, 255, 0.9)
+    backdrop-filter: blur(10px)
+    border: 1px solid rgba(255, 255, 255, 0.2)
+
+@mixin neumorphism
+    border-radius: 1rem
+    box-shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
+
 *
-    font-family: Montserrat
-    color: #2C3E50
+    box-sizing: border-box
+    transition: $transition
 
-success-message, .error-message
-    position: fixed
-    top: 20px
-    right: 20px
-    padding: 12px 20px
-    border-radius: 8px
-    z-index: 1000
-    margin-bottom: 10px
+body
+    background: $background
+    min-height: 100vh
+.navbar-custom
+    @include glass-effect
+    padding: 1rem 2rem
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05)
 
+    .brand
+        font-family: 'Montserrat', sans-serif
+        font-weight: 700
+        font-size: 1.5rem
+        color: $primary
+        position: relative
+
+        &::after
+            content: '🚀'
+            position: absolute
+            right: -1.8rem
+            top: -0.5rem
+
+.search-section
+    padding: 2rem
+    margin: 2rem auto
+    max-width: 1200px
+    @include neumorphism
+
+    .b-input
+        border: 2px solid #e2e8f0
+        border-radius: 0.75rem
+        padding: 0.8rem 1.2rem
+        font-size: 1.1rem
+
+        &:focus
+            border-color: $primary
+            box-shadow: 0 0 0 3px rgba($primary, 0.2)
+
+    .datepicker
+        .dp__input
+            @extend .b-input
+
+.search-button-custom
+    background: linear-gradient(145deg, $secondary, darken($secondary, 10%))
+    color: white
+    border: none
+    border-radius: 0.75rem
+    padding: 1rem 2rem
+    font-weight: 600
+    text-transform: uppercase
+    letter-spacing: 0.05em
+    display: inline-flex
+    align-items: center
+    margin-left: 1rem
+    transition: transform 0.2s ease, box-shadow 0.2s ease
+    cursor: pointer
+
+    &:hover
+        transform: translateY(-2px)
+        box-shadow: 0 5px 15px rgba($secondary, 0.3)
+
+    &:active
+        transform: translateY(1px)
+
+    &[disabled]
+        opacity: 0.7
+        cursor: not-allowed
+.search-icon
+    font-size: 1.2em
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1))
+    transition: transform 0.3s ease
+
+.search-button-custom:hover .search-icon
+    animation: bounce 0.6s infinite
+
+@keyframes bounce
+    0%, 100%
+        transform: translateY(0)
+    50%
+        transform: translateY(-3px)
+
+.success-message, .error-message
+    padding: 1rem 2rem
+    border-radius: 0.75rem
+    font-weight: 500
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+
+    &::before
+        content: ''
+        width: 1.2rem
+        height: 1.2rem
+        margin-right: 0.8rem
+        display: inline-block
+        background-size: contain
 
 .success-message
-    background: #e3fcef
-    color: #006644
-
+    background: rgba($success, 0.1)
+    border: 2px solid $success
+    &::before
+        background-image: url('data:image/svg+xml;utf8,<svg ...>✓</svg>')
 
 .error-message
-    background: #fce3e3
-    color: #660000
+    background: rgba($error, 0.1)
+    border: 2px solid $error
+    &::before
+        background-image: url('data:image/svg+xml;utf8,<svg ...>⚠</svg>')
 
+@media (max-width: 768px)
+    .navbar-custom
+        padding: 1rem
+        height: auto
 
-.slide-enter-active
-    animation: slideIn 0.3s ease-out
+    .search-section
+        margin: 1rem
+        padding: 1.5rem
 
+    .search-button-custom
+        width: 100%
+        margin-top: 1rem
 
-.slide-leave-active
-    animation: slideOut 0.3s ease-in
+$primary: #2563eb
+$secondary: #f59e0b
+$danger: #ef4444
+$success: #10b981
+$light: #f8fafc
+$dark: #1e293b
 
-
-@keyframes slideIn
-    from
-        transform: translateX(100%)
-    to
-        transform: translateX(0)
-
-
-@keyframes slideOut
-    from
-        transform: translateX(0)
-    to
-        transform: translateX(100%)
-
-/* overflow-x:hidden - chrome, firefox, IE, edge, safari, opera*/
-::v-deep .dropdown-menu
-    overflow-y: hidden
-    scrollbar-width: none
-    -ms-overflow-style: none
-
-::v-deep .dropdown-menu::-webkit-scrollbar
-    display: none
-
-/*  */
-/* header */
-/*  */
-.custom-transport-label
-    color: #ff0808
-.search-button-custom
-    border: none
-    max-height: 45px
-    background: #FFA666FF
-    min-width: 200px
-    &:hover
-        animation: swinging 2s ease infinite
-
-@keyframes swinging
-    0%
-        background: hsl(25, 100%, 70%)
-    25%
-        background: hsl(30, 100%, 65%)
-    50%
-        background: hsl(30, 90%, 68%)
-    75%
-        background: hsl(33, 100%, 65%)
-    100%
-        background: hsl(25, 100%, 70%)
+$font-family-base: 'Montserrat', sans-serif
+$border-radius: 0.75rem
+$box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1)
+$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 
 .navbar-custom
-    z-index: 1030
-    height: 17vh
-    background: #ECF0F1
-    padding-left: 15%
-    padding-right: 15%
+    background: rgba(255, 255, 255, 0.95)
+    backdrop-filter: blur(12px)
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)
+    border-bottom: 1px solid rgba($primary, 0.1)
 
-.header-container-custom
-  height: 17vh
+    .b-navbar-brand
+        font-weight: 700
+        font-size: 1.75rem
+        color: $primary !important
+        transition: transform 0.3s ease
+        &:hover
+            transform: scale(1.05)
 
-/* logo */
-.brand
-    color: rgb(27, 27, 27)
-    font-size: large
+        &::after
+            content: '✈️'
+            margin-left: 0.5rem
 
-/*  */
-/* main  */
-/*  */
+    .b-nav-item
+        margin: 0 1rem
+        .b-nav-link
+            position: relative
+            color: $dark
+            &::after
+                content: ''
+                position: absolute
+                bottom: -5px
+                left: 0
+                width: 0
+                height: 2px
+                background: $primary
+                transition: width 0.3s ease
 
-.main-container
-    height: 160vh
-    padding-top: 5vh
+            &:hover::after,
+            &.active::after
+                width: 100%
+
+.b-form-input
+    border: 2px solid rgba($primary, 0.15)
+    border-radius: $border-radius
+    padding: 0.75rem 1.25rem
+    font-size: 1rem
+    transition: $transition-base
+
+    &:focus
+        border-color: $primary
+        box-shadow: 0 0 0 3px rgba($primary, 0.2)
+
+    &::placeholder
+        color: rgba($dark, 0.5)
+
+@media (max-width: 768px)
+    .navbar-custom
+        padding: 0.75rem
+        .b-navbar-brand
+            font-size: 1.5rem
+
+        .b-form-input,
+        .search-button-custom
+            width: 100%
+            margin: 0.5rem 0
+
+    .transport-menu
+        width: 100%
+
+$primary: #2563eb
+$secondary: #f59e0b
+$danger: #ef4444
+$success: #10b981
+$light: #f8fafc
+$dark: #1e293b
+
+$font-family-base: 'Montserrat', sans-serif
+$border-radius: 0.75rem
+$box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1)
+$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
+
+.navbar-custom
+    background: rgba(255, 255, 255, 0.95)
+    backdrop-filter: blur(12px)
+    border: 1px solid rgba($primary, 0.15)
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)
+    border-radius: 0.75rem
+    border-bottom: 1px solid rgba($primary, 0.1)
+
+    .b-navbar-brand
+        font-weight: 700
+        font-size: 1.75rem
+        color: $primary !important
+        transition: transform 0.3s ease
+        &:hover
+            transform: scale(1.05)
+
+        &::after
+            content: '✈️'
+            margin-left: 0.5rem
 
 
-/* container to search - first task */
-.container-route-to-search
-    border-radius: 15px
-    height: 40vh
-    background-color: white
-    margin-top: 5vh
-    margin-right: 15%
-    margin-left: 15%
+.b-form-input
+    border: 2px solid rgba($primary, 0.15)
+    border-radius: $border-radius
+    padding: 0.75rem 1.25rem
+    font-size: 1rem
+    transition: $transition-base
 
+    &:focus
+        border-color: $primary
+        box-shadow: 0 0 0 3px rgba($primary, 0.2)
 
-/* see all routes and sort it - second task */
-.container-to-see-all-routes
-    border-radius: 15px
-    height: 40vh
-    background-color: white
-    margin-top: 20vh
-    margin-right: 15%
-    margin-left: 15%
-
-
-/* custom toast  */
-.custom-popup
-    position: fixed
-    top: 10%
-    left: 90%
-    transform: translate(-50%, -50%)
-    background: white
-    padding: 20px
-    border-radius: 10px
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2)
-    animation: fadeIn 0.5s ease-in-out
-    z-index: 1000
-
-
-.fadeOut
-    animation: fadeOut 0.5s ease-in-out forwards
-
-
-@keyframes fadeIn
-    from
-        opacity: 0
-        transform: translate(-50%, -60%)
-
-    to
-        opacity: 1
-        transform: translate(-50%, -50%)
-
-
-
-@keyframes fadeOut
-    from
-        opacity: 1
-        transform: translate(-50%, -50%)
-
-    to
-        opacity: 0
-        transform: translate(-50%, -60%)
-
-/* footer */
-.footer-container
-    height: 20vh
-    background: #333
+    &::placeholder
+        color: rgba($dark, 0.5)

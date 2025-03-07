@@ -117,6 +117,9 @@ export default {
 </template>
 
 <style scoped>
+*{
+  font-family: Montserrat;
+}
 .profile-container {
   position: relative;
   margin-left: 1rem;

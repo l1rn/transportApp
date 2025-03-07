@@ -23,6 +23,9 @@ axios.interceptors.response.use(
                 originalRequest.headers.Authorization = `Bearer ${ newAccessToken }`;
                 return axios(originalRequest);
             } catch (refreshError) {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                this.$router.replace('/home');
                 return Promise.reject(refreshError);
             }
         }
@@ -35,7 +38,6 @@ async function refreshTokenRequest(refreshToken) {
         const response = await axios.post('http://localhost:8080/auth/refresh', {
             refreshToken: refreshToken
         });
-
         const { accessToken, refreshToken: newRefreshToken } = response.data;
 
         localStorage.setItem('accessToken', accessToken);
@@ -60,7 +62,7 @@ export function scheduleTokenRefresh (){
     const expiresAt = payload.exp * 1000;
     const now = Date.now();
 
-    const timeout = expiresAt - now - 20000;
+    const timeout = expiresAt - now - 5000;
 
     if(refreshToken){
         cancelTokenRefresh();

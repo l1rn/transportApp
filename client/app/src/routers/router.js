@@ -7,6 +7,7 @@ import Home from "@/components/Home.vue";
 
 const routes = [
     {path: '/', redirect: '/home'},
+    { path: '/test/check/bookings', component: GetBooking },
     { path: '/profile', component: AppProfilePage },
     { path: '/routes', component: Routes},
     { path: '/home', component: Home},

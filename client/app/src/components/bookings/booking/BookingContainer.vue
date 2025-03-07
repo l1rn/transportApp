@@ -43,7 +43,7 @@ export default {
       <div class="transport-icon">✈️</div>
       <div>
         <div class="info-label">ID-Маршрута</div>
-        <div class="info-value">#</div>
+        <div class="info-value">#{{ bookings.id }}</div>
       </div>
     </div>
 
