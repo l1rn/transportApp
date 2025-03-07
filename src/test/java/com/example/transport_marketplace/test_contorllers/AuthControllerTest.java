@@ -129,6 +129,7 @@ public class AuthControllerTest {
         doNothing().when(authenticationService).deleteTokenByUser("refresh-token");
 
         mockMvc.perform(post("/auth/logout")
+                        .header("Authorization", "Bearer access-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNoContent());

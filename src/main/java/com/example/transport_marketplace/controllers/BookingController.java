@@ -28,7 +28,6 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
-    // получение всех броней
     @Autowired
     private JwtService jwtService;
     @Autowired
@@ -39,7 +38,6 @@ public class BookingController {
 
     @Operation(summary = "Отображение только тех броней, что выбрал пользователей")
     @GetMapping("/my")
-
     public ResponseEntity<?> getMyBooking(@AuthenticationPrincipal UserDetails userDetails){
         String username = userDetails.getUsername();
         try{

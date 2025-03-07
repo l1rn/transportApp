@@ -155,6 +155,6 @@ class AuthenticationServiceTest {
 
         authenticationService.deleteTokenByUser(refreshToken);
 
-        verify(refreshTokenRepository, times(1)).deleteByUser(user);
+        verify(refreshTokenRepository, times(1)).delete(token);
     }
 }

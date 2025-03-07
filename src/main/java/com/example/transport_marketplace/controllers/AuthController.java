@@ -26,16 +26,19 @@ public class AuthController {
         authenticationService.signUp(request);
         return ResponseEntity.ok("Пользователь зарегистрирован");
     }
+    @Operation(summary = "Вход пользователя")
     @PostMapping("/sign-in")
     public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody SignInRequest request) {
         return ResponseEntity.ok(authenticationService.signIn(request));
     }
 
+    @Operation(summary = "Обновление токенов для безопасности")
     @PostMapping("/refresh")
     public ResponseEntity<JwtAuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
         return ResponseEntity.ok(authenticationService.refreshToken(request.getRefreshToken()));
     }
 
+    @Operation(summary = "Выход с учетной записи")
     @PostMapping("/logout")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> logout(@RequestBody LogoutRequest request,
