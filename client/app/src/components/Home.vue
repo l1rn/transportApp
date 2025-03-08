@@ -6,17 +6,15 @@
       <BNavbar>
         <BNavbarBrand class="brand" @click="this.$router.replace('/home')">ololotravel</BNavbarBrand>
         <BNavbarNav>
+            <div v-if="responses.success.login" class="success-message">
+              Успешый вход!
+            </div>
           <custom-profile @open-auth="showLoginForm = true"
                           @logout="userLogout"
                           :is-authenticated="isAuthenticated"
           />
         </BNavbarNav>
       </BNavbar>
-      <transition name="slide">
-        <div v-if="responses.success.login" class="success-message">
-          Успешный вход!
-        </div>
-      </transition>
       <BNavbar>
         <BNav>
           <BNavbarNav class="ms-auto">
@@ -146,7 +144,8 @@ export default {
       responses:{
         success: {
           register: false,
-          login: false
+          login: false,
+          logout: false,
         },
         error:null,
         haveToken: !!localStorage.getItem("refreshToken"),
@@ -222,6 +221,7 @@ export default {
           localStorage.removeItem('refreshToken');
           this.responses.token = null ;
           this.responses.haveToken = false;
+          this.success.logout = true;
           this.$router.push('/');
         }
       }

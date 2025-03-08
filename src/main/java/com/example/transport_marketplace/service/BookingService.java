@@ -70,7 +70,7 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Бронирование не найдено"));
 
-        if (booking.getUser().equals(user)) {
+        if (booking.getUser().getId() != user.getId()) {
             throw new AccessDeniedException("Нет прав для отмены бронирования");
         }
 

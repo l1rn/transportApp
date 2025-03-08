@@ -24,8 +24,8 @@
 
     <div class="tab-content">
       <div v-if="!nav.chooseSettings">
-        <BookingContainer>
-        </BookingContainer>
+        <BookingCard>
+        </BookingCard>
       </div>
       <div v-if="nav.chooseSettings">
         Настройки профиля
@@ -34,11 +34,11 @@
   </div>
 
 </template>
-<script>
+  <script>
 import BookingCard from "@/components/bookings/booking/BookingCard.vue";
 export default {
   components: {
-    BookingContainer: BookingCard
+    BookingCard
   },
   name: 'AppProfile',
   data(){
@@ -54,6 +54,7 @@ export default {
       this.nav.chooseOrders = type === 'orders'
       this.nav.chooseSettings = type === 'settings'
     },
+
   },
 }
 </script>

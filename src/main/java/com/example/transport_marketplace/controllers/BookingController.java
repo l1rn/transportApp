@@ -23,7 +23,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/profile/bookings")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BookingController {
     public static final String BEARER_PREFIX = "Bearer ";
 
@@ -31,6 +30,7 @@ public class BookingController {
 
     private final UserService userService;
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @Operation(summary = "Отображение только тех броней, что выбрал пользователей")
     @GetMapping("/my")
     @PreAuthorize("isAuthenticated()")

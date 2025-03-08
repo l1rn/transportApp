@@ -1,16 +1,14 @@
 <script>
-
 export default {
   name: "BookingContainer",
-  props: ['booking'],
+  props: ['booking', 'isCanceling'],
   methods: {
     cancel(){
-      this.$emit('cancel',this.booking.route.id);
+      if(this.isCanceling || this.booking.status === 'CANCELED') return;
+      this.$emit('cancelBookingEvent', this.booking.id);
     }
   }
-  
 }
-
 </script>
 
 <template>
@@ -25,7 +23,7 @@ export default {
 
     <div class="route-from-to">
       <div class="info-value">{{booking.route.routeFrom}}</div>
-      <div class="arrow">→</div>
+      <div class="arrow"> → </div>
       <div class="info-value">{{booking.route.routeTo}}</div>
     </div>
 
@@ -43,19 +41,24 @@ export default {
         <span class="info-value">{{booking.route.date}}</span>
       </div>
 
-      <div class="info-value"><div class="status on-time"> {{booking.status}} </div>
+      <div class="info-value">
+        <div class="status on-time" :class="{'canceled': booking.status === 'CANCELED'}">
+          {{ booking.status === 'CANCELED' ? 'ОТМЕНЕНО' : 'АКТИВНО' }}
+        </div>
       </div>
-      <div>
+
+      <div v-if="booking.status !== 'CANCELED'">
         <button
             class="cancel-button"
-            :class="{loading: isCanceling}"
-            @click="cancelBooking"
-            :disabled="isCanceling">
-          <span v-if="!isCanceling">
-            Отменить бронь
-          </span>
+            @click="cancel"
+            :disabled="isCanceling"
+        >
+          <span v-if="!isCanceling">Отменить бронь</span>
           <div v-else class="loader"></div>
         </button>
+      </div>
+      <div v-else class="status-canceled">
+        ОТМЕНЕНО
       </div>
     </div>
   </div>
@@ -63,4 +66,5 @@ export default {
 
 <style scoped lang="sass">
 @import '@/assets/styles/bookingcontainer'
+
 </style>
