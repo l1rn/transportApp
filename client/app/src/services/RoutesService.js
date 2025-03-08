@@ -6,6 +6,9 @@ class RoutesService{
     getRoutes(){
         return axios.get(ROUTES_API_BASE_URL);
     }
+    searchRoute(){
+        
+    }
 }
 
 export default new RoutesService();

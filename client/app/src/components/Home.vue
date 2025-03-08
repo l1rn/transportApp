@@ -30,11 +30,12 @@
     </div>
     <div class="sub-header-container"
          :class="{ 'sub-header-fixed': isScrolled }">
-      <smart-input></smart-input>
+      <smart-input @transport-selected="handleTransportSelect"></smart-input>
       <BNavbar>
-        <BNavbarBrand></BNavbarBrand>
-        <BNavbarNav style="font-family: Montserrat; margin-right: 20px;"
-                    >Ваш транспорт: {{ itemTransport }}</BNavbarNav>
+        <p></p>
+        <button class="position-absolute" @click="clearAllSearch">Очистить выбор</button>
+        <label style="font-family: Montserrat; margin-right: 20px;"
+                    >Выбран транспорт: {{ itemTransport }}{{emojiTransport}}</label>
       </BNavbar>
     </div>
 
@@ -94,7 +95,7 @@ import LogoutService from "@/services/LogoutService";
 import {onBeforeUnmount, onMounted, ref} from "vue";
 import {cancelTokenRefresh, scheduleTokenRefresh} from "@/services/api";
 export default {
-  name: 'AppRoutes',
+  name: 'AppHome',
   components: {
     smartInput,
     CustomProfile,
@@ -113,6 +114,7 @@ export default {
       registeredUser: null,
       userLogined: null,
       itemTransport: null,
+      emojiTransport:null,
       responses:{
         success: {
           register: false,
@@ -131,11 +133,6 @@ export default {
     }
   },
   setup() {
-    const selectedTransport = ref(null);
-
-    const handleTransportSelect = (transport) => {
-      selectedTransport.value = transport;
-    }
     const scrollY = ref(0)
     const isScrolled = ref(false)
     const handleScroll = () => {
@@ -225,7 +222,14 @@ export default {
         this.showMessage('error', `❌ ${message}`, 4000);
       }
     },
-
+    handleTransportSelect(transport){
+      this.itemTransport = transport.label;
+      this.emojiTransport = transport.emoji;
+    },
+    clearAllSearch(){
+      this.itemTransport = null;
+      this.emojiTransport = null;
+    }
   },
   mounted() {
     if (localStorage.getItem("refreshToken")) {

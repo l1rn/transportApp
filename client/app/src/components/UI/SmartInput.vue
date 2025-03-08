@@ -1,8 +1,82 @@
 <script setup>
-import { ref, reactive, defineEmits } from "vue";
+import {ref, reactive, defineEmits, onMounted, computed, nextTick} from "vue";
 import Datepicker from "@vuepic/vue-datepicker";
-const emit = defineEmits(['select'])
+import RoutesService from "@/services/RoutesService";
 
+const routes = ref([]);
+let inputRouteFrom = ref('');
+let inputRouteTo = ref('');
+const date = ref(null);
+const arrivalDate = ref(null);
+const isLoading = ref(false);
+const error = ref(null);
+const toInput = ref(null)
+
+const showFromSuggestions = ref(false);
+const showToSuggestions = ref(false);
+
+
+const uniqueFroms = computed(() => {
+  return [...new Set(routes.value.map(route => route.routeFrom))];
+})
+
+const filteredFroms = computed(() => {
+  if (!inputRouteFrom.value) return [];
+  const search = inputRouteFrom.value.toLowerCase();
+
+  return uniqueFroms.value.filter(route =>
+      route?.toLowerCase().includes(search)
+  );
+});
+
+const availableTos = computed(() => {
+  if(!inputRouteFrom.value) return [];
+  const searchFrom = inputRouteFrom.value.toLowerCase();
+
+  const fromRoutes = routes.value.filter(r =>
+    r?.routeFrom?.toLowerCase() === searchFrom
+  );
+  return [...new Set(fromRoutes.map(r => r.routeTo))].filter(Boolean);
+})
+
+const filteredTos = computed(() => {
+  if(!inputRouteTo.value) return availableTos.value;
+  const search = inputRouteTo.value.toLowerCase();
+
+  return availableTos.value.filter(to =>
+    to?.toLowerCase().includes(search)
+  );
+});
+
+const selectFrom = (from) =>{
+  inputRouteFrom.value = from
+  showFromSuggestions.value = false
+  nextTick(() => {
+    toInput.value.focus()
+  })
+};
+
+const selectTo = (to) => {
+  inputRouteTo.value = to;
+  showFromSuggestions.value = false;
+}
+
+const handleToFocus = () => {
+  showFromSuggestions.value = false;
+  showToSuggestions.value = true;
+}
+const handleFromBlur = () => {
+  setTimeout(() => {
+    showFromSuggestions.value = false
+  }, 150)
+}
+
+const handleToBlur = () => {
+  setTimeout(() => {
+    showToSuggestions.value = false
+  }, 150)
+}
+const emit = defineEmits(['select'])
 const isOpen = ref(false)
 const selectedTransport = ref(null)
 const transports = reactive([
@@ -19,24 +93,90 @@ const selectTransport = (value) => {
   const transport = transports.find(t => t.value === value)
   selectedTransport.value = transport?.label || null
   isOpen.value = false
-  emit('select', value)
+  emit('transport-selected', transport)
+}
+onMounted(async() =>{
+  await fetchRoutes();
+})
+
+const fetchRoutes = async () => {
+  try {
+    isLoading.value = true;
+    const response = await RoutesService.getRoutes();
+    routes.value = response.data;
+  }catch (err) {
+    error.value = 'Не удалось загрузить маршруты';
+    console.log(err);
+  }finally {
+    isLoading.value = false;
+  }
 }
 </script>
 <template>
   <div class="main-container">
-    <input class="b-form-input" placeholder="Откуда" />
-    <input class="b-form-input ms-1" placeholder="Куда" />
+    <div class="input-group">
+      <input
+          type="text"
+          v-model="inputRouteFrom"
+          class="b-form-input"
+          @focus="showFromSuggestions = true"
+          @blur="handleFromBlur"
+          placeholder="Откуда"
+      />
+      <div v-if="showFromSuggestions">
+        <div v-if="isLoading" class="loading">Загрузка...</div>
+        <div v-else-if="error" class="error">{{ error }}</div>
+        <div v-else class="suggestions">
+          <div
+              v-for="from in filteredFroms"
+              :key="from"
+              class="suggestion-item"
+              @click="selectFrom(from)">
+            {{ from }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <input
+          class="b-form-input ms-1"
+          placeholder="Куда"
+          v-model="inputRouteTo"
+          type="text"
+          :disabled="!inputRouteFrom"
+          @focus="handleToFocus"
+          @blur="handleToBlur"
+          ref="toInput"
+      />
+      <div v-if="showToSuggestions">
+        <div v-if="isLoading" class="loading">Загрузка...</div>
+        <div v-else-if="error" class="error">{{ error }}</div>
+        <div v-else class="suggestions">
+          <div class="suggestion-item"
+               v-for="to in filteredTos"
+               :key="to"
+               @click="selectTo(to)">
+            {{to}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
     <Datepicker
         v-model="date"
         placeholder="Когда"
         :format="'dd-MM-yyyy'"
         :dark="false"
         :enable-time-picker="false" />
-    <Datepicker class=""
-                v-model="arrivalDate"
-                placeholder="Обратно"
-                :format="'dd-MM-yyyy'"
-                :enable-time-picker="false" />
+    <Datepicker
+        class=""
+        v-model="arrivalDate"
+        placeholder="Обратно"
+        :format="'dd-MM-yyyy'"
+        :enable-time-picker="false" />
 
     <div class="transport-wrapper">
       <div
@@ -45,7 +185,7 @@ const selectTransport = (value) => {
           @click="toggleMenu"
       >
       <span class="current-transport">
-        {{ selectedTransport || 'Транспорт' }}
+        Транспорт
       </span>
         <span class="arrow">▼</span>
       </div>
@@ -65,8 +205,8 @@ const selectTransport = (value) => {
       </transition>
     </div>
     <button class="search-button-custom btn"
-            :class="{'opacity-50': loading}"
-            :disabled="loading">
+            :class="{'opacity-50': isLoading}"
+            :disabled="isLoading">
 
       <span v-if="!loading">Поиск</span>
       <span v-else>⌛</span>
