@@ -17,7 +17,7 @@
           Успешный вход!
         </div>
       </transition>
-      <BNavbar class="navbar-custom">
+      <BNavbar>
         <BNav>
           <BNavbarNav class="ms-auto">
             <BNavItemDropdown

@@ -1,11 +1,11 @@
 package com.example.transport_marketplace.test_contorllers;
 
 import com.example.transport_marketplace.controllers.AuthController;
-import com.example.transport_marketplace.enter.JwtAuthenticationResponse;
-import com.example.transport_marketplace.enter.LogoutRequest;
-import com.example.transport_marketplace.enter.RefreshTokenRequest;
-import com.example.transport_marketplace.enter.SignInRequest;
-import com.example.transport_marketplace.enter.SignUpRequest;
+import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
+import com.example.transport_marketplace.dto.auth.LogoutRequest;
+import com.example.transport_marketplace.dto.jwt.RefreshTokenRequest;
+import com.example.transport_marketplace.dto.auth.SignInRequest;
+import com.example.transport_marketplace.dto.auth.SignUpRequest;
 import com.example.transport_marketplace.service.AuthenticationService;
 import com.example.transport_marketplace.jwt.TokenBlacklist;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +25,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 

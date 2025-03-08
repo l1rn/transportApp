@@ -1,4 +1,4 @@
-package com.example.transport_marketplace.enter;
+package com.example.transport_marketplace.dto.booking;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

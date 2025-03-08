@@ -151,23 +151,17 @@ $border-radius: 0.75rem
 $box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1)
 $transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 
-.navbar-custom
-    background: rgba(255, 255, 255, 0.95)
-    backdrop-filter: blur(12px)
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)
-    border-bottom: 1px solid rgba($primary, 0.1)
+.b-navbar-brand
+    font-weight: 700
+    font-size: 1.75rem
+    color: $primary !important
+    transition: transform 0.3s ease
+    &:hover
+        transform: scale(1.05)
 
-    .b-navbar-brand
-        font-weight: 700
-        font-size: 1.75rem
-        color: $primary !important
-        transition: transform 0.3s ease
-        &:hover
-            transform: scale(1.05)
-
-        &::after
-            content: '✈️'
-            margin-left: 0.5rem
+    &::after
+        content: '✈️'
+        margin-left: 0.5rem
 
     .b-nav-item
         margin: 0 1rem
@@ -188,20 +182,6 @@ $transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
             &.active::after
                 width: 100%
 
-.b-form-input
-    border: 2px solid rgba($primary, 0.15)
-    border-radius: $border-radius
-    padding: 0.75rem 1.25rem
-    font-size: 1rem
-    transition: $transition-base
-
-    &:focus
-        border-color: $primary
-        box-shadow: 0 0 0 3px rgba($primary, 0.2)
-
-    &::placeholder
-        color: rgba($dark, 0.5)
-
 @media (max-width: 768px)
     .navbar-custom
         padding: 0.75rem
@@ -213,42 +193,6 @@ $transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
             width: 100%
             margin: 0.5rem 0
 
-    .transport-menu
-        width: 100%
-
-$primary: #2563eb
-$secondary: #f59e0b
-$danger: #ef4444
-$success: #10b981
-$light: #f8fafc
-$dark: #1e293b
-
-$font-family-base: 'Montserrat', sans-serif
-$border-radius: 0.75rem
-$box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1)
-$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
-
-.navbar-custom
-    background: rgba(255, 255, 255, 0.95)
-    backdrop-filter: blur(12px)
-    border: 1px solid rgba($primary, 0.15)
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)
-    border-radius: 0.75rem
-    border-bottom: 1px solid rgba($primary, 0.1)
-
-    .b-navbar-brand
-        font-weight: 700
-        font-size: 1.75rem
-        color: $primary !important
-        transition: transform 0.3s ease
-        &:hover
-            transform: scale(1.05)
-
-        &::after
-            content: '✈️'
-            margin-left: 0.5rem
-
-
 .b-form-input
     border: 2px solid rgba($primary, 0.15)
     border-radius: $border-radius
@@ -262,3 +206,4 @@ $transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 
     &::placeholder
         color: rgba($dark, 0.5)
+

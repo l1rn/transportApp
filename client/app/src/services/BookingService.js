@@ -19,6 +19,7 @@ class BookingService{
                 },
             });
     }
+    cancelMyBooking(){}
 }
 
 export default new BookingService();

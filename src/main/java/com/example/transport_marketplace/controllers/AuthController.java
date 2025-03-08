@@ -1,27 +1,29 @@
 package com.example.transport_marketplace.controllers;
-import com.example.transport_marketplace.enter.*;
+import com.example.transport_marketplace.dto.auth.LogoutRequest;
+import com.example.transport_marketplace.dto.auth.SignInRequest;
+import com.example.transport_marketplace.dto.auth.SignUpRequest;
+import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
+import com.example.transport_marketplace.dto.jwt.RefreshTokenRequest;
 import com.example.transport_marketplace.jwt.TokenBlacklist;
 
-import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 @Tag(name = "Аутентификация")
+@RequiredArgsConstructor
 public class AuthController {
     private final TokenBlacklist tokenBlacklist;
     private final AuthenticationService authenticationService;
+
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request){

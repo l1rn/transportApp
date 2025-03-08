@@ -9,6 +9,7 @@ import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,19 +63,23 @@ public class BookingService {
     }
 
     @Transactional
-    public boolean cancelBooking(int id){
-        Optional<Booking> bookingOpt = bookingRepository.findById(id);
-        if(bookingOpt.isPresent()){
-            Booking booking = bookingOpt.get();
-            booking.setStatus(BookingStatus.CANCELED);
+    public boolean cancelBooking(Integer id, String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
-            Route route = booking.getRoute();
-            route.setAvailableSeats(route.getAvailableSeats() + 1);
-            routeRepository.save(route);
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Бронирование не найдено"));
 
-            bookingRepository.save(booking);
-            return true;
+        if (booking.getUser().getId() != user.getId()) {
+            throw new AccessDeniedException("Нет прав для отмены бронирования");
         }
+
+        if (booking.getStatus() == BookingStatus.CANCELED) {
+            return false;
+        }
+        booking.setStatus(BookingStatus.CANCELED);
+        bookingRepository.save(booking);
+
         return false;
     }
 }

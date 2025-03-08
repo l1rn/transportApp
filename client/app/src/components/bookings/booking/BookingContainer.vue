@@ -1,38 +1,14 @@
 <script>
-import BookingService from "@/services/BookingService";
-
 
 export default {
   name: "BookingContainer",
-  data(){
-    return {
-      bookings: [],
-      isLoading: false
-    };
-  },
-  created(){
-    this.getBookings();
-  },
-  methods:{
-    async getBookings(){
-      this.isLoading = true;
-      try {
-        const refreshToken = localStorage.getItem("refreshToken");
-        const response = await BookingService.getMyBooking(refreshToken);
-        this.bookings = response.data;
-        console.log(this.bookings);
-      }
-      catch(error){
-        console.log(error);
-      }
-      finally{
-        this.isLoading = false;
-      }
-    },
-    async cancelBooking(){
-
+  props: ['booking'],
+  methods: {
+    cancel(){
+      this.$emit('cancel',this.booking.route.id);
     }
-  },
+  }
+  
 }
 
 </script>
@@ -43,31 +19,31 @@ export default {
       <div class="transport-icon">✈️</div>
       <div>
         <div class="info-label">ID-Маршрута</div>
-        <div class="info-value">#{{ bookings.id }}</div>
+        <div class="info-value">#{{ booking.route.id }}</div>
       </div>
     </div>
 
     <div class="route-from-to">
-      <div class="info-value"></div>
+      <div class="info-value">{{booking.route.routeFrom}}</div>
       <div class="arrow">→</div>
-      <div class="info-value"></div>
+      <div class="info-value">{{booking.route.routeTo}}</div>
     </div>
 
     <div class="route-info">
       <div class="info-item">
         <span class="info-label">ВРЕМЯ ВЫЛЕТА</span>
-        <span class="info-value"></span>
+        <span class="info-value">{{booking.route.time}}</span>
       </div>
       <div class="info-item">
         <span class="info-label">ВРЕМЯ ПОСАДКИ</span>
-        <span class="info-value"></span>
+        <span class="info-value">{{booking.route.arrivalTime}}</span>
       </div>
       <div class="info-item">
         <span class="info-label">ДАТА</span>
-        <span class="info-value"></span>
+        <span class="info-value">{{booking.route.date}}</span>
       </div>
 
-      <div class="info-value"><div class="status on-time"></div>
+      <div class="info-value"><div class="status on-time"> {{booking.status}} </div>
       </div>
       <div>
         <button

@@ -19,10 +19,9 @@ export default {
     },
     methods:{
         getAllMyBooking(){
-                const token = localStorage.getItem('token')
                 const config = {
                 headers:{
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-type': 'application/json'
                     }
                 };

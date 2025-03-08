@@ -1,13 +1,17 @@
 package com.example.transport_marketplace.controllers;
 
 
-import com.example.transport_marketplace.enter.BookingRequest;
+import com.example.transport_marketplace.dto.booking.BookingRequest;
+import com.example.transport_marketplace.dto.booking.CancelBookingRequest;
+import com.example.transport_marketplace.exceptions.booking.AccessDeniedException;
+import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.User;
+import com.example.transport_marketplace.security.BookingSecurity;
 import com.example.transport_marketplace.service.BookingService;
 import com.example.transport_marketplace.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,18 +23,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/profile/bookings")
+@RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BookingController {
     public static final String BEARER_PREFIX = "Bearer ";
 
-    @Autowired
-    private BookingService bookingService;
+    private final BookingService bookingService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final BookingSecurity bookingSecurity;
+
 
     @Operation(summary = "Отображение только тех броней, что выбрал пользователей")
     @GetMapping("/my")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getMyBooking(@AuthenticationPrincipal UserDetails userDetails){
         String username = userDetails.getUsername();
         try{
@@ -67,13 +74,24 @@ public class BookingController {
     }
 
     @Operation(summary = "Отмена брони")
-    @PatchMapping("/my/{id}/cancel")
-    @PreAuthorize("@bookingSecurity.isBookingOwner(#id, principal) || hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> cancelBooking(@PathVariable int id) {
-        if(bookingService.cancelBooking(id)){
-            return ResponseEntity.ok("Бронирование отменено");
+    @PatchMapping("/my/cancel")
+    public ResponseEntity<?> cancelBooking(@RequestBody CancelBookingRequest request,
+                                           @AuthenticationPrincipal UserDetails userDetails) {
+        try{
+            String username = userDetails.getUsername();
+            boolean success = bookingService.cancelBooking(request.getBookingId(), username);
+            if(success){
+                return ResponseEntity.ok("Бронирование отменено");
+            }else{
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Бронирование уже отменено");
+            }
+        }catch (BookingNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (AccessDeniedException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка отмены");
     }
 
     @Operation(summary = "Поиск брони по id")

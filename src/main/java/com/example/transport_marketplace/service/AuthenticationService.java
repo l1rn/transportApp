@@ -1,11 +1,11 @@
     package com.example.transport_marketplace.service;
 
-    import com.example.transport_marketplace.enter.SignInRequest;
-    import com.example.transport_marketplace.enter.SignUpRequest;
+    import com.example.transport_marketplace.dto.auth.SignInRequest;
+    import com.example.transport_marketplace.dto.auth.SignUpRequest;
     import com.example.transport_marketplace.model.Token;
     import com.example.transport_marketplace.enums.Role;
     import com.example.transport_marketplace.model.User;
-    import com.example.transport_marketplace.enter.JwtAuthenticationResponse;
+    import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
     import com.example.transport_marketplace.jwt.JwtService;
     import com.example.transport_marketplace.repo.RefreshTokenRepository;
     import com.example.transport_marketplace.repo.UserRepository;
@@ -17,7 +17,6 @@
     import org.springframework.stereotype.Service;
 
     import java.time.Instant;
-    import java.util.List;
 
     @Service
     @AllArgsConstructor

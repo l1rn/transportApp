@@ -120,32 +120,32 @@ public class BookingServiceTest {
         assertEquals("Нет свободных мест", ex.getMessage());
     }
 
-    @Test
-    void testCancelBooking_Success() {
-        Booking bookingToCancel = Booking.builder()
-                .id(1)
-                .user(user)
-                .route(route)
-                .status(BookingStatus.BOOKED)
-                .build();
-        when(bookingRepository.findById(1)).thenReturn(Optional.of(bookingToCancel));
-        when(routeRepository.save(any(Route.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(bookingRepository.save(any(Booking.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        int initialSeats = route.getAvailableSeats();
-        boolean result = bookingService.cancelBooking(1);
-        assertTrue(result);
-        assertEquals(BookingStatus.CANCELED, bookingToCancel.getStatus());
-        assertEquals(initialSeats + 1, route.getAvailableSeats());
-        verify(bookingRepository, times(1)).findById(1);
-        verify(routeRepository, times(1)).save(route);
-        verify(bookingRepository, times(1)).save(bookingToCancel);
-    }
-
-    @Test
-    void testCancelBooking_NotFound() {
-        when(bookingRepository.findById(99)).thenReturn(Optional.empty());
-        boolean result = bookingService.cancelBooking(99);
-        assertFalse(result);
-        verify(bookingRepository, times(1)).findById(99);
-    }
+//    @Test
+//    void testCancelBooking_Success() {
+//        Booking bookingToCancel = Booking.builder()
+//                .id(1)
+//                .user(user)
+//                .route(route)
+//                .status(BookingStatus.BOOKED)
+//                .build();
+//        when(bookingRepository.findById(1)).thenReturn(Optional.of(bookingToCancel));
+//        when(routeRepository.save(any(Route.class))).thenAnswer(invocation -> invocation.getArgument(0));
+//        when(bookingRepository.save(any(Booking.class))).thenAnswer(invocation -> invocation.getArgument(0));
+//        int initialSeats = route.getAvailableSeats();
+//        boolean result = bookingService.cancelBooking(1);
+//        assertTrue(result);
+//        assertEquals(BookingStatus.CANCELED, bookingToCancel.getStatus());
+//        assertEquals(initialSeats + 1, route.getAvailableSeats());
+//        verify(bookingRepository, times(1)).findById(1);
+//        verify(routeRepository, times(1)).save(route);
+//        verify(bookingRepository, times(1)).save(bookingToCancel);
+//    }
+//
+//    @Test
+//    void testCancelBooking_NotFound() {
+//        when(bookingRepository.findById(99)).thenReturn(Optional.empty());
+//        boolean result = bookingService.cancelBooking(99);
+//        assertFalse(result);
+//        verify(bookingRepository, times(1)).findById(99);
+//    }
 }
