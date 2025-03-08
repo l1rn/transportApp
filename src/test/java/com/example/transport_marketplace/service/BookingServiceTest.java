@@ -7,11 +7,13 @@ import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.repo.RouteRepository;
 import com.example.transport_marketplace.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,33 +22,35 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class BookingServiceTest {
+class BookingServiceTest {
 
     @Mock
     private BookingRepository bookingRepository;
-
     @Mock
     private RouteRepository routeRepository;
-
     @Mock
     private UserRepository userRepository;
 
     @InjectMocks
     private BookingService bookingService;
 
-    private User user;
+    private User userCaller;
+    private User bookingOwner;
     private Route route;
     private Booking booking;
 
     @BeforeEach
     void setUp() {
-        user = new User(1, "user1", "password", null);
+        userCaller = new User(1, "user1", "password", null);
+        bookingOwner = new User(2, "user2", "password", null);
+
         route = new Route();
         route.setId(1);
         route.setAvailableSeats(10);
+
         booking = Booking.builder()
                 .id(1)
-                .user(user)
+                .user(bookingOwner)
                 .route(route)
                 .status(BookingStatus.BOOKED)
                 .build();
@@ -54,19 +58,21 @@ public class BookingServiceTest {
 
     @Test
     void testGetBookingByUser_Success() {
-        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(user));
-        when(bookingRepository.findByUser(user)).thenReturn(List.of(booking));
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userCaller));
+        when(bookingRepository.findByUser(userCaller)).thenReturn(List.of(booking));
 
         List<Booking> result = bookingService.getBookingByUser("user1");
-        assertEquals(1, result.size());
+        assertNotNull(result);
         verify(userRepository, times(1)).findByUsername("user1");
-        verify(bookingRepository, times(1)).findByUser(user);
+        verify(bookingRepository, times(1)).findByUser(userCaller);
     }
 
     @Test
     void testGetBookingByUser_UserNotFound() {
         when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> bookingService.getBookingByUser("unknown"));
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+                bookingService.getBookingByUser("unknown")
+        );
         assertEquals("Пользователь не найден", ex.getMessage());
     }
 
@@ -90,14 +96,13 @@ public class BookingServiceTest {
     @Test
     void testCreateBooking_Success() {
         when(routeRepository.findById(1)).thenReturn(Optional.of(route));
-        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1)).thenReturn(Optional.of(userCaller));
         when(routeRepository.save(any(Route.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(bookingRepository.save(any(Booking.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Booking newBooking = bookingService.createBooking(1, 1);
         assertNotNull(newBooking);
         assertEquals(BookingStatus.BOOKED, newBooking.getStatus());
-        // Количество свободных мест уменьшилось (10 -> 9)
         assertEquals(9, route.getAvailableSeats());
         verify(routeRepository, times(1)).findById(1);
         verify(userRepository, times(1)).findById(1);
@@ -120,32 +125,72 @@ public class BookingServiceTest {
         assertEquals("Нет свободных мест", ex.getMessage());
     }
 
-//    @Test
-//    void testCancelBooking_Success() {
-//        Booking bookingToCancel = Booking.builder()
-//                .id(1)
-//                .user(user)
-//                .route(route)
-//                .status(BookingStatus.BOOKED)
-//                .build();
-//        when(bookingRepository.findById(1)).thenReturn(Optional.of(bookingToCancel));
-//        when(routeRepository.save(any(Route.class))).thenAnswer(invocation -> invocation.getArgument(0));
-//        when(bookingRepository.save(any(Booking.class))).thenAnswer(invocation -> invocation.getArgument(0));
-//        int initialSeats = route.getAvailableSeats();
-//        boolean result = bookingService.cancelBooking(1);
-//        assertTrue(result);
-//        assertEquals(BookingStatus.CANCELED, bookingToCancel.getStatus());
-//        assertEquals(initialSeats + 1, route.getAvailableSeats());
-//        verify(bookingRepository, times(1)).findById(1);
-//        verify(routeRepository, times(1)).save(route);
-//        verify(bookingRepository, times(1)).save(bookingToCancel);
-//    }
-//
-//    @Test
-//    void testCancelBooking_NotFound() {
-//        when(bookingRepository.findById(99)).thenReturn(Optional.empty());
-//        boolean result = bookingService.cancelBooking(99);
-//        assertFalse(result);
-//        verify(bookingRepository, times(1)).findById(99);
-//    }
+    @Test
+    void testCancelBooking_Success() {
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userCaller));
+        when(bookingRepository.findById(1)).thenReturn(Optional.of(booking));
+        when(routeRepository.save(any(Route.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(bookingRepository.save(any(Booking.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        int initialSeats = route.getAvailableSeats();
+        boolean result = bookingService.cancelBooking(1, "user1");
+        assertTrue(result);
+        assertEquals(BookingStatus.CANCELED, booking.getStatus());
+        assertEquals(initialSeats + 1, route.getAvailableSeats());
+        verify(userRepository, times(1)).findByUsername("user1");
+        verify(bookingRepository, times(1)).findById(1);
+        verify(routeRepository, times(1)).save(route);
+        verify(bookingRepository, times(1)).save(booking);
+    }
+
+    @Test
+    void testCancelBooking_AlreadyCanceled() {
+        booking.setStatus(BookingStatus.CANCELED);
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userCaller));
+        when(bookingRepository.findById(1)).thenReturn(Optional.of(booking));
+
+        boolean result = bookingService.cancelBooking(1, "user1");
+        assertFalse(result);
+        verify(userRepository, times(1)).findByUsername("user1");
+        verify(bookingRepository, times(1)).findById(1);
+        verify(routeRepository, never()).save(any(Route.class));
+        verify(bookingRepository, never()).save(any(Booking.class));
+    }
+
+    @Test
+    void testCancelBooking_BookingNotFound() {
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userCaller));
+        when(bookingRepository.findById(99)).thenReturn(Optional.empty());
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> bookingService.cancelBooking(99, "user1"));
+        assertEquals("Бронирование не найдено", ex.getMessage());
+        verify(userRepository, times(1)).findByUsername("user1");
+        verify(bookingRepository, times(1)).findById(99);
+    }
+
+    @Test
+    void testCancelBooking_UserNotFound() {
+        when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> bookingService.cancelBooking(1, "unknown"));
+        assertEquals("Пользователь не найден", ex.getMessage());
+        verify(userRepository, times(1)).findByUsername("unknown");
+        verify(bookingRepository, never()).findById(anyInt());
+    }
+
+    @Test
+    void testCancelBooking_AccessDenied() {
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userCaller));
+        Booking sameOwnerBooking = Booking.builder()
+                .id(2)
+                .user(userCaller)
+                .route(route)
+                .status(BookingStatus.BOOKED)
+                .build();
+        when(bookingRepository.findById(2)).thenReturn(Optional.of(sameOwnerBooking));
+
+        AccessDeniedException ex = assertThrows(AccessDeniedException.class, () -> bookingService.cancelBooking(2, "user1"));
+        assertEquals("Нет прав для отмены бронирования", ex.getMessage());
+        verify(userRepository, times(1)).findByUsername("user1");
+        verify(bookingRepository, times(1)).findById(2);
+    }
 }

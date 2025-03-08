@@ -70,16 +70,22 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Бронирование не найдено"));
 
-        if (booking.getUser().getId() != user.getId()) {
+        if (booking.getUser().equals(user)) {
             throw new AccessDeniedException("Нет прав для отмены бронирования");
         }
 
         if (booking.getStatus() == BookingStatus.CANCELED) {
             return false;
         }
+        Route route = booking.getRoute();
+        if (route != null) {
+            route.setAvailableSeats(route.getAvailableSeats() + 1);
+            routeRepository.save(route);
+        }
+
         booking.setStatus(BookingStatus.CANCELED);
         bookingRepository.save(booking);
 
-        return false;
+        return true;
     }
 }

@@ -7,7 +7,6 @@ import com.example.transport_marketplace.exceptions.booking.AccessDeniedExceptio
 import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.User;
-import com.example.transport_marketplace.security.BookingSecurity;
 import com.example.transport_marketplace.service.BookingService;
 import com.example.transport_marketplace.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,9 +30,6 @@ public class BookingController {
     private final BookingService bookingService;
 
     private final UserService userService;
-
-    private final BookingSecurity bookingSecurity;
-
 
     @Operation(summary = "Отображение только тех броней, что выбрал пользователей")
     @GetMapping("/my")
@@ -92,14 +88,5 @@ public class BookingController {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-    }
-
-    @Operation(summary = "Поиск брони по id")
-    @GetMapping("/{id}")
-    @PreAuthorize("@bookingSecurity.canAccessBooking(#id, principal)")
-    public ResponseEntity<?> getBookingId(@PathVariable int id) {
-        return bookingService.getBookingById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
