@@ -2,64 +2,46 @@
 
   <!-- header  -->
   <div class="header-container-custom">
-    <div class="navbar-custom fixed-top shadow-navbar-custom">
-      <BNavbar>
-        <BNavbarBrand class="brand" @click="this.$router.replace('/home')">ololotravel</BNavbarBrand>
-        <BNavbarNav>
-            <div v-if="responses.success.login" class="success-message">
-              Успешый вход!
+    <div class="main-header" :class="{ 'header-scrolled': isScrolled }">
+      <div class="navbar-custom-header">
+        <div class="brand-header-custom">
+          <BNavbar>
+            <BNavbarBrand class="brand" @click="this.$router.replace('/home')">ololotravel</BNavbarBrand>
+            <BNavbarNav>
+              <div v-if="responses.success.login" class="success-message">
+                Успешый вход!
+              </div>
+
+            </BNavbarNav>
+            <div class="profile-header-custom">
+              <custom-profile @open-auth="showLoginForm = true"
+                              @logout="userLogout"
+                              :is-authenticated="isAuthenticated"/>
             </div>
-          <custom-profile @open-auth="showLoginForm = true"
-                          @logout="userLogout"
-                          :is-authenticated="isAuthenticated"
-          />
-        </BNavbarNav>
-      </BNavbar>
-      <BNavbar>
-        <BNav>
-          <BNavbarNav class="ms-auto">
-            <BNavItemDropdown
-                text="Транспорт"
-                toggle-class="transport-btn"
-                right
-                menu-class="transport-menu">
-              <BDropdownItem class="transport-item" @click="selectTransport('Поезд')">
-                <span class="emoji">🚂</span> Поезд
-              </BDropdownItem>
-              <BDropdownItem class="transport-item" @click="selectTransport('Автобус')">
-                <span class="emoji">🚌</span> Автобус
-              </BDropdownItem>
-              <BDropdownItem class="transport-item" @click="selectTransport('Авиа')">
-                <span class="emoji">✈️</span> Авиа
-              </BDropdownItem>
-            </BNavItemDropdown>
-          </BNavbarNav>
-        </BNav>
-        <BInput class="b-form-input" placeholder="Откуда"></BInput>
-        <BInput class="b-form-input ms-1" placeholder="Куда"></BInput>
-        <Datepicker class="ms-1" v-model="date"
-                    placeholder="Когда"
-                    :format="'dd-MM-yyyy'"
-                    :dark="false"
-                    :enable-time-picker="false" />
-        <Datepicker class="ms-1" v-model="arrivalDate"
-                    placeholder="Обратно"
-                    :format="'dd-MM-yyyy'"
-                    :enable-time-picker="false" />
-        <button class="search-button-custom btn"
-        :class="{'opacity-50': loading}"
-        :disabled="loading">
-        <span v-if="!loading">Поиск</span>
-        <span v-else>⌛</span>
-        <span class="search-icon">🔍</span>
-        </button>
-      </BNavbar>
+          </BNavbar>
+        </div>
+      </div>
+      <div class="header-title-container">
+        OloloTravel — с комфортом в любую точку мира.
+        <span>🚌</span>
+        <span>✈️</span>
+        <span>🚂</span>
+      </div>
+    </div>
+    <div class="sub-header-container"
+         :class="{ 'sub-header-fixed': isScrolled }">
+      <smart-input></smart-input>
       <BNavbar>
         <BNavbarBrand></BNavbarBrand>
-        <BNavbarNav style="font-family: Montserrat; margin-right: 20px;" v-if="itemTransport != ''"
-                    v-model="itemTransport">Ваш транспорт: {{ itemTransport }}</BNavbarNav>
+        <BNavbarNav style="font-family: Montserrat; margin-right: 20px;"
+                    >Ваш транспорт: {{ itemTransport }}</BNavbarNav>
       </BNavbar>
     </div>
+
+  </div>
+
+  <div class="content" :class="{ 'content-padded': isScrolled }">
+    Тестовый блок для проверки скроллбара
   </div>
 
   <!-- auth form -->
@@ -70,7 +52,6 @@
           Успешная регистрация!
         </div>
       </transition>
-
       <transition name="slide">
         <div v-if="responses.error" class="error-message">
           {{ responses.error }}
@@ -94,42 +75,33 @@
 
   </BModal>
 
-  <!-- section after header  -->
-
 </template>
 <script>
 
-import Datepicker from '@vuepic/vue-datepicker';
 import {
-  BDropdownItem,
-  BInput,
   BModal,
-  BNav,
   BNavbar,
   BNavbarBrand,
   BNavbarNav,
-  BNavItemDropdown,
   BTab,
   BTabs
 } from 'bootstrap-vue-next';
+import smartInput from "@/components/UI/SmartInput.vue";
 import Signup from '@/components/UI/Signup.vue';
 import Signin from "@/components/UI/Signin.vue";
 import CustomProfile from "@/components/bookings/Profile.vue";
 import LogoutService from "@/services/LogoutService";
+import {onBeforeUnmount, onMounted, ref} from "vue";
 import {cancelTokenRefresh, scheduleTokenRefresh} from "@/services/api";
 export default {
   name: 'AppRoutes',
   components: {
+    smartInput,
     CustomProfile,
-    BDropdownItem,
-    BInput,
     BModal,
-    BNav,
     BNavbar,
     BNavbarBrand,
     BNavbarNav,
-    BNavItemDropdown,
-    Datepicker,
     'sign-up': Signup,
     'sign-in': Signin,
     'b-tabs': BTabs,
@@ -157,6 +129,29 @@ export default {
     isAuthenticated(){
       return !!this.responses.token;
     }
+  },
+  setup() {
+    const selectedTransport = ref(null);
+
+    const handleTransportSelect = (transport) => {
+      selectedTransport.value = transport;
+    }
+    const scrollY = ref(0)
+    const isScrolled = ref(false)
+    const handleScroll = () => {
+      scrollY.value = window.scrollY || document.documentElement.scrollTop
+      isScrolled.value = scrollY.value > 100
+    }
+
+    onMounted(() => {
+      window.addEventListener('scroll', handleScroll)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('scroll', handleScroll)
+    })
+
+    return { isScrolled }
   },
   methods:{
     showMessage(type, message, timeout = 3000) {
@@ -230,9 +225,7 @@ export default {
         this.showMessage('error', `❌ ${message}`, 4000);
       }
     },
-    selectTransport(transport){
-      this.itemTransport = transport;
-    },
+
   },
   mounted() {
     if (localStorage.getItem("refreshToken")) {
@@ -244,5 +237,4 @@ export default {
 
 <style scoped lang="sass">
 @import '@/assets/styles/home.sass'
-
 </style>

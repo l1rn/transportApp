@@ -138,15 +138,22 @@ export default {
 }
 
 .profile-content {
-  display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: 9rem;
+  display: flex;
+  justify-content: center;
+  height: 3rem;
+  border-radius: 16px;
+  background: #e7eff3;
 }
 
 .profile-text {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  color: #2c3e50;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1778dc;
+
 }
 
 .profile-menu {
@@ -170,9 +177,6 @@ export default {
   gap: 0.75rem;
 }
 
-.menu-item:hover {
-  background: #f8f9fa;
-}
 
 .menu-item:first-child {
   border-radius: 8px 8px 0 0;

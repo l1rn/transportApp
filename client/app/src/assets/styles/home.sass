@@ -1,11 +1,15 @@
-$primary: #2563eb
+$primary: #ffffff
 $secondary: #f59e0b
-$accent: #3b82f6
+$accent: #447cdc
 $background: #f8fafc
-$text: #1e293b
+$text: #ffffff
 $success: #10b981
 $error: #ef4444
 $transition: all 0.3 cubic-bezier(0.4, 0, 0.2, 1)
+$font-family-base: 'Montserrat', sans-serif
+$box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1)
+$radius: 12px
+$shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 
 @mixin glass-effect
     background: rgba(255, 255, 255, 0.9)
@@ -20,14 +24,24 @@ $transition: all 0.3 cubic-bezier(0.4, 0, 0.2, 1)
     box-sizing: border-box
     transition: $transition
 
-body
-    background: $background
-    min-height: 100vh
-.navbar-custom
-    @include glass-effect
-    padding: 1rem 2rem
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05)
+.header-container-custom
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
+    position: relative
+    z-index: 1000
+    background: #8494b5
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3)
 
+    &.header-scrolled
+        height: 12vh
+
+.header-title-container
+    font-family: $font-family-base
+    font-size: 1.5rem
+    color: $text
+    font-weight: 600
+    position: relative
+
+.navbar-custom-header
     .brand
         font-family: 'Montserrat', sans-serif
         font-weight: 700
@@ -40,77 +54,23 @@ body
             position: absolute
             right: -1.8rem
             top: -0.5rem
-
-.search-section
-    padding: 2rem
-    margin: 2rem auto
-    max-width: 1200px
-    @include neumorphism
-
-    .b-input
-        border: 2px solid #e2e8f0
-        border-radius: 0.75rem
-        padding: 0.8rem 1.2rem
-        font-size: 1.1rem
-
-        &:focus
-            border-color: $primary
-            box-shadow: 0 0 0 3px rgba($primary, 0.2)
-
-    .datepicker
-        .dp__input
-            @extend .b-input
-
-.search-button-custom
-    background: linear-gradient(145deg, $secondary, darken($secondary, 10%))
-    color: white
-    border: none
-    border-radius: 0.75rem
-    padding: 1rem 2rem
-    font-weight: 600
-    text-transform: uppercase
-    letter-spacing: 0.05em
-    display: inline-flex
-    align-items: center
-    margin-left: 1rem
-    transition: transform 0.2s ease, box-shadow 0.2s ease
-    cursor: pointer
-
-    &:hover
-        transform: translateY(-2px)
-        box-shadow: 0 5px 15px rgba($secondary, 0.3)
-
-    &:active
-        transform: translateY(1px)
-
-    &[disabled]
-        opacity: 0.7
-        cursor: not-allowed
-.search-icon
-    font-size: 1.2em
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1))
-    transition: transform 0.3s ease
-
-.search-button-custom:hover .search-icon
-    animation: bounce 0.6s infinite
-
-@keyframes bounce
-    0%, 100%
+@keyframes slideDown
+    from
+        transform: translateY(-100%)
+    to
         transform: translateY(0)
-    50%
-        transform: translateY(-3px)
 
 .success-message, .error-message
-    padding: 1rem 2rem
-    border-radius: 0.75rem
+    padding: 1rem 1rem
+    border-radius: 16px
     font-weight: 500
+    color: white
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
 
     &::before
         content: ''
-        width: 1.2rem
-        height: 1.2rem
-        margin-right: 0.8rem
+        width: 1rem
+        height: 1rem
         display: inline-block
         background-size: contain
 
@@ -139,71 +99,58 @@ body
         width: 100%
         margin-top: 1rem
 
-$primary: #2563eb
-$secondary: #f59e0b
-$danger: #ef4444
-$success: #10b981
-$light: #f8fafc
-$dark: #1e293b
+.main-header
+    position: relative
+    z-index: 1000
+    background: #8494b5
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
+    display: flex
+    justify-content: space-between
+    align-items: center
+    place-content: center
+    flex-direction: column
+    padding: 1.75rem
+    &.header-hidden
+        transform: translateY(-100%)
+        opacity: 0
 
-$font-family-base: 'Montserrat', sans-serif
-$border-radius: 0.75rem
-$box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1)
-$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 
-.b-navbar-brand
-    font-weight: 700
-    font-size: 1.75rem
-    color: $primary !important
-    transition: transform 0.3s ease
-    &:hover
-        transform: scale(1.05)
+.profile-header-custom
+    margin-left: 60rem
+.sub-header-container
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1)
+    position: absolute
+    top: 180px
+    margin: 0 20rem
+    padding: 1.5rem
+    transition: all 0.4s ease
+    z-index: 999
+    border-radius: 24px
 
-    &::after
-        content: '✈️'
-        margin-left: 0.5rem
+    &.sub-header-fixed
+        position: fixed
+        top: 0
+        animation: slideDown 1.5s ease
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1)
+        background: white
+.content
+    margin-top: 200px
+    transition: margin-top 0.3s ease
+    height: 150vh
 
-    .b-nav-item
-        margin: 0 1rem
-        .b-nav-link
-            position: relative
-            color: $dark
-            &::after
-                content: ''
-                position: absolute
-                bottom: -5px
-                left: 0
-                width: 0
-                height: 2px
-                background: $primary
-                transition: width 0.3s ease
+    &.content-padded
+        margin-top: 120px
 
-            &:hover::after,
-            &.active::after
-                width: 100%
+@keyframes slideUp
+    from
+        transform: translateY(0)
+    to
+        transform: translateY(-100%)
 
-@media (max-width: 768px)
-    .navbar-custom
-        padding: 0.75rem
-        .b-navbar-brand
-            font-size: 1.5rem
-
-        .b-form-input,
-        .search-button-custom
-            width: 100%
-            margin: 0.5rem 0
-
-.b-form-input
-    border: 2px solid rgba($primary, 0.15)
-    border-radius: $border-radius
-    padding: 0.75rem 1.25rem
-    font-size: 1rem
-    transition: $transition-base
-
-    &:focus
-        border-color: $primary
-        box-shadow: 0 0 0 3px rgba($primary, 0.2)
-
-    &::placeholder
-        color: rgba($dark, 0.5)
-
+@keyframes slideDown
+    from
+        transform: translateY(-100%)
+        opacity: 0
+    to
+        transform: translateY(0)
+        opacity: 1

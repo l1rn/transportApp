@@ -1,0 +1,37 @@
+$border-radius: 0.75rem
+$input-bg: #f8fafc
+$input-border: #94a3b8
+$input-focus: #2563eb
+$placeholder-color: #64748b
+$shadow-focus: rgba(37, 99, 235, 0.4)
+::v-deep(.dp__input)
+  width: 100%
+  padding: 0.75rem 1.25rem
+  font-size: 1rem
+  font-weight: 600
+  background-color: $input-bg
+  border: 2px solid $input-border
+  border-radius: $border-radius
+  outline: none
+  color: #1e293b
+  transition: all 0.25s ease-in-out
+
+  &::placeholder
+    color: $placeholder-color
+
+  &:focus, &:hover
+    border-color: $input-focus
+    box-shadow: 0 0 8px $shadow-focus
+
+::v-deep(.dp__icon)
+  color: $input-focus
+  font-size: 1.2rem
+
+::v-deep(.dp__menu)
+  background-color: white
+  border: 1px solid $input-border
+  border-radius: $border-radius
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1)
+
+::v-deep(.dp__action_row)
+  display: none  // Убираем кнопки "ОК" и "Отмена", если auto-apply включен
