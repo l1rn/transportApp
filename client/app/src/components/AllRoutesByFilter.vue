@@ -45,21 +45,21 @@
                     </tbody>
                 </table>
                 <div class="pagination">
-                    <button
+                  <button
                     @click="currentPage--"
                     :disabled="currentPage === 1"
                     class="pagination-button"
                     >
                     Предыдущая
-                </button>
-                <span class="pagination-info">Страница {{ currentPage }} из {{ totalPages }}</span>
-                <button 
-                        @click="currentPage++" 
-                        :disabled="currentPage === totalPages"
-                        class="pagination-button"
-                    >
-                        Следующая
-                </button>
+                  </button>
+                  <span class="pagination-info">Страница {{ currentPage }} из {{ totalPages }}</span>
+                  <button 
+                          @click="currentPage++" 
+                          :disabled="currentPage === totalPages"
+                          class="pagination-button"
+                      >
+                          Следующая
+                  </button>
                 </div>
             </div>
         </div>

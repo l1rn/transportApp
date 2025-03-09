@@ -48,7 +48,6 @@ public class AuthController {
     public ResponseEntity<Void> logout(@RequestBody LogoutRequest request,
                                        @RequestHeader("Authorization") String authHeader) {
         String accessToken = authHeader.substring(7);
-
         tokenBlacklist.revoke(accessToken);
 
         authenticationService.deleteTokenByUser(request.getRefreshToken());

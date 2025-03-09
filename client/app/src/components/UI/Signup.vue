@@ -129,7 +129,7 @@ export default{
             else{
                 this.passwordError = null;
             }
-        }
+        },
     }
 }
 </script>

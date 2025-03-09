@@ -1,4 +1,5 @@
 @import "@/assets/styles/homeObjects/main-container"
+@import "@/assets/styles/homeObjects/footer"
 $primary: #ffffff
 $secondary: #f59e0b
 $accent: #447cdc
@@ -11,16 +12,6 @@ $font-family-base: 'Montserrat', sans-serif
 $box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1)
 $radius: 12px
 $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
-
-@mixin glass-effect
-    background: rgba(255, 255, 255, 0.9)
-    backdrop-filter: blur(10px)
-    border: 1px solid rgba(255, 255, 255, 0.2)
-
-@mixin neumorphism
-    border-radius: 1rem
-    box-shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
-
 *
     box-sizing: border-box
     transition: $transition
@@ -29,7 +20,6 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
     position: relative
     z-index: 1000
-    background: #8494b5
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3)
 
     &.header-scrolled
@@ -63,7 +53,7 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
     padding: 1rem 1rem
     border-radius: 16px
     font-weight: 500
-    color: white
+    color: black
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
 
     &::before
@@ -140,7 +130,8 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
         top: 0
         animation: slideDown 1.5s ease
         box-shadow: 0 2px 15px rgba(0,0,0,0.1)
-        background: white
+        background: #F7F9FB
+
 
 @keyframes slideUp
     from

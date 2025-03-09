@@ -1,9 +1,20 @@
 .content
+    background: transparent
     margin-top: 200px
     transition: margin-top 0.3s ease
-    height: 150vh
-    display: flex
-    justify-content: center
 
+   
     &.content-padded
         margin-top: 120px
+    .custom-container
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+.pagination
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 10px
+    z-index: 1000000
+    position: fixed

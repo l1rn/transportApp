@@ -35,13 +35,9 @@
     </div>
     <div class="sub-header-container"
          :class="{ 'sub-header-fixed': isScrolled }">
-      <smart-input @transport-selected="handleTransportSelect"></smart-input>
-      <BNavbar>
-        <label style="font-family: Montserrat; margin-left: 25rem"
-                    >Выбран транспорт: {{ itemTransport }}{{emojiTransport}}</label>
-      </BNavbar>
+      <smart-input @transport-selected="handleTransportSelect"
+                  @search-results="handleResults"></smart-input>
     </div>
-
   </div>
 
   <!-- auth form -->
@@ -74,20 +70,30 @@
     </b-tabs>
   </BModal>
   <div class="content" :class="{ 'content-padded': isScrolled }">
-    <route-container></route-container>
+    <div class="custom-container">
+      <route-container
+      :search-results="searchResults"
+      @require-auth="handleAuthRequired">
+      </route-container>
+    </div> 
+    <div class="pagination">
+                  
+    </div>
+    <div class="footer">
+      <div>l1rn Inc.</div>
+      <div><a href="https://github.com/l1rn" target="_blank"><img :src="github" alt="Логотип"></a></div>
+      <div>2025</div>
+    </div>  
   </div>
+  
 </template>
 <script setup>
-import RouteContainer from './bookings/RouteContainer.vue';
+import github from '@/assets/github-mark.svg';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
-import { 
-  BModal,
-  BNavbar,
-  BTab,
-  BTabs
-} from 'bootstrap-vue-next';
-import smartInput from "@/components/UI/SmartInput.vue";
+import { BModal, BTab, BTabs} from 'bootstrap-vue-next';
+import SmartInput from "@/components/UI/SmartInput.vue";
+import RouteContainer from './bookings/RouteContainer.vue';
 import Signup from '@/components/UI/Signup.vue';
 import Signin from "@/components/UI/Signin.vue";
 import CustomProfile from "@/components/bookings/Profile.vue";
@@ -95,10 +101,7 @@ import LogoutService from "@/services/LogoutService";
 import { cancelTokenRefresh, scheduleTokenRefresh } from "@/services/api";
 
 const router = useRouter();
-
 const showLoginForm = ref(false);
-const itemTransport = ref(null);
-const emojiTransport = ref(null);
 const scrollY = ref(0);
 const isScrolled = ref(false);
 const responses = ref({
@@ -112,6 +115,11 @@ const responses = ref({
   token: localStorage.getItem("refreshToken"),
 });
 
+const handleAuthRequired = () => {
+  showLoginForm.value = true;
+  showMessage('error', '❌ Для бронирования необходимо авторизоваться');
+};
+
 const isAuthenticated = computed(() => !!responses.value.token);
 
 const handleScroll = () => {
@@ -119,7 +127,6 @@ const handleScroll = () => {
   isScrolled.value = scrollY.value > 100;
 };
 
-// Методы
 const showMessage = (type, message, timeout = 3000) => {
   const [category, subType] = type.split(':');
   if (category === 'success') {
@@ -188,12 +195,6 @@ const userLogout = async () => {
   }
 };
 
-const handleTransportSelect = (transport) => {
-  itemTransport.value = transport.label;
-  emojiTransport.value = transport.emoji;
-};
-
-// Хуки жизненного цикла
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
   if (localStorage.getItem("refreshToken")) {
@@ -204,6 +205,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
 });
+const searchResults = ref([]);
+const handleResults = (results) => {
+  searchResults.value = results;
+}
 </script>
 <script>
   export default{

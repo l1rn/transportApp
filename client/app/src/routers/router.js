@@ -5,7 +5,7 @@ import AllRoutesByFilter from '@/components/AllRoutesByFilter.vue';
 
 const routes = [
     {path: '/', redirect: '/home'},
-    { path: '/profile', component: AppProfilePage },
+    { path: '/profile', component: AppProfilePage, meta:{requiresAuth: true} },
     { path: '/routes', component: AllRoutesByFilter},
     { path: '/home', component: Home},
 ]

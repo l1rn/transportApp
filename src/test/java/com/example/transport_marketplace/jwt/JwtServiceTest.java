@@ -28,7 +28,6 @@ public class JwtServiceTest {
         String token = jwtService.generateAccessToken(user);
         assertNotNull(token);
 
-        // Извлекаем информацию из токена
         String username = jwtService.getUsernameFromToken(token);
         assertEquals("testuser", username);
 

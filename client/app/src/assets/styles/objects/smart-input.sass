@@ -31,21 +31,26 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 .slide-fade-leave-to
   transform: translateY(-10px)
   opacity: 0
-
+.sub-search-container
+  display: flex
+  justify-content: space-evenly
+  align-items: center
+  
 .custom-clear-button
   z-index: 10
-  border:none
+  border: 0
   outline:none
   border-radius: 8px
   background: $accent
   padding: 0.2rem 1.8rem
   font-size: 17px
+  transition: all 0.3s ease
   &:hover
     background: $primary
     box-shadow: 0 10px 20px rgba(0, 91, 187, 0.3)
   &:active
     box-shadow: 0 5px 10px rgba(0, 91, 187, 0.2)
-
+    
 // suggestions
 .autocomplete
   position: relative
@@ -130,3 +135,36 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 
 .error
   color: #ff4444
+
+.pagination
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 1.5rem
+
+    &-button
+        padding: 0.3rem 0.6rem
+        background: linear-gradient(135deg, blue 0%, darken(blue, 5%) 100%)
+        color: white
+        border: none
+        border-radius: 12px
+        cursor: pointer
+        font-weight: 900
+        transition: all 0.4s ease
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1)
+        font-weight: 600
+        z-index: 10000
+        
+        &:hover:not(:disabled)
+            transform: translateY(-2px)
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15)
+        
+        &:disabled
+            background: #dee2e6
+            color: #adb5bd
+            cursor: not-allowed
+    
+    &-info
+        font-size: 0.9em
+        color: $accent
+        font-weight: 500

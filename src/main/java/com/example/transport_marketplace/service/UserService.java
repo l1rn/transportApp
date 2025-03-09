@@ -1,7 +1,10 @@
 package com.example.transport_marketplace.service;
+import com.example.transport_marketplace.dto.auth.CurrentRoleResponse;
 import com.example.transport_marketplace.enums.Role;
+import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository repository;
+    private final JwtService jwtService;
 
     public User save(User user){
         return repository.save(user);
@@ -28,6 +32,12 @@ public class UserService {
 
     public List<User> getAllUsers(){
         return repository.findAll();
+    }
+
+    @Transactional
+    public Optional<Role> getUserRole(String username) {
+        return repository.findByUsername(username)
+                .map(User::getRole);
     }
 
     public User getByUsername(String username) {

@@ -2,7 +2,14 @@
 import {ref, reactive, defineEmits, onMounted, computed, nextTick} from "vue";
 import RoutesService from "@/services/RoutesService";
 
+const emit = defineEmits(['search-results', 'update:page']);
+// const props = defineProps({
+//   currentPage: Number,
+//   itemsPerPage: Number
+// })
 const routes = ref([]);
+const searchResults = ref([])
+
 let inputRouteFrom = ref('');
 let inputRouteTo = ref('');
 
@@ -33,7 +40,7 @@ const availableTos = computed(() => {
   if(!inputRouteFrom.value) return [];
   const searchFrom = inputRouteFrom.value.toLowerCase();
 
-  const fromRoutes = routes.value.filter(r =>
+const fromRoutes = routes.value.filter(r =>
     r?.routeFrom?.toLowerCase() === searchFrom
   );
   return [...new Set(fromRoutes.map(r => r.routeTo))].filter(Boolean);
@@ -77,9 +84,9 @@ const handleToBlur = () => {
   }, 150)
 }
 
-const emit = defineEmits(['select'])
 const isOpen = ref(false)
 const selectedTransport = ref(null)
+const selectedEmoji = ref(null)
 const transports = reactive([
   { value: 'train', label: 'Поезд', emoji: '🚂' },
   { value: 'bus', label: 'Автобус', emoji: '🚌' },
@@ -93,15 +100,13 @@ const toggleMenu = () => {
 const selectTransport = (value) => {
   const transport = transports.find(t => t.value === value)
   selectedTransport.value = transport?.label || null
-  isOpen.value = false
-  emit('transport-selected', transport)
+  selectedEmoji.value = transport?.emoji || null;
 }
 
 onMounted(async() =>{
   await fetchRoutes();
 })
 
-const hasValue = ref(false);
 
 const fetchRoutes = async () => {
   try {
@@ -114,10 +119,36 @@ const fetchRoutes = async () => {
   }finally {
     isLoading.value = false;
   }
+};
+const searchRoutes = async () => {
+    try{
+        isLoading.value = true;
+        const response = await RoutesService.searchRoutes(
+        inputRouteFrom.value,
+        inputRouteTo.value,
+        selectedDate.value,
+        selectedTransport.value,
+      );
+      searchResults.value = response.data;
+      emit('search-results', searchResults.value.content);
+    }
+    catch(err){
+      error.value = 'Ошибка при поиске маршрутов';
+      console.error(err);
+    }
+    finally{
+      isLoading.value = false
+  }
 }
-const updatePlaceholder = () => {
-  hasValue.value = !!selectedDate.value;
+const clearFilter = () => {
+  inputRouteFrom.value = ''
+  inputRouteTo.value = ''
+  selectedDate.value = ''
+  selectedEmoji.value = ''
+  selectedTransport.value = ''
 }
+
+
 </script>
 <template>
   <div class="main-container">
@@ -190,8 +221,10 @@ const updatePlaceholder = () => {
           v-model="arrivalDate"
           @change="updatePlaceholder"
           @input="updatePlaceholder"
+          style="color:red"
+          disabled
           />
-      <span class="custom-placeholder">Обратно</span>
+      <span class="custom-placeholder">Обратно - WIP</span>
     </div>
 
 
@@ -222,17 +255,25 @@ const updatePlaceholder = () => {
       </transition>
     </div>
 
-    <button class="search-button-custom btn"
-            :class="{'opacity-50': isLoading}"
-            :disabled="isLoading">
-
-      <span v-if="!loading">Поиск</span>
-      <span v-else>⌛</span>
-      <span class="search-icon">🔍</span>
-      
-    </button>
-    <button class="custom-clear-button" @click="clearAllSearch">Очистить выбор</button>
+    <button 
+    class="search-button-custom btn"
+    :class="{'opacity-50': isLoading}"
+    :disabled="isLoading"
+    @click="searchRoutes"
+  >
+    <span v-if="!isLoading">Поиск</span>
+    <span v-else>⌛</span>
+    <span class="search-icon">🔍</span>
+  </button>
   </div>
+  <div class="sub-search-container">
+    <label
+    >Выбран транспорт: {{ selectedTransport }}{{selectedEmoji}}</label>
+    <button class="custom-clear-button" @click="clearFilter">Очистить фильтр</button>
+    
+  </div>
+  
+  
 </template>
 
 <style scoped lang="sass">
