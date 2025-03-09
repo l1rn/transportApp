@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory} from 'vue-router';
-import Routes from '@/components/Routes.vue';
-
 import AppProfilePage from '@/components/UI/ProfilePage.vue';
 import Home from "@/components/Home.vue";
+import AllRoutesByFilter from '@/components/AllRoutesByFilter.vue';
 
 const routes = [
     {path: '/', redirect: '/home'},
     { path: '/profile', component: AppProfilePage },
-    { path: '/routes', component: Routes},
+    { path: '/routes', component: AllRoutesByFilter},
     { path: '/home', component: Home},
 ]
 

@@ -1,20 +1,20 @@
 <script setup>
 import {ref, reactive, defineEmits, onMounted, computed, nextTick} from "vue";
-import Datepicker from "@vuepic/vue-datepicker";
 import RoutesService from "@/services/RoutesService";
 
 const routes = ref([]);
 let inputRouteFrom = ref('');
 let inputRouteTo = ref('');
-const date = ref(null);
+
+const selectedDate = ref(null);
 const arrivalDate = ref(null);
+
 const isLoading = ref(false);
 const error = ref(null);
 const toInput = ref(null)
 
 const showFromSuggestions = ref(false);
 const showToSuggestions = ref(false);
-
 
 const uniqueFroms = computed(() => {
   return [...new Set(routes.value.map(route => route.routeFrom))];
@@ -76,6 +76,7 @@ const handleToBlur = () => {
     showToSuggestions.value = false
   }, 150)
 }
+
 const emit = defineEmits(['select'])
 const isOpen = ref(false)
 const selectedTransport = ref(null)
@@ -95,9 +96,12 @@ const selectTransport = (value) => {
   isOpen.value = false
   emit('transport-selected', transport)
 }
+
 onMounted(async() =>{
   await fetchRoutes();
 })
+
+const hasValue = ref(false);
 
 const fetchRoutes = async () => {
   try {
@@ -110,6 +114,9 @@ const fetchRoutes = async () => {
   }finally {
     isLoading.value = false;
   }
+}
+const updatePlaceholder = () => {
+  hasValue.value = !!selectedDate.value;
 }
 </script>
 <template>
@@ -164,19 +171,29 @@ const fetchRoutes = async () => {
     </div>
 
 
+    <div class="date-input-wrapper"
+        :class="{ 'has-value': selectedDate}">
+      <input
+          type="date"
+          v-model="selectedDate"
+          id="date-input"
+          @change="updatePlaceholder"
+          @input="updatePlaceholder"
+        style="background-color: #f8fafc"/>
+      <span class="custom-placeholder">Когда</span>
+    </div>
 
-    <Datepicker
-        v-model="date"
-        placeholder="Когда"
-        :format="'dd-MM-yyyy'"
-        :dark="false"
-        :enable-time-picker="false" />
-    <Datepicker
-        class=""
-        v-model="arrivalDate"
-        placeholder="Обратно"
-        :format="'dd-MM-yyyy'"
-        :enable-time-picker="false" />
+    <div class="date-input-wrapper">
+      <input
+          type="date"
+          id="date-input"
+          v-model="arrivalDate"
+          @change="updatePlaceholder"
+          @input="updatePlaceholder"
+          />
+      <span class="custom-placeholder">Обратно</span>
+    </div>
+
 
     <div class="transport-wrapper">
       <div
@@ -204,6 +221,7 @@ const fetchRoutes = async () => {
         </div>
       </transition>
     </div>
+
     <button class="search-button-custom btn"
             :class="{'opacity-50': isLoading}"
             :disabled="isLoading">
@@ -211,7 +229,9 @@ const fetchRoutes = async () => {
       <span v-if="!loading">Поиск</span>
       <span v-else>⌛</span>
       <span class="search-icon">🔍</span>
+      
     </button>
+    <button class="custom-clear-button" @click="clearAllSearch">Очистить выбор</button>
   </div>
 </template>
 

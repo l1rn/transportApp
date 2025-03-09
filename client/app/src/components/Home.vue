@@ -4,22 +4,27 @@
   <div class="header-container-custom">
     <div class="main-header" :class="{ 'header-scrolled': isScrolled }">
       <div class="navbar-custom-header">
-        <div class="brand-header-custom">
-          <BNavbar>
-            <BNavbarBrand class="brand" @click="this.$router.replace('/home')">ololotravel</BNavbarBrand>
-            <BNavbarNav>
-              <div v-if="responses.success.login" class="success-message">
-                Успешый вход!
+              <div style="cursor: pointer;" class="brand" @click="this.$router.replace('/home')">
+                ololotravel
               </div>
-
-            </BNavbarNav>
-            <div class="profile-header-custom">
-              <custom-profile @open-auth="showLoginForm = true"
-                              @logout="userLogout"
-                              :is-authenticated="isAuthenticated"/>
-            </div>
-          </BNavbar>
-        </div>
+                <div v-if="responses.success.login" class="success-message">
+                    Успешый вход!
+                </div>
+                <div class="header-item">
+                  <button @click="this.$router.push('/routes')">
+                    Все маршруты с фильтром
+                  </button>
+                </div>
+                <!-- <div class="header-item">
+                  <button>
+                    123
+                  </button>
+                </div> -->
+              <div class="profile-header-custom">
+                <custom-profile @open-auth="showLoginForm = true"
+                                @logout="userLogout"
+                                :is-authenticated="isAuthenticated"/>
+              </div>
       </div>
       <div class="header-title-container">
         OloloTravel — с комфортом в любую точку мира.
@@ -32,17 +37,11 @@
          :class="{ 'sub-header-fixed': isScrolled }">
       <smart-input @transport-selected="handleTransportSelect"></smart-input>
       <BNavbar>
-        <p></p>
-        <button class="position-absolute" @click="clearAllSearch">Очистить выбор</button>
-        <label style="font-family: Montserrat; margin-right: 20px;"
+        <label style="font-family: Montserrat; margin-left: 25rem"
                     >Выбран транспорт: {{ itemTransport }}{{emojiTransport}}</label>
       </BNavbar>
     </div>
 
-  </div>
-
-  <div class="content" :class="{ 'content-padded': isScrolled }">
-    Тестовый блок для проверки скроллбара
   </div>
 
   <!-- auth form -->
@@ -61,29 +60,30 @@
     </div>
     <b-tabs class="b-tabs" content-class="mt-3" fill>
       <b-tab class="nav-link" title="Войти">
-        <sign-in
+        <Signin
             @logined="handleUserLogined"
             @close="showLoginForm = false"
         />
 
       </b-tab>
       <b-tab class="nav-link" title="Зарегистрироваться">
-        <sign-up
+        <Signup
             @registered="handleUserRegistered"
         />
       </b-tab>
     </b-tabs>
-
   </BModal>
-
+  <div class="content" :class="{ 'content-padded': isScrolled }">
+    <route-container></route-container>
+  </div>
 </template>
-<script>
-
-import {
+<script setup>
+import RouteContainer from './bookings/RouteContainer.vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
+import { 
   BModal,
   BNavbar,
-  BNavbarBrand,
-  BNavbarNav,
   BTab,
   BTabs
 } from 'bootstrap-vue-next';
@@ -92,153 +92,124 @@ import Signup from '@/components/UI/Signup.vue';
 import Signin from "@/components/UI/Signin.vue";
 import CustomProfile from "@/components/bookings/Profile.vue";
 import LogoutService from "@/services/LogoutService";
-import {onBeforeUnmount, onMounted, ref} from "vue";
-import {cancelTokenRefresh, scheduleTokenRefresh} from "@/services/api";
-export default {
-  name: 'AppHome',
-  components: {
-    smartInput,
-    CustomProfile,
-    BModal,
-    BNavbar,
-    BNavbarBrand,
-    BNavbarNav,
-    'sign-up': Signup,
-    'sign-in': Signin,
-    'b-tabs': BTabs,
-    'b-tab': BTab,
+import { cancelTokenRefresh, scheduleTokenRefresh } from "@/services/api";
+
+const router = useRouter();
+
+const showLoginForm = ref(false);
+const itemTransport = ref(null);
+const emojiTransport = ref(null);
+const scrollY = ref(0);
+const isScrolled = ref(false);
+const responses = ref({
+  success: {
+    register: false,
+    login: false,
+    logout: false,
   },
-  data(){
-    return{
-      showLoginForm: false,
-      registeredUser: null,
-      userLogined: null,
-      itemTransport: null,
-      emojiTransport:null,
-      responses:{
-        success: {
-          register: false,
-          login: false,
-          logout: false,
-        },
-        error:null,
-        haveToken: !!localStorage.getItem("refreshToken"),
-        token: localStorage.getItem("refreshToken"),
-      }
-    }
-  },
-  computed:{
-    isAuthenticated(){
-      return !!this.responses.token;
-    }
-  },
-  setup() {
-    const scrollY = ref(0)
-    const isScrolled = ref(false)
-    const handleScroll = () => {
-      scrollY.value = window.scrollY || document.documentElement.scrollTop
-      isScrolled.value = scrollY.value > 100
-    }
+  error: null,
+  haveToken: !!localStorage.getItem("refreshToken"),
+  token: localStorage.getItem("refreshToken"),
+});
 
-    onMounted(() => {
-      window.addEventListener('scroll', handleScroll)
-    })
+const isAuthenticated = computed(() => !!responses.value.token);
 
-    onBeforeUnmount(() => {
-      window.removeEventListener('scroll', handleScroll)
-    })
+const handleScroll = () => {
+  scrollY.value = window.scrollY || document.documentElement.scrollTop;
+  isScrolled.value = scrollY.value > 100;
+};
 
-    return { isScrolled }
-  },
-  methods:{
-    showMessage(type, message, timeout = 3000) {
-      if(type.includes('success')) {
-        this.responses.error = null;
-      } else {
-        this.responses.success.register = false;
-        this.responses.success.login = false;
-      }
-
-      const [category, subType] = type.split(':');
-      if(category === 'success') {
-        this.responses.success[subType] = message;
-      } else {
-        this.responses.error = message;
-      }
-
-      if(timeout > 0) {
-        setTimeout(() => {
-          if(category === 'success') {
-            this.responses.success[subType] = false;
-          } else {
-            this.responses.error = null;
-          }
-        }, timeout);
-      }
-    },
-    async handleUserRegistered(result){
-      if(result.success){
-        this.showMessage('success:register', result.message, 3000);
-        this.showLoginForm = true;
-      }else{
-        this.showMessage('error', `❌ ${result.message}`, 3000);
-      }
-    },
-
-    async handleUserLogined(result){
-      if(result.success){
-        this.showMessage('success:login', ` ${result.message}`, 3000);
-        localStorage.setItem("refreshToken", result.refreshToken);
-        localStorage.setItem("accessToken", result.accessToken);
-        scheduleTokenRefresh();
-        this.responses.token = result.refreshToken;
-        this.responses.haveToken = !!this.responses.token;
-        this.showLoginForm = false;
-      }
-      else {
-        this.showMessage('error', `❌ ${result.message}`, 4000);
-      }
-    },
-
-    async userLogout(){
-      try {
-        const success = await LogoutService.logoutUser(
-            localStorage.getItem('accessToken'),
-            localStorage.getItem('refreshToken')
-        );
-        if(success){
-          cancelTokenRefresh();
-          this.showMessage('success:login', '✅ Успешный выход!', 3000);
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          this.responses.token = null ;
-          this.responses.haveToken = false;
-          this.success.logout = true;
-          this.$router.push('/');
-        }
-      }
-      catch(error){
-        const message = error.response?.data?.message || 'Ошибка выхода';
-        this.showMessage('error', `❌ ${message}`, 4000);
-      }
-    },
-    handleTransportSelect(transport){
-      this.itemTransport = transport.label;
-      this.emojiTransport = transport.emoji;
-    },
-    clearAllSearch(){
-      this.itemTransport = null;
-      this.emojiTransport = null;
-    }
-  },
-  mounted() {
-    if (localStorage.getItem("refreshToken")) {
-      scheduleTokenRefresh();
-    }
+// Методы
+const showMessage = (type, message, timeout = 3000) => {
+  const [category, subType] = type.split(':');
+  if (category === 'success') {
+    responses.value.success[subType] = message;
+    responses.value.error = null;
+  } else {
+    responses.value.error = message;
+    Object.keys(responses.value.success).forEach(k => {
+      responses.value.success[k] = false;
+    });
   }
-}
-</script>
 
+  if (timeout > 0) {
+    setTimeout(() => {
+      if (category === 'success') {
+        responses.value.success[subType] = false;
+      } else {
+        responses.value.error = null;
+      }
+    }, timeout);
+  }
+};
+
+const handleUserRegistered = (result) => {
+  if (result.success) {
+    showMessage('success:register', result.message);
+    showLoginForm.value = true;
+  } else {
+    showMessage('error', `❌ ${result.message}`);
+  }
+};
+
+const handleUserLogined = async (result) => {
+  if (result.success) {
+    showMessage('success:login', ` ${result.message}`);
+    localStorage.setItem("refreshToken", result.refreshToken);
+    localStorage.setItem("accessToken", result.accessToken);
+    scheduleTokenRefresh();
+    responses.value.token = result.refreshToken;
+    responses.value.haveToken = true;
+    showLoginForm.value = false;
+  } else {
+    showMessage('error', `❌ ${result.message}`);
+  }
+};
+
+const userLogout = async () => {
+  try {
+    const success = await LogoutService.logoutUser(
+      localStorage.getItem('accessToken'),
+      localStorage.getItem('refreshToken')
+    );
+    
+    if (success) {
+      cancelTokenRefresh();
+      showMessage('success:logout', '✅ Успешный выход!');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      responses.value.token = null;
+      responses.value.haveToken = false;
+      router.push('/');
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || 'Ошибка выхода';
+    showMessage('error', `❌ ${message}`);
+  }
+};
+
+const handleTransportSelect = (transport) => {
+  itemTransport.value = transport.label;
+  emojiTransport.value = transport.emoji;
+};
+
+// Хуки жизненного цикла
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+  if (localStorage.getItem("refreshToken")) {
+    scheduleTokenRefresh();
+  }
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+</script>
+<script>
+  export default{
+    name:"AppHome"
+  }
+</script>
 <style scoped lang="sass">
 @import '@/assets/styles/home.sass'
 </style>

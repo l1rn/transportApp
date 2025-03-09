@@ -62,7 +62,7 @@ export function scheduleTokenRefresh (){
     const expiresAt = payload.exp * 1000;
     const now = Date.now();
 
-    const timeout = expiresAt - now - 5000;
+    const timeout = expiresAt - now - 10000;
 
     if(refreshToken){
         cancelTokenRefresh();

@@ -15,10 +15,11 @@ export default {
   created(){
     this.getBookings();
   },
-  methods:{
+  methods: {
     async getBookings(){
       this.isLoading = true;
       try {
+        await BookingService.checkRefreshToken();
         const response = await BookingService.getMyBooking();
         this.bookings = response.data;
       }
@@ -45,8 +46,9 @@ export default {
       finally {
         this.cancelingIds.delete(bookingId);
       }
-    }
   }
+}
+
 }
 </script>
 

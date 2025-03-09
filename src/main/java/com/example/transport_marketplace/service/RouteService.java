@@ -53,12 +53,9 @@ public class RouteService {
         return null;
     }
     public List<Route> searchRoutes(String routeFrom, String routeTo, String date, String transport){
-
-        return routeRepository.findAll().stream()
-                .filter(r -> (routeFrom == null || (r.getRouteFrom() != null && r.getRouteFrom().toLowerCase().contains(routeFrom.toLowerCase()))) &&
-                        (routeTo == null || (r.getRouteTo() != null && r.getRouteTo().toLowerCase().contains(routeTo.toLowerCase()))) &&
-                        (date == null || r.getDate().equals(date)) &&
-                        (transport == null || r.getTransport().equalsIgnoreCase(transport)))
-                .collect(Collectors.toList());
+        if(routeFrom == null && routeTo == null && date == null && transport == null){
+            return routeRepository.findAll();
+        }
+        return routeRepository.searchRoutes(routeFrom, routeTo, date, transport);
     }
 }

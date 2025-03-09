@@ -31,9 +31,9 @@ export default {
     toggleProfileMenu() {
       this.isProfileMenuOpen = !this.isProfileMenuOpen;
     },
-    handleMenuItemClick(action){
+    async handleMenuItemClick(action){
       switch (action) {
-        case "orders":
+        case "orders": 
           this.$router.push({path:'/profile'});
           break;
         case "auth":

@@ -4,39 +4,28 @@ import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFo
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.service.RouteService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/routes")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class RouteController {
     @Autowired
-    private RouteService routeService;
+    private final RouteService routeService;
 
-    RouteController(RouteService routeService){
-        this.routeService = routeService;
-    }
-
-//    @Operation(summary = "Получение всех маршрутов")
-//    @GetMapping
-//    public ResponseEntity<Page<Route>> getRoutes(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(required = false) String sortBy
-//    ){
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-//        Page<Route> routes = routeService.getAllRoutes(pageable);
-//        return ResponseEntity.ok(routes);
-//    }
     @Operation(summary = "Получение всех маршрутов")
-
     @GetMapping
     public ResponseEntity<List<Route>> getRoutes() throws IOException{
         List<Route> routes = routeService.getRoutes();
@@ -61,6 +50,7 @@ public class RouteController {
     }
 
     @Operation(summary = "Добавление маршрута")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<Route> addRoute(@RequestBody Route route){
         Route savedRoute = routeService.addRoute(route);
@@ -68,6 +58,7 @@ public class RouteController {
     }
 
     @Operation(summary = "Удаление маршрута")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoute(@PathVariable int id){
         boolean deleted = routeService.deleteRoute(id);
@@ -75,6 +66,7 @@ public class RouteController {
                         : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Route> updateRoute(@PathVariable int id, @RequestBody Route updatedRoute){
         Route route = routeService.updateRoute(id, updatedRoute);
@@ -107,11 +99,37 @@ public class RouteController {
             @RequestParam(required = false) String routeFrom,
             @RequestParam(required = false) String routeTo,
             @RequestParam(required = false) String date,
-            @RequestParam(required = false) String transport){
+            @RequestParam(required = false) String transport,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size){
 
         List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, date, transport);
-        System.out.println("Найдено маршрутов: " + filteredRoutes.size());
 
+        int start = page * size;
+        int end = Math.min(start + size, filteredRoutes.size());
+
+        List<Route> paginatedResult = start < end
+                ? filteredRoutes.subList(start, end)
+                : List.of();
+
+        return new ResponseEntity<>(
+                new HashMap<String, Object>(){{
+                    put("content", paginatedResult);
+                    put("totalElements", filteredRoutes.size());
+                    put("totalPages", (int) Math.ceil((double) filteredRoutes.size() / size));
+                    put("currentPage", page);
+                }},
+                HttpStatus.OK
+        );
+    }
+    @GetMapping("/priceRange")
+    public ResponseEntity<List<Route>> searchByPriceRange(
+            @RequestParam Double minPrice,
+            @RequestParam Double maxPrice
+    ) {
+        List<Route> filteredRoutes = routeService.getRoutes().stream()
+                .filter(route -> route.getPrice() >= minPrice && route.getPrice() <= maxPrice)
+                .collect(Collectors.toList());
         return new ResponseEntity<>(filteredRoutes, HttpStatus.OK);
     }
 

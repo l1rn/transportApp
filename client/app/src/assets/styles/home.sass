@@ -1,3 +1,4 @@
+@import "@/assets/styles/homeObjects/main-container"
 $primary: #ffffff
 $secondary: #f59e0b
 $accent: #447cdc
@@ -36,8 +37,12 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 
 .header-title-container
     font-family: $font-family-base
+    margin-top: 1rem
     font-size: 1.5rem
     color: $text
+    display: flex
+    justify-content: center
+    text-align:center
     font-weight: 600
     position: relative
 
@@ -48,17 +53,11 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
         font-size: 1.5rem
         color: $primary
         position: relative
-
         &::after
             content: '🚀'
+            top: -1.2rem
+
             position: absolute
-            right: -1.8rem
-            top: -0.5rem
-@keyframes slideDown
-    from
-        transform: translateY(-100%)
-    to
-        transform: translateY(0)
 
 .success-message, .error-message
     padding: 1rem 1rem
@@ -104,19 +103,28 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
     z-index: 1000
     background: #8494b5
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
-    display: flex
-    justify-content: space-between
-    align-items: center
-    place-content: center
-    flex-direction: column
     padding: 1.75rem
     &.header-hidden
         transform: translateY(-100%)
         opacity: 0
-
-
-.profile-header-custom
-    margin-left: 60rem
+    button
+        padding: 0.75rem 2.4rem 
+        background:rgb(21, 59, 148) 
+        border: 0
+        border-radius: 16px
+        font-size: 20px
+        font-family: Montserrat
+        box-shadow: 0 0 8px rgba(0,0,0, 0.15)  
+        transition: all 0.3s ease
+        &:hover
+            transform: translateY(1px)
+            box-shadow: 0 0 16px rgba(0,0,0, 0.21) 
+.navbar-custom-header
+    display: flex
+    place-content: center
+    flex-direction: row
+    justify-content: space-evenly
+    align-items: center
 .sub-header-container
     box-shadow: 0 2px 15px rgba(0,0,0,0.1)
     position: absolute
@@ -133,13 +141,6 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
         animation: slideDown 1.5s ease
         box-shadow: 0 2px 15px rgba(0,0,0,0.1)
         background: white
-.content
-    margin-top: 200px
-    transition: margin-top 0.3s ease
-    height: 150vh
-
-    &.content-padded
-        margin-top: 120px
 
 @keyframes slideUp
     from
