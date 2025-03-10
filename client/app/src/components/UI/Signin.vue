@@ -70,7 +70,7 @@ export default {
 
                 localStorage.setItem("accessToken", response.data.accessToken);
                 localStorage.setItem("refreshToken", response.data.refreshToken);
-
+                
                 this.$emit('logined', {
                   success: true,
                   message: '✅ Успешная вход!',

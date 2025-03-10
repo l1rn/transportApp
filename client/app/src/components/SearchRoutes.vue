@@ -365,8 +365,8 @@ const getDateSource = (route, isArrival = false) => {
 
 const formatDate = (dateString) => {
   try {
-    const [year, month, day] = dateString.split('-');
-    return `${day}-${month}`;
+    const parts = dateString.split('-');
+    return `${parts[2]}-${parts[1]}`; 
   } catch {
     return '??-??';
   }

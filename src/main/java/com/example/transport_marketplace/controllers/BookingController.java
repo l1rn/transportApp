@@ -46,7 +46,7 @@ public class BookingController {
     }
 
     @Operation(summary = "Все брони пользователей только для админа")
-    @GetMapping
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAllBookingsForAdmin() {
         return ResponseEntity.ok(bookingService.getAllBooking());
@@ -54,7 +54,7 @@ public class BookingController {
 
     @Operation(summary = "Забронировать только для авторизованных")
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> createBooking(@RequestBody BookingRequest request,
                                            @AuthenticationPrincipal UserDetails userDetails){
         String username = userDetails.getUsername();

@@ -66,10 +66,14 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 .success-message
     background: rgba($success, 0.1)
     border: 2px solid $success
+    position: absolute
+    color: white
+    margin-left: 52rem
     &::before
         background-image: url('data:image/svg+xml;utf8,<svg ...>✓</svg>')
 
 .error-message
+    position: absolute
     background: rgba($error, 0.1)
     border: 2px solid $error
     &::before

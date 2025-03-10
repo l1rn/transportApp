@@ -8,12 +8,15 @@
                 ololotravel
               </div>
                 <div v-if="responses.success.login" class="success-message">
-                    Успешый вход!
+                    Успешный вход!
                 </div>
                 <div class="header-item">
                   <button @click="this.$router.push('/routes')">
                     Все маршруты
                   </button>
+                </div>
+                <div v-if="hasRoleAdmin">
+                  <button @click="this.$router.push('/panel/admin')">Модерирование</button>
                 </div>
                 <div class="header-item">
                   <button @click="this.$router.push('/routes/search')">
@@ -89,7 +92,7 @@
 </template>
 <script setup>
 import github from '@/assets/github-mark.svg';
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import { useRouter } from 'vue-router';
 import { BModal, BTab, BTabs} from 'bootstrap-vue-next';
 import SmartInput from "@/components/UI/SmartInput.vue";
@@ -195,7 +198,7 @@ const userLogout = async () => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('scroll', handleScroll);
   if (localStorage.getItem("refreshToken")) {
     scheduleTokenRefresh();

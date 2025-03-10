@@ -19,23 +19,47 @@
         @click="chooseNav('settings')">
           Настройки
         </button>
+        <button
+        v-if="hasRoleAdmin"
+        class="nav-link"
+        :class="{ active: nav.chooseModeration}"
+        @click="chooseNav('moderation')">
+          Модерирование
+        </button>
       </div>
     </div>
 
     <div class="tab-content">
-      <div v-if="!nav.chooseSettings">
+      <div v-if="nav.chooseOrders">
         <BookingCard>
         </BookingCard>
       </div>
       <div v-if="nav.chooseSettings">
         Настройки профиля
       </div>
+      <div v-if="nav.chooseModeration">
+        <AdminPanel>
+        </AdminPanel>
+      </div>
     </div>
   </div>
 
 </template>
-  <script>
+<script setup>
+import { onMounted, ref  } from "vue";
+import AdminPanel from "../admin/AdminPanel.vue";
+const checkAdminRole = () => {
+    hasRoleAdmin.value = getRoleFromToken() === 'ROLE_ADMIN';
+    console.log(hasRoleAdmin.value);
+};
+const hasRoleAdmin = ref(false);
+onMounted(() =>{
+  checkAdminRole();
+})
+</script>
+<script>
 import BookingCard from "@/components/bookings/booking/BookingCard.vue";
+import { getRoleFromToken } from "@/services/api";
 export default {
   components: {
     BookingCard
@@ -44,8 +68,9 @@ export default {
   data(){
     return {
       nav:{
-        chooseOrders: true,
+        chooseOrders: false,
         chooseSettings: false,
+        chooseModeration: false,
       }
     }
   },
@@ -53,6 +78,7 @@ export default {
     chooseNav(type){
       this.nav.chooseOrders = type === 'orders'
       this.nav.chooseSettings = type === 'settings'
+      this.nav.chooseModeration = type === 'moderation'
     },
 
   },

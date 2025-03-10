@@ -1,12 +1,18 @@
 <template>
-    <div>
-        <div>
+     <div>
         <div class="add-route-form">
-            <h1>Изменение маршрута</h1>
             <form class="input-form" @submit.prevent="handleSubmit">
+                <h1>Изменение маршрутов</h1>
+                <label for="routeId">ID у которого хотите поменять</label>
                 <div>
-                    <label for="id">ID</label>
-
+                    <div>
+                    <input
+                    v-model="formData.routeFrom" 
+                    id="routeFrom"
+                    required
+                    @input="clearError"
+                    />
+                    </div>
                 </div>
                 <label for="routeFrom">Откуда</label>
                 <div>
@@ -103,7 +109,7 @@
                     type="submit" 
                     :disabled="isSubmitting"
                     >
-                        {{ isSubmitting ? 'Сохранение...' : 'Создать маршрут' }}
+                        {{ isSubmitting ? 'Сохранение...' : 'Изменить' }}
                     </button>
                     <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
                     <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
@@ -111,10 +117,13 @@
             </form>
         </div>
     </div>
-    </div>
 </template>
 <script setup>
+import { ref, computed } from 'vue'
+import AdminService from '@/services/AdminService'
+
 const formData = ref({
+    id: 1,
     routeFrom: '',
     routeTo: '',
     date: '',
@@ -178,7 +187,7 @@ const handleSubmit = async () => {
             arrivalTime: formatDateTime(formData.value.date, formData.value.arrivalTime)
         }
 
-        await AdminService.put(payload)
+        await AdminService.putRoute(payload)
         
         successMessage.value = 'Маршрут успешно создан!'
         resetForm()
@@ -191,11 +200,6 @@ const handleSubmit = async () => {
     }
 }
 </script>
-<script>
-export default {
-    name:"PutRoute"
-}
-</script>
-<style lang="">
+<style scoped lang="sass">
 @import "@/assets/styles/adminObjects/add-route-form.sass"
 </style>

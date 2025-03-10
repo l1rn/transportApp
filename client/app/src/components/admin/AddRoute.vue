@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="add-route-form">
-            <h1>Добавление маршрутов</h1>
             <form class="input-form" @submit.prevent="handleSubmit">
+                <h1>Создание маршрутов</h1>
                 <label for="routeFrom">Откуда</label>
                 <div>
                     <input
@@ -176,7 +176,7 @@ const handleSubmit = async () => {
             arrivalTime: formatDateTime(formData.value.date, formData.value.arrivalTime)
         }
 
-        await AdminService.putRoute(routeId)
+        await AdminService.addRoute(payload)
         
         successMessage.value = 'Маршрут успешно создан!'
         resetForm()

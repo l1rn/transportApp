@@ -71,7 +71,7 @@ public class RouteController {
 
     @Operation(summary = "Удаление маршрута")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/panel/delete/{id}")
     public ResponseEntity<Void> deleteRoute(@PathVariable int id){
         boolean deleted = routeService.deleteRoute(id);
         return deleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
@@ -79,7 +79,7 @@ public class RouteController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/{id}")
+    @PutMapping("/panel/update/{id}")
     public ResponseEntity<Route> updateRoute(@PathVariable int id, @RequestBody Route updatedRoute){
         Route route = routeService.updateRoute(id, updatedRoute);
         if(route == null){

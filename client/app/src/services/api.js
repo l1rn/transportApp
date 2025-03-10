@@ -54,7 +54,16 @@ function handleAuthError() {
 }
 
 let refreshTimeoutId = null;
-
+export function getRoleFromToken(){
+    const accessToken = localStorage.getItem('accessToken');
+    if(!accessToken) return null;
+    try{
+        const payload = JSON.parse(atob(accessToken.split('.')[1]));
+        return payload.role;
+    }catch(error){
+        return null;
+    }
+}
 export function scheduleTokenRefresh() {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) return;

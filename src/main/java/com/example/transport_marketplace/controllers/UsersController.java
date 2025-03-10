@@ -8,6 +8,7 @@ import com.example.transport_marketplace.repo.UserRepository;
 import com.example.transport_marketplace.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,7 +28,7 @@ public class UsersController {
     private final JwtService jwtService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping
+    @GetMapping("/all")
     @Operation(summary = "Получить всех юзеров", description = "Возращает всех юзеров")
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
@@ -43,8 +44,7 @@ public class UsersController {
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/admin")
-    public ResponseEntity<User> getAdmin(@AuthenticationPrincipal UserDetails userDetails) {
-        String username = userDetails.getUsername();
+    public ResponseEntity<User> getAdmin(@RequestBody String username) {
         User user = userService.getByUsername(username);
         userService.getAdmin(user);
         return ResponseEntity.ok(user);
