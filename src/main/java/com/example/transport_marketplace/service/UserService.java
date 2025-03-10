@@ -62,10 +62,9 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
-    @Deprecated
-    public void getAdmin(){
-        var user = getCurrentUser();
+    public User getAdmin(User user){
+        User username = getCurrentUser();
         user.setRole(Role.ROLE_ADMIN);
-        save(user);
+        return repository.save(username);
     }
 }

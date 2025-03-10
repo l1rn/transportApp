@@ -38,7 +38,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:8081/")); // frontend address
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:8082/")); // frontend address
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
                     corsConfig.setAllowCredentials(true);
@@ -57,6 +57,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/users/**").authenticated()
                         .requestMatchers("/routes/**").permitAll()
                         .requestMatchers("/bookings/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")

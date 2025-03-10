@@ -1,14 +1,19 @@
 package com.example.transport_marketplace.controllers;
+import com.example.transport_marketplace.dto.RouteDTO;
+import com.example.transport_marketplace.dto.RouteRequest;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.BadRequestException;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.service.RouteService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -51,10 +56,17 @@ public class RouteController {
 
     @Operation(summary = "Добавление маршрута")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping
-    public ResponseEntity<Route> addRoute(@RequestBody Route route){
-        Route savedRoute = routeService.addRoute(route);
-        return new ResponseEntity<>(savedRoute, HttpStatus.CREATED);
+    @PostMapping("/panel/add")
+    public ResponseEntity<RouteDTO> addRoute(
+            @Valid @RequestBody RouteRequest request,
+            BindingResult result
+    ) {
+        if (result.hasErrors()) {
+            throw new ValidationException(String.valueOf(result));
+        }
+
+        RouteDTO response = routeService.addRoute(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Удаление маршрута")

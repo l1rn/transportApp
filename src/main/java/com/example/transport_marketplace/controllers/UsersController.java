@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,15 +34,18 @@ public class UsersController {
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }
-    @GetMapping("/role")
-    public ResponseEntity<Role> getRole(@RequestHeader("Authorization") String authHeader) {
-        System.out.println(authHeader);
-        String accessToken = authHeader.substring(7);
-        String username = jwtService.getUsernameFromToken(accessToken);
-        System.out.println(username);
-        Optional<Role> role = userService.getUserRole(username);
-
-        return role.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/me/role")
+    @Operation(summary = "Получить роль текущего пользователя", description = "Возвращает роль аутентифицированного пользователя")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CurrentRoleResponse> getCurrentUserRole() {
+        User currentUser = userService.getCurrentUser();
+        CurrentRoleResponse response = new CurrentRoleResponse(currentUser.getRole().name());
+        return ResponseEntity.ok(response);
+    }
+    @PostMapping("/admin")
+    public ResponseEntity<User> getAdmin(@AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        User user = userService.getByUsername(username);
+        return ResponseEntity.ok(user);
     }
 }
