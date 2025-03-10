@@ -167,39 +167,6 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 
 .error
   color: #ff4444
-
-.pagination
-    display: flex
-    justify-content: center
-    align-items: center
-    gap: 1.5rem
-
-    &-button
-        padding: 0.3rem 0.6rem
-        background: linear-gradient(135deg, blue 0%, darken(blue, 5%) 100%)
-        color: white
-        border: none
-        border-radius: 12px
-        cursor: pointer
-        font-weight: 900
-        transition: all 0.4s ease
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1)
-        font-weight: 600
-        z-index: 10000
-        
-        &:hover:not(:disabled)
-            transform: translateY(-2px)
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15)
-        
-        &:disabled
-            background: #dee2e6
-            color: #adb5bd
-            cursor: not-allowed
-    
-    &-info
-        font-size: 0.9em
-        color: $accent
-        font-weight: 500
 .table-container
     max-width: 1500px
     margin: 1rem auto
@@ -276,3 +243,55 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
         color: $secondary-color
         margin-left: 8px
         transform: translateY(-2px)
+.pagination
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 1.5rem
+    margin: 3rem 0 1rem
+    
+    .page-button
+        padding: 0.8rem 2rem
+        background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 5%) 100%)
+        color: white
+        border: none
+        border-radius: 12px
+        cursor: pointer
+        transition: $transition
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1)
+        font-weight: 600
+        
+        &:hover:not(:disabled)
+            transform: translateY(-2px)
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15)
+        
+        &:disabled
+            background: #dee2e6
+            color: #adb5bd
+            cursor: not-allowed
+    
+    &-info
+        font-size: 0.9em
+        color: $secondary-color
+        font-weight: 500
+
+@media (max-width: 1200px)
+    .header-routes
+        padding: 2rem 5%
+    
+    .table
+        thead th,
+        tbody td
+            padding: 1rem 1.2rem
+
+@media (max-width: 768px)
+    .table
+        min-width: 600px
+        
+        thead th
+            font-size: 0.9em
+            padding: 1rem
+            
+        tbody td
+            font-size: 0.85em
+            padding: 0.8rem

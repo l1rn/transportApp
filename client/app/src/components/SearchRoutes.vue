@@ -148,11 +148,32 @@
                       </tbody>
                   </table>
       </div>
+            <div class="pagination">
+        <button 
+            @click="currentPage = currentPage - 1"
+            :disabled="currentPage === 0"
+            class="page-button"
+        >
+            Назад
+        </button>
+        
+        <span class="page-info">
+            Страница {{ currentPage + 1 }} из {{ totalPages }}
+        </span>
+        
+        <button 
+            @click="currentPage = currentPage + 1"
+            :disabled="currentPage + 1 >= totalPages"
+            class="page-button"
+        >
+            Вперед
+        </button>
+        </div>
     </div> 
   </template>
   <script setup>
   import RoutesService from '@/services/RoutesService';
-  import { onBeforeMount, onMounted, reactive, ref, computed, nextTick } from 'vue';
+  import { onBeforeMount, onMounted, reactive, ref, computed, nextTick, watch } from 'vue';
   
   let inputRouteFrom = ref('');
   let inputRouteTo = ref('');
@@ -259,6 +280,7 @@
   }
   onMounted(async() =>{
     await fetchRoutes();
+    await paginatedRoutes()
   })
   
   
@@ -289,7 +311,11 @@
   onBeforeMount(() =>{
     document.removeEventListener('click', handleClickOutside)
   })
-  
+    const currentPage = ref(0)
+    const totalPages = ref(0)
+  watch(currentPage, (newVal) => {
+  paginatedRoutes(newVal)
+})
   const paginatedRoutes = async() =>{
     try{
       isLoading.value = true;
@@ -297,11 +323,23 @@
         inputRouteFrom.value,
         inputRouteTo.value,
         selectedDate.value,
-        selectedTransport.value
+        selectedTransport.value,
+        currentPage.value,
+        10
       )
-      searchResults.value = response.data;
+      if (response.data && response.data.content) {
+      searchResults.value = response.data
+      totalPages.value = response.data.totalPages || 0
+      }
+      if (currentPage.value >= totalPages.value) {
+        currentPage.value = Math.max(totalPages.value - 1, 0)
+      }
+
     }catch(error){
-      console.log(error);
+        console.error(error)
+        error.value = 'Ошибка загрузки данных'
+        searchResults.value = { content: [] }
+        totalPages.value = 0
     }finally{
       isLoading.value = false;
     }
@@ -327,7 +365,7 @@ const getDateSource = (route, isArrival = false) => {
 
 const formatDate = (dateString) => {
   try {
-    const [month, day] = dateString.split('-');
+    const [year, month, day] = dateString.split('-');
     return `${day}-${month}`;
   } catch {
     return '??-??';
