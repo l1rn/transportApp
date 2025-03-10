@@ -10,12 +10,6 @@ import org.springframework.web.servlet.view.RedirectView;
 public class MainController {
     @GetMapping
     public RedirectView responseToNonPage() {
-        // Выполняем перенаправление на /routes
         return new RedirectView("/routes");
     }
-//    @GetMapping("*/booking")
-//    public RedirectView responseIfNonUser(){
-//        User currentUser = new User();
-//        if(currentUser.ha)
-//    }
 }

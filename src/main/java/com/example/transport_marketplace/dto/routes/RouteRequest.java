@@ -1,4 +1,4 @@
-package com.example.transport_marketplace.dto;
+package com.example.transport_marketplace.dto.routes;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

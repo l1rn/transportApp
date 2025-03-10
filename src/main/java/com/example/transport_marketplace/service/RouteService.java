@@ -1,7 +1,7 @@
 package com.example.transport_marketplace.service;
 
-import com.example.transport_marketplace.dto.RouteDTO;
-import com.example.transport_marketplace.dto.RouteRequest;
+import com.example.transport_marketplace.dto.routes.RouteDTO;
+import com.example.transport_marketplace.dto.routes.RouteRequest;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class RouteService {

@@ -1,6 +1,5 @@
-package com.example.transport_marketplace.dto;
+package com.example.transport_marketplace.dto.routes;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

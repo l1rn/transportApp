@@ -1,65 +1,93 @@
-//package com.example.transport_marketplace.test_contorllers;
-//
-//import com.example.transport_marketplace.controllers.UsersController;
-//import com.example.transport_marketplace.enums.Role;
-//import com.example.transport_marketplace.model.User;
-//import com.example.transport_marketplace.service.UserService;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.Mockito;
-//import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.TestConfiguration;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Import;
-//import org.springframework.context.annotation.ComponentScan.Filter;
-//import org.springframework.context.annotation.FilterType;
-//import org.springframework.test.context.ContextConfiguration;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-//
-//import java.util.List;
-//
-//import static org.mockito.Mockito.when;
-//import static org.mockito.Mockito.verify;
-//import static org.mockito.Mockito.times;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-//
-//@WebMvcTest(controllers = UsersController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
-//@ContextConfiguration(classes = { UsersController.class, UsersControllerTest.Config.class })
-//@Import(UsersControllerTest.Config.class)
-//public class UsersControllerTest {
-//
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @Autowired
-//    private UserService userService;
-//
-//    @TestConfiguration
-//    static class Config {
-//        @Bean
-//        public UserService userService() {
-//            return Mockito.mock(UserService.class);
-//        }
-//    }
-//
-//    @Test
-//    void testGetAllUsers() throws Exception {
-//        List<User> users = List.of(
-//                new User(1, "user1", "pass1", Role.ROLE_USER),
-//                new User(2, "user2", "pass2", Role.ROLE_ADMIN)
-//        );
-//        when(userService.getAllUsers()).thenReturn(users);
-//
-//        mockMvc.perform(get("/")
-//                        .contentType("application/json"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.length()").value(users.size()))
-//                .andExpect(jsonPath("$[0].username").value("user1"))
-//                .andExpect(jsonPath("$[1].username").value("user2"));
-//
-//        verify(userService, times(1)).getAllUsers();
-//    }
-//}
+package com.example.transport_marketplace.test_contorllers;
+
+import com.example.transport_marketplace.controllers.UsersController;
+import com.example.transport_marketplace.dto.auth.CurrentRoleResponse;
+import com.example.transport_marketplace.enums.Role;
+import com.example.transport_marketplace.jwt.JwtAuthenticationFilter;
+import com.example.transport_marketplace.jwt.JwtService;
+import com.example.transport_marketplace.jwt.TokenBlacklist;
+import com.example.transport_marketplace.model.User;
+import com.example.transport_marketplace.service.UserService;
+import com.example.transport_marketplace.service.impl.UserDetailsServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@ExtendWith(MockitoExtension.class)
+class UsersControllerTest {
+
+    private MockMvc mockMvc;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private JwtService jwtService;
+
+    @Mock
+    private TokenBlacklist tokenBlacklist;
+
+    @Mock
+    private UserDetailsServiceImpl userDetailsService;
+
+    @InjectMocks
+    private UsersController usersController;
+
+    @BeforeEach
+    void setup() {
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(usersController)
+                .addFilter(new JwtAuthenticationFilter(jwtService, userDetailsService, tokenBlacklist))
+                .defaultRequest(get("/").with(csrf()))
+                .build();
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void getAllUsers_ShouldReturnUsersList() throws Exception {
+        User user = new User();
+        user.setUsername("admin");
+        user.setRole(Role.ROLE_ADMIN);
+        List<User> users = Collections.singletonList(user);
+
+        when(userService.getAllUsers()).thenReturn(users);
+
+        mockMvc.perform(get("/users/all"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].username").value("admin"));
+    }
+
+    @Test
+    @WithMockUser
+    void getCurrentUserRole_ShouldReturnUserRole() throws Exception {
+        User user = new User();
+        user.setRole(Role.ROLE_USER);
+
+        when(userService.getCurrentUser()).thenReturn(user);
+
+        mockMvc.perform(get("/users/me/role"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.role").value("ROLE_USER"));
+    }
+
+}

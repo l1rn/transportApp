@@ -1,6 +1,6 @@
 package com.example.transport_marketplace.controllers;
-import com.example.transport_marketplace.dto.RouteDTO;
-import com.example.transport_marketplace.dto.RouteRequest;
+import com.example.transport_marketplace.dto.routes.RouteDTO;
+import com.example.transport_marketplace.dto.routes.RouteRequest;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.BadRequestException;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
 import com.example.transport_marketplace.model.Route;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController

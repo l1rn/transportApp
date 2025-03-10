@@ -59,6 +59,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/users/**").authenticated()
                         .requestMatchers("/routes/**").permitAll()
+                        .requestMatchers("/test/**").permitAll()
                         .requestMatchers("/bookings/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
