@@ -13,15 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
-@RestController("/users")
+@CrossOrigin(origins = "*")
+@RestController
+@RequestMapping("/users")
 @RequiredArgsConstructor
 @Tag(name = "User API", description = "Операции относящие к пользователям")
 public class UsersController {
@@ -34,6 +32,7 @@ public class UsersController {
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }
+
     @GetMapping("/me/role")
     @Operation(summary = "Получить роль текущего пользователя", description = "Возвращает роль аутентифицированного пользователя")
     @PreAuthorize("isAuthenticated()")
@@ -42,10 +41,12 @@ public class UsersController {
         CurrentRoleResponse response = new CurrentRoleResponse(currentUser.getRole().name());
         return ResponseEntity.ok(response);
     }
-    @PostMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PatchMapping("/admin")
     public ResponseEntity<User> getAdmin(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
         User user = userService.getByUsername(username);
+        userService.getAdmin(user);
         return ResponseEntity.ok(user);
     }
 }

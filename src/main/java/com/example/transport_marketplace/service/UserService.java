@@ -63,8 +63,7 @@ public class UserService {
     }
 
     public User getAdmin(User user){
-        User username = getCurrentUser();
         user.setRole(Role.ROLE_ADMIN);
-        return repository.save(username);
+        return repository.save(user);
     }
 }
