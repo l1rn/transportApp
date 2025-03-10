@@ -7,9 +7,10 @@
                 <div>
                     <div>
                     <input
-                    v-model="formData.routeFrom" 
-                    id="routeFrom"
+                    v-model="routeID" 
+                    id="routeId"
                     required
+                    min="1"
                     @input="clearError"
                     />
                     </div>
@@ -122,8 +123,8 @@
 import { ref, computed } from 'vue'
 import AdminService from '@/services/AdminService'
 
+const routeID = ref(1);
 const formData = ref({
-    id: 1,
     routeFrom: '',
     routeTo: '',
     date: '',
@@ -187,7 +188,7 @@ const handleSubmit = async () => {
             arrivalTime: formatDateTime(formData.value.date, formData.value.arrivalTime)
         }
 
-        await AdminService.putRoute(payload)
+        await AdminService.putRoute(routeID.value, payload)
         
         successMessage.value = 'Маршрут успешно создан!'
         resetForm()
