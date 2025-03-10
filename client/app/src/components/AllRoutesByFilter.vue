@@ -7,7 +7,9 @@
                 <div class="custom-header-title">
                     <h1>Все маршруты</h1>
                 </div>
-                <div class="custom-subheader"></div>
+                <div class="custom-subheader">
+              
+                </div>
 
             <div class="header-routes-title">
                 <table class="table">
@@ -86,7 +88,6 @@ const fetchRoutes = async() =>{
 }
 onMounted(async() =>{
     fetchRoutes();
-    checkRoutesEmoji();
 })
 
 const getDateSource = (route, isArrival = false) => {

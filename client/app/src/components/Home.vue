@@ -12,14 +12,14 @@
                 </div>
                 <div class="header-item">
                   <button @click="this.$router.push('/routes')">
-                    Все маршруты с фильтром
+                    Все маршруты
                   </button>
                 </div>
-                <!-- <div class="header-item">
-                  <button>
-                    123
+                <div class="header-item">
+                  <button @click="this.$router.push('/routes/search')">
+                    Поиск маршрутов
                   </button>
-                </div> -->
+                </div>
               <div class="profile-header-custom">
                 <custom-profile @open-auth="showLoginForm = true"
                                 @logout="userLogout"

@@ -2,11 +2,7 @@
 import {ref, reactive, defineEmits, onMounted, computed, nextTick} from "vue";
 import RoutesService from "@/services/RoutesService";
 
-const emit = defineEmits(['search-results', 'update:page']);
-// const props = defineProps({
-//   currentPage: Number,
-//   itemsPerPage: Number
-// })
+const emit = defineEmits(['search-results']);
 const routes = ref([]);
 const searchResults = ref([])
 
@@ -148,7 +144,6 @@ const clearFilter = () => {
   selectedTransport.value = ''
 }
 
-
 </script>
 <template>
   <div class="main-container">
@@ -270,7 +265,6 @@ const clearFilter = () => {
     <label
     >Выбран транспорт: {{ selectedTransport }}{{selectedEmoji}}</label>
     <button class="custom-clear-button" @click="clearFilter">Очистить фильтр</button>
-    
   </div>
   
   

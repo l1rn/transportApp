@@ -1,6 +1,6 @@
 <script setup>
 import BookingService from '@/services/BookingService'
-import {defineProps, watch, ref, defineEmits, computed} from 'vue'
+import {defineProps, watch, ref, defineEmits} from 'vue'
 import router from '@/routers/router'
 const props = defineProps({
   currentPage: Number,
@@ -48,21 +48,10 @@ const bookingRoute = async (routeId, event) => {
   }
 };
 
-const currentPage = ref(1);
-const itemsPerPage = ref(10);
-
-const paginatedRoutes = computed(() =>{
-    const start = (currentPage.value - 1) * itemsPerPage.value;
-    const end = start + itemsPerPage.value;
-    return routes.value.slice(start,end);
-})
-
-const totalPages = computed(() => Math.ceil(routes.value.length / itemsPerPage.value))
-
 </script>
 
 <template>
-  <div class="flight-card" v-for="route in paginatedRoutes" :key="route.id">
+  <div class="flight-card" v-for="route in searchResults" :key="route.id">
     <div class="status on-time">ОКТРЫТО</div>
 
     <div class="header">
@@ -105,23 +94,6 @@ const totalPages = computed(() => Math.ceil(routes.value.length / itemsPerPage.v
       </div>
       <button class="book-button" @click="bookingRoute(route.id, $event)">Забронировать сейчас</button>
     </div>
-  </div>
-    <div  class="pagination">
-    <button
-      @click="currentPage--"
-      :disabled="currentPage === 1"
-      class="pagination-button"
-      >
-      Предыдущая
-      </button>
-      <span class="pagination-info">Страница {{ currentPage }} из {{ totalPages }}</span>
-    <button 
-      @click="currentPage++" 
-      :disabled="currentPage === totalPages"
-      class="pagination-button"
-      >
-      Следующая
-    </button>
   </div>
 </template>
 

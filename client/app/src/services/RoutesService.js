@@ -19,7 +19,7 @@ class RoutesService{
             }
         });
 
-        return axios.get(`http://localhost:8080/routes/search?`, params);
+        return axios.get(`http://localhost:8080/routes/search?`, {params});
     }
 }
 

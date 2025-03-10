@@ -91,18 +91,19 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 .main-header
     position: relative
     z-index: 1000
-    background: #8494b5
+    background: linear-gradient(135deg, lighten(#007bff, 15%), darken(#007bff, 5%))
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
     padding: 1.75rem
     &.header-hidden
         transform: translateY(-100%)
         opacity: 0
     button
-        padding: 0.75rem 2.4rem 
-        background:rgb(21, 59, 148) 
+        padding: 0.75rem 1.7rem 
+        background: linear-gradient(35deg, darken($secondary, 5%), darken($secondary, 5%))
         border: 0
         border-radius: 16px
-        font-size: 20px
+        font-size: 17px
+        font-weight: 600
         font-family: Montserrat
         box-shadow: 0 0 8px rgba(0,0,0, 0.15)  
         transition: all 0.3s ease
