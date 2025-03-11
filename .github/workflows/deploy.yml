@@ -8,6 +8,8 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           java-version: 21
+          distribution: 'temurin'
+          
       - run: mvn clean package -DskipTests
       - uses: appleboy/scp-action@v0.1.6
         with:
