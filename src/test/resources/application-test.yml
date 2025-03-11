@@ -38,4 +38,3 @@ token:
 jwt:
   access-token-expiration: 6000000
   refresh-token-expiration: 604800000
-x

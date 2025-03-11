@@ -27,4 +27,6 @@ jobs:
           distribution: ${{ matrix.distribution }}
 
       - name: Build and test
-        run: mvn -B verify
+        run: mvn -B verify -Ptest
+        env:
+          SPRING_PROFILES_ACTIVE: test
