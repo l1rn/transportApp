@@ -8,11 +8,6 @@
                     >Все пользователи
                 </button>
                 <button
-                    :class="{active:editRoleUser}"
-                    @click="chooseNav('editrole')">
-                    Изменить права пользователей
-                </button>
-                <button
                     :class="{active:chooseAllBookings}"
                     @click="chooseNav('allbookings')"
                     >
@@ -34,9 +29,6 @@
                 <AdminAllUsers>
                 </AdminAllUsers>
             </div>
-            <div v-if="editRoleUser">
-                111
-            </div>
             <div v-if=chooseAllBookings>
                 <AdminAllBookings>
                 </AdminAllBookings>
@@ -56,14 +48,12 @@ import AdminAllUsers from './AdminAllUsers.vue';
 import AdminAllBookings from './AdminAllBookings.vue';
 import AdminAllRoutes from './AdminAllRoutes.vue';
 import SearchRoutes from '../SearchRoutes.vue';
-let editRoleUser = ref(false);
 let chooseAllUsers = ref(false);
 let chooseAllBookings = ref(false);
 let chooseAllRoutes = ref(false);
 let chooseAllRoutesForLook = ref(false)
 
 const chooseNav = (type) => {
-    editRoleUser.value = type === 'editrole'
     chooseAllBookings.value = type === 'allbookings'
     chooseAllRoutes.value = type === 'allroutes'
     chooseAllUsers.value = type === 'allusers'

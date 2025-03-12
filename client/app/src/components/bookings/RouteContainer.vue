@@ -1,7 +1,8 @@
 <script setup>
-import BookingService from '@/services/BookingService'
-import {defineProps, watch, ref, defineEmits} from 'vue'
 import router from '@/routers/router'
+import BookingService from '@/services/BookingService'
+// import RoutesService from '@/services/RoutesService'
+import {defineProps, watch, ref, defineEmits} from 'vue'
 const props = defineProps({
   currentPage: Number,
   itemsPerPage: Number,
@@ -38,8 +39,9 @@ const bookingRoute = async (routeId, event) => {
   }
   try {
     await BookingService.addBooking(routeId);
-    router.push('/profile');
     alert("Успошное бронировае");
+    router.push('/profile');
+    // await RoutesService.searchRoutes();
     routes.value = routes.value.map(r => 
       r.id === routeId ? {...r, availableSeats: r.availableSeats - 1} : r
     );

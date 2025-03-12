@@ -23,37 +23,26 @@
                     />
                 </div>
 
-                <label for="date">Дата маршрута</label>
-                <div>
-                    <input 
-                    type="date"
-                    id="date"
-                    v-model="formData.date"
-                    :min="minDate"
-                    required
-                    @change="resetTimes"
-                    />
-                </div>
-
                 <label for="departureTime">Время отправления</label>
                 <div>
                     <input 
-                    type="time" 
+                    type="datetime-local"
                     id="departureTime"
                     v-model="formData.departureTime" 
                     required
-                    @change="updateArrivalTime"
+                    @change="updateDepartureTime"
                     />
                 </div>
 
                 <label for="arrivalTime">Время прибытия</label>
                 <div>
                     <input 
-                    type="time" 
+                    type="datetime-local" 
                     id="arrivalTime"
                     v-model="formData.arrivalTime"
                     required
                     :min="formData.departureTime"
+                    @change="updateArrivalTime"
                     />
                 </div>
 
@@ -109,8 +98,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import AdminService from '@/services/AdminService'
+import { formatToDatabase } from '@/services/dateFormat/formatTime';
 
 const formData = ref({
     routeFrom: '',
@@ -126,24 +116,18 @@ const formData = ref({
 const isSubmitting = ref(false)
 const errorMessage = ref('')
 const successMessage = ref('')
-
-const minDate = computed(() => new Date().toISOString().split('T')[0])
+const updateDepartureTime = () =>{
+    const now = new Date().toISOString().slice(0, 16).replace(' ');
+    if(formData.value.departureTime < now){
+        formData.value.departureTime = now;
+    }
+    formData.value.date = formData.value.departureTime.split('T')[0]
+}
 
 const updateArrivalTime = () => {
     if (formData.value.arrivalTime < formData.value.departureTime) {
-        formData.value.arrivalTime = formData.value.departureTime
+        formData.value.arrivalTime = formData.value.departureTime;
     }
-}
-
-const resetTimes = () => {
-    if (!formData.value.date) {
-        formData.value.departureTime = ''
-        formData.value.arrivalTime = ''
-    }
-}
-
-const formatDateTime = (date, time) => {
-    return new Date(`${date}T${time}`).toISOString()
 }
 
 const clearError = () => {
@@ -155,7 +139,6 @@ const resetForm = () => {
     formData.value = {
         routeFrom: '',
         routeTo: '',
-        date: '',
         departureTime: '',
         arrivalTime: '',
         transport: '',
@@ -164,18 +147,19 @@ const resetForm = () => {
     }
 }
 
+const formatDateTime = (datetime) => {
+    if(!datetime) return ''
+    return formatToDatabase(datetime)
+}
 const handleSubmit = async () => {
     try {
         isSubmitting.value = true
         clearError()
-
         const payload = {
             ...formData.value,
-            date: new Date(formData.value.date).toISOString(),
-            time: formatDateTime(formData.value.date, formData.value.departureTime),
-            arrivalTime: formatDateTime(formData.value.date, formData.value.arrivalTime)
+            departureTime: formatDateTime(formData.value.departureTime),
+            arrivalTime: formatDateTime(formData.value.arrivalTime)
         }
-
         await AdminService.addRoute(payload)
         
         successMessage.value = 'Маршрут успешно создан!'

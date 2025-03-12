@@ -19,7 +19,6 @@ export default {
     async getBookings(){
       this.isLoading = true;
       try {
-        await BookingService.checkRefreshToken();
         const response = await BookingService.getMyBooking();
         this.bookings = response.data;
       }

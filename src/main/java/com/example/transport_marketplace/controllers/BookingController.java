@@ -69,6 +69,18 @@ public class BookingController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PatchMapping("/booking/cancel/{id}")
+    public ResponseEntity<?> cancelBookingAdmin(@PathVariable int id){
+        try {
+            return ResponseEntity.ok(bookingService.cancelBookingAdmin(id));
+        }catch (BookingNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     @Operation(summary = "Отмена брони")
     @PatchMapping("/my/cancel")
     public ResponseEntity<?> cancelBooking(@RequestBody CancelBookingRequest request,

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/routes")
+@RequestMapping("/api/routes")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class RouteController {

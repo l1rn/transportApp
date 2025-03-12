@@ -1,7 +1,7 @@
 <template>
     <div class="all-items">
       <div class="header">
-          <button @click="this.$router.push('/home')">Назад</button>
+          <BackbuttonToHome></BackbuttonToHome>
           <h1>Поиск всех маршрутов</h1>
       </div>
           <div class="search-container">
@@ -172,6 +172,7 @@
     </div> 
   </template>
   <script setup>
+  import BackbuttonToHome from './UI/BackbuttonToHome.vue';
   import RoutesService from '@/services/RoutesService';
   import { onBeforeMount, onMounted, reactive, ref, computed, nextTick, watch } from 'vue';
   

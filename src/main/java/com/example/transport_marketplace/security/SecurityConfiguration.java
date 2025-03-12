@@ -54,7 +54,7 @@ public class SecurityConfiguration {
                 )
 
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/h2-console/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/users/**").authenticated()

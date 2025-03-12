@@ -12,13 +12,9 @@ axios.interceptors.response.use(
     response => response,
     async error => {
         const originalRequest = error.config;
-        
         if (error.response?.status === 401 && !originalRequest._retry) {
-            let count = 0;
-            while (count != 3){
-                originalRequest._retry = true;
-            }
-            
+            originalRequest._retry = true;
+
             try {
                 const newAccessToken = await refreshTokenRequest(
                     localStorage.getItem("refreshToken")
@@ -49,10 +45,13 @@ async function refreshTokenRequest(refreshToken) {
 }
 
 function handleAuthError() {
+    cancelTokenRefresh();
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     if (router.currentRoute.path !== '/home') {
-        router.replace('/home');
+        router.replace('/home').then(() => {
+            window.location.reload(); 
+        });
     }
 }
 
@@ -68,12 +67,14 @@ export function getRoleFromToken(){
     }
 }
 export function scheduleTokenRefresh() {
+    cancelTokenRefresh();
+
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) return;
 
     const payload = JSON.parse(atob(accessToken.split('.')[1]));
     const expiresAt = payload.exp * 1000;
-    const timeout = expiresAt - Date.now() - 10000;
+    const timeout = expiresAt - Date.now() - 5000 ;
 
     if (timeout > 0) {
         refreshTimeoutId = setTimeout(() => {

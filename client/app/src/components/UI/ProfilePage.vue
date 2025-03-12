@@ -1,6 +1,6 @@
 <template>
   <div class="profile-page">
-    <button @click="this.$router.replace('/home')" class="button-back">Назад</button>
+    <BackbuttonToHome></BackbuttonToHome>
     <div class="header-profile">
       <div class="header-profile__title">
         <h1>Профиль</h1>
@@ -26,6 +26,11 @@
         @click="chooseNav('moderation')">
           Модерирование
         </button>
+        <button
+        class="nav-link"
+        v-else>
+          Информация о пользователе
+        </button>
       </div>
     </div>
 
@@ -46,20 +51,39 @@
 
 </template>
 <script setup>
+import BackbuttonToHome from "./BackbuttonToHome.vue";
 import { onMounted, ref  } from "vue";
 import AdminPanel from "../admin/AdminPanel.vue";
+
+const checkTokenInProfile = async() => {
+  try{
+    await BookingService.checkRefreshToken;
+  }
+  catch(error){
+    console.log(error);
+  }
+}
+
 const checkAdminRole = () => {
-    hasRoleAdmin.value = getRoleFromToken() === 'ROLE_ADMIN';
-    console.log(hasRoleAdmin.value);
+  try{
+    const role = getRoleFromToken();
+    hasRoleAdmin.value = role === 'ROLE_ADMIN';
+  }
+  catch(error){
+    console.error('Role check failed:', error);
+    hasRoleAdmin.value = false; 
+  }
 };
 const hasRoleAdmin = ref(false);
 onMounted(() =>{
+  checkTokenInProfile();
   checkAdminRole();
 })
 </script>
 <script>
 import BookingCard from "@/components/bookings/booking/BookingCard.vue";
 import { getRoleFromToken } from "@/services/api";
+import BookingService from "@/services/BookingService";
 export default {
   components: {
     BookingCard
@@ -68,7 +92,7 @@ export default {
   data(){
     return {
       nav:{
-        chooseOrders: false,
+        chooseOrders: true,
         chooseSettings: false,
         chooseModeration: false,
       }
@@ -80,7 +104,6 @@ export default {
       this.nav.chooseSettings = type === 'settings'
       this.nav.chooseModeration = type === 'moderation'
     },
-
   },
 }
 </script>

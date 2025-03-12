@@ -14,28 +14,28 @@ import org.springframework.stereotype.Component;
 public class DataInitializer {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    @EventListener(ApplicationReadyEvent.class)
-    public void initSuperAdmin(){
-        if(!userRepository.existsByUsername("superadmin")){
-            User superadmin = User.builder()
-                    .username("sa1")
-                    .password(passwordEncoder.encode("sa1"))
-                    .role(Role.ROLE_SUPERADMIN)
-                    .build();
-            userRepository.save(superadmin);
-        }
-    }
-    @EventListener(ApplicationReadyEvent.class)
-    public void initSuperAdmin2(){
-        if(!userRepository.existsByUsername("superadmin2")){
-            User superadmin = User.builder()
-                    .username("sa2")
-                    .password(passwordEncoder.encode("sa2"))
-                    .role(Role.ROLE_SUPERADMIN)
-                    .build();
-            userRepository.save(superadmin);
-        }
-    }
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void initSuperAdmin(){
+//        if(!userRepository.existsByUsername("superadmin")){
+//            User superadmin = User.builder()
+//                    .username("sa1")
+//                    .password(passwordEncoder.encode("sa1"))
+//                    .role(Role.ROLE_SUPER_ADMIN)
+//                    .build();
+//            userRepository.save(superadmin);
+//        }
+//    }
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void initSuperAdmin2(){
+//        if(!userRepository.existsByUsername("superadmin2")){
+//            User superadmin = User.builder()
+//                    .username("sa2")
+//                    .password(passwordEncoder.encode("sa2"))
+//                    .role(Role.ROLE_SUPER_ADMIN)
+//                    .build();
+//            userRepository.save(superadmin);
+//        }
+//    }
     @EventListener(ApplicationReadyEvent.class)
     public void initAdminUser() {
         if (!userRepository.existsByUsername("admin")) {

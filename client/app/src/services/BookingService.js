@@ -1,5 +1,5 @@
 import axios from "axios";
-import { cancelTokenRefresh, scheduleTokenRefresh } from "./api";
+import { scheduleTokenRefresh } from "./api";
 
 class BookingService{
     addBooking(routeId){
@@ -20,7 +20,6 @@ class BookingService{
         ).then(response => {
             localStorage.setItem('refreshToken', response.data.refreshToken);
             localStorage.setItem('accessToken', response.data.accessToken);
-            cancelTokenRefresh();
             scheduleTokenRefresh();
             return response;
         }

@@ -19,7 +19,6 @@ class RoutesService{
                 delete params[key];
             }
         });
-
         return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/routes/search`, {params});
     }
 }

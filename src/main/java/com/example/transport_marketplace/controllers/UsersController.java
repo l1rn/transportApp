@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public class UsersController {
         CurrentRoleResponse response = new CurrentRoleResponse(currentUser.getRole().name());
         return ResponseEntity.ok(response);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_SUPERADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/admin/{id}")
     public ResponseEntity<User> setAdminRole(@PathVariable int id) {
         User user = userService.getById(id);
@@ -43,11 +45,4 @@ public class UsersController {
         return ResponseEntity.ok(user);
     }
 
-    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
-    @PostMapping("/user/{id}")
-    public ResponseEntity<User> setUserRole(@PathVariable int id) {
-        User user = userService.getById(id);
-        userService.setUser(user);
-        return ResponseEntity.ok(user);
-    }
 }
