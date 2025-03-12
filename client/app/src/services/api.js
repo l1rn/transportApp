@@ -14,7 +14,10 @@ axios.interceptors.response.use(
         const originalRequest = error.config;
         
         if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
+            let count = 0;
+            while (count != 3){
+                originalRequest._retry = true;
+            }
             
             try {
                 const newAccessToken = await refreshTokenRequest(
@@ -34,7 +37,7 @@ axios.interceptors.response.use(
 
 async function refreshTokenRequest(refreshToken) {
     try {
-        const response = await axios.post('http://localhost:8080/auth/refresh', { refreshToken });
+        const response = await axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/refresh`, { refreshToken });
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
         scheduleTokenRefresh();

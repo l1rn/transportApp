@@ -54,14 +54,14 @@ public class SecurityConfiguration {
                 )
 
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/users/**").authenticated()
-                        .requestMatchers("/routes/**").permitAll()
-                        .requestMatchers("/bookings/**").authenticated()
-                        .requestMatchers("/users/admin").hasRole("ADMIN")
-                        .requestMatchers("/test/**").permitAll()
+                        .requestMatchers("/api/h2-console/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/users/**").authenticated()
+                        .requestMatchers("/api/routes/**").permitAll()
+                        .requestMatchers("/api/bookings/**").authenticated()
+                        .requestMatchers("/api/users/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/test/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager

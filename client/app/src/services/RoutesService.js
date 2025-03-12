@@ -1,10 +1,9 @@
 import axios from "axios";
 
-const ROUTES_API_BASE_URL = 'http://localhost:8080/routes';
 
 class RoutesService{
     getRoutes(){
-        return axios.get(ROUTES_API_BASE_URL);
+        return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/routes`);
     }
     searchRoutes(routeFrom, routeTo, date, transport, page = 0, size = 10){
         const params = {
@@ -21,7 +20,7 @@ class RoutesService{
             }
         });
 
-        return axios.get(`http://localhost:8080/routes/search`, {params});
+        return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/routes/search`, {params});
     }
 }
 

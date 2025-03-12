@@ -1,7 +1,6 @@
-package com.example.transport_marketplace.test_contorllers;
+package com.example.transport_marketplace.test_controllers;
 
 import com.example.transport_marketplace.controllers.UsersController;
-import com.example.transport_marketplace.dto.auth.CurrentRoleResponse;
 import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.jwt.JwtAuthenticationFilter;
 import com.example.transport_marketplace.jwt.JwtService;
@@ -68,7 +67,7 @@ class UsersControllerTest {
 
         when(userService.getAllUsers()).thenReturn(users);
 
-        mockMvc.perform(get("/users/all"))
+        mockMvc.perform(get("/api/users/all"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].username").value("admin"));
     }
@@ -81,7 +80,7 @@ class UsersControllerTest {
 
         when(userService.getCurrentUser()).thenReturn(user);
 
-        mockMvc.perform(get("/users/me/role"))
+        mockMvc.perform(get("/api/users/me/role"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.role").value("ROLE_USER"));
     }

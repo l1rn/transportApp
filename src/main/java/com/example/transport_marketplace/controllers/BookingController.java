@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/profile/bookings")
+@RequestMapping("/api/profile/bookings")
 @RequiredArgsConstructor
 public class BookingController {
     public static final String BEARER_PREFIX = "Bearer ";
@@ -81,11 +81,11 @@ public class BookingController {
             }else{
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Бронирование уже отменено");
             }
-        }catch (BookingNotFoundException e){
+        } catch (BookingNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }catch (AccessDeniedException e){
+        } catch (AccessDeniedException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

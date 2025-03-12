@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const USERS_SIGNUP_API_BASE_URL = "http://localhost:8080/auth/sign-up"
 
 
 class SignupUsersService{
     signupUser(userData) {
-        return axios.post(USERS_SIGNUP_API_BASE_URL, {
+        return axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/sign-up`, {
             username: userData.username,
             password: userData.password
         });

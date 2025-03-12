@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const LOGOUT_API_URL = 'http://localhost:8080/auth/logout';
 
 class LogoutService {
     logoutUser(accessToken, refreshToken) {
         try{
-            axios.post(LOGOUT_API_URL, {
+            axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/logout`, {
                     refreshToken,
                 },
                 {

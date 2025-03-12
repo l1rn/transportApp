@@ -1,17 +1,16 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080"
 
 class SigninUserService{
     signinUser(userData) {
-        return axios.post(`${API_BASE_URL}/auth/sign-in`, {
+        return axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/sign-in`, {
                 username: userData.username,
                 password: userData.password
             }
         );
     }
     getRoleUser(){
-        return axios.get(`${API_BASE_URL}/users/me/role`, {
+        return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/users/me/role`, {
             headers:{
                 "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
                 "Content-Type": "application/json" 

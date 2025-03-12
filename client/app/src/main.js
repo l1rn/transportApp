@@ -11,10 +11,14 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
+import { createPinia } from 'pinia';
 
+const pinia = createPinia();
 const app = createApp(App);
-app.use(BootstrapVueNext)
+
+app.use(BootstrapVueNext);
 app.use(router);
+app.use(pinia);
 app.use(MotionPlugin);
 app.use(Datepicker);
 

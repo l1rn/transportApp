@@ -1,4 +1,4 @@
-package com.example.transport_marketplace.test_contorllers;
+package com.example.transport_marketplace.test_controllers;
 
 import com.example.transport_marketplace.controllers.AuthController;
 import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
@@ -71,7 +71,7 @@ public class AuthControllerTest {
 
         doNothing().when(authenticationService).signUp(any(SignUpRequest.class));
 
-        mockMvc.perform(post("/auth/sign-up")
+        mockMvc.perform(post("/api/auth/sign-up")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -90,7 +90,7 @@ public class AuthControllerTest {
 
         when(authenticationService.signIn(any(SignInRequest.class))).thenReturn(response);
 
-        mockMvc.perform(post("/auth/sign-in")
+        mockMvc.perform(post("/api/auth/sign-in")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -109,7 +109,7 @@ public class AuthControllerTest {
 
         when(authenticationService.refreshToken("old-refresh-token")).thenReturn(response);
 
-        mockMvc.perform(post("/auth/refresh")
+        mockMvc.perform(post("/api/auth/refresh")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -127,7 +127,7 @@ public class AuthControllerTest {
         doNothing().when(tokenBlacklist).revoke("access-token");
         doNothing().when(authenticationService).deleteTokenByUser("refresh-token");
 
-        mockMvc.perform(post("/auth/logout")
+        mockMvc.perform(post("/api/auth/logout")
                         .header("Authorization", "Bearer access-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

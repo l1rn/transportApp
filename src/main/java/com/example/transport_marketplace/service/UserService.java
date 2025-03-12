@@ -40,6 +40,11 @@ public class UserService {
                 .map(User::getRole);
     }
 
+    public User getById(int id){
+        return repository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь c ID" + id + " не найден"));
+    }
+
     public User getByUsername(String username) {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
@@ -62,8 +67,12 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
-    public User getAdmin(User user){
+    public User setAdmin(User user){
         user.setRole(Role.ROLE_ADMIN);
+        return repository.save(user);
+    }
+    public User setUser(User user){
+        user.setRole(Role.ROLE_USER);
         return repository.save(user);
     }
 }

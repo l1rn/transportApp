@@ -1,13 +1,8 @@
 import axios from "axios";
 
-const ADMIN_ALL_USERS_BASE_API_URL = "http://localhost:8080/users/all"
-const ADMIN_ALL_BOOKINGS_BASE_API_URL = "http://localhost:8080/profile/bookings/all"
-const ADMIN_POST_ADD_ROUTE_API_URL = "http://localhost:8080/routes/panel/add"
-const ADMIN_DELETE_ROUTE_API_URL = "http://localhost:8080/routes/panel/delete"
-const ADMIN_PUT_ROUTE_API_URL = "http://localhost:8080/routes/panel/update"
 class AdminService {
     getAllUsers(){
-        return axios.get(ADMIN_ALL_USERS_BASE_API_URL, {
+        return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/users/all`, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
                 "Content-Type": "application/json"
@@ -15,7 +10,7 @@ class AdminService {
         })
     }
     getAllBookings(){
-        return axios.get(ADMIN_ALL_BOOKINGS_BASE_API_URL, {
+        return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/profile/bookings/all`, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
                 "Content-Type": "application/json"
@@ -23,7 +18,7 @@ class AdminService {
         })
     }
     addRoute(routeData){
-        return axios.post(ADMIN_POST_ADD_ROUTE_API_URL, routeData,
+        return axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/routes/panel/add`, routeData,
             {
             headers:{
                 "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
@@ -33,7 +28,7 @@ class AdminService {
         )
     }
     deleteRoute(routeId){
-        return axios.delete(`${ADMIN_DELETE_ROUTE_API_URL}/${routeId}`,{
+        return axios.delete(`${process.env.BACKEND_APP_API}/routes/panel/delete/${routeId}`,{
             headers:{
                 "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
                 "Content-Type": "application/json"
@@ -41,7 +36,15 @@ class AdminService {
         })
     }
     putRoute(routeId, routeData){
-        return axios.put(`${ADMIN_PUT_ROUTE_API_URL}/${routeId}`, routeData,{
+        return axios.put(`${process.env.BACKEND_APP_API}/routes/panel/update/${routeId}`, routeData,{
+            headers:{
+                "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+                "Content-Type": "application/json"
+            }
+        })
+    }
+    postChangeUserRoleByAdmin(userId){
+        return axios.post(`${process.env.BACKEND_APP_API}/users/admin/${userId}`, {
             headers:{
                 "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
                 "Content-Type": "application/json"
