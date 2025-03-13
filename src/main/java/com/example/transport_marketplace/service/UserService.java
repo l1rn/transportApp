@@ -17,10 +17,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository repository;
-    private final JwtService jwtService;
-
     public User save(User user){
         return repository.save(user);
+    }
+
+    @Transactional
+    public void delete(int id){
+        repository.findById(id)
+                .ifPresent(repository::delete);
     }
 
     public User create(User user){
@@ -35,9 +39,8 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<Role> getUserRole(String username) {
-        return repository.findByUsername(username)
-                .map(User::getRole);
+    public Role getUserRole(User user) {
+        return user.getRole();
     }
 
     public User getById(int id){
@@ -48,10 +51,6 @@ public class UserService {
     public User getByUsername(String username) {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-    }
-
-    public Optional<User> findByUsername(String username) {
-        return repository.findByUsername(username);
     }
 
     public UserDetailsService userDetailsService(){

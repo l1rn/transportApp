@@ -1,6 +1,7 @@
 package com.example.transport_marketplace.controllers;
 
 import com.example.transport_marketplace.dto.auth.CurrentRoleResponse;
+import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,8 +42,20 @@ public class UsersController {
     @PostMapping("/admin/{id}")
     public ResponseEntity<User> setAdminRole(@PathVariable int id) {
         User user = userService.getById(id);
+        if (userService.getUserRole(user) == Role.ROLE_ADMIN) {
+            throw new RuntimeException("Вы уже являетесь админом");
+        }
         userService.setAdmin(user);
         return ResponseEntity.ok(user);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/admin/delete/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable int id){
+        User user = userService.getById(id);
+        if(user == null){
+            throw new RuntimeException("Такого пользователя нет");
+        }
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -58,8 +58,7 @@ public class BookingController {
     public ResponseEntity<?> createBooking(@RequestBody BookingRequest request,
                                            @AuthenticationPrincipal UserDetails userDetails){
         String username = userDetails.getUsername();
-        User user = userService.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        User user = userService.getByUsername(username);
         try {
             Booking newBooking = bookingService.    createBooking(request.getRouteId(), user.getId());
             return ResponseEntity.status(HttpStatus.CREATED).body(newBooking);
