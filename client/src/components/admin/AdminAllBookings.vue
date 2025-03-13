@@ -15,6 +15,7 @@
           <th>ID</th>
           <th>Юзер</th>
           <th>Статус</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -34,6 +35,9 @@
           <td>{{ booking.user.id }}</td>
           <td>{{ booking.user.username }}</td>
           <td>{{ booking.status }}</td>
+          <td>
+            <button>Отменить</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -54,6 +58,11 @@ const allBookings = async() =>{
     catch(error){
         console.log(error);
     }
+}
+const checkAdmin = () => {
+  try{
+    chec();
+  }
 }
 onMounted(() => {
     allBookings();

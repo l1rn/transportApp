@@ -86,23 +86,6 @@ public class RouteController {
         }
          return new ResponseEntity<>(route, HttpStatus.OK);
     }
-    @Operation(summary = "Поиск маршрутов по дате")
-    @GetMapping("/searchByDate")
-    public ResponseEntity<List<Route>> searchByDate(@RequestParam String date){
-        List<Route> filteredRoutes = routeService.getRoutes().stream()
-                .filter(route -> route.getDate().equals(date))
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(filteredRoutes, HttpStatus.OK);
-    }
-
-    @Operation(summary = "Поиск маршрута по транспорту")
-    @GetMapping("/searchByTransport")
-    public ResponseEntity<List<Route>> searchByTransport(@RequestParam String transport){
-        List<Route> filteredRoutes = routeService.getRoutes().stream()
-                .filter(route -> route.getTransport().equals(transport))
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(filteredRoutes, HttpStatus.OK);
-    }
 
     @Operation(summary = "Поиск маршрутов")
     @GetMapping("/search")

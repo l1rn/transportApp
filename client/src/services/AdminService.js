@@ -59,6 +59,15 @@ class AdminService {
             }
         })
     }
+    patchBooking(bookingId){
+        return axios.patch(`${process.env.VUE_APP_BACKEND_APP_API}/profile/bookings/cancel/${bookingId}`, {
+                headers:{
+                    "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+                    "Content-Type": "application/json"
+                }
+            }   
+        )
+    }
     
 }
 

@@ -81,6 +81,7 @@ public class BookingService {
 
         booking.setStatus(BookingStatus.CANCELED);
         bookingRepository.save(booking);
+
         return true;
     }
 

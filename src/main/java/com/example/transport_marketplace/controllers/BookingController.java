@@ -69,10 +69,15 @@ public class BookingController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PatchMapping("/booking/cancel/{id}")
+    @PatchMapping("/cancel/{id}")
     public ResponseEntity<?> cancelBookingAdmin(@PathVariable int id){
         try {
-            return ResponseEntity.ok(bookingService.cancelBookingAdmin(id));
+            boolean response = bookingService.cancelBookingAdmin(id);
+            if(response){
+                return ResponseEntity.ok("Бронь успешно отменена");
+            }else{
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Бронирование ужеотменено");
+            }
         }catch (BookingNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e){
