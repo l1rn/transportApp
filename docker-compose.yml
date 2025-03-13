@@ -1,7 +1,9 @@
 
 services:
   backend:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       SPRING_H2_CONSOLE_ENABLED: "true"
       JWT_SECRET: 4ca9f2b1d0481c33acb8dcbeaf08a6d1aba6cc2e0a24401493365361308677998b291cda035f59e1587fa3b847e477b4e9baf200e9a748856845c3f65c71db98
@@ -9,21 +11,21 @@ services:
       - "8080:8080"
     volumes:
       - h2_data:/app/data
-    user: root
     networks:
-      - app-network
+      - transport-network
+
   frontend:
     build: ./client
     ports:
-      - "3000:80"
+      - "80:80"
     depends_on:
       - backend
     networks:
-      - app-network
+      - transport-network
 
 volumes:
   h2_data:
 
 networks:
-  app-network:
+  transport-network:
     driver: bridge

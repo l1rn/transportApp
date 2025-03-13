@@ -15,9 +15,6 @@ public class RouteService {
     @Autowired
     private RouteRepository routeRepository;
 
-//    public Page<Route> getAllRoutes(Pageable pageable){
-//        return routeRepository.findAll(pageable);
-//    }
     public List<Route> getRoutes(){
         return routeRepository.findAll();
     }

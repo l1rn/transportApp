@@ -6,6 +6,10 @@ import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFo
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.service.RouteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
@@ -29,31 +33,58 @@ public class RouteController {
     @Autowired
     private final RouteService routeService;
 
-    @Operation(summary = "Получение всех маршрутов")
+    @Operation(
+            summary = "Получение всех маршрутов",
+            description = "Возвращает список всех доступных маршрутов. Доступно всем."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список маршрутов",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Route.class, type = "array")))
+    })
     @GetMapping
-    public ResponseEntity<List<Route>> getRoutes() throws IOException{
+    public ResponseEntity<List<Route>> getRoutes() throws IOException {
         List<Route> routes = routeService.getRoutes();
         return new ResponseEntity<>(routes, HttpStatus.OK);
     }
 
-    @Operation(summary = "Поиск маршрута по id")
+    @Operation(
+            summary = "Поиск маршрута по ID",
+            description = "Возвращает маршрут по указанному идентификатору."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Маршрут найден",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Route.class))),
+            @ApiResponse(responseCode = "400", description = "Некорректный ID"),
+            @ApiResponse(responseCode = "404", description = "Маршрут не найден")
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<?> getRouteById(@PathVariable String id){
-        if(id == null || id.isBlank()){
+    public ResponseEntity<?> getRouteById(@PathVariable(name = "id") String id) {
+        if (id == null || id.isBlank()) {
             return ResponseEntity.badRequest().body("Invalid request: ID cannot be empty.");
         }
-        try{
+        try {
             int routeId = Integer.parseInt(id);
             Route route = routeService.getRouteById(routeId)
                     .orElseThrow(() -> new RouteNotFoundException(routeId));
             return new ResponseEntity<>(route, HttpStatus.OK);
-        }
-        catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new BadRequestException();
         }
     }
 
-    @Operation(summary = "Добавление маршрута")
+    @Operation(
+            summary = "Добавление нового маршрута",
+            description = "Создаёт новый маршрут. Доступно только администраторам."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Маршрут создан",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = RouteDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Некорректные данные"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещён")
+    })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/panel/add")
     public ResponseEntity<RouteDTO> addRoute(
@@ -63,7 +94,6 @@ public class RouteController {
         if (result.hasErrors()) {
             throw new ValidationException(String.valueOf(result));
         }
-
         RouteDTO response = routeService.addRoute(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -87,7 +117,14 @@ public class RouteController {
          return new ResponseEntity<>(route, HttpStatus.OK);
     }
 
-    @Operation(summary = "Поиск маршрутов")
+    @Operation(
+            summary = "Поиск маршрутов с фильтрацией",
+            description = "Ищет маршруты по заданным параметрам с поддержкой пагинации."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список маршрутов",
+                    content = @Content(mediaType = "application/json"))
+    })
     @GetMapping("/search")
     public ResponseEntity<?> searchRoutes(
             @RequestParam(required = false) String routeFrom,
@@ -95,19 +132,14 @@ public class RouteController {
             @RequestParam(required = false) String date,
             @RequestParam(required = false) String transport,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size){
-
+            @RequestParam(defaultValue = "10") int size
+    ) {
         List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, date, transport);
-
         int start = page * size;
         int end = Math.min(start + size, filteredRoutes.size());
-
-        List<Route> paginatedResult = start < end
-                ? filteredRoutes.subList(start, end)
-                : List.of();
-
+        List<Route> paginatedResult = start < end ? filteredRoutes.subList(start, end) : List.of();
         return new ResponseEntity<>(
-                new HashMap<String, Object>(){{
+                new HashMap<String, Object>() {{
                     put("content", paginatedResult);
                     put("totalElements", filteredRoutes.size());
                     put("totalPages", (int) Math.ceil((double) filteredRoutes.size() / size));
