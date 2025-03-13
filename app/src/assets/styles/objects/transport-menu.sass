@@ -1,0 +1,74 @@
+$secondary: #f59e0b
+$border-radius: 0.75rem
+$primary: #2563eb
+$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
+$accent: #447cdc
+$input-bg: #f8fafc
+$input-border: #94a3b8
+$input-focus: #2563eb
+$placeholder-color: #64748b
+$border-color: #94a3b8
+$bg-color: #f8fafc
+$transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
+
+.transport-toggle
+  background: $bg-color
+  border: 2px solid $border-color
+  border-radius: 0.75rem
+  padding: 0.75rem 1.25rem
+  cursor: pointer
+  display: flex
+  justify-content: space-between
+  align-items: center
+  transition: $transition
+  font-weight: 600
+  color: #1e293b
+
+  &:hover
+    border-color: darken($border-color, 15%)
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1)
+
+  &.active
+    border-color: $primary
+    box-shadow: 0 0 8px rgba($primary, 0.2)
+
+  .arrow
+    font-size: 0.8em
+    margin-left: 12px
+    transition: transform 0.3s ease
+
+    .active &
+      transform: rotate(180deg)
+
+.transport-wrapper
+  position: relative
+  z-index: 1000
+
+
+.transport-menu
+  position: absolute
+  top: calc(100% + 8px)
+  left: 0
+  right: 0
+  background: white
+  border-radius: 0.75rem
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15)
+  z-index: 1001
+  overflow: hidden
+  transform-origin: top center
+
+
+.transport-item
+  padding: 12px 16px
+  cursor: pointer
+  display: flex
+  align-items: center
+  transition: $transition
+  background: $bg-color
+
+  &:hover
+    background: darken($bg-color, 3%)
+
+  .emoji
+    margin-right: 12px
+    font-size: 1.2em

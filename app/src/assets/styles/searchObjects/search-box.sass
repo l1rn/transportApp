@@ -1,0 +1,297 @@
+@import "@/assets/styles/objects/smart-datepicker.sass"
+@import "@/assets/styles/objects/transport-menu.sass"
+@import "@/assets/styles/objects/search-button.sass"
+$secondary-color: #6c757d
+$hover-bg: rgba(0,123,255,0.05)
+$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+$primary-color: #007bff
+$secondary: #f59e0b
+$border-radius: 0.75rem
+$primary: #2563eb
+$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
+$accent: #447cdc
+$input-bg: #f8fafc
+$input-border: #94a3b8
+$placeholder-color: #64748b
+$border-color: #94a3b8
+$bg-color: #f8fafc
+$transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
+
+.all-items
+  min-height: 100vh
+.header
+  display: flex
+  align-items: flex-start
+  flex-direction: column
+  padding: 2rem 10%
+
+  button
+    max-width: 100px
+    padding: 0.8rem 1.5rem
+    background: #007bff
+    color: white
+    border: none
+    border-radius: 0.5rem
+    cursor: pointer
+    transition: background 0.3s ease
+    margin-bottom: 2rem
+    font-weight: 500
+    margin-bottom: 2rem
+  h1
+
+.search-container
+  margin: 0 10%
+  padding: 1.4rem
+  box-shadow: 0 0 8px rgba(0,0,0, 0.3)
+  border-radius: 16px
+  background: linear-gradient(135deg, lighten(#007bff, 15%), darken(#007bff, 5%))
+
+.main-container
+  display: flex
+  justify-content: center
+  place-content: center
+  align-items: center
+  gap: 0.1rem
+
+.slide-fade-enter-active
+  transition: all 0.3s ease-out
+
+.slide-fade-leave-active
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1)
+
+.slide-fade-enter-from,
+.slide-fade-leave-to
+  transform: translateY(-10px)
+  opacity: 0
+.sub-search-container
+  display: flex
+  justify-content: space-evenly
+  align-items: center
+  label
+    color: #fff
+  
+.custom-clear-button
+  z-index: 10
+  border: 0
+  outline:none
+  border-radius: 8px
+  background: $bg-color
+  color:#666
+  padding: 0.2rem 1.8rem
+  font-size: 17px
+  transition: all 0.3s ease
+  &:hover
+    color: #2b2b2b
+    background: #e8f2ff
+    box-shadow: 0 10px 20px rgba(0, 91, 187, 0.3)
+  &:active
+    box-shadow: 0 5px 10px rgba(0, 91, 187, 0.2)
+    
+// suggestions
+.autocomplete
+  position: relative
+  width: 300px
+
+
+.input-group
+  position: relative
+  margin-bottom: 1rem
+  width: 100%
+  .b-form-input
+    width: 100%
+    margin-top: 1rem
+    padding: 0.75rem 1.25rem
+    font-size: 1rem
+    border-radius: $border-radius
+    background-color: $input-bg
+    border: 2px solid $input-border
+    outline: none
+    font-weight: 600
+    color: #1e293b
+    transition: all 0.3s ease
+
+    &:focus
+      border-color: #3b82f6
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2)
+
+    &:disabled
+      background-color: #f8fafc
+      cursor: not-allowed
+
+  .suggestions
+    position: absolute
+    top: calc(100% + 0.5rem)
+    left: 0
+    right: 0
+    border: 1px solid #e2e8f0
+    background: white
+    border-radius: 0.5rem
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1)
+    z-index: 1001
+    max-height: 300px
+    overflow-y: auto
+
+    .suggestion-item
+      padding: 0.75rem 1.25rem
+      transition: all 0.2s ease
+
+      &:last-child
+        border-bottom: none
+      &:hover
+        background-color: #f8fafc
+
+      &:active
+        background-color: #e2e8f0
+
+.loading, .error
+  position: absolute
+  top: calc(100% + 0.5rem)
+  left: 0
+  right: 0
+  padding: 0.75rem 1.25rem
+  background: white
+  border-radius: 0.5rem
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1)
+  z-index: 1000
+
+.error
+  color: #dc2626
+  background: #fef2f2
+  border: 1px solid #fecaca
+
+.loading, .error
+  padding: 8px 12px
+  color: #666
+  font-size: 0.9em
+
+
+.error
+  color: #ff4444
+.table-container
+    max-width: 1500px
+    margin: 1rem auto
+    overflow-x: auto
+    border-radius: 24px
+    background: white
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08)
+.table
+    width: 100%
+    border-collapse: collapse
+    border-radius: 24px
+    overflow: hidden
+    position: relative
+    
+    thead
+        background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 8%) 100%)
+        color: white
+        font-weight: 600
+        text-transform: uppercase
+        letter-spacing: 0.5px
+        
+        th
+            padding: 1.5rem 1.8rem
+            position: relative
+            
+            &:not(:last-child)::after
+                content: ''
+                position: absolute
+                right: 0
+                top: 50%
+                transform: translateY(-50%)
+                height: 60%
+                width: 1px
+                background: rgba(255,255,255,0.2)
+    
+    tbody
+        tr
+            transition: $transition
+            
+            &:nth-child(even)
+                background: #f8f9fa
+            
+            &:hover
+                background: $hover-bg
+                transform: scale(1.005)
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08)
+            
+            td
+                padding: 1.2rem 1.8rem
+                font-weight: 500
+                color: #2c3e50
+                border-bottom: 1px solid rgba(0,0,0,0.05)
+                
+                &:first-child
+                    font-weight: 600
+                    color: $primary-color
+
+.time-cell
+    position: relative
+    min-width: 140px
+    font-weight: 600 !important
+    
+    &::before
+        content: '🕒'
+        margin-right: 8px
+        filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1))
+    
+    .date-sub
+        display: inline-block
+        padding: 2px 8px
+        background: rgba(0,0,0,0.05)
+        border-radius: 6px
+        font-size: 0.75em
+        color: $secondary-color
+        margin-left: 8px
+        transform: translateY(-2px)
+.pagination
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 1.5rem
+    margin: 3rem 0 1rem
+    
+    .page-button
+        padding: 0.8rem 2rem
+        background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 5%) 100%)
+        color: white
+        border: none
+        border-radius: 12px
+        cursor: pointer
+        transition: $transition
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1)
+        font-weight: 600
+        
+        &:hover:not(:disabled)
+            transform: translateY(-2px)
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15)
+        
+        &:disabled
+            background: #dee2e6
+            color: #adb5bd
+            cursor: not-allowed
+    
+    &-info
+        font-size: 0.9em
+        color: $secondary-color
+        font-weight: 500
+
+@media (max-width: 1200px)
+    .header-routes
+        padding: 2rem 5%
+    
+    .table
+        thead th,
+        tbody td
+            padding: 1rem 1.2rem
+
+@media (max-width: 768px)
+    .table
+        min-width: 600px
+        
+        thead th
+            font-size: 0.9em
+            padding: 1rem
+            
+        tbody td
+            font-size: 0.85em
+            padding: 0.8rem

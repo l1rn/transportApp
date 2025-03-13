@@ -1,0 +1,170 @@
+@import "@/assets/styles/objects/smart-datepicker.sass"
+@import "@/assets/styles/objects/transport-menu.sass"
+@import "@/assets/styles/objects/search-button.sass"
+$secondary: #f59e0b
+$border-radius: 0.75rem
+$primary: #2563eb
+$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
+$accent: #447cdc
+$input-bg: #f8fafc
+$input-border: #94a3b8
+$placeholder-color: #64748b
+$border-color: #94a3b8
+$bg-color: #f8fafc
+$transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
+
+
+.main-container
+  display: flex
+  justify-content: center
+  place-content: center
+  align-items: center
+  gap: 1rem
+
+.slide-fade-enter-active
+  transition: all 0.3s ease-out
+
+.slide-fade-leave-active
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1)
+
+.slide-fade-enter-from,
+.slide-fade-leave-to
+  transform: translateY(-10px)
+  opacity: 0
+.sub-search-container
+  display: flex
+  justify-content: space-evenly
+  align-items: center
+  
+.custom-clear-button
+  z-index: 10
+  border: 0
+  outline:none
+  border-radius: 8px
+  background: $accent
+  padding: 0.2rem 1.8rem
+  font-size: 17px
+  transition: all 0.3s ease
+  &:hover
+    background: $primary
+    box-shadow: 0 10px 20px rgba(0, 91, 187, 0.3)
+  &:active
+    box-shadow: 0 5px 10px rgba(0, 91, 187, 0.2)
+    
+// suggestions
+.autocomplete
+  position: relative
+  width: 300px
+
+
+.input-group
+  position: relative
+  margin-bottom: 1rem
+  width: 100%
+
+  .ms-1
+    margin-left: 0.5rem
+
+  .b-form-input
+    width: 100%
+    margin-top: 1rem
+    padding: 0.75rem 1.25rem
+    font-size: 1rem
+    border-radius: $border-radius
+    background-color: $input-bg
+    border: 2px solid $input-border
+    outline: none
+    font-weight: 600
+    color: #1e293b
+    transition: all 0.3s ease
+
+    &:focus
+      border-color: #3b82f6
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2)
+
+    &:disabled
+      background-color: #f8fafc
+      cursor: not-allowed
+
+  .suggestions
+    position: absolute
+    top: calc(100% + 0.5rem)
+    left: 0
+    right: 0
+    border: 1px solid #e2e8f0
+    background: white
+    border-radius: 0.5rem
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1)
+    z-index: 1001
+    max-height: 300px
+    overflow-y: auto
+
+    .suggestion-item
+      padding: 0.75rem 1.25rem
+      transition: all 0.2s ease
+
+      &:last-child
+        border-bottom: none
+      &:hover
+        background-color: #f8fafc
+
+      &:active
+        background-color: #e2e8f0
+
+.loading, .error
+  position: absolute
+  top: calc(100% + 0.5rem)
+  left: 0
+  right: 0
+  padding: 0.75rem 1.25rem
+  background: white
+  border-radius: 0.5rem
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1)
+  z-index: 1000
+
+.error
+  color: #dc2626
+  background: #fef2f2
+  border: 1px solid #fecaca
+
+.loading, .error
+  padding: 8px 12px
+  color: #666
+  font-size: 0.9em
+
+
+.error
+  color: #ff4444
+
+.pagination
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 1.5rem
+
+    &-button
+        padding: 0.3rem 0.6rem
+        background: linear-gradient(135deg, blue 0%, darken(blue, 5%) 100%)
+        color: white
+        border: none
+        border-radius: 12px
+        cursor: pointer
+        font-weight: 900
+        transition: all 0.4s ease
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1)
+        font-weight: 600
+        z-index: 10000
+        
+        &:hover:not(:disabled)
+            transform: translateY(-2px)
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15)
+        
+        &:disabled
+            background: #dee2e6
+            color: #adb5bd
+            cursor: not-allowed
+    
+    &-info
+        font-size: 0.9em
+        color: $accent
+        font-weight: 500

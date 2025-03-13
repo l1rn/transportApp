@@ -1,0 +1,149 @@
+/* Variables */
+$primary: #007bff
+$success: #198754
+$accent: #6c5ce7
+$background: #f8f9fa
+$card-bg: #ffffff
+$border-radius: 16px
+$shadow: 0 8px 32px rgba(0,0,0,0.08)
+$transition: all 0.3s ease
+
+*
+    font-family: Montserrat, sans-serif
+
+.flight-card
+  background: linear-gradient(135deg, $card-bg 0%, rgba(255,255,255,0.95) 100%)
+  border-radius: $border-radius
+  box-shadow: $shadow
+  padding: 40px
+  max-width: 1100px
+  max-height: 500px
+  width: 100%
+  margin-bottom: 0.7rem
+  position: relative
+  transition: $transition
+  &:hover
+    transform: translateY(-4px) scale(1.01)
+    box-shadow: 0 12px 48px rgba(0,0,0,0.12)
+
+  .status
+    position: absolute
+    top: 20px
+    right: 20px
+    padding: 8px 16px
+    border-radius: 24px
+    font-size: 14px
+    font-weight: 600
+    text-transform: uppercase
+    animation: pulse 2s infinite
+
+    &.on-time
+      background: linear-gradient(45deg, $success, lighten($success, 15%))
+      color: white
+
+    &.delayed
+      background: linear-gradient(45deg, #ff6b6b, #ff4e4e)
+      color: white
+
+  .header
+    display: flex
+    align-items: center
+    margin-bottom: 32px
+
+    .transport-icon
+      width: 60px
+      height: 60px
+      background: linear-gradient(45deg, lighten($primary, 65%), lighten($primary, 40%))
+      border-radius: 16px
+      display: flex
+      align-items: center
+      justify-content: center
+      margin-right: 24px
+      transition: transform 0.3s
+      &:hover
+        transform: rotate(15deg)
+
+  .route-from-to
+    display: flex
+    align-items: center
+    gap: 16px
+    margin-bottom: 32px
+
+    .info-value
+      font-size: 24px
+      font-weight: 600
+      color: #212529
+      &:hover
+        text-decoration: underline
+
+    .arrow
+      width: 40px
+      height: 40px
+      background: linear-gradient(45deg, $accent, lighten($accent, 15%))
+      border-radius: 50%
+      display: flex
+      align-items: center
+      justify-content: center
+      color: white
+      font-size: 24px
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1)
+      transition: transform 0.3s
+      &:hover
+        transform: rotate(30deg)
+
+  .route-info
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+    gap: 24px
+    margin-bottom: 32px
+
+    .info-item
+      display: flex
+      flex-direction: column
+      gap: 6px
+
+      .info-label
+        color: #6c757d
+        font-size: 14px
+
+      .info-value
+        color: #1a202c
+        font-size: 18px
+        font-weight: 600
+
+  .price-section
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding-top: 32px
+    border-top: 1px solid #e9ecef
+    gap: 24px
+
+    .price
+      font-size: 32px
+      color: $primary
+      font-weight: 700
+
+    .book-button
+      background: linear-gradient(45deg, $primary, lighten($primary, 20%))
+      color: white
+      padding: 16px 32px
+      border-radius: 24px
+      border: none
+      cursor: pointer
+      transition: $transition
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1)
+      &:hover
+        transform: translateY(-2px)
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15)
+      &:active
+        transform: translateY(1px)
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1)
+
+@keyframes pulse
+  0%, 100%
+    transform: scale(1)
+    opacity: 0.9
+  50%
+    transform: scale(1.03)
+    opacity: 1
