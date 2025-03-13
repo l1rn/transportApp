@@ -11,11 +11,13 @@ $shadow-focus: rgba(37, 99, 235, 0.4)
 .date-input-wrapper
   position: relative
   display: inline-block
+  width: 100%
 
   input[type="date"]
-    padding: 0.75rem 1.2rem
+    width: 100%
+    padding: 0.5rem 1rem !important
     background: $input-bg url("@/assets/datepicker.png") no-repeat right 0.75rem center
-    background-size: 20px
+    background-size: 16px
     font-size: 16px
     border: 2px solid $input-border
     border-radius: $border-radius
@@ -46,8 +48,9 @@ input[type="date"]:placeholder-shown
 
 .custom-placeholder
   position: absolute
-  left: 16px
-  top: 50%
+  left: 1rem
+  font-size: 14px
+  top: 60%
   transform: translateY(-50%)
   pointer-events: none
   color: $placeholder-color
