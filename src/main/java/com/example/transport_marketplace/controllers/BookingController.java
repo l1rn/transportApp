@@ -10,6 +10,12 @@ import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.service.BookingService;
 import com.example.transport_marketplace.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,77 +37,143 @@ public class BookingController {
     private final UserService userService;
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @Operation(summary = "Отображение только тех броней, что выбрал пользователей")
+    @Operation(
+            summary = "Получение своих бронирований",
+            security = @SecurityRequirement(name = "bearerAuth"),
+            description = "Возвращает список бронирований, сделанных текущим аутентифицированным пользователем."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список бронирований пользователя",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Booking.class)))),
+            @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован"),
+            @ApiResponse(responseCode = "404", description = "Бронирования не найдены для данного пользователя")
+    })
     @GetMapping("/my")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getMyBooking(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<?> getMyBooking(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
-        try{
+        try {
             List<Booking> bookings = bookingService.getBookingByUser(username);
             return ResponseEntity.ok(bookings);
-        }
-        catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @Operation(summary = "Все брони пользователей только для админа")
+    @Operation(
+            summary = "Получение всех бронирований (для администраторов)",
+            security = @SecurityRequirement(name = "bearerAuth"),
+            description = "Возвращает список всех бронирований в системе. Доступно только пользователям с ролью ROLE_ADMIN."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список всех бронирований",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Booking.class)))),
+            @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещён (не администратор)")
+    })
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAllBookingsForAdmin() {
         return ResponseEntity.ok(bookingService.getAllBooking());
     }
 
-    @Operation(summary = "Забронировать только для авторизованных")
+    @Operation(
+            summary = "Создание бронирования",
+            security = @SecurityRequirement(name = "bearerAuth"),
+            description = "Позволяет аутентифицированному пользователю забронировать маршрут по указанному ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Бронирование успешно создано",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Booking.class))),
+            @ApiResponse(responseCode = "400", description = "Некорректные данные или маршрут не найден"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован")
+    })
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> createBooking(@RequestBody BookingRequest request,
-                                           @AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<?> createBooking(
+            @RequestBody BookingRequest request,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
         String username = userDetails.getUsername();
         User user = userService.getByUsername(username);
         try {
-            Booking newBooking = bookingService.    createBooking(request.getRouteId(), user.getId());
+            Booking newBooking = bookingService.createBooking(request.getRouteId(), user.getId());
             return ResponseEntity.status(HttpStatus.CREATED).body(newBooking);
-        }
-            catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
+    @Operation(
+            summary = "Отмена бронирования администратором",
+            security = @SecurityRequirement(name = "bearerAuth"),
+            description = "Позволяет администратору отменить бронирование по его ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Бронирование успешно отменено",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(example = "\"Бронь успешно отменена\""))),
+            @ApiResponse(responseCode = "404", description = "Бронирование не найдено"),
+            @ApiResponse(responseCode = "409", description = "Бронирование уже отменено"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещён (не администратор)"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/cancel/{id}")
-    public ResponseEntity<?> cancelBookingAdmin(@PathVariable int id){
+    public ResponseEntity<?> cancelBookingAdmin(
+            @PathVariable(name = "id") int id
+    ) {
         try {
             boolean response = bookingService.cancelBookingAdmin(id);
-            if(response){
+            if (response) {
                 return ResponseEntity.ok("Бронь успешно отменена");
-            }else{
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Бронирование ужеотменено");
+            } else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Бронирование уже отменено");
             }
-        }catch (BookingNotFoundException e){
+        } catch (BookingNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @Operation(summary = "Отмена брони")
+    @Operation(
+            summary = "Отмена своего бронирования",
+            security = @SecurityRequirement(name = "bearerAuth"),
+            description = "Позволяет аутентифицированному пользователю отменить своё бронирование по ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Бронирование успешно отменено",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(example = "\"Бронирование отменено\""))),
+            @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещён (попытка отменить чужое бронирование)"),
+            @ApiResponse(responseCode = "404", description = "Бронирование не найдено"),
+            @ApiResponse(responseCode = "409", description = "Бронирование уже отменено"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
     @PatchMapping("/my/cancel")
-    public ResponseEntity<?> cancelBooking(@RequestBody CancelBookingRequest request,
-                                           @AuthenticationPrincipal UserDetails userDetails) {
-        try{
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> cancelBooking(
+            @RequestBody CancelBookingRequest request,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        try {
             String username = userDetails.getUsername();
             boolean success = bookingService.cancelBooking(request.getBookingId(), username);
-            if(success){
+            if (success) {
                 return ResponseEntity.ok("Бронирование отменено");
-            }else{
+            } else {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Бронирование уже отменено");
             }
-        } catch (BookingNotFoundException e){
+        } catch (BookingNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (AccessDeniedException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch (Exception e){
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

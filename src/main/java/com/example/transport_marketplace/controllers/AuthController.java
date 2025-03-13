@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +32,16 @@ public class AuthController {
 
     @Operation(
             summary = "Регистрация пользователя",
-            description = "Создаёт нового пользователя в системе. Требуется уникальный email и пароль. Возвращает сообщение об успешной регистрации."
+            description = "Создаёт нового пользователя в системе. Требуется уникальный имя и пароль. Возвращает сообщение об успешной регистрации."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь успешно зарегистрирован",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = String.class),
                             examples = @ExampleObject(value = "\"Пользователь зарегистрирован\""))),
-            @ApiResponse(responseCode = "400", description = "Некорректные данные или email уже занят",
+            @ApiResponse(responseCode = "400", description = "Некорректные данные или имя уже занят",
                     content = @Content(mediaType = "application/json",
-                            examples = @ExampleObject(value = "\"Email уже используется\"")))
+                            examples = @ExampleObject(value = "\"Имя уже используется\"")))
     })
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) {
@@ -64,6 +65,7 @@ public class AuthController {
 
     @Operation(
             summary = "Обновление токенов",
+            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Обновляет access-токен с помощью refresh-токена."
     )
     @ApiResponses(value = {
@@ -79,6 +81,7 @@ public class AuthController {
 
     @Operation(
             summary = "Выход из системы",
+            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Завершает сессию пользователя, добавляя access-токен в blacklist и удаляя refresh-токен."
     )
     @ApiResponses(value = {

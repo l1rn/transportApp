@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
@@ -76,6 +77,7 @@ public class RouteController {
 
     @Operation(
             summary = "Добавление нового маршрута",
+            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Создаёт новый маршрут. Доступно только администраторам."
     )
     @ApiResponses(value = {
@@ -98,7 +100,7 @@ public class RouteController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Удаление маршрута")
+    @Operation(summary = "Удаление маршрута", security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/panel/delete/{id}")
     public ResponseEntity<Void> deleteRoute(@PathVariable int id){
@@ -107,6 +109,7 @@ public class RouteController {
                         : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/panel/update/{id}")
     public ResponseEntity<Route> updateRoute(@PathVariable int id, @RequestBody Route updatedRoute){
@@ -148,6 +151,7 @@ public class RouteController {
                 HttpStatus.OK
         );
     }
+
     @GetMapping("/priceRange")
     public ResponseEntity<List<Route>> searchByPriceRange(
             @RequestParam Double minPrice,

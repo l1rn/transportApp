@@ -11,4 +11,5 @@ import lombok.*;
 public class CurrentRoleResponse {
     @NotBlank
     private String role;
+
 }

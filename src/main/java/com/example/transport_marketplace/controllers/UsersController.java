@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ public class UsersController {
 
     @Operation(
             summary = "Получение списка всех пользователей",
+            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Возвращает список всех пользователей. Доступно только администраторам."
     )
     @ApiResponses(value = {
@@ -63,6 +65,7 @@ public class UsersController {
 
     @Operation(
             summary = "Назначение роли администратора",
+            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Делает пользователя администратором. Доступно только текущим администраторам."
     )
     @ApiResponses(value = {
@@ -82,7 +85,7 @@ public class UsersController {
         userService.setAdmin(user);
         return ResponseEntity.ok(user);
     }
-
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id){
