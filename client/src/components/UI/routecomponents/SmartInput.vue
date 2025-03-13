@@ -95,8 +95,9 @@ const toggleMenu = () => {
 
 const selectTransport = (value) => {
   const transport = transports.find(t => t.value === value)
-  selectedTransport.value = transport?.label || null
+  selectedTransport.value = transport?.label || null;
   selectedEmoji.value = transport?.emoji || null;
+  isOpen.value = false;
 }
 
 onMounted(async() =>{
@@ -146,6 +147,7 @@ const clearFilter = () => {
 
 </script>
 <template>
+<div class="search-sidebar">
   <div class="main-container">
     <div class="input-group">
       <input
@@ -305,6 +307,7 @@ const clearFilter = () => {
       Очистить фильтр
     </button>
   </div>
+</div>
 </template>
 
 <style scoped lang="sass">

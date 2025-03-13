@@ -1,8 +1,7 @@
 <script setup>
-import router from '@/routers/router'
 import BookingService from '@/services/BookingService'
-// import RoutesService from '@/services/RoutesService'
 import {defineProps, watch, ref, defineEmits} from 'vue'
+import Notifications from '@/components/UI/Notifications.vue';
 const props = defineProps({
   currentPage: Number,
   itemsPerPage: Number,
@@ -23,7 +22,7 @@ const checkRoutesEmoji = (transport) =>{
   }
 }
 
-const emit = defineEmits(['require-auth','update:page']);
+const emit = defineEmits(['require-auth','update-seats']);
 
 const routes = ref([...props.searchResults])
 watch(() => props.searchResults, (newResults) => {
@@ -38,28 +37,37 @@ const bookingRoute = async (routeId, event) => {
     return;
   }
   try {
+    const route = routes.value.find(r => r.id === routeId);
+    if (!route || route.availableSeats <= 0) return;
     await BookingService.addBooking(routeId);
-    alert("Успошное бронировае");
-    router.push('/profile');
-    // await RoutesService.searchRoutes();
-    routes.value = routes.value.map(r => 
-      r.id === routeId ? {...r, availableSeats: r.availableSeats - 1} : r
-    );
+    emit('update-seats', routeId);
+    showMessage('success',"Успошное бронирование!");
   } catch (error) {
-    console.log('Ошибка бронирования!', error);
+    showMessage('error', error.response?.data?.message || 'Ошибка бронирования');
   }
+};
+
+const notifications = ref(null);
+
+const showMessage = (type, message) => {
+  notifications.value?.showNotification(type, message);
+};
+const getStatus = (seats) => {
+  return seats > 0 ? 'ОТКРЫТО' : 'ЗАКРЫТО';
 };
 
 </script>
 
 <template>
+  <Notifications ref="notifications"></Notifications>
   <div
     v-for="route in searchResults"
     :key="route.id"
     class="flight-card"
   >
-    <div class="status on-time">
-      ОКТРЫТО
+    <div class="status"
+    :class="{'on-time': route.availableSeats > 0, 'closed': route.availableSeats >= 0}">
+      {{ getStatus(route.availableSeats) }}
     </div>
 
     <div class="header">
@@ -103,7 +111,9 @@ const bookingRoute = async (routeId, event) => {
       </div>
       <div class="info-item">
         <span class="info-label">ОСТАЛОСЬ МЕСТ</span>
-        <span class="info-value">{{ route.availableSeats }}</span>
+        <span class="info-value">{{ Math.max(0, route.availableSeats) }}
+          <span v-if="route.availableSeats <= 0" class="sold-out-text">(мест нет)</span>
+        </span>
       </div>
     </div>
 
@@ -117,6 +127,7 @@ const bookingRoute = async (routeId, event) => {
         </div>
       </div>
       <button
+        :disabled="route.availableSeats <= 0"
         class="book-button"
         @click="bookingRoute(route.id, $event)"
       >

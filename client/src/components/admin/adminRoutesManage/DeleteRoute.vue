@@ -1,5 +1,6 @@
 <template>
-  <div class="routes-container">
+  <Notifications ref="notifications"></Notifications>  
+<div class="routes-container">
     <div class="header">
       <h1>Все маршруты</h1>
     </div>
@@ -37,7 +38,7 @@
               </div>
             </td>
             <td>{{ route.date }}</td>
-            <td class="transport-cell">
+            <td class="">
               <span class="transport-icon">{{ checkRoutesEmoji(route.transport) }}</span>
               {{ route.transport }}
             </td>
@@ -49,10 +50,12 @@
             </td>
             <td class="actions">
               <button 
-                class="delete-btn"
-                @click="deleteRoute(route.id)"
+              class="delete-btn"
+              :disabled="deletingId === route.id"
+              @click="deleteRoute(route.id)"
               >
-                Удалить
+                <span v-if="deletingId === route.id">Удаление...</span>
+                <span v-else>Удалить</span>
               </button>
             </td>
           </tr>
@@ -80,8 +83,10 @@
   </div>
 </template>
 <script setup>
+import Notifications from '@/components/UI/Notifications.vue'
 import AdminService from '@/services/AdminService';
 import RoutesService from '@/services/RoutesService';
+
 import { ref, computed, onMounted } from 'vue';
 
 const headers = ref([
@@ -147,14 +152,51 @@ const checkRoutesEmoji = (transport) =>{
     }
 }
 
+const notifications = ref(null)
+const deletingId = ref(null);
+const deletedRoute = ref(null);
 const deleteRoute = async(routeId) => {
+  let fullIndex;
     try{
+        deletingId.value = routeId;
+        
+        fullIndex = routes.value.findIndex(r => r.id === routeId);
+        if (fullIndex === -1) return;
+
+        const hasBooking = await checkRouteForBooking(routeId);
+        if (hasBooking) {
+            notifications.value.showNotification('error', 'Нельзя удалить маршрут с активными бронированиями');
+            return;
+        }
+
+        deletedRoute.value = routes.value[fullIndex];
+        routes.value.splice(fullIndex, 1);
+
         await AdminService.deleteRoute(routeId);
-        await fetchRoutes();
-    }catch(error){
-        alert('Не удалось удалить маршрут!');
-        console.log(error);
+        notifications.value.showNotification('success', 'Маршрут успешно удален');
+
+    } catch (error) {
+        if (deletedRoute.value && fullIndex !== -1) {
+            routes.value.splice(fullIndex, 0, deletedRoute.value);
+        }
+        notifications.value.showNotification(
+            'error', 
+            error.response?.data?.message || 'Ошибка при удалении маршрута'
+        );
+    } finally {
+        deletingId.value = null;
+        deletedRoute.value = null;
     }
+}
+
+const checkRouteForBooking = async (routeId) => {
+  try {
+    const response = await AdminService.getAllBookings()
+    return response.data.some(booking => booking.route.id === routeId)
+  } catch (error) {
+    notifications.value.showNotification('error', 'Ошибка при проверке бронирований')
+    return false 
+  }
 }
 
 </script>

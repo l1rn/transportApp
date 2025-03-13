@@ -1,5 +1,6 @@
 <template>
   <!-- header  -->
+  <Notifications ref="notifications" />
   <div class="header-container-custom">
     <div
       class="main-header"
@@ -56,6 +57,7 @@
       <smart-input
         @transport-selected="handleTransportSelect"
         @search-results="handleResults"
+        @search-start="showLoading"
       />
     </div>
   </div>
@@ -118,12 +120,13 @@
     <div class="custom-container">
       <route-container
         :search-results="searchResults"
+        @update-seats="handleSeatsUpdate"
         @require-auth="handleAuthRequired"
       />
     </div> 
     <div class="pagination" />
     <div class="footer">
-      <div>l1rn Inc.</div>
+      <div>l1rn</div>
       <div>
         <a
           href="https://github.com/l1rn"
@@ -138,6 +141,7 @@
   </div>
 </template>
 <script setup>
+import Notifications from './UI/Notifications.vue';
 import github from '@/assets/github-mark.svg';
 import { ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import { useRouter } from 'vue-router';
@@ -154,6 +158,17 @@ const router = useRouter();
 const showLoginForm = ref(false);
 const scrollY = ref(0);
 const isScrolled = ref(false);
+const handleSeatsUpdate = (routeId) => {
+  searchResults.value = searchResults.value.map(route => {
+    if(route.id === routeId && route.availableSeats > 0){
+      return {
+        ...route,
+        availableSeats: route.availableSeats  -1
+      };
+    }
+    return route;
+  })
+}
 const responses = ref({
   success: {
     register: false,
@@ -177,27 +192,10 @@ const handleScroll = () => {
   isScrolled.value = scrollY.value > 100;
 };
 
-const showMessage = (type, message, timeout = 3000) => {
-  const [category, subType] = type.split(':');
-  if (category === 'success') {
-    responses.value.success[subType] = message;
-    responses.value.error = null;
-  } else {
-    responses.value.error = message;
-    Object.keys(responses.value.success).forEach(k => {
-      responses.value.success[k] = false;
-    });
-  }
+const notifications = ref(null);
 
-  if (timeout > 0) {
-    setTimeout(() => {
-      if (category === 'success') {
-        responses.value.success[subType] = false;
-      } else {
-        responses.value.error = null;
-      }
-    }, timeout);
-  }
+const showMessage = (type, message) => {
+  notifications.value.showNotification(type.split(':')[0], message);
 };
 
 const handleUserRegistered = (result) => {
@@ -259,6 +257,12 @@ const searchResults = ref([]);
 const handleResults = (results) => {
   searchResults.value = results;
 }
+
+const isLoading = ref(false);
+const showLoading = (state) => {
+  isLoading.value = state;
+};
+
 </script>
 <script>
   export default{

@@ -301,10 +301,10 @@
     { value: 'bus', label: 'Автобус', emoji: '🚌' },
     { value: 'air', label: 'Авиа', emoji: '✈️' }
   ])
-  const isOpen = ref(false)
-  const toggleMenu = () => {
-    isOpen.value = !isOpen.value
-  }
+const isOpen = ref(false)
+const toggleMenu = () => {
+  isOpen.value = !isOpen.value
+}
   
   const selectedTransport = ref(null)
   const selectedEmoji = ref(null)

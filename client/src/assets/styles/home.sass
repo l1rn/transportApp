@@ -28,7 +28,7 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 .header-title-container
     font-family: $font-family-base
     margin-top: 1rem
-    font-size: 1.5rem
+    font-size: 1.2rem
     color: $text
     display: flex
     justify-content: center
@@ -37,10 +37,12 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
     position: relative
 
 .navbar-custom-header
+    display: flex
+    flex-direction: column
     .brand
         font-family: 'Montserrat', sans-serif
         font-weight: 700
-        font-size: 1.5rem
+        font-size: 1.2rem
         color: $primary
         position: relative
         &::after
@@ -124,9 +126,8 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 .sub-header-container
     box-shadow: 0 2px 15px rgba(0,0,0,0.1)
     position: absolute
-    top: 180px
+    top: 200px
     margin: 0 20rem
-    padding: 1.5rem
     transition: all 0.4s ease
     z-index: 999
     border-radius: 24px

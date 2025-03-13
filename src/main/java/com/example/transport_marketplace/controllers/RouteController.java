@@ -135,14 +135,19 @@ public class RouteController {
             @RequestParam(required = false) String date,
             @RequestParam(required = false) String transport,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size){
+
         List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, date, transport);
+
         int start = page * size;
         int end = Math.min(start + size, filteredRoutes.size());
-        List<Route> paginatedResult = start < end ? filteredRoutes.subList(start, end) : List.of();
+
+        List<Route> paginatedResult = start < end
+                ? filteredRoutes.subList(start, end)
+                : List.of();
+
         return new ResponseEntity<>(
-                new HashMap<String, Object>() {{
+                new HashMap<String, Object>(){{
                     put("content", paginatedResult);
                     put("totalElements", filteredRoutes.size());
                     put("totalPages", (int) Math.ceil((double) filteredRoutes.size() / size));
