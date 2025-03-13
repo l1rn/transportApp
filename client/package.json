@@ -1,5 +1,5 @@
 {
-  "name": "app",
+    "name": "app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -22,27 +22,25 @@
     "vue": "^3.4.19",
     "vue-router": "^4.3.0"
   },
-  "devDependencies": {
+    "devDependencies": {
     "@babel/core": "^7.24.5",
     "@babel/eslint-parser": "^7.24.5",
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
     "@eslint/js": "^9.22.0",
-    "@tailwindcss/postcss": "^4.0.12",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-plugin-unit-jest": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
+    "@vue/compiler-sfc": "^3.4.19",
     "@vue/test-utils": "^2.4.5",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^9.33.0",
     "globals": "^16.0.0",
     "husky": "^9.1.7",
-    "postcss": "^8.4.38",
     "prettier": "3.2.5",
     "sass": "^1.75.0",
-    "sass-loader": "^13.3.2",
-    "tailwindcss": "^3.4.3"
+    "sass-loader": "^13.3.2"
   }
 }

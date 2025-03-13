@@ -9,10 +9,10 @@
   </div>
 </template>
 <script setup>
-import AllRoutesContainer from './UI/AllRoutesContainer.vue';
+import AllRoutesContainer from './UI/routecomponents/AllRoutesContainer.vue';
 import BackbuttonToHome from './UI/BackbuttonToHome.vue';
 </script>
-<style lang="sass">
+<style scoped lang="sass">
 @import "@/assets/styles/routeObjects/route-filter-page"
 
 </style>

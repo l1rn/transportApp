@@ -29,6 +29,7 @@
             v-if="roleNotAdmin.find(u => u.id === user.id)?.notAdmin" 
             @click="getPermissionAdmin(user.id)">Дать права</button>
             <button 
+            :disabled="isRoleAdmin(user.role)"
             class="delete-user-button"
             @click="deleteUser(user.id)">Удалить пользователя</button>
           </td>
@@ -68,6 +69,11 @@ const roleNotAdmin = computed(() => {
   }));
 });
 
+const isRoleAdmin = (role) => {
+  if(role === 'ROLE_ADMIN') return true
+  return false
+}
+
 const deleteUser = async(userId) => {
   try{
     await AdminService.deleteUser(userId);
@@ -94,6 +100,6 @@ export default {
     name:"AdminAllUsers"
 }
 </script>
-<style lang="sass">
+<style scoped lang="sass">
 @import "@/assets/styles/adminObjects/all-users-table"
 </style>

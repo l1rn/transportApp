@@ -1,5 +1,5 @@
 <script>
-import BookingContainer from "@/components/bookings/booking/BookingContainer.vue";
+import BookingContainer from "@/components/bookings/BookingContainer.vue";
 import BookingService from "@/services/BookingService";
 
 export default {

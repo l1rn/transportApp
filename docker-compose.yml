@@ -10,6 +10,20 @@ services:
     volumes:
       - h2_data:/app/data
     user: root
+    networks:
+      - app-network
+  frontend:
+    build: ./client
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
 
 volumes:
   h2_data:
+
+networks:
+  app-network:
+    driver: bridge

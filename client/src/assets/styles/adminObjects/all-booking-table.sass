@@ -1,0 +1,94 @@
+.booking-table
+  padding: 2rem
+  background: #f8f9fa
+  border-radius: 12px
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+
+  .table-title
+    color: #2c3e50
+    font-size: 1.8rem
+    margin-bottom: 1.5rem
+    text-align: center
+    font-weight: 600
+
+  .table-wrapper
+    overflow-x: auto
+    border-radius: 10px
+    background: white
+    padding: 1rem
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05)
+
+  .table-custom
+    width: 100%
+    border-collapse: collapse
+    min-width: 1000px
+    background: white
+    
+    th
+      background: #3498db
+      color: white
+      font-weight: 600
+      padding: 1.2rem
+      text-align: left
+      &:first-child
+        border-radius: 8px 0 0 0
+      &:last-child
+        border-radius: 0 8px 0 0
+    
+    td
+      padding: 1rem 1.2rem
+      border-bottom: 1px solid #ecf0f1
+      transition: background 0.3s ease
+    
+    tr
+      &:nth-child(even)
+        background: #f8f9fa
+      &:hover
+        background: #f1f5f9 !important
+      &:last-child
+        td
+          border-bottom: none
+    
+    .time-block
+      .time
+        font-weight: 500
+        color: #2c3e50
+        font-size: 1.1rem
+      .date
+        background: #e8f4fd
+        color: #3498db
+        padding: 0.2rem 0.5rem
+        border-radius: 6px
+        font-size: 0.85rem
+        margin-top: 0.3rem
+        display: inline-block
+    
+    button
+      background: #e74c3c
+      color: white
+      padding: 0.5rem 1rem
+      border-radius: 6px
+      font-weight: 500
+      transition: all 0.3s
+      display: flex
+      align-items: center
+      gap: 0.5rem
+      &:hover:not(:disabled)
+        background: #c0392b
+        transform: translateY(-1px)
+        box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3)
+      &:disabled
+        background: #95a5a6
+        cursor: not-allowed
+
+    .status
+      display: inline-block
+      padding: 0.3rem 0.8rem
+      border-radius: 20px
+      font-size: 0.9rem
+      &[data-status="CANCELED"]
+        background: #e74c3c22
+        color: #c0392b
+      &[data-status="BOOKED"]
+        background: #2ecc7122
+        color: #27ae60

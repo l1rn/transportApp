@@ -142,11 +142,11 @@ import github from '@/assets/github-mark.svg';
 import { ref, computed, onMounted, onBeforeUnmount} from 'vue';
 import { useRouter } from 'vue-router';
 import { BModal, BTab, BTabs} from 'bootstrap-vue-next';
-import SmartInput from "@/components/UI/SmartInput.vue";
-import RouteContainer from './bookings/RouteContainer.vue';
-import Signup from '@/components/UI/Signup.vue';
-import Signin from "@/components/UI/Signin.vue";
-import CustomProfile from "@/components/bookings/Profile.vue";
+import SmartInput from "@/components/UI/routecomponents/SmartInput.vue";
+import RouteContainer from './UI/routecomponents/RouteContainer.vue';
+import Signup from '@/components/UI/auth/Signup.vue';
+import Signin from "@/components/UI/auth/Signin.vue";
+import CustomProfile from "@/components/UI/auth/Profile.vue";
 import LogoutService from "@/services/LogoutService";
 import { cancelTokenRefresh, scheduleTokenRefresh } from "@/services/api";
 

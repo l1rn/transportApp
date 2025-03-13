@@ -52,6 +52,7 @@ public class UsersController {
     @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id){
         User user = userService.getById(id);
+        User currentUser = userService.getCurrentUser();
         if(user == null){
             throw new RuntimeException("Такого пользователя нет");
         }

@@ -84,7 +84,7 @@ onMounted(() =>{
 })
 </script>
 <script>
-import BookingCard from "@/components/bookings/booking/BookingCard.vue";
+import BookingCard from "@/components/bookings/BookingCard.vue";
 import { getRoleFromToken } from "@/services/api";
 import BookingService from "@/services/BookingService";
 export default {

@@ -20,9 +20,9 @@
 </template>
 <script setup>
 import { ref, computed } from 'vue';
-import AddRoute from './AddRoute.vue';
-import DeleteRoute from './DeleteRoute.vue';
-import PutRoute from './PutRoute.vue';
+import AddRoute from './adminRoutesManage/AddRoute.vue';
+import DeleteRoute from './adminRoutesManage/DeleteRoute.vue';
+import PutRoute from './adminRoutesManage/PutRoute.vue';
 
 const tabs = [
     { type: 'add', title: 'Добавление маршрутов', component: AddRoute },
@@ -34,7 +34,8 @@ const activeTab = ref('add');
 
 const activeComponent = computed(() => {
     return tabs.find(t => t.type === activeTab.value)?.component;
-});
+  }
+);
 </script>
 <script>
 export default {
