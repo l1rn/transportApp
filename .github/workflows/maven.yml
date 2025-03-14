@@ -9,8 +9,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: './backend'
 
       - name: Cache Maven
         uses: actions/cache@v3
@@ -26,6 +24,6 @@ jobs:
 
       - name: Build and test
         run: mvn -B verify -Ptest
-        working-directory: ./backend
+        working-directory: backend
         env:
           SPRING_PROFILES_ACTIVE: test
