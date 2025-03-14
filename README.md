@@ -15,7 +15,7 @@
 ### Что нужно выбрать при установке Spring Boot:
 - **Project:** Maven  
 - **Language:** Java  
-- **Spring Boot:** 3.4.2  
+- **Spring Boot:** 3.4.1  
 - **Project Metadata:** На ваше усмотрение  
 - **Packing:** Jar  
 - **Java:** 21

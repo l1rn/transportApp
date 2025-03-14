@@ -86,11 +86,13 @@ export default {
                 
                 this.$emit('logined', {
                   success: true,
-                  message: '✅ Успешная вход!',
+                  message: '✅ Успешний вход!',
                   accessToken: response.data.accessToken,
                   refreshToken: response.data.refreshToken
                   }
                 );
+                this.user.username = '';
+                this.user.password = ''
             }
             catch(error){
               this.$emit('logined', {

@@ -119,9 +119,7 @@ const getStatus = (seats) => {
 
     <div class="price-section">
       <div>
-        <div class="info-label">
-          ЦЕНА
-        </div>
+
         <div class="price">
           {{ route.price }} р.
         </div>

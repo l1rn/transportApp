@@ -10,7 +10,6 @@ let inputRouteFrom = ref('');
 let inputRouteTo = ref('');
 
 const selectedDate = ref(null);
-const arrivalDate = ref(null);
 
 const isLoading = ref(false);
 const error = ref(null);
@@ -194,7 +193,6 @@ const clearFilter = () => {
         class="b-form-input ms-1"
         placeholder="Куда"
         type="text"
-        :disabled="!inputRouteFrom"
         @focus="handleToFocus"
         @blur="handleToBlur"
       >
@@ -241,19 +239,6 @@ const clearFilter = () => {
         @input="updatePlaceholder"
       >
       <span class="custom-placeholder">Когда</span>
-    </div>
-
-    <div class="date-input-wrapper">
-      <input
-        id="date-input"
-        v-model="arrivalDate"
-        type="date"
-        style="color:red"
-        disabled
-        @change="updatePlaceholder"
-        @input="updatePlaceholder"
-      >
-      <span class="custom-placeholder">Обратно - WIP</span>
     </div>
 
 

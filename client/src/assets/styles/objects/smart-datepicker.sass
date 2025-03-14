@@ -10,15 +10,12 @@ $shadow-focus: rgba(37, 99, 235, 0.4)
 
 .date-input-wrapper
   position: relative
-  display: inline-block
-  width: 100%
 
   input[type="date"]
-    width: 100%
-    padding: 0.5rem 1rem !important
     background: $input-bg url("@/assets/datepicker.png") no-repeat right 0.75rem center
     background-size: 16px
     font-size: 16px
+    padding: 0.4rem 0 
     border: 2px solid $input-border
     border-radius: $border-radius
     outline: none
@@ -48,18 +45,16 @@ input[type="date"]:placeholder-shown
 
 .custom-placeholder
   position: absolute
-  left: 1rem
-  font-size: 14px
-  top: 60%
+  left: 0.3rem
+  top: 18%
   transform: translateY(-50%)
   pointer-events: none
   color: $placeholder-color
   width: auto
-  font-size: 17px
   transition: opacity 0.25s ease-in-out
 
 input[type="date"]:focus + .custom-placeholder,
 input[type="date"]:not(:placeholder-shown) + .custom-placeholder
   transform: translateY(-28px)
-  font-size: 13px
-  color: $input-focus
+  font-size: 17px
+  color: #ff9203

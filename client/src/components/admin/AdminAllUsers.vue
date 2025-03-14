@@ -1,5 +1,9 @@
 <template>
+  <Notifications ref="notifications"></Notifications>
   <div>
+    <div v-if="loading" class="loading-indicator">
+      Загрузка данных...
+    </div>
     <table class="table-custom">
       <thead>
         <tr>
@@ -29,9 +33,12 @@
             v-if="roleNotAdmin.find(u => u.id === user.id)?.notAdmin" 
             @click="getPermissionAdmin(user.id)">Дать права</button>
             <button 
-            :disabled="isRoleAdmin(user.role)"
+            :disabled="deletingId === user.id"
             class="delete-user-button"
-            @click="deleteUser(user.id)">Удалить пользователя</button>
+            @click="deleteUser(user.id)">
+            <span v-if="deletingId === user.id">Удаление...</span>
+            <span v-else>Удалить</span>
+          </button>
           </td>
         </tr>
       </tbody>
@@ -41,14 +48,20 @@
 <script setup>
 import AdminService from '@/services/AdminService';
 import { onMounted, ref,computed } from 'vue';
+import Notifications from '@/components/UI/Notifications.vue'
 const users = ref([]); 
+const loading = ref(false);
 const allUsers = async() =>{
     try{
+        loading.value = true;
         const response = await AdminService.getAllUsers();
         users.value = response.data;
         console.log(users.value);
     }catch(error){
-        console.log(error);
+      notifications.value?.showNotification('error', 'Ошибка загрузки пользователей');
+    }
+    finally{
+      loading.value = false
     }
 }
 
@@ -69,17 +82,54 @@ const roleNotAdmin = computed(() => {
   }));
 });
 
-const isRoleAdmin = (role) => {
-  if(role === 'ROLE_ADMIN') return true
-  return false
-}
+const deletingId = ref(null);
+const deletedUser = ref(null);
 
 const deleteUser = async(userId) => {
+  let fullIndex
+  if(!confirm('Вы уверены, что хотите удалить пользователя?')) return;
   try{
+
+    deletingId.value = userId;
+
+    fullIndex = users.value.findIndex(u => u.id === userId)
+    if (fullIndex === -1) return;
+
+    const hasBooking = await checkUserForBooking(userId)
+    if(hasBooking){
+      notifications.value.showNotification('error', 'У пользователя есть бронь!')
+      return
+    }
+
+    deletedUser.value = users.value[fullIndex]
+    users.value.splice(fullIndex, 1);
+
     await AdminService.deleteUser(userId);
-    users.value = users.value.filter(user => user.id !== userId);
+    notifications.value.showNotification('success', "Пользователь удален!")
   }catch(error){
-    console.log(error);
+    if (deletedUser.value && fullIndex !== -1) {
+            users.value.splice(fullIndex, 0, deletedUser.value);
+        }
+        notifications.value.showNotification(
+            'error', 
+            error.response?.data?.message || 'Ошибка при удалении маршрута'
+        );
+  }
+  finally {
+        deletingId.value = null;
+        deletedUser.value = null;
+    }
+}
+
+const notifications = ref(null);
+
+const checkUserForBooking = async(userId) => {
+  try{
+    const response = await AdminService.getAllBookings();
+    return response.data.some(booking => booking.user.id === userId)
+  }catch(error){
+    notifications.value.showNotification('error', 'Ошибка при проверке бронирований')
+    return false
   }
 }
 
