@@ -90,8 +90,8 @@ public class UserService {
         user.setRole(Role.ROLE_ADMIN);
         return repository.save(user);
     }
-//    public User setUser(User user){
-//        user.setRole(Role.ROLE_USER);
-//        return repository.save(user);
-//    }
+    public User setUser(User user){
+        user.setRole(Role.ROLE_USER);
+        return repository.save(user);
+    }
 }

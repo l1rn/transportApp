@@ -22,5 +22,6 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             @Param("date") String date,
             @Param("transport") String transport);
 
-    List<Route> findByRouteFromAndRouteToAndDate(String routeFrom, String routeTo, String date);
+    Route findByRouteFromAndRouteToAndDate(String routeFrom, String routeTo, String date);
+    boolean existsByRouteFromAndRouteToAndDate(String routeFrom, String routeTo, String date);
 }

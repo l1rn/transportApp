@@ -1,11 +1,17 @@
 package com.example.transport_marketplace.config;
 
+import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.Role;
+import com.example.transport_marketplace.model.Booking;
+import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.model.User;
+import com.example.transport_marketplace.repo.BookingRepository;
+import com.example.transport_marketplace.repo.RouteRepository;
 import com.example.transport_marketplace.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +20,18 @@ import org.springframework.stereotype.Component;
 public class DataInitializer {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final RouteRepository routeRepository;
+    private final BookingRepository bookingRepository;
+    private void createUserIfNotExists(String username, String password, Role role) {
+        if (!userRepository.existsByUsername(username)) {
+            User user = User.builder()
+                    .username(username)
+                    .password(passwordEncoder.encode(password))
+                    .role(role)
+                    .build();
+            userRepository.save(user);
+        }
+    }
     @EventListener(ApplicationReadyEvent.class)
     public void initAdminUser() {
         if (!userRepository.existsByUsername("admin")) {
@@ -35,6 +52,133 @@ public class DataInitializer {
                     .role(Role.ROLE_USER)
                     .build();
             userRepository.save(user);
+        }
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void initTestUsers() {
+        createUserIfNotExists("manager", "managerPass123!", Role.ROLE_ADMIN);
+        createUserIfNotExists("test_user", "testPassword456", Role.ROLE_USER);
+        createUserIfNotExists("demo_admin", "DemoAdminSecure789", Role.ROLE_ADMIN);
+        createUserIfNotExists("integration_test", "IntegrationTestPass!", Role.ROLE_USER);
+        createUserIfNotExists("traveler1", "Travel123!", Role.ROLE_USER);
+        createUserIfNotExists("traveler2", "SecurePass#2024", Role.ROLE_USER);
+        createUserIfNotExists("business_user", "BusinessTravel99", Role.ROLE_USER);
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    @Order(2)
+    public void initRoutes() {
+        createRouteIfNotExists(
+                "Челябинск",
+                "Омск",
+                "2025-12-27",
+                "08:00:00",
+                "12:30:00",
+                "Авиа",
+                55,
+                3100
+        );
+
+        createRouteIfNotExists(
+                "Москва",
+                "Санкт-Петербург",
+                "2024-07-15",
+                "10:30:00",
+                "14:45:00",
+                "Поезд",
+                120,
+                2500
+        );
+        createRouteIfNotExists("Новосибирск", "Красноярск", "2024-08-01", "07:45:00", "10:15:00", "Авиа", 40, 4200);
+        createRouteIfNotExists("Казань", "Уфа", "2024-09-10", "12:00:00", "18:30:00", "Автобус", 25, 1800);
+        createRouteIfNotExists("Сочи", "Ростов-на-Дону", "2024-10-05", "09:15:00", "15:45:00", "Поезд", 60, 2100);
+        createRouteIfNotExists("Владивосток", "Хабаровск", "2024-11-20", "14:30:00", "16:00:00", "Авиа", 35, 3800);
+        createRouteIfNotExists("Самара", "Волгоград", "2025-01-12", "06:00:00", "10:30:00", "Автобус", 30, 1500);
+        createRouteIfNotExists("Калининград", "Мурманск", "2025-02-14", "11:45:00", "14:15:00", "Авиа", 20, 5500);
+        createRouteIfNotExists("Пермь", "Екатеринбург", "2025-03-08", "08:30:00", "12:00:00", "Поезд", 50, 1900);
+        createRouteIfNotExists("Тюмень", "Омск", "2025-04-25", "13:15:00", "17:45:00", "Автобус", 40, 2200);
+        createRouteIfNotExists("Иркутск", "Красноярск", "2025-05-30", "16:00:00", "18:30:00", "Авиа", 45, 4100);
+        createRouteIfNotExists("Ярославль", "Нижний Новгород", "2025-06-10", "10:00:00", "14:20:00", "Поезд", 55, 2300);
+    }
+
+    private void createRouteIfNotExists(String from, String to, String date,
+                                        String time, String arrivalTime,
+                                        String transport, int seats, double price) {
+        if (!routeRepository.existsByRouteFromAndRouteToAndDate(from, to, date)) {
+            Route route = Route.builder()
+                    .routeFrom(from)
+                    .routeTo(to)
+                    .date(date)
+                    .time(time)
+                    .arrivalTime(arrivalTime)
+                    .transport(transport)
+                    .availableSeats(seats)
+                    .price(price)
+                    .build();
+
+            routeRepository.save(route);
+        }
+    }
+    @EventListener(ApplicationReadyEvent.class)
+    @Order(3)
+    public void initBookings() {
+        createBookingIfNotExists(
+                "demo_admin",
+                "Москва",
+                "Санкт-Петербург",
+                "2024-07-15",
+                "BOOKED"
+        );
+        createBookingIfNotExists(
+                "manager",
+                "Челябинск",
+                "Омск",
+                "2025-12-27",
+                "BOOKED"
+        );
+
+        createBookingIfNotExists(
+                "test_user",
+                "Москва",
+                "Санкт-Петербург",
+                "2024-07-15",
+                "CANCELED"
+        );
+        createBookingIfNotExists("user", "Новосибирск", "Красноярск", "2024-08-01", "BOOKED");
+        createBookingIfNotExists("integration_test", "Казань", "Уфа", "2024-09-10", "PENDING");
+        createBookingIfNotExists("test_user", "Сочи", "Ростов-на-Дону", "2024-10-05", "CANCELED");
+        createBookingIfNotExists("manager", "Владивосток", "Хабаровск", "2024-11-20", "BOOKED");
+        createBookingIfNotExists("demo_admin", "Самара", "Волгоград", "2025-01-12", "CONFIRMED");
+        createBookingIfNotExists("user", "Калининград", "Мурманск", "2025-02-14", "BOOKED");
+        createBookingIfNotExists("integration_test", "Пермь", "Екатеринбург", "2025-03-08", "CANCELED");
+        createBookingIfNotExists("test_user", "Тюмень", "Омск", "2025-04-25", "PENDING");
+        createBookingIfNotExists("manager", "Иркутск", "Красноярск", "2025-05-30", "BOOKED");
+        createBookingIfNotExists("demo_admin", "Ярославль", "Нижний Новгород", "2025-06-10", "CONFIRMED");
+    }
+
+    private void createBookingIfNotExists(String username, String from,
+                                          String to, String routeDate,
+                                          String statusStr) {
+        try {
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User " + username + " not found"));
+
+            Route route = routeRepository.findByRouteFromAndRouteToAndDate(from, to, routeDate);
+
+            BookingStatus status = BookingStatus.valueOf(statusStr);
+
+            if (!bookingRepository.existsByUserAndRoute(user, route)) {
+                Booking booking = Booking.builder()
+                        .user(user)
+                        .route(route)
+                        .status(status)
+                        .build();
+
+                bookingRepository.save(booking);
+            }
+        } catch (Exception e) {
+            System.err.println("Error creating booking: " + e.getMessage());
         }
     }
 }

@@ -110,11 +110,7 @@ export default {
   font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
-.container{
-    font-family: Montserrat;
-}
 .btn-primary {
-    font-family: Montserrat;
     font-size: large;
     background-color: #089754;
     border: none;

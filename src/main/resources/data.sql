@@ -796,3 +796,2082 @@ VALUES ('2025-05-10 10:30:00', 99, '2025-05-10', 2500, 'Нижний Новос�
 -- Запрос 500
 INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
 VALUES ('2025-05-11 12:30:00', 50, '2025-05-11', 2100, 'Самара', 'Челябинск', '2025-05-11 07:30:00', 'Поезд');
+
+
+-- Запрос 367
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-05-31 14:45:00', 45, '2025-05-31', 2750, 'Новосибирск', 'Самара', '2025-05-31 10:15:00', 'Поезд');
+
+-- Запрос 368
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-01 16:20:00', 28, '2025-06-01', 4200, 'Калининград', 'Владивосток', '2025-06-01 08:00:00', 'Авиа');
+
+-- Запрос 369
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-02 13:10:00', 60, '2025-06-02', 1800, 'Тверь', 'Ярославль', '2025-06-02 07:30:00', 'Автобус');
+
+-- Запрос 370
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-03 19:30:00', 85, '2025-06-03', 3150, 'Сочи', 'Красноярск', '2025-06-03 15:45:00', 'Поезд');
+
+-- Запрос 371
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-04 12:00:00', 15, '2025-06-04', 5300, 'Мурманск', 'Хабаровск', '2025-06-04 06:15:00', 'Авиа');
+
+-- Запрос 372
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-05 17:45:00', 92, '2025-06-05', 1950, 'Тула', 'Воронеж', '2025-06-05 12:30:00', 'Автобус');
+
+-- Запрос 373
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-06 22:15:00', 33, '2025-06-06', 2650, 'Пермь', 'Иркутск', '2025-06-06 18:00:00', 'Поезд');
+
+-- Запрос 374
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-07 09:30:00', 70, '2025-06-07', 3750, 'Омск', 'Тюмень', '2025-06-07 05:45:00', 'Авиа');
+
+-- Запрос 375
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-08 14:00:00', 50, '2025-06-08', 2100, 'Белгород', 'Саратов', '2025-06-08 09:15:00', 'Автобус');
+
+-- Запрос 376
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-09 20:45:00', 40, '2025-06-09', 2850, 'Владимир', 'Курск', '2025-06-09 16:30:00', 'Поезд');
+
+-- Запрос 377
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-10 11:15:00', 25, '2025-06-10', 4400, 'Магадан', 'Петропавловск-Камчатский', '2025-06-10 07:00:00', 'Авиа');
+
+-- Запрос 378
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-11 15:30:00', 88, '2025-06-11', 1700, 'Иваново', 'Брянск', '2025-06-11 10:45:00', 'Автобус');
+
+
+-- Запрос 379
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-12 10:30:00', 55, '2025-06-12', 3200, 'Москва', 'Санкт-Петербург', '2025-06-12 07:45:00', 'Поезд');
+
+-- Запрос 380
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-13 18:00:00', 40, '2025-06-13', 5000, 'Ростов-на-Дону', 'Сочи', '2025-06-13 13:30:00', 'Авиа');
+
+-- Запрос 381
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-14 14:15:00', 48, '2025-06-14', 2100, 'Екатеринбург', 'Нижний Новгород', '2025-06-14 09:45:00', 'Автобус');
+
+-- Запрос 382
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-15 22:30:00', 30, '2025-06-15', 3500, 'Волгоград', 'Калуга', '2025-06-15 18:00:00', 'Поезд');
+
+-- Запрос 383
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-16 07:00:00', 65, '2025-06-16', 1900, 'Смоленск', 'Псков', '2025-06-16 03:30:00', 'Автобус');
+
+-- Запрос 384
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-17 12:30:00', 55, '2025-06-17', 4000, 'Уфа', 'Пермь', '2025-06-17 08:00:00', 'Поезд');
+
+-- Запрос 385
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-18 19:00:00', 75, '2025-06-18', 2300, 'Владивосток', 'Якутск', '2025-06-18 14:15:00', 'Автобус');
+-- Запрос 386
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-19 11:15:00', 68, '2025-06-19', 3200, 'Москва', 'Казань', '2025-06-19 07:15:00', 'Поезд');
+
+-- Запрос 387
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-20 13:45:00', 55, '2025-06-20', 2800, 'Санкт-Петербург', 'Екатеринбург', '2025-06-20 09:00:00', 'Авиа');
+
+-- Запрос 388
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-21 10:30:00', 73, '2025-06-21', 3500, 'Новосибирск', 'Нижний Новгород', '2025-06-21 07:30:00', 'Автобус');
+
+-- Запрос 389
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-22 12:00:00', 50, '2025-06-22', 2900, 'Челябинск', 'Самара', '2025-06-22 08:00:00', 'Поезд');
+
+-- Запрос 390
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-23 10:45:00', 82, '2025-06-23', 3100, 'Омск', 'Ростов-на-Дону', '2025-06-23 06:45:00', 'Авиа');
+
+-- Запрос 391
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-24 12:30:00', 47, '2025-06-24', 3300, 'Уфа', 'Красноярск', '2025-06-24 08:30:00', 'Автобус');
+
+-- Запрос 392
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-25 11:15:00', 90, '2025-06-25', 3600, 'Пермь', 'Воронеж', '2025-06-25 07:15:00', 'Поезд');
+
+-- Запрос 393
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-26 13:30:00', 60, '2025-06-26', 2750, 'Волгоград', 'Саратов', '2025-06-26 09:30:00', 'Авиа');
+
+-- Запрос 394
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-27 11:00:00', 77, '2025-06-27', 3400, 'Краснодар', 'Смоленск', '2025-06-27 07:00:00', 'Автобус');
+
+-- Запрос 395
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-28 11:45:00', 65, '2025-06-28', 3100, 'Тверь', 'Иваново', '2025-06-28 08:00:00', 'Поезд');
+
+-- Запрос 396
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-29 10:00:00', 52, '2025-06-29', 2800, 'Ярославль', 'Архангельск', '2025-06-29 06:30:00', 'Авиа');
+
+-- Запрос 397
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-06-30 13:00:00', 63, '2025-06-30', 3300, 'Рязань', 'Пенза', '2025-06-30 09:00:00', 'Автобус');
+
+-- Запрос 398
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-01 11:45:00', 49, '2025-07-01', 3500, 'Липецк', 'Калининград', '2025-07-01 07:45:00', 'Поезд');
+
+-- Запрос 399
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-02 12:15:00', 88, '2025-07-02', 3700, 'Владивосток', 'Хабаровск', '2025-07-02 08:15:00', 'Авиа');
+
+-- Запрос 400
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-03 11:30:00', 54, '2025-07-03', 3200, 'Мурманск', 'Кострома', '2025-07-03 07:30:00', 'Автобус');
+
+-- Запрос 401
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-04 13:15:00', 70, '2025-07-04', 2900, 'Владимир', 'Брянск', '2025-07-04 09:15:00', 'Поезд');
+
+-- Запрос 402
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-05 10:15:00', 58, '2025-07-05', 3100, 'Псков', 'Сыктывкар', '2025-07-05 06:45:00', 'Авиа');
+
+-- Запрос 403
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-06 12:00:00', 66, '2025-07-06', 3000, 'Норильск', 'Якутск', '2025-07-06 08:00:00', 'Автобус');
+
+-- Запрос 404
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-07 11:00:00', 45, '2025-07-07', 3400, 'Магадан', 'Петропавловск-Камчатский', '2025-07-07 07:00:00', 'Поезд');
+
+-- Запрос 405
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-08 13:30:00', 39, '2025-07-08', 3800, 'Севастополь', 'Симферополь', '2025-07-08 09:30:00', 'Авиа');
+
+-- Запрос 406
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-09 12:15:00', 77, '2025-07-09', 3600, 'Киров', 'Стерлитамак', '2025-07-09 08:15:00', 'Автобус');
+
+-- Запрос 407
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-10 11:00:00', 83, '2025-07-10', 3300, 'Оренбург', 'Бийск', '2025-07-10 07:00:00', 'Поезд');
+
+-- Запрос 408
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-11 13:30:00', 51, '2025-07-11', 3100, 'Ульяновск', 'Ставрополь', '2025-07-11 09:30:00', 'Авиа');
+
+-- Запрос 409
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-12 11:30:00', 64, '2025-07-12', 3000, 'Нижний Тагил', 'Орёл', '2025-07-12 08:00:00', 'Автобус');
+
+-- Запрос 410
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-13 11:15:00', 72, '2025-07-13', 3500, 'Москва', 'Санкт-Петербург', '2025-07-13 07:15:00', 'Поезд');
+
+-- Запрос 411
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-14 13:00:00', 59, '2025-07-14', 3200, 'Казань', 'Новосибирск', '2025-07-14 09:00:00', 'Авиа');
+
+-- Запрос 412
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-15 12:00:00', 67, '2025-07-15', 3400, 'Екатеринбург', 'Челябинск', '2025-07-15 08:30:00', 'Автобус');
+
+-- Запрос 413
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-16 11:00:00', 80, '2025-07-16', 3700, 'Нижний Новгород', 'Самара', '2025-07-16 07:00:00', 'Поезд');
+
+-- Запрос 414
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-17 10:45:00', 54, '2025-07-17', 2900, 'Ростов-на-Дону', 'Омск', '2025-07-17 06:45:00', 'Авиа');
+
+-- Запрос 415
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-18 12:15:00', 61, '2025-07-18', 3300, 'Красноярск', 'Уфа', '2025-07-18 08:15:00', 'Автобус');
+
+-- Запрос 416
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-19 13:30:00', 75, '2025-07-19', 3500, 'Воронеж', 'Пермь', '2025-07-19 09:30:00', 'Поезд');
+
+-- Запрос 417
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-20 11:15:00', 68, '2025-07-20', 2800, 'Саратов', 'Волгоград', '2025-07-20 07:15:00', 'Авиа');
+
+-- Запрос 418
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-21 12:00:00', 59, '2025-07-21', 3000, 'Смоленск', 'Тверь', '2025-07-21 08:00:00', 'Автобус');
+
+-- Запрос 419
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-22 10:45:00', 77, '2025-07-22', 3400, 'Иваново', 'Ярославль', '2025-07-22 06:45:00', 'Поезд');
+
+-- Запрос 420
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-23 12:30:00', 63, '2025-07-23', 3600, 'Архангельск', 'Рязань', '2025-07-23 08:30:00', 'Авиа');
+
+-- Запрос 421
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-24 11:15:00', 52, '2025-07-24', 3100, 'Пенза', 'Липецк', '2025-07-24 07:15:00', 'Автобус');
+
+-- Запрос 422
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-25 13:00:00', 69, '2025-07-25', 3700, 'Калининград', 'Владивосток', '2025-07-25 09:00:00', 'Поезд');
+
+-- Запрос 423
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-26 12:00:00', 58, '2025-07-26', 3300, 'Хабаровск', 'Мурманск', '2025-07-26 08:00:00', 'Авиа');
+
+-- Запрос 424
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-27 11:30:00', 64, '2025-07-27', 3000, 'Кострома', 'Владимир', '2025-07-27 07:30:00', 'Автобус');
+
+-- Запрос 425
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-28 10:45:00', 71, '2025-07-28', 3500, 'Брянск', 'Псков', '2025-07-28 06:45:00', 'Поезд');
+
+-- Запрос 426
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-29 12:15:00', 50, '2025-07-29', 3200, 'Сыктывкар', 'Норильск', '2025-07-29 08:15:00', 'Авиа');
+
+-- Запрос 427
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-30 11:00:00', 65, '2025-07-30', 3000, 'Якутск', 'Магадан', '2025-07-30 07:00:00', 'Автобус');
+
+-- Запрос 428
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-07-31 13:30:00', 55, '2025-07-31', 3600, 'Петропавловск-Камчатский', 'Севастополь', '2025-07-31 09:30:00', 'Поезд');
+
+-- Запрос 429
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-01 12:00:00', 72, '2025-08-01', 3400, 'Симферополь', 'Киров', '2025-08-01 08:00:00', 'Авиа');
+
+-- Запрос 430
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-02 11:15:00', 60, '2025-08-02', 3300, 'Стерлитамак', 'Оренбург', '2025-08-02 07:15:00', 'Автобус');
+
+-- Запрос 431
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-03 10:45:00', 78, '2025-08-03', 3500, 'Бийск', 'Ульяновск', '2025-08-03 06:45:00', 'Поезд');
+
+-- Запрос 432
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-04 12:30:00', 67, '2025-08-04', 3200, 'Ставрополь', 'Нижний Тагил', '2025-08-04 08:30:00', 'Авиа');
+
+-- Запрос 433
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-05 13:00:00', 59, '2025-08-05', 3000, 'Орёл', 'Москва', '2025-08-05 09:00:00', 'Автобус');
+
+-- Запрос 434
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-06 11:00:00', 62, '2025-08-06', 3100, 'Санкт-Петербург', 'Казань', '2025-08-06 07:00:00', 'Поезд');
+
+-- Запрос 435
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-07 12:15:00', 70, '2025-08-07', 3400, 'Новосибирск', 'Екатеринбург', '2025-08-07 08:15:00', 'Авиа');
+
+-- Запрос 436
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-08 13:30:00', 66, '2025-08-08', 3200, 'Челябинск', 'Нижний Новгород', '2025-08-08 09:30:00', 'Автобус');
+
+-- Запрос 437
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-09 11:15:00', 75, '2025-08-09', 3500, 'Самара', 'Ростов-на-Дону', '2025-08-09 07:15:00', 'Поезд');
+
+-- Запрос 438
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-10 12:00:00', 53, '2025-08-10', 2900, 'Омск', 'Красноярск', '2025-08-10 08:00:00', 'Авиа');
+
+-- Запрос 439
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-11 10:45:00', 80, '2025-08-11', 3100, 'Воронеж', 'Уфа', '2025-08-11 06:45:00', 'Автобус');
+
+-- Запрос 440
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-12 12:30:00', 58, '2025-08-12', 3300, 'Пермь', 'Красноярск', '2025-08-12 08:30:00', 'Поезд');
+
+-- Запрос 441
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-13 11:00:00', 64, '2025-08-13', 3000, 'Саратов', 'Волгоград', '2025-08-13 07:00:00', 'Авиа');
+
+-- Запрос 442
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-14 13:15:00', 69, '2025-08-14', 3400, 'Смоленск', 'Тверь', '2025-08-14 09:15:00', 'Автобус');
+
+-- Запрос 443
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-15 12:00:00', 57, '2025-08-15', 3100, 'Иваново', 'Ярославль', '2025-08-15 08:00:00', 'Поезд');
+
+-- Запрос 444
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-16 11:45:00', 72, '2025-08-16', 3500, 'Архангельск', 'Рязань', '2025-08-16 07:45:00', 'Авиа');
+
+-- Запрос 445
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-17 10:30:00', 65, '2025-08-17', 3200, 'Пенза', 'Липецк', '2025-08-17 06:30:00', 'Автобус');
+
+-- Запрос 446
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-18 12:15:00', 74, '2025-08-18', 3600, 'Калининград', 'Владивосток', '2025-08-18 08:15:00', 'Поезд');
+
+-- Запрос 447
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-19 11:00:00', 59, '2025-08-19', 3300, 'Хабаровск', 'Мурманск', '2025-08-19 07:00:00', 'Авиа');
+
+-- Запрос 448
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-20 13:30:00', 61, '2025-08-20', 3000, 'Кострома', 'Владимир', '2025-08-20 09:30:00', 'Автобус');
+
+-- Запрос 449
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-21 12:00:00', 70, '2025-08-21', 3500, 'Брянск', 'Псков', '2025-08-21 08:00:00', 'Поезд');
+
+-- Запрос 450
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-22 11:15:00', 66, '2025-08-22', 3200, 'Сыктывкар', 'Норильск', '2025-08-22 07:15:00', 'Авиа');
+
+-- Запрос 451
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-23 10:45:00', 73, '2025-08-23', 3100, 'Якутск', 'Магадан', '2025-08-23 06:45:00', 'Автобус');
+
+-- Запрос 452
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-24 12:30:00', 55, '2025-08-24', 3400, 'Петропавловск-Камчатский', 'Севастополь', '2025-08-24 08:30:00', 'Поезд');
+
+-- Запрос 453
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-25 13:00:00', 64, '2025-08-25', 3300, 'Симферополь', 'Киров', '2025-08-25 09:00:00', 'Авиа');
+
+-- Запрос 454
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-26 11:00:00', 68, '2025-08-26', 3000, 'Стерлитамак', 'Оренбург', '2025-08-26 07:00:00', 'Автобус');
+
+-- Запрос 455
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-27 12:15:00', 59, '2025-08-27', 3500, 'Бийск', 'Ульяновск', '2025-08-27 08:15:00', 'Поезд');
+
+-- Запрос 456
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-28 13:30:00', 77, '2025-08-28', 3600, 'Ставрополь', 'Нижний Тагил', '2025-08-28 09:30:00', 'Авиа');
+
+-- Запрос 457
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-29 11:15:00', 62, '2025-08-29', 3100, 'Орёл', 'Москва', '2025-08-29 07:15:00', 'Автобус');
+
+-- Запрос 458
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-30 12:00:00', 70, '2025-08-30', 3400, 'Санкт-Петербург', 'Казань', '2025-08-30 08:00:00', 'Поезд');
+
+-- Запрос 459
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-08-31 10:45:00', 65, '2025-08-31', 3200, 'Новосибирск', 'Екатеринбург', '2025-08-31 06:45:00', 'Авиа');
+
+-- Запрос 460
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-01 12:30:00', 58, '2025-09-01', 3000, 'Челябинск', 'Нижний Новгород', '2025-09-01 08:30:00', 'Автобус');
+
+-- Запрос 461
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-02 11:00:00', 74, '2025-09-02', 3500, 'Самара', 'Ростов-на-Дону', '2025-09-02 07:00:00', 'Поезд');
+
+-- Запрос 462
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-03 13:15:00', 57, '2025-09-03', 2900, 'Омск', 'Красноярск', '2025-09-03 09:15:00', 'Авиа');
+
+-- Запрос 463
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-04 12:00:00', 69, '2025-09-04', 3100, 'Воронеж', 'Уфа', '2025-09-04 08:00:00', 'Автобус');
+
+-- Запрос 464
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-05 11:45:00', 66, '2025-09-05', 3300, 'Пермь', 'Красноярск', '2025-09-05 07:45:00', 'Поезд');
+
+-- Запрос 465
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-06 10:30:00', 60, '2025-09-06', 3000, 'Саратов', 'Волгоград', '2025-09-06 06:30:00', 'Авиа');
+
+-- Запрос 466
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-07 12:15:00', 73, '2025-09-07', 3400, 'Смоленск', 'Тверь', '2025-09-07 08:15:00', 'Автобус');
+
+-- Запрос 467
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-08 11:00:00', 59, '2025-09-08', 3200, 'Иваново', 'Ярославль', '2025-09-08 07:00:00', 'Поезд');
+
+-- Запрос 468
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-09 13:30:00', 62, '2025-09-09', 3300, 'Архангельск', 'Рязань', '2025-09-09 09:30:00', 'Авиа');
+
+-- Запрос 469
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-10 12:00:00', 70, '2025-09-10', 3500, 'Пенза', 'Липецк', '2025-09-10 08:00:00', 'Автобус');
+
+-- Запрос 470
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-11 11:15:00', 68, '2025-09-11', 3100, 'Калининград', 'Владивосток', '2025-09-11 07:15:00', 'Поезд');
+
+-- Запрос 471
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-12 10:45:00', 55, '2025-09-12', 2900, 'Хабаровск', 'Мурманск', '2025-09-12 06:45:00', 'Авиа');
+
+-- Запрос 472
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-13 12:30:00', 63, '2025-09-13', 3000, 'Кострома', 'Владимир', '2025-09-13 08:30:00', 'Автобус');
+
+-- Запрос 473
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-14 13:00:00', 72, '2025-09-14', 3400, 'Брянск', 'Псков', '2025-09-14 09:00:00', 'Поезд');
+
+-- Запрос 474
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-15 11:00:00', 58, '2025-09-15', 3200, 'Сыктывкар', 'Норильск', '2025-09-15 07:00:00', 'Авиа');
+
+-- Запрос 475
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-16 12:15:00', 67, '2025-09-16', 3000, 'Якутск', 'Магадан', '2025-09-16 08:15:00', 'Автобус');
+
+-- Запрос 476
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-17 13:30:00', 75, '2025-09-17', 3600, 'Петропавловск-Камчатский', 'Севастополь', '2025-09-17 09:30:00', 'Поезд');
+
+-- Запрос 477
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-18 11:15:00', 64, '2025-09-18', 3300, 'Симферополь', 'Киров', '2025-09-18 07:15:00', 'Авиа');
+
+-- Запрос 478
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-19 12:00:00', 69, '2025-09-19', 3400, 'Стерлитамак', 'Оренбург', '2025-09-19 08:00:00', 'Автобус');
+
+-- Запрос 479
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-20 10:45:00', 62, '2025-09-20', 3100, 'Бийск', 'Ульяновск', '2025-09-20 06:45:00', 'Поезд');
+
+-- Запрос 480
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-21 12:30:00', 57, '2025-09-21', 3000, 'Ставрополь', 'Нижний Тагил', '2025-09-21 08:30:00', 'Авиа');
+
+-- Запрос 481
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-22 13:00:00', 70, '2025-09-22', 3500, 'Орёл', 'Москва', '2025-09-22 09:00:00', 'Автобус');
+
+-- Запрос 482
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-23 11:00:00', 66, '2025-09-23', 3200, 'Санкт-Петербург', 'Казань', '2025-09-23 07:00:00', 'Поезд');
+
+-- Запрос 483
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-24 12:15:00', 59, '2025-09-24', 3300, 'Новосибирск', 'Екатеринбург', '2025-09-24 08:15:00', 'Авиа');
+
+-- Запрос 484
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-25 13:30:00', 73, '2025-09-25', 3400, 'Челябинск', 'Нижний Новгород', '2025-09-25 09:30:00', 'Автобус');
+
+-- Запрос 485
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-26 11:00:00', 68, '2025-09-26', 3500, 'Самара', 'Ростов-на-Дону', '2025-09-26 07:00:00', 'Поезд');
+-- Запрос 486
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-27 12:15:00', 70, '2025-09-27', 3200, 'Москва', 'Санкт-Петербург', '2025-09-27 08:15:00', 'Поезд');
+
+-- Запрос 487
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-28 13:00:00', 65, '2025-09-28', 3100, 'Новосибирск', 'Екатеринбург', '2025-09-28 09:00:00', 'Авиа');
+
+-- Запрос 488
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-29 11:30:00', 60, '2025-09-29', 3400, 'Казань', 'Нижний Новгород', '2025-09-29 07:30:00', 'Автобус');
+
+-- Запрос 489
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-30 12:45:00', 75, '2025-09-30', 3300, 'Челябинск', 'Омск', '2025-09-30 08:45:00', 'Поезд');
+
+-- Запрос 490
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-01 10:15:00', 80, '2025-10-01', 3500, 'Самара', 'Ростов-на-Дону', '2025-10-01 06:15:00', 'Авиа');
+
+-- Запрос 491
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-02 11:00:00', 55, '2025-10-02', 3000, 'Уфа', 'Красноярск', '2025-10-02 07:00:00', 'Автобус');
+
+-- Запрос 486
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-27 11:15:00', 70, '2025-09-27', 3200, 'Москва', 'Санкт-Петербург', '2025-09-27 07:15:00', 'Поезд');
+
+-- Запрос 487
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-28 12:30:00', 65, '2025-09-28', 3100, 'Новосибирск', 'Екатеринбург', '2025-09-28 08:00:00', 'Авиа');
+
+-- Запрос 488
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-29 10:45:00', 80, '2025-09-29', 3400, 'Казань', 'Нижний Новгород', '2025-09-29 07:45:00', 'Автобус');
+
+-- Запрос 489
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-09-30 11:15:00', 55, '2025-09-30', 3000, 'Челябинск', 'Омск', '2025-09-30 07:15:00', 'Поезд');
+
+-- Запрос 490
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-01 12:30:00', 70, '2025-10-01', 3500, 'Самара', 'Ростов-на-Дону', '2025-10-01 08:00:00', 'Авиа');
+
+-- Запрос 491
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-02 10:45:00', 65, '2025-10-02', 3200, 'Уфа', 'Красноярск', '2025-10-02 07:45:00', 'Автобус');
+
+-- Запрос 492
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-03 11:15:00', 80, '2025-10-03', 3100, 'Владивосток', 'Пермь', '2025-10-03 07:15:00', 'Поезд');
+
+-- Запрос 493
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-04 12:30:00', 55, '2025-10-04', 3400, 'Волгоград', 'Краснодар', '2025-10-04 08:00:00', 'Авиа');
+
+-- Запрос 494
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-05 10:45:00', 70, '2025-10-05', 3000, 'Тверь', 'Курск', '2025-10-05 07:45:00', 'Автобус');
+
+-- Запрос 495
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-06 11:15:00', 65, '2025-10-06', 3500, 'Белгород', 'Саратов', '2025-10-06 07:15:00', 'Поезд');
+
+-- Запрос 496
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-07 12:30:00', 80, '2025-10-07', 3200, 'Владимир', 'Рязань', '2025-10-07 08:00:00', 'Авиа');
+
+-- Запрос 497
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-08 10:45:00', 55, '2025-10-08', 3100, 'Архангельск', 'Пенза', '2025-10-08 07:45:00', 'Автобус');
+
+-- Запрос 498
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-09 11:15:00', 70, '2025-10-09', 3400, 'Липецк', 'Мурманск', '2025-10-09 07:15:00', 'Поезд');
+
+-- Запрос 499
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-10 12:30:00', 65, '2025-10-10', 3000, 'Кострома', 'Брянск', '2025-10-10 08:00:00', 'Авиа');
+
+-- Запрос 500
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-11 10:45:00', 80, '2025-10-11', 3500, 'Псков', 'Сыктывкар', '2025-10-11 07:45:00', 'Автобус');
+
+-- Запрос 501
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-12 11:15:00', 55, '2025-10-12', 3200, 'Норильск', 'Якутск', '2025-10-12 07:15:00', 'Поезд');
+
+-- Запрос 502
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-13 12:30:00', 70, '2025-10-13', 3100, 'Магадан', 'Петропавловск-Камчатский', '2025-10-13 08:00:00', 'Авиа');
+
+-- Запрос 503
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-14 10:45:00', 65, '2025-10-14', 3400, 'Севастополь', 'Симферополь', '2025-10-14 07:45:00', 'Автобус');
+
+-- Запрос 504
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-15 11:15:00', 80, '2025-10-15', 3000, 'Стерлитамак', 'Оренбург', '2025-10-15 07:15:00', 'Поезд');
+
+-- Запрос 505
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-16 12:30:00', 55, '2025-10-16', 3500, 'Бийск', 'Ульяновск', '2025-10-16 08:00:00', 'Авиа');
+
+-- Запрос 506
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-17 10:45:00', 70, '2025-10-17', 3200, 'Ставрополь', 'Нижний Тагил', '2025-10-17 07:45:00', 'Автобус');
+
+-- Запрос 507
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-18 11:15:00', 65, '2025-10-18', 3100, 'Орёл', 'Иваново', '2025-10-18 07:15:00', 'Поезд');
+
+-- Запрос 508
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-19 12:30:00', 80, '2025-10-19', 3400, 'Москва', 'Санкт-Петербург', '2025-10-19 08:00:00', 'Авиа');
+
+-- Запрос 509
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-20 10:45:00', 55, '2025-10-20', 3000, 'Новосибирск', 'Екатеринбург', '2025-10-20 07:45:00', 'Автобус');
+
+-- Запрос 510
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-21 11:15:00', 70, '2025-10-21', 3500, 'Казань', 'Нижний Новгород', '2025-10-21 07:15:00', 'Поезд');
+
+-- Запрос 511
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-22 12:30:00', 65, '2025-10-22', 3200, 'Челябинск', 'Омск', '2025-10-22 08:00:00', 'Авиа');
+
+-- Запрос 512
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-23 10:45:00', 80, '2025-10-23', 3100, 'Самара', 'Ростов-на-Дону', '2025-10-23 07:45:00', 'Автобус');
+
+-- Запрос 513
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-24 11:15:00', 55, '2025-10-24', 3400, 'Уфа', 'Красноярск', '2025-10-24 07:15:00', 'Поезд');
+
+-- Запрос 514
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-25 12:30:00', 70, '2025-10-25', 3000, 'Владивосток', 'Пермь', '2025-10-25 08:00:00', 'Авиа');
+
+-- Запрос 515
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-26 10:45:00', 65, '2025-10-26', 3500, 'Волгоград', 'Краснодар', '2025-10-26 07:45:00', 'Автобус');
+
+-- Запрос 516
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-27 11:15:00', 80, '2025-10-27', 3200, 'Тверь', 'Курск', '2025-10-27 07:15:00', 'Поезд');
+
+-- Запрос 517
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-28 12:30:00', 55, '2025-10-28', 3100, 'Белгород', 'Саратов', '2025-10-28 08:00:00', 'Авиа');
+
+-- Запрос 518
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-29 10:45:00', 70, '2025-10-29', 3400, 'Владимир', 'Рязань', '2025-10-29 07:45:00', 'Автобус');
+
+-- Запрос 519
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-30 11:15:00', 65, '2025-10-30', 3000, 'Архангельск', 'Пенза', '2025-10-30 07:15:00', 'Поезд');
+
+-- Запрос 520
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-31 12:30:00', 80, '2025-10-31', 3500, 'Липецк', 'Мурманск', '2025-10-31 08:00:00', 'Авиа');
+
+-- Запрос 521
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-01 10:45:00', 55, '2025-11-01', 3200, 'Кострома', 'Брянск', '2025-11-01 07:45:00', 'Автобус');
+
+-- Запрос 522
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-02 11:15:00', 70, '2025-11-02', 3100, 'Псков', 'Сыктывкар', '2025-11-02 07:15:00', 'Поезд');
+
+-- Запрос 523
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-03 12:30:00', 65, '2025-11-03', 3400, 'Норильск', 'Якутск', '2025-11-03 08:00:00', 'Авиа');
+
+-- Запрос 524
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-04 10:45:00', 80, '2025-11-04', 3000, 'Магадан', 'Петропавловск-Камчатский', '2025-11-04 07:45:00', 'Автобус');
+
+-- Запрос 525
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-05 11:15:00', 55, '2025-11-05', 3500, 'Севастополь', 'Симферополь', '2025-11-05 07:15:00', 'Поезд');
+
+-- Запрос 526
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-06 12:30:00', 70, '2025-11-06', 3200, 'Стерлитамак', 'Оренбург', '2025-11-06 08:00:00', 'Авиа');
+
+-- Запрос 527
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-07 10:45:00', 65, '2025-11-07', 3100, 'Бийск', 'Ульяновск', '2025-11-07 07:45:00', 'Автобус');
+
+-- Запрос 528
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-08 11:15:00', 80, '2025-11-08', 3400, 'Ставрополь', 'Нижний Тагил', '2025-11-08 07:15:00', 'Поезд');
+
+-- Запрос 529
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-09 12:30:00', 55, '2025-11-09', 3000, 'Орёл', 'Иваново', '2025-11-09 08:00:00', 'Авиа');
+
+-- Запрос 530
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-10 10:45:00', 70, '2025-11-10', 3500, 'Москва', 'Санкт-Петербург', '2025-11-10 07:45:00', 'Автобус');
+
+-- Запрос 531
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-11 11:15:00', 65, '2025-11-11', 3200, 'Новосибирск', 'Екатеринбург', '2025-11-11 07:15:00', 'Поезд');
+
+-- Запрос 532
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-12 12:30:00', 80, '2025-11-12', 3100, 'Казань', 'Нижний Новгород', '2025-11-12 08:00:00', 'Авиа');
+
+-- Запрос 533
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-13 10:45:00', 55, '2025-11-13', 3400, 'Челябинск', 'Омск', '2025-11-13 07:45:00', 'Автобус');
+
+-- Запрос 534
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-14 11:15:00', 70, '2025-11-14', 3000, 'Самара', 'Ростов-на-Дону', '2025-11-14 07:15:00', 'Поезд');
+
+-- Запрос 535
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-15 12:30:00', 65, '2025-11-15', 3500, 'Уфа', 'Красноярск', '2025-11-15 08:00:00', 'Авиа');
+
+-- Запрос 536
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-16 10:45:00', 80, '2025-11-16', 3200, 'Владивосток', 'Пермь', '2025-11-16 07:45:00', 'Автобус');
+
+-- Запрос 537
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-17 11:15:00', 55, '2025-11-17', 3100, 'Волгоград', 'Краснодар', '2025-11-17 07:15:00', 'Поезд');
+
+-- Запрос 538
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-18 12:30:00', 70, '2025-11-18', 3400, 'Тверь', 'Курск', '2025-11-18 08:00:00', 'Авиа');
+
+-- Запрос 539
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-19 10:45:00', 65, '2025-11-19', 3000, 'Белгород', 'Саратов', '2025-11-19 07:45:00', 'Автобус');
+
+-- Запрос 540
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-20 11:15:00', 80, '2025-11-20', 3500, 'Владимир', 'Рязань', '2025-11-20 07:15:00', 'Поезд');
+
+-- Запрос 541
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-21 12:30:00', 55, '2025-11-21', 3200, 'Архангельск', 'Пенза', '2025-11-21 08:00:00', 'Авиа');
+
+-- Запрос 542
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-22 10:45:00', 70, '2025-11-22', 3100, 'Липецк', 'Мурманск', '2025-11-22 07:45:00', 'Автобус');
+
+-- Запрос 543
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-23 11:15:00', 65, '2025-11-23', 3400, 'Кострома', 'Брянск', '2025-11-23 07:15:00', 'Поезд');
+
+-- Запрос 544
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-24 12:30:00', 80, '2025-11-24', 3000, 'Псков', 'Сыктывкар', '2025-11-24 08:00:00', 'Авиа');
+
+-- Запрос 545
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-25 10:45:00', 55, '2025-11-25', 3500, 'Норильск', 'Якутск', '2025-11-25 07:45:00', 'Автобус');
+
+-- Запрос 546
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-26 11:15:00', 70, '2025-11-26', 3200, 'Магадан', 'Петропавловск-Камчатский', '2025-11-26 07:15:00', 'Поезд');
+
+-- Запрос 547
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-27 12:30:00', 65, '2025-11-27', 3100, 'Севастополь', 'Симферополь', '2025-11-27 08:00:00', 'Авиа');
+
+-- Запрос 548
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-28 10:45:00', 80, '2025-11-28', 3400, 'Стерлитамак', 'Оренбург', '2025-11-28 07:45:00', 'Автобус');
+
+-- Запрос 549
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-29 11:15:00', 55, '2025-11-29', 3000, 'Бийск', 'Ульяновск', '2025-11-29 07:15:00', 'Поезд');
+
+-- Запрос 550
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-30 12:30:00', 70, '2025-11-30', 3500, 'Ставрополь', 'Нижний Тагил', '2025-11-30 08:00:00', 'Авиа');
+
+-- Запрос 551
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-01 10:45:00', 65, '2025-12-01', 3200, 'Орёл', 'Иваново', '2025-12-01 07:45:00', 'Автобус');
+
+-- Запрос 552
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-02 11:15:00', 80, '2025-12-02', 3100, 'Москва', 'Санкт-Петербург', '2025-12-02 07:15:00', 'Поезд');
+
+-- Запрос 553
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-03 12:30:00', 55, '2025-12-03', 3400, 'Новосибирск', 'Екатеринбург', '2025-12-03 08:00:00', 'Авиа');
+
+-- Запрос 554
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-04 10:45:00', 70, '2025-12-04', 3000, 'Казань', 'Нижний Новгород', '2025-12-04 07:45:00', 'Автобус');
+
+-- Запрос 555
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-05 11:15:00', 65, '2025-12-05', 3500, 'Челябинск', 'Омск', '2025-12-05 07:15:00', 'Поезд');
+
+-- Запрос 556
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-06 12:30:00', 80, '2025-12-06', 3200, 'Самара', 'Ростов-на-Дону', '2025-12-06 08:00:00', 'Авиа');
+
+-- Запрос 557
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-07 10:45:00', 55, '2025-12-07', 3100, 'Уфа', 'Красноярск', '2025-12-07 07:45:00', 'Автобус');
+
+-- Запрос 558
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-08 11:15:00', 70, '2025-12-08', 3400, 'Владивосток', 'Пермь', '2025-12-08 07:15:00', 'Поезд');
+
+-- Запрос 559
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-09 12:30:00', 65, '2025-12-09', 3000, 'Волгоград', 'Краснодар', '2025-12-09 08:00:00', 'Авиа');
+
+-- Запрос 560
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-10 10:45:00', 80, '2025-12-10', 3500, 'Тверь', 'Курск', '2025-12-10 07:45:00', 'Автобус');
+
+-- Запрос 561
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-11 11:15:00', 55, '2025-12-11', 3200, 'Белгород', 'Саратов', '2025-12-11 07:15:00', 'Поезд');
+
+-- Запрос 562
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-12 12:30:00', 70, '2025-12-12', 3100, 'Владимир', 'Рязань', '2025-12-12 08:00:00', 'Авиа');
+
+-- Запрос 563
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-13 10:45:00', 65, '2025-12-13', 3400, 'Архангельск', 'Пенза', '2025-12-13 07:45:00', 'Автобус');
+
+-- Запрос 564
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-14 11:15:00', 80, '2025-12-14', 3000, 'Липецк', 'Мурманск', '2025-12-14 07:15:00', 'Поезд');
+
+-- Запрос 565
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-15 12:30:00', 55, '2025-12-15', 3500, 'Кострома', 'Брянск', '2025-12-15 08:00:00', 'Авиа');
+
+-- Запрос 566
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-16 10:45:00', 70, '2025-12-16', 3200, 'Псков', 'Сыктывкар', '2025-12-16 07:45:00', 'Автобус');
+
+-- Запрос 567
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-17 11:15:00', 65, '2025-12-17', 3100, 'Норильск', 'Якутск', '2025-12-17 07:15:00', 'Поезд');
+
+-- Запрос 568
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-18 12:30:00', 80, '2025-12-18', 3400, 'Магадан', 'Петропавловск-Камчатский', '2025-12-18 08:00:00', 'Авиа');
+
+-- Запрос 569
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-19 10:45:00', 55, '2025-12-19', 3000, 'Севастополь', 'Симферополь', '2025-12-19 07:45:00', 'Автобус');
+
+-- Запрос 570
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-20 11:15:00', 70, '2025-12-20', 3500, 'Стерлитамак', 'Оренбург', '2025-12-20 07:15:00', 'Поезд');
+
+-- Запрос 571
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-21 12:30:00', 65, '2025-12-21', 3200, 'Бийск', 'Ульяновск', '2025-12-21 08:00:00', 'Авиа');
+
+-- Запрос 572
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-22 10:45:00', 80, '2025-12-22', 3100, 'Ставрополь', 'Нижний Тагил', '2025-12-22 07:45:00', 'Автобус');
+
+-- Запрос 573
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-23 11:15:00', 55, '2025-12-23', 3400, 'Орёл', 'Иваново', '2025-12-23 07:15:00', 'Поезд');
+
+-- Запрос 574
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-24 12:30:00', 70, '2025-12-24', 3000, 'Москва', 'Санкт-Петербург', '2025-12-24 08:00:00', 'Авиа');
+
+-- Запрос 575
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-25 10:45:00', 65, '2025-12-25', 3500, 'Новосибирск', 'Екатеринбург', '2025-12-25 07:45:00', 'Автобус');
+
+-- Запрос 576
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-26 11:15:00', 80, '2025-12-26', 3200, 'Казань', 'Нижний Новгород', '2025-12-26 07:15:00', 'Поезд');
+
+-- Запрос 577
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-27 12:30:00', 55, '2025-12-27', 3100, 'Челябинск', 'Омск', '2025-12-27 08:00:00', 'Авиа');
+
+-- Запрос 578
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-28 10:45:00', 70, '2025-12-28', 3400, 'Самара', 'Ростов-на-Дону', '2025-12-28 07:45:00', 'Автобус');
+
+-- Запрос 579
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-29 11:15:00', 65, '2025-12-29', 3000, 'Уфа', 'Красноярск', '2025-12-29 07:15:00', 'Поезд');
+
+-- Запрос 580
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-30 12:30:00', 80, '2025-12-30', 3500, 'Владивосток', 'Пермь', '2025-12-30 08:00:00', 'Авиа');
+
+-- Запрос 511
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-22 14:00:00', 70, '2025-10-22', 3100, 'Москва', 'Санкт-Петербург', '2025-10-22 09:00:00', 'Авиа');
+
+-- Запрос 512
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-23 15:30:00', 65, '2025-10-23', 3200, 'Новосибирск', 'Екатеринбург', '2025-10-23 09:15:00', 'Автобус');
+
+-- Запрос 513
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-24 14:00:00', 80, '2025-10-24', 3000, 'Казань', 'Самара', '2025-10-24 09:00:00', 'Поезд');
+
+-- Запрос 514
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-25 15:30:00', 55, '2025-10-25', 3300, 'Нижний Новгород', 'Челябинск', '2025-10-25 09:15:00', 'Авиа');
+
+-- Запрос 515
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-26 14:00:00', 75, '2025-10-26', 3100, 'Омск', 'Воронеж', '2025-10-26 09:00:00', 'Автобус');
+
+-- Запрос 516
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-27 15:30:00', 68, '2025-10-27', 3200, 'Пермь', 'Волгоград', '2025-10-27 09:15:00', 'Поезд');
+
+-- Запрос 517
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-28 14:00:00', 62, '2025-10-28', 3000, 'Сочи', 'Томск', '2025-10-28 09:00:00', 'Авиа');
+
+-- Запрос 518
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-29 15:30:00', 77, '2025-10-29', 3300, 'Красноярск', 'Уфа', '2025-10-29 09:15:00', 'Автобус');
+
+-- Запрос 519
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-30 14:00:00', 66, '2025-10-30', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2025-10-30 09:00:00', 'Поезд');
+
+-- Запрос 520
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-10-31 15:30:00', 73, '2025-10-31', 3200, 'Симферополь', 'Сыктывкар', '2025-10-31 09:15:00', 'Авиа');
+
+-- Запрос 521
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-01 14:00:00', 70, '2025-11-01', 3100, 'Москва', 'Санкт-Петербург', '2025-11-01 09:00:00', 'Автобус');
+
+-- Запрос 522
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-02 15:30:00', 65, '2025-11-02', 3200, 'Новосибирск', 'Екатеринбург', '2025-11-02 09:15:00', 'Поезд');
+
+-- Запрос 523
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-03 14:00:00', 80, '2025-11-03', 3000, 'Казань', 'Самара', '2025-11-03 09:00:00', 'Авиа');
+
+-- Запрос 524
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-04 15:30:00', 55, '2025-11-04', 3300, 'Нижний Новгород', 'Челябинск', '2025-11-04 09:15:00', 'Автобус');
+
+-- Запрос 525
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-05 14:00:00', 75, '2025-11-05', 3100, 'Омск', 'Воронеж', '2025-11-05 09:00:00', 'Поезд');
+
+-- Запрос 526
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-06 15:30:00', 68, '2025-11-06', 3200, 'Пермь', 'Волгоград', '2025-11-06 09:15:00', 'Авиа');
+
+-- Запрос 527
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-07 14:00:00', 62, '2025-11-07', 3000, 'Сочи', 'Томск', '2025-11-07 09:00:00', 'Автобус');
+
+-- Запрос 528
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-08 15:30:00', 77, '2025-11-08', 3300, 'Красноярск', 'Уфа', '2025-11-08 09:15:00', 'Поезд');
+
+-- Запрос 529
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-09 14:00:00', 66, '2025-11-09', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2025-11-09 09:00:00', 'Авиа');
+
+-- Запрос 530
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-10 15:30:00', 73, '2025-11-10', 3200, 'Симферополь', 'Сыктывкар', '2025-11-10 09:15:00', 'Автобус');
+
+-- Запрос 531
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-11 14:00:00', 70, '2025-11-11', 3100, 'Москва', 'Санкт-Петербург', '2025-11-11 09:00:00', 'Поезд');
+
+-- Запрос 532
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-12 15:30:00', 65, '2025-11-12', 3200, 'Новосибирск', 'Екатеринбург', '2025-11-12 09:15:00', 'Авиа');
+
+-- Запрос 533
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-13 14:00:00', 80, '2025-11-13', 3000, 'Казань', 'Самара', '2025-11-13 09:00:00', 'Автобус');
+
+-- Запрос 534
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-14 15:30:00', 55, '2025-11-14', 3300, 'Нижний Новгород', 'Челябинск', '2025-11-14 09:15:00', 'Поезд');
+
+-- Запрос 535
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-15 14:00:00', 75, '2025-11-15', 3100, 'Омск', 'Воронеж', '2025-11-15 09:00:00', 'Авиа');
+
+-- Запрос 536
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-16 15:30:00', 68, '2025-11-16', 3200, 'Пермь', 'Волгоград', '2025-11-16 09:15:00', 'Автобус');
+
+-- Запрос 537
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-17 14:00:00', 62, '2025-11-17', 3000, 'Сочи', 'Томск', '2025-11-17 09:00:00', 'Поезд');
+
+-- Запрос 538
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-18 15:30:00', 77, '2025-11-18', 3300, 'Красноярск', 'Уфа', '2025-11-18 09:15:00', 'Авиа');
+
+-- Запрос 539
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-19 14:00:00', 66, '2025-11-19', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2025-11-19 09:00:00', 'Автобус');
+
+-- Запрос 540
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-20 15:30:00', 73, '2025-11-20', 3200, 'Симферополь', 'Сыктывкар', '2025-11-20 09:15:00', 'Поезд');
+
+-- Запрос 541
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-21 14:00:00', 70, '2025-11-21', 3100, 'Москва', 'Санкт-Петербург', '2025-11-21 09:00:00', 'Авиа');
+
+-- Запрос 542
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-22 15:30:00', 65, '2025-11-22', 3200, 'Новосибирск', 'Екатеринбург', '2025-11-22 09:15:00', 'Автобус');
+
+-- Запрос 543
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-23 14:00:00', 80, '2025-11-23', 3000, 'Казань', 'Самара', '2025-11-23 09:00:00', 'Поезд');
+
+-- Запрос 544
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-24 15:30:00', 55, '2025-11-24', 3300, 'Нижний Новгород', 'Челябинск', '2025-11-24 09:15:00', 'Авиа');
+
+-- Запрос 545
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-25 14:00:00', 75, '2025-11-25', 3100, 'Омск', 'Воронеж', '2025-11-25 09:00:00', 'Автобус');
+
+-- Запрос 546
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-26 15:30:00', 68, '2025-11-26', 3200, 'Пермь', 'Волгоград', '2025-11-26 09:15:00', 'Поезд');
+
+-- Запрос 547
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-27 14:00:00', 62, '2025-11-27', 3000, 'Сочи', 'Томск', '2025-11-27 09:00:00', 'Авиа');
+
+-- Запрос 548
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-28 15:30:00', 77, '2025-11-28', 3300, 'Красноярск', 'Уфа', '2025-11-28 09:15:00', 'Автобус');
+
+-- Запрос 549
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-29 14:00:00', 66, '2025-11-29', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2025-11-29 09:00:00', 'Поезд');
+
+-- Запрос 550
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-11-30 15:30:00', 73, '2025-11-30', 3200, 'Симферополь', 'Сыктывкар', '2025-11-30 09:15:00', 'Авиа');
+
+-- Запрос 551
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-01 14:00:00', 70, '2025-12-01', 3100, 'Москва', 'Санкт-Петербург', '2025-12-01 09:00:00', 'Автобус');
+
+-- Запрос 552
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-02 15:30:00', 65, '2025-12-02', 3200, 'Новосибирск', 'Екатеринбург', '2025-12-02 09:15:00', 'Поезд');
+
+-- Запрос 553
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-03 14:00:00', 80, '2025-12-03', 3000, 'Казань', 'Самара', '2025-12-03 09:00:00', 'Авиа');
+
+-- Запрос 554
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-04 15:30:00', 55, '2025-12-04', 3300, 'Нижний Новгород', 'Челябинск', '2025-12-04 09:15:00', 'Автобус');
+
+-- Запрос 555
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-05 14:00:00', 75, '2025-12-05', 3100, 'Омск', 'Воронеж', '2025-12-05 09:00:00', 'Поезд');
+
+-- Запрос 556
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-06 15:30:00', 68, '2025-12-06', 3200, 'Пермь', 'Волгоград', '2025-12-06 09:15:00', 'Авиа');
+
+-- Запрос 557
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-07 14:00:00', 62, '2025-12-07', 3000, 'Сочи', 'Томск', '2025-12-07 09:00:00', 'Автобус');
+
+-- Запрос 558
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-08 15:30:00', 77, '2025-12-08', 3300, 'Красноярск', 'Уфа', '2025-12-08 09:15:00', 'Поезд');
+
+-- Запрос 559
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-09 14:00:00', 66, '2025-12-09', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2025-12-09 09:00:00', 'Авиа');
+
+-- Запрос 560
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-10 15:30:00', 73, '2025-12-10', 3200, 'Симферополь', 'Сыктывкар', '2025-12-10 09:15:00', 'Автобус');
+
+-- Запрос 561
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-11 14:00:00', 70, '2025-12-11', 3100, 'Москва', 'Санкт-Петербург', '2025-12-11 09:00:00', 'Поезд');
+
+-- Запрос 562
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-12 15:30:00', 65, '2025-12-12', 3200, 'Новосибирск', 'Екатеринбург', '2025-12-12 09:15:00', 'Авиа');
+
+-- Запрос 563
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-13 14:00:00', 80, '2025-12-13', 3000, 'Казань', 'Самара', '2025-12-13 09:00:00', 'Автобус');
+
+-- Запрос 564
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-14 15:30:00', 55, '2025-12-14', 3300, 'Нижний Новгород', 'Челябинск', '2025-12-14 09:15:00', 'Поезд');
+
+-- Запрос 565
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-15 14:00:00', 75, '2025-12-15', 3100, 'Омск', 'Воронеж', '2025-12-15 09:00:00', 'Авиа');
+
+-- Запрос 566
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-16 15:30:00', 68, '2025-12-16', 3200, 'Пермь', 'Волгоград', '2025-12-16 09:15:00', 'Автобус');
+
+-- Запрос 567
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-17 14:00:00', 62, '2025-12-17', 3000, 'Сочи', 'Томск', '2025-12-17 09:00:00', 'Поезд');
+
+-- Запрос 568
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-18 15:30:00', 77, '2025-12-18', 3300, 'Красноярск', 'Уфа', '2025-12-18 09:15:00', 'Авиа');
+
+-- Запрос 569
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-19 14:00:00', 66, '2025-12-19', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2025-12-19 09:00:00', 'Автобус');
+
+-- Запрос 570
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-20 15:30:00', 73, '2025-12-20', 3200, 'Симферополь', 'Сыктывкар', '2025-12-20 09:15:00', 'Поезд');
+
+-- Запрос 571
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-21 14:00:00', 70, '2025-12-21', 3100, 'Москва', 'Санкт-Петербург', '2025-12-21 09:00:00', 'Авиа');
+
+-- Запрос 572
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-22 15:30:00', 65, '2025-12-22', 3200, 'Новосибирск', 'Екатеринбург', '2025-12-22 09:15:00', 'Автобус');
+
+-- Запрос 573
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-23 14:00:00', 80, '2025-12-23', 3000, 'Казань', 'Самара', '2025-12-23 09:00:00', 'Поезд');
+
+-- Запрос 574
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-24 15:30:00', 55, '2025-12-24', 3300, 'Нижний Новгород', 'Челябинск', '2025-12-24 09:15:00', 'Авиа');
+
+-- Запрос 575
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-25 14:00:00', 75, '2025-12-25', 3100, 'Омск', 'Воронеж', '2025-12-25 09:00:00', 'Автобус');
+
+-- Запрос 576
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-26 15:30:00', 68, '2025-12-26', 3200, 'Пермь', 'Волгоград', '2025-12-26 09:15:00', 'Поезд');
+
+-- Запрос 577
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-27 14:00:00', 62, '2025-12-27', 3000, 'Сочи', 'Томск', '2025-12-27 09:00:00', 'Авиа');
+
+-- Запрос 578
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-28 15:30:00', 77, '2025-12-28', 3300, 'Красноярск', 'Уфа', '2025-12-28 09:15:00', 'Автобус');
+
+-- Запрос 579
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-29 14:00:00', 66, '2025-12-29', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2025-12-29 09:00:00', 'Поезд');
+
+-- Запрос 580
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-30 15:30:00', 73, '2025-12-30', 3200, 'Симферополь', 'Сыктывкар', '2025-12-30 09:15:00', 'Авиа');
+
+-- Запрос 581
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2025-12-31 14:00:00', 70, '2025-12-31', 3100, 'Москва', 'Санкт-Петербург', '2025-12-31 09:00:00', 'Автобус');
+
+-- Запрос 582
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-01 15:30:00', 65, '2026-01-01', 3200, 'Новосибирск', 'Екатеринбург', '2026-01-01 09:15:00', 'Поезд');
+
+-- Запрос 583
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-02 14:00:00', 80, '2026-01-02', 3000, 'Казань', 'Самара', '2026-01-02 09:00:00', 'Авиа');
+
+-- Запрос 584
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-03 15:30:00', 55, '2026-01-03', 3300, 'Нижний Новгород', 'Челябинск', '2026-01-03 09:15:00', 'Автобус');
+
+-- Запрос 585
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-04 14:00:00', 75, '2026-01-04', 3100, 'Омск', 'Воронеж', '2026-01-04 09:00:00', 'Поезд');
+
+-- Запрос 586
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-05 15:30:00', 68, '2026-01-05', 3200, 'Пермь', 'Волгоград', '2026-01-05 09:15:00', 'Авиа');
+
+-- Запрос 587
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-06 14:00:00', 62, '2026-01-06', 3000, 'Сочи', 'Томск', '2026-01-06 09:00:00', 'Автобус');
+
+-- Запрос 588
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-07 15:30:00', 77, '2026-01-07', 3300, 'Красноярск', 'Уфа', '2026-01-07 09:15:00', 'Поезд');
+
+-- Запрос 589
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-08 14:00:00', 66, '2026-01-08', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-01-08 09:00:00', 'Авиа');
+
+-- Запрос 590
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-09 15:30:00', 73, '2026-01-09', 3200, 'Симферополь', 'Сыктывкар', '2026-01-09 09:15:00', 'Автобус');
+
+-- Запрос 591
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-10 14:00:00', 70, '2026-01-10', 3100, 'Москва', 'Санкт-Петербург', '2026-01-10 09:00:00', 'Поезд');
+
+-- Запрос 592
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-11 15:30:00', 65, '2026-01-11', 3200, 'Новосибирск', 'Екатеринбург', '2026-01-11 09:15:00', 'Авиа');
+
+-- Запрос 593
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-12 14:00:00', 80, '2026-01-12', 3000, 'Казань', 'Самара', '2026-01-12 09:00:00', 'Автобус');
+
+-- Запрос 594
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-13 15:30:00', 55, '2026-01-13', 3300, 'Нижний Новгород', 'Челябинск', '2026-01-13 09:15:00', 'Поезд');
+
+-- Запрос 595
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-14 14:00:00', 75, '2026-01-14', 3100, 'Омск', 'Воронеж', '2026-01-14 09:00:00', 'Авиа');
+
+-- Запрос 596
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-15 15:30:00', 68, '2026-01-15', 3200, 'Пермь', 'Волгоград', '2026-01-15 09:15:00', 'Автобус');
+
+-- Запрос 597
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-16 14:00:00', 62, '2026-01-16', 3000, 'Сочи', 'Томск', '2026-01-16 09:00:00', 'Поезд');
+
+-- Запрос 598
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-17 15:30:00', 77, '2026-01-17', 3300, 'Красноярск', 'Уфа', '2026-01-17 09:15:00', 'Авиа');
+
+-- Запрос 599
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-18 14:00:00', 66, '2026-01-18', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-01-18 09:00:00', 'Автобус');
+
+-- Запрос 600
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-19 15:30:00', 73, '2026-01-19', 3200, 'Симферополь', 'Сыктывкар', '2026-01-19 09:15:00', 'Поезд');
+
+-- Запрос 601
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-20 14:00:00', 70, '2026-01-20', 3100, 'Москва', 'Санкт-Петербург', '2026-01-20 09:00:00', 'Авиа');
+
+-- Запрос 602
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-21 15:30:00', 65, '2026-01-21', 3200, 'Новосибирск', 'Екатеринбург', '2026-01-21 09:15:00', 'Автобус');
+
+-- Запрос 603
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-22 14:00:00', 80, '2026-01-22', 3000, 'Казань', 'Самара', '2026-01-22 09:00:00', 'Поезд');
+
+-- Запрос 604
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-23 15:30:00', 55, '2026-01-23', 3300, 'Нижний Новгород', 'Челябинск', '2026-01-23 09:15:00', 'Авиа');
+
+-- Запрос 605
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-24 14:00:00', 75, '2026-01-24', 3100, 'Омск', 'Воронеж', '2026-01-24 09:00:00', 'Автобус');
+
+-- Запрос 606
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-25 15:30:00', 68, '2026-01-25', 3200, 'Пермь', 'Волгоград', '2026-01-25 09:15:00', 'Поезд');
+
+-- Запрос 607
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-26 14:00:00', 62, '2026-01-26', 3000, 'Сочи', 'Томск', '2026-01-26 09:00:00', 'Авиа');
+
+-- Запрос 608
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-27 15:30:00', 77, '2026-01-27', 3300, 'Красноярск', 'Уфа', '2026-01-27 09:15:00', 'Автобус');
+
+-- Запрос 609
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-28 14:00:00', 66, '2026-01-28', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-01-28 09:00:00', 'Поезд');
+
+-- Запрос 610
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-29 15:30:00', 73, '2026-01-29', 3200, 'Симферополь', 'Сыктывкар', '2026-01-29 09:15:00', 'Авиа');
+
+-- Запрос 611
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-30 14:00:00', 70, '2026-01-30', 3100, 'Москва', 'Санкт-Петербург', '2026-01-30 09:00:00', 'Автобус');
+
+-- Запрос 612
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-01-31 15:30:00', 65, '2026-01-31', 3200, 'Новосибирск', 'Екатеринбург', '2026-01-31 09:15:00', 'Поезд');
+
+-- Запрос 613
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-01 14:00:00', 80, '2026-02-01', 3000, 'Казань', 'Самара', '2026-02-01 09:00:00', 'Авиа');
+
+-- Запрос 614
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-02 15:30:00', 55, '2026-02-02', 3300, 'Нижний Новгород', 'Челябинск', '2026-02-02 09:15:00', 'Автобус');
+
+-- Запрос 615
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-03 14:00:00', 75, '2026-02-03', 3100, 'Омск', 'Воронеж', '2026-02-03 09:00:00', 'Поезд');
+
+-- Запрос 616
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-04 15:30:00', 68, '2026-02-04', 3200, 'Пермь', 'Волгоград', '2026-02-04 09:15:00', 'Авиа');
+
+-- Запрос 617
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-05 14:00:00', 62, '2026-02-05', 3000, 'Сочи', 'Томск', '2026-02-05 09:00:00', 'Автобус');
+
+-- Запрос 618
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-06 15:30:00', 77, '2026-02-06', 3300, 'Красноярск', 'Уфа', '2026-02-06 09:15:00', 'Поезд');
+
+-- Запрос 619
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-07 14:00:00', 66, '2026-02-07', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-02-07 09:00:00', 'Авиа');
+
+-- Запрос 620
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-08 15:30:00', 73, '2026-02-08', 3200, 'Симферополь', 'Сыктывкар', '2026-02-08 09:15:00', 'Автобус');
+
+-- Запрос 621
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-09 14:00:00', 70, '2026-02-09', 3100, 'Москва', 'Санкт-Петербург', '2026-02-09 09:00:00', 'Поезд');
+
+-- Запрос 622
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-10 15:30:00', 65, '2026-02-10', 3200, 'Новосибирск', 'Екатеринбург', '2026-02-10 09:15:00', 'Авиа');
+
+-- Запрос 623
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-11 14:00:00', 80, '2026-02-11', 3000, 'Казань', 'Самара', '2026-02-11 09:00:00', 'Автобус');
+
+-- Запрос 624
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-12 15:30:00', 55, '2026-02-12', 3300, 'Нижний Новгород', 'Челябинск', '2026-02-12 09:15:00', 'Поезд');
+
+-- Запрос 625
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-13 14:00:00', 75, '2026-02-13', 3100, 'Омск', 'Воронеж', '2026-02-13 09:00:00', 'Авиа');
+
+-- Запрос 626
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-14 15:30:00', 68, '2026-02-14', 3200, 'Пермь', 'Волгоград', '2026-02-14 09:15:00', 'Автобус');
+
+-- Запрос 627
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-15 14:00:00', 62, '2026-02-15', 3000, 'Сочи', 'Томск', '2026-02-15 09:00:00', 'Поезд');
+
+-- Запрос 628
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-16 15:30:00', 77, '2026-02-16', 3300, 'Красноярск', 'Уфа', '2026-02-16 09:15:00', 'Авиа');
+
+-- Запрос 629
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-17 14:00:00', 66, '2026-02-17', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-02-17 09:00:00', 'Автобус');
+
+-- Запрос 630
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-18 15:30:00', 73, '2026-02-18', 3200, 'Симферополь', 'Сыктывкар', '2026-02-18 09:15:00', 'Поезд');
+
+-- Запрос 631
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-19 14:00:00', 70, '2026-02-19', 3100, 'Москва', 'Санкт-Петербург', '2026-02-19 09:00:00', 'Авиа');
+
+-- Запрос 632
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-20 15:30:00', 65, '2026-02-20', 3200, 'Новосибирск', 'Екатеринбург', '2026-02-20 09:15:00', 'Автобус');
+
+-- Запрос 633
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-21 14:00:00', 80, '2026-02-21', 3000, 'Казань', 'Самара', '2026-02-21 09:00:00', 'Поезд');
+
+-- Запрос 634
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-22 15:30:00', 55, '2026-02-22', 3300, 'Нижний Новгород', 'Челябинск', '2026-02-22 09:15:00', 'Авиа');
+
+-- Запрос 635
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-23 14:00:00', 75, '2026-02-23', 3100, 'Омск', 'Воронеж', '2026-02-23 09:00:00', 'Автобус');
+
+-- Запрос 636
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-24 15:30:00', 68, '2026-02-24', 3200, 'Пермь', 'Волгоград', '2026-02-24 09:15:00', 'Поезд');
+
+-- Запрос 637
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-25 14:00:00', 62, '2026-02-25', 3000, 'Сочи', 'Томск', '2026-02-25 09:00:00', 'Авиа');
+
+-- Запрос 638
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-26 15:30:00', 77, '2026-02-26', 3300, 'Красноярск', 'Уфа', '2026-02-26 09:15:00', 'Автобус');
+
+-- Запрос 639
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-27 14:00:00', 66, '2026-02-27', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-02-27 09:00:00', 'Поезд');
+
+-- Запрос 640
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-02-28 15:30:00', 73, '2026-02-28', 3200, 'Симферополь', 'Сыктывкар', '2026-02-28 09:15:00', 'Авиа');
+
+-- Запрос 641
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-01 14:00:00', 70, '2026-03-01', 3100, 'Москва', 'Санкт-Петербург', '2026-03-01 09:00:00', 'Автобус');
+
+-- Запрос 642
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-02 15:30:00', 65, '2026-03-02', 3200, 'Новосибирск', 'Екатеринбург', '2026-03-02 09:15:00', 'Поезд');
+
+-- Запрос 643
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-03 14:00:00', 80, '2026-03-03', 3000, 'Казань', 'Самара', '2026-03-03 09:00:00', 'Авиа');
+
+-- Запрос 644
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-04 15:30:00', 55, '2026-03-04', 3300, 'Нижний Новгород', 'Челябинск', '2026-03-04 09:15:00', 'Автобус');
+
+-- Запрос 645
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-05 14:00:00', 75, '2026-03-05', 3100, 'Омск', 'Воронеж', '2026-03-05 09:00:00', 'Поезд');
+
+-- Запрос 646
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-06 15:30:00', 68, '2026-03-06', 3200, 'Пермь', 'Волгоград', '2026-03-06 09:15:00', 'Авиа');
+
+-- Запрос 647
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-07 14:00:00', 62, '2026-03-07', 3000, 'Сочи', 'Томск', '2026-03-07 09:00:00', 'Автобус');
+
+-- Запрос 648
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-08 15:30:00', 77, '2026-03-08', 3300, 'Красноярск', 'Уфа', '2026-03-08 09:15:00', 'Поезд');
+
+-- Запрос 649
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-09 14:00:00', 66, '2026-03-09', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-03-09 09:00:00', 'Авиа');
+
+-- Запрос 650
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-10 15:30:00', 73, '2026-03-10', 3200, 'Симферополь', 'Сыктывкар', '2026-03-10 09:15:00', 'Автобус');
+
+-- Запрос 651
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-11 14:00:00', 70, '2026-03-11', 3100, 'Москва', 'Санкт-Петербург', '2026-03-11 09:00:00', 'Поезд');
+
+-- Запрос 652
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-12 15:30:00', 65, '2026-03-12', 3200, 'Новосибирск', 'Екатеринбург', '2026-03-12 09:15:00', 'Авиа');
+
+-- Запрос 653
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-13 14:00:00', 80, '2026-03-13', 3000, 'Казань', 'Самара', '2026-03-13 09:00:00', 'Автобус');
+
+-- Запрос 654
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-14 15:30:00', 55, '2026-03-14', 3300, 'Нижний Новгород', 'Челябинск', '2026-03-14 09:15:00', 'Поезд');
+
+-- Запрос 655
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-15 14:00:00', 75, '2026-03-15', 3100, 'Омск', 'Воронеж', '2026-03-15 09:00:00', 'Авиа');
+
+-- Запрос 656
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-16 15:30:00', 68, '2026-03-16', 3200, 'Пермь', 'Волгоград', '2026-03-16 09:15:00', 'Автобус');
+
+-- Запрос 657
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-17 14:00:00', 62, '2026-03-17', 3000, 'Сочи', 'Томск', '2026-03-17 09:00:00', 'Поезд');
+
+-- Запрос 658
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-18 15:30:00', 77, '2026-03-18', 3300, 'Красноярск', 'Уфа', '2026-03-18 09:15:00', 'Авиа');
+
+-- Запрос 659
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-19 14:00:00', 66, '2026-03-19', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-03-19 09:00:00', 'Автобус');
+
+-- Запрос 660
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-20 15:30:00', 73, '2026-03-20', 3200, 'Симферополь', 'Сыктывкар', '2026-03-20 09:15:00', 'Поезд');
+
+-- Запрос 661
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-21 14:00:00', 70, '2026-03-21', 3100, 'Москва', 'Санкт-Петербург', '2026-03-21 09:00:00', 'Авиа');
+
+-- Запрос 662
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-22 15:30:00', 65, '2026-03-22', 3200, 'Новосибирск', 'Екатеринбург', '2026-03-22 09:15:00', 'Автобус');
+
+-- Запрос 663
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-23 14:00:00', 80, '2026-03-23', 3000, 'Казань', 'Самара', '2026-03-23 09:00:00', 'Поезд');
+
+-- Запрос 664
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-24 15:30:00', 55, '2026-03-24', 3300, 'Нижний Новгород', 'Челябинск', '2026-03-24 09:15:00', 'Авиа');
+
+-- Запрос 665
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-25 14:00:00', 75, '2026-03-25', 3100, 'Омск', 'Воронеж', '2026-03-25 09:00:00', 'Автобус');
+
+-- Запрос 666
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-26 15:30:00', 68, '2026-03-26', 3200, 'Пермь', 'Волгоград', '2026-03-26 09:15:00', 'Поезд');
+
+-- Запрос 667
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-27 14:00:00', 62, '2026-03-27', 3000, 'Сочи', 'Томск', '2026-03-27 09:00:00', 'Авиа');
+
+-- Запрос 668
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-28 15:30:00', 77, '2026-03-28', 3300, 'Красноярск', 'Уфа', '2026-03-28 09:15:00', 'Автобус');
+
+-- Запрос 669
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-29 14:00:00', 66, '2026-03-29', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-03-29 09:00:00', 'Поезд');
+
+-- Запрос 670
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-30 15:30:00', 73, '2026-03-30', 3200, 'Симферополь', 'Сыктывкар', '2026-03-30 09:15:00', 'Авиа');
+
+-- Запрос 671
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-03-31 14:00:00', 70, '2026-03-31', 3100, 'Москва', 'Санкт-Петербург', '2026-03-31 09:00:00', 'Автобус');
+
+-- Запрос 672
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-01 15:30:00', 65, '2026-04-01', 3200, 'Новосибирск', 'Екатеринбург', '2026-04-01 09:15:00', 'Поезд');
+
+-- Запрос 673
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-02 14:00:00', 80, '2026-04-02', 3000, 'Казань', 'Самара', '2026-04-02 09:00:00', 'Авиа');
+
+-- Запрос 674
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-03 15:30:00', 55, '2026-04-03', 3300, 'Нижний Новгород', 'Челябинск', '2026-04-03 09:15:00', 'Автобус');
+
+-- Запрос 675
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-04 14:00:00', 75, '2026-04-04', 3100, 'Омск', 'Воронеж', '2026-04-04 09:00:00', 'Поезд');
+
+-- Запрос 676
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-05 15:30:00', 68, '2026-04-05', 3200, 'Пермь', 'Волгоград', '2026-04-05 09:15:00', 'Авиа');
+
+-- Запрос 677
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-06 14:00:00', 62, '2026-04-06', 3000, 'Сочи', 'Томск', '2026-04-06 09:00:00', 'Автобус');
+
+-- Запрос 678
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-07 15:30:00', 77, '2026-04-07', 3300, 'Красноярск', 'Уфа', '2026-04-07 09:15:00', 'Поезд');
+
+-- Запрос 679
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-08 14:00:00', 66, '2026-04-08', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-04-08 09:00:00', 'Авиа');
+
+-- Запрос 680
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-09 15:30:00', 73, '2026-04-09', 3200, 'Симферополь', 'Сыктывкар', '2026-04-09 09:15:00', 'Автобус');
+
+-- Запрос 681
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-10 14:00:00', 70, '2026-04-10', 3100, 'Москва', 'Санкт-Петербург', '2026-04-10 09:00:00', 'Поезд');
+
+-- Запрос 682
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-11 15:30:00', 65, '2026-04-11', 3200, 'Новосибирск', 'Екатеринбург', '2026-04-11 09:15:00', 'Авиа');
+
+-- Запрос 683
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-12 14:00:00', 80, '2026-04-12', 3000, 'Казань', 'Самара', '2026-04-12 09:00:00', 'Автобус');
+
+-- Запрос 684
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-13 15:30:00', 55, '2026-04-13', 3300, 'Нижний Новгород', 'Челябинск', '2026-04-13 09:15:00', 'Поезд');
+
+-- Запрос 685
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-14 14:00:00', 75, '2026-04-14', 3100, 'Омск', 'Воронеж', '2026-04-14 09:00:00', 'Авиа');
+
+-- Запрос 686
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-15 15:30:00', 68, '2026-04-15', 3200, 'Пермь', 'Волгоград', '2026-04-15 09:15:00', 'Автобус');
+
+-- Запрос 687
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-16 14:00:00', 62, '2026-04-16', 3000, 'Сочи', 'Томск', '2026-04-16 09:00:00', 'Поезд');
+
+-- Запрос 688
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-17 15:30:00', 77, '2026-04-17', 3300, 'Красноярск', 'Уфа', '2026-04-17 09:15:00', 'Авиа');
+
+-- Запрос 689
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-18 14:00:00', 66, '2026-04-18', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-04-18 09:00:00', 'Автобус');
+
+-- Запрос 690
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-19 15:30:00', 73, '2026-04-19', 3200, 'Симферополь', 'Сыктывкар', '2026-04-19 09:15:00', 'Поезд');
+
+-- Запрос 691
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-20 14:00:00', 70, '2026-04-20', 3100, 'Москва', 'Санкт-Петербург', '2026-04-20 09:00:00', 'Авиа');
+
+-- Запрос 692
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-21 15:30:00', 65, '2026-04-21', 3200, 'Новосибирск', 'Екатеринбург', '2026-04-21 09:15:00', 'Автобус');
+
+-- Запрос 693
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-22 14:00:00', 80, '2026-04-22', 3000, 'Казань', 'Самара', '2026-04-22 09:00:00', 'Поезд');
+
+-- Запрос 694
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-23 15:30:00', 55, '2026-04-23', 3300, 'Нижний Новгород', 'Челябинск', '2026-04-23 09:15:00', 'Авиа');
+
+-- Запрос 695
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-24 14:00:00', 75, '2026-04-24', 3100, 'Омск', 'Воронеж', '2026-04-24 09:00:00', 'Автобус');
+
+-- Запрос 696
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-25 15:30:00', 68, '2026-04-25', 3200, 'Пермь', 'Волгоград', '2026-04-25 09:15:00', 'Поезд');
+
+-- Запрос 697
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-26 14:00:00', 62, '2026-04-26', 3000, 'Сочи', 'Томск', '2026-04-26 09:00:00', 'Авиа');
+
+-- Запрос 698
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-27 15:30:00', 77, '2026-04-27', 3300, 'Красноярск', 'Уфа', '2026-04-27 09:15:00', 'Автобус');
+
+-- Запрос 699
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-28 14:00:00', 66, '2026-04-28', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-04-28 09:00:00', 'Поезд');
+
+-- Запрос 700
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-29 15:30:00', 73, '2026-04-29', 3200, 'Симферополь', 'Сыктывкар', '2026-04-29 09:15:00', 'Авиа');
+
+-- Запрос 701
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-04-30 14:00:00', 70, '2026-04-30', 3100, 'Москва', 'Санкт-Петербург', '2026-04-30 09:00:00', 'Автобус');
+
+-- Запрос 702
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-01 15:30:00', 65, '2026-05-01', 3200, 'Новосибирск', 'Екатеринбург', '2026-05-01 09:15:00', 'Поезд');
+
+-- Запрос 703
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-02 14:00:00', 80, '2026-05-02', 3000, 'Казань', 'Самара', '2026-05-02 09:00:00', 'Авиа');
+
+-- Запрос 704
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-03 15:30:00', 55, '2026-05-03', 3300, 'Нижний Новгород', 'Челябинск', '2026-05-03 09:15:00', 'Автобус');
+
+-- Запрос 705
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-04 14:00:00', 75, '2026-05-04', 3100, 'Омск', 'Воронеж', '2026-05-04 09:00:00', 'Поезд');
+
+-- Запрос 706
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-05 15:30:00', 68, '2026-05-05', 3200, 'Пермь', 'Волгоград', '2026-05-05 09:15:00', 'Авиа');
+
+-- Запрос 707
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-06 14:00:00', 62, '2026-05-06', 3000, 'Сочи', 'Томск', '2026-05-06 09:00:00', 'Автобус');
+
+-- Запрос 708
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-07 15:30:00', 77, '2026-05-07', 3300, 'Красноярск', 'Уфа', '2026-05-07 09:15:00', 'Поезд');
+
+-- Запрос 709
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-08 14:00:00', 66, '2026-05-08', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-05-08 09:00:00', 'Авиа');
+
+-- Запрос 710
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-09 15:30:00', 73, '2026-05-09', 3200, 'Симферополь', 'Сыктывкар', '2026-05-09 09:15:00', 'Автобус');
+-- Запрос 711
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-10 14:00:00', 70, '2026-05-10', 3100, 'Москва', 'Санкт-Петербург', '2026-05-10 09:00:00', 'Поезд');
+
+-- Запрос 712
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-11 15:30:00', 65, '2026-05-11', 3200, 'Новосибирск', 'Екатеринбург', '2026-05-11 09:15:00', 'Авиа');
+
+-- Запрос 713
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-12 14:00:00', 80, '2026-05-12', 3000, 'Казань', 'Самара', '2026-05-12 09:00:00', 'Автобус');
+
+-- Запрос 714
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-13 15:30:00', 55, '2026-05-13', 3300, 'Нижний Новгород', 'Челябинск', '2026-05-13 09:15:00', 'Поезд');
+
+-- Запрос 715
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-14 14:00:00', 75, '2026-05-14', 3100, 'Омск', 'Воронеж', '2026-05-14 09:00:00', 'Авиа');
+
+-- Запрос 716
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-15 15:30:00', 68, '2026-05-15', 3200, 'Пермь', 'Волгоград', '2026-05-15 09:15:00', 'Автобус');
+
+-- Запрос 717
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-16 14:00:00', 62, '2026-05-16', 3000, 'Сочи', 'Томск', '2026-05-16 09:00:00', 'Поезд');
+
+-- Запрос 718
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-17 15:30:00', 77, '2026-05-17', 3300, 'Красноярск', 'Уфа', '2026-05-17 09:15:00', 'Авиа');
+
+-- Запрос 719
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-18 14:00:00', 66, '2026-05-18', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-05-18 09:00:00', 'Автобус');
+
+-- Запрос 720
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-19 15:30:00', 73, '2026-05-19', 3200, 'Симферополь', 'Сыктывкар', '2026-05-19 09:15:00', 'Поезд');
+
+-- Запрос 721
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-20 14:00:00', 70, '2026-05-20', 3100, 'Москва', 'Санкт-Петербург', '2026-05-20 09:00:00', 'Авиа');
+
+-- Запрос 722
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-21 15:30:00', 65, '2026-05-21', 3200, 'Новосибирск', 'Екатеринбург', '2026-05-21 09:15:00', 'Автобус');
+
+-- Запрос 723
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-22 14:00:00', 80, '2026-05-22', 3000, 'Казань', 'Самара', '2026-05-22 09:00:00', 'Поезд');
+
+-- Запрос 724
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-23 15:30:00', 55, '2026-05-23', 3300, 'Нижний Новгород', 'Челябинск', '2026-05-23 09:15:00', 'Авиа');
+
+-- Запрос 725
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-24 14:00:00', 75, '2026-05-24', 3100, 'Омск', 'Воронеж', '2026-05-24 09:00:00', 'Автобус');
+
+-- Запрос 726
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-25 15:30:00', 68, '2026-05-25', 3200, 'Пермь', 'Волгоград', '2026-05-25 09:15:00', 'Поезд');
+
+-- Запрос 727
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-26 14:00:00', 62, '2026-05-26', 3000, 'Сочи', 'Томск', '2026-05-26 09:00:00', 'Авиа');
+
+-- Запрос 728
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-27 15:30:00', 77, '2026-05-27', 3300, 'Красноярск', 'Уфа', '2026-05-27 09:15:00', 'Автобус');
+
+-- Запрос 729
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-28 14:00:00', 66, '2026-05-28', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-05-28 09:00:00', 'Поезд');
+
+-- Запрос 730
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-29 15:30:00', 73, '2026-05-29', 3200, 'Симферополь', 'Сыктывкар', '2026-05-29 09:15:00', 'Авиа');
+
+-- Запрос 731
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-30 14:00:00', 70, '2026-05-30', 3100, 'Москва', 'Санкт-Петербург', '2026-05-30 09:00:00', 'Автобус');
+
+-- Запрос 732
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-05-31 15:30:00', 65, '2026-05-31', 3200, 'Новосибирск', 'Екатеринбург', '2026-05-31 09:15:00', 'Поезд');
+
+-- Запрос 733
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-01 14:00:00', 80, '2026-06-01', 3000, 'Казань', 'Самара', '2026-06-01 09:00:00', 'Авиа');
+
+-- Запрос 734
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-02 15:30:00', 55, '2026-06-02', 3300, 'Нижний Новгород', 'Челябинск', '2026-06-02 09:15:00', 'Автобус');
+
+-- Запрос 735
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-03 14:00:00', 75, '2026-06-03', 3100, 'Омск', 'Воронеж', '2026-06-03 09:00:00', 'Поезд');
+
+-- Запрос 736
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-04 15:30:00', 68, '2026-06-04', 3200, 'Пермь', 'Волгоград', '2026-06-04 09:15:00', 'Авиа');
+
+-- Запрос 737
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-05 14:00:00', 62, '2026-06-05', 3000, 'Сочи', 'Томск', '2026-06-05 09:00:00', 'Автобус');
+
+-- Запрос 738
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-06 15:30:00', 77, '2026-06-06', 3300, 'Красноярск', 'Уфа', '2026-06-06 09:15:00', 'Поезд');
+
+-- Запрос 739
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-07 14:00:00', 66, '2026-06-07', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-06-07 09:00:00', 'Авиа');
+
+-- Запрос 740
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-08 15:30:00', 73, '2026-06-08', 3200, 'Симферополь', 'Сыктывкар', '2026-06-08 09:15:00', 'Автобус');
+
+-- Запрос 741
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-09 14:00:00', 70, '2026-06-09', 3100, 'Москва', 'Санкт-Петербург', '2026-06-09 09:00:00', 'Поезд');
+
+-- Запрос 742
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-10 15:30:00', 65, '2026-06-10', 3200, 'Новосибирск', 'Екатеринбург', '2026-06-10 09:15:00', 'Авиа');
+
+-- Запрос 743
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-11 14:00:00', 80, '2026-06-11', 3000, 'Казань', 'Самара', '2026-06-11 09:00:00', 'Автобус');
+
+-- Запрос 744
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-12 15:30:00', 55, '2026-06-12', 3300, 'Нижний Новгород', 'Челябинск', '2026-06-12 09:15:00', 'Поезд');
+
+-- Запрос 745
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-13 14:00:00', 75, '2026-06-13', 3100, 'Омск', 'Воронеж', '2026-06-13 09:00:00', 'Авиа');
+
+-- Запрос 746
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-14 15:30:00', 68, '2026-06-14', 3200, 'Пермь', 'Волгоград', '2026-06-14 09:15:00', 'Автобус');
+
+-- Запрос 747
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-15 14:00:00', 62, '2026-06-15', 3000, 'Сочи', 'Томск', '2026-06-15 09:00:00', 'Поезд');
+
+-- Запрос 748
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-16 15:30:00', 77, '2026-06-16', 3300, 'Красноярск', 'Уфа', '2026-06-16 09:15:00', 'Авиа');
+
+-- Запрос 749
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-17 14:00:00', 66, '2026-06-17', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-06-17 09:00:00', 'Автобус');
+
+-- Запрос 750
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-18 15:30:00', 73, '2026-06-18', 3200, 'Симферополь', 'Сыктывкар', '2026-06-18 09:15:00', 'Поезд');
+
+-- Запрос 751
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-19 14:00:00', 70, '2026-06-19', 3100, 'Москва', 'Санкт-Петербург', '2026-06-19 09:00:00', 'Авиа');
+
+-- Запрос 752
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-20 15:30:00', 65, '2026-06-20', 3200, 'Новосибирск', 'Екатеринбург', '2026-06-20 09:15:00', 'Автобус');
+
+-- Запрос 753
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-21 14:00:00', 80, '2026-06-21', 3000, 'Казань', 'Самара', '2026-06-21 09:00:00', 'Поезд');
+
+-- Запрос 754
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-22 15:30:00', 55, '2026-06-22', 3300, 'Нижний Новгород', 'Челябинск', '2026-06-22 09:15:00', 'Авиа');
+
+-- Запрос 755
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-23 14:00:00', 75, '2026-06-23', 3100, 'Омск', 'Воронеж', '2026-06-23 09:00:00', 'Автобус');
+
+-- Запрос 756
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-24 15:30:00', 68, '2026-06-24', 3200, 'Пермь', 'Волгоград', '2026-06-24 09:15:00', 'Поезд');
+
+-- Запрос 757
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-25 14:00:00', 62, '2026-06-25', 3000, 'Сочи', 'Томск', '2026-06-25 09:00:00', 'Авиа');
+
+-- Запрос 758
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-26 15:30:00', 77, '2026-06-26', 3300, 'Красноярск', 'Уфа', '2026-06-26 09:15:00', 'Автобус');
+
+-- Запрос 759
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-27 14:00:00', 66, '2026-06-27', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-06-27 09:00:00', 'Поезд');
+
+-- Запрос 760
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-28 15:30:00', 73, '2026-06-28', 3200, 'Симферополь', 'Сыктывкар', '2026-06-28 09:15:00', 'Авиа');
+
+-- Запрос 761
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-29 14:00:00', 70, '2026-06-29', 3100, 'Москва', 'Санкт-Петербург', '2026-06-29 09:00:00', 'Автобус');
+
+-- Запрос 762
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-06-30 15:30:00', 65, '2026-06-30', 3200, 'Новосибирск', 'Екатеринбург', '2026-06-30 09:15:00', 'Поезд');
+
+-- Запрос 763
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-01 14:00:00', 80, '2026-07-01', 3000, 'Казань', 'Самара', '2026-07-01 09:00:00', 'Авиа');
+
+-- Запрос 764
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-02 15:30:00', 55, '2026-07-02', 3300, 'Нижний Новгород', 'Челябинск', '2026-07-02 09:15:00', 'Автобус');
+
+-- Запрос 765
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-03 14:00:00', 75, '2026-07-03', 3100, 'Омск', 'Воронеж', '2026-07-03 09:00:00', 'Поезд');
+
+-- Запрос 766
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-04 15:30:00', 68, '2026-07-04', 3200, 'Пермь', 'Волгоград', '2026-07-04 09:15:00', 'Авиа');
+
+-- Запрос 767
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-05 14:00:00', 62, '2026-07-05', 3000, 'Сочи', 'Томск', '2026-07-05 09:00:00', 'Автобус');
+
+-- Запрос 768
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-06 15:30:00', 77, '2026-07-06', 3300, 'Красноярск', 'Уфа', '2026-07-06 09:15:00', 'Поезд');
+
+-- Запрос 769
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-07 14:00:00', 66, '2026-07-07', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-07-07 09:00:00', 'Авиа');
+
+-- Запрос 770
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-08 15:30:00', 73, '2026-07-08', 3200, 'Симферополь', 'Сыктывкар', '2026-07-08 09:15:00', 'Автобус');
+
+-- Запрос 771
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-09 14:00:00', 70, '2026-07-09', 3100, 'Москва', 'Санкт-Петербург', '2026-07-09 09:00:00', 'Поезд');
+
+-- Запрос 772
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-10 15:30:00', 65, '2026-07-10', 3200, 'Новосибирск', 'Екатеринбург', '2026-07-10 09:15:00', 'Авиа');
+
+-- Запрос 773
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-11 14:00:00', 80, '2026-07-11', 3000, 'Казань', 'Самара', '2026-07-11 09:00:00', 'Автобус');
+
+-- Запрос 774
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-12 15:30:00', 55, '2026-07-12', 3300, 'Нижний Новгород', 'Челябинск', '2026-07-12 09:15:00', 'Поезд');
+
+-- Запрос 775
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-13 14:00:00', 75, '2026-07-13', 3100, 'Омск', 'Воронеж', '2026-07-13 09:00:00', 'Авиа');
+
+-- Запрос 776
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-14 15:30:00', 68, '2026-07-14', 3200, 'Пермь', 'Волгоград', '2026-07-14 09:15:00', 'Автобус');
+
+-- Запрос 777
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-15 14:00:00', 62, '2026-07-15', 3000, 'Сочи', 'Томск', '2026-07-15 09:00:00', 'Поезд');
+
+-- Запрос 778
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-16 15:30:00', 77, '2026-07-16', 3300, 'Красноярск', 'Уфа', '2026-07-16 09:15:00', 'Авиа');
+
+-- Запрос 779
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-17 14:00:00', 66, '2026-07-17', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-07-17 09:00:00', 'Автобус');
+
+-- Запрос 780
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-18 15:30:00', 73, '2026-07-18', 3200, 'Симферополь', 'Сыктывкар', '2026-07-18 09:15:00', 'Поезд');
+
+-- Запрос 781
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-19 14:00:00', 70, '2026-07-19', 3100, 'Москва', 'Санкт-Петербург', '2026-07-19 09:00:00', 'Авиа');
+
+-- Запрос 782
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-20 15:30:00', 65, '2026-07-20', 3200, 'Новосибирск', 'Екатеринбург', '2026-07-20 09:15:00', 'Автобус');
+
+-- Запрос 783
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-21 14:00:00', 80, '2026-07-21', 3000, 'Казань', 'Самара', '2026-07-21 09:00:00', 'Поезд');
+
+-- Запрос 784
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-22 15:30:00', 55, '2026-07-22', 3300, 'Нижний Новгород', 'Челябинск', '2026-07-22 09:15:00', 'Авиа');
+
+-- Запрос 785
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-23 14:00:00', 75, '2026-07-23', 3100, 'Омск', 'Воронеж', '2026-07-23 09:00:00', 'Автобус');
+
+-- Запрос 786
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-24 15:30:00', 68, '2026-07-24', 3200, 'Пермь', 'Волгоград', '2026-07-24 09:15:00', 'Поезд');
+
+-- Запрос 787
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-25 14:00:00', 62, '2026-07-25', 3000, 'Сочи', 'Томск', '2026-07-25 09:00:00', 'Авиа');
+
+-- Запрос 788
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-26 15:30:00', 77, '2026-07-26', 3300, 'Красноярск', 'Уфа', '2026-07-26 09:15:00', 'Автобус');
+
+-- Запрос 789
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-27 14:00:00', 66, '2026-07-27', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-07-27 09:00:00', 'Поезд');
+
+-- Запрос 790
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-28 15:30:00', 73, '2026-07-28', 3200, 'Симферополь', 'Сыктывкар', '2026-07-28 09:15:00', 'Авиа');
+
+-- Запрос 791
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-29 14:00:00', 70, '2026-07-29', 3100, 'Москва', 'Санкт-Петербург', '2026-07-29 09:00:00', 'Автобус');
+
+-- Запрос 792
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-30 15:30:00', 65, '2026-07-30', 3200, 'Новосибирск', 'Екатеринбург', '2026-07-30 09:15:00', 'Поезд');
+
+-- Запрос 793
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-07-31 14:00:00', 80, '2026-07-31', 3000, 'Казань', 'Самара', '2026-07-31 09:00:00', 'Авиа');
+
+-- Запрос 794
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-01 15:30:00', 55, '2026-08-01', 3300, 'Нижний Новгород', 'Челябинск', '2026-08-01 09:15:00', 'Автобус');
+
+-- Запрос 795
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-02 14:00:00', 75, '2026-08-02', 3100, 'Омск', 'Воронеж', '2026-08-02 09:00:00', 'Поезд');
+
+-- Запрос 796
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-03 15:30:00', 68, '2026-08-03', 3200, 'Пермь', 'Волгоград', '2026-08-03 09:15:00', 'Авиа');
+
+-- Запрос 797
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-04 14:00:00', 62, '2026-08-04', 3000, 'Сочи', 'Томск', '2026-08-04 09:00:00', 'Автобус');
+
+-- Запрос 798
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-05 15:30:00', 77, '2026-08-05', 3300, 'Красноярск', 'Уфа', '2026-08-05 09:15:00', 'Поезд');
+
+-- Запрос 799
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-06 14:00:00', 66, '2026-08-06', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-08-06 09:00:00', 'Авиа');
+
+-- Запрос 800
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-07 15:30:00', 73, '2026-08-07', 3200, 'Симферополь', 'Сыктывкар', '2026-08-07 09:15:00', 'Автобус');
+
+-- Запрос 801
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-08 14:00:00', 70, '2026-08-08', 3100, 'Москва', 'Санкт-Петербург', '2026-08-08 09:00:00', 'Поезд');
+
+-- Запрос 802
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-09 15:30:00', 65, '2026-08-09', 3200, 'Новосибирск', 'Екатеринбург', '2026-08-09 09:15:00', 'Авиа');
+
+-- Запрос 803
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-10 14:00:00', 80, '2026-08-10', 3000, 'Казань', 'Самара', '2026-08-10 09:00:00', 'Автобус');
+
+-- Запрос 804
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-11 15:30:00', 55, '2026-08-11', 3300, 'Нижний Новгород', 'Челябинск', '2026-08-11 09:15:00', 'Поезд');
+
+-- Запрос 805
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-12 14:00:00', 75, '2026-08-12', 3100, 'Омск', 'Воронеж', '2026-08-12 09:00:00', 'Авиа');
+
+-- Запрос 806
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-13 15:30:00', 68, '2026-08-13', 3200, 'Пермь', 'Волгоград', '2026-08-13 09:15:00', 'Автобус');
+
+-- Запрос 807
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-14 14:00:00', 62, '2026-08-14', 3000, 'Сочи', 'Томск', '2026-08-14 09:00:00', 'Поезд');
+
+-- Запрос 808
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-15 15:30:00', 77, '2026-08-15', 3300, 'Красноярск', 'Уфа', '2026-08-15 09:15:00', 'Авиа');
+
+-- Запрос 809
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-16 14:00:00', 66, '2026-08-16', 3100, 'Петропавловск-Камчатский', 'Севастополь', '2026-08-16 09:00:00', 'Автобус');
+
+-- Запрос 810
+INSERT INTO ROUTES (ARRIVAL_TIME, AVAILABLE_SEATS, DATE, PRICE, ROUTE_FROM, ROUTE_TO, TIME, TRANSPORT)
+VALUES ('2026-08-17 15:30:00', 73, '2026-08-17', 3200, 'Симферополь', 'Сыктывкар', '2026-08-17 09:15:00', 'Поезд');
