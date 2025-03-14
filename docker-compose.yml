@@ -2,7 +2,7 @@
 services:
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     environment:
       SPRING_H2_CONSOLE_ENABLED: "true"
