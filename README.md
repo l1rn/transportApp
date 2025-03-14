@@ -9,17 +9,7 @@
 
 ### Нужно будет скачать:
 - [Maven](https://maven.apache.org/download.cgi)
-- [Spring Boot](https://start.spring.io/)
 - [Java](https://www.oracle.com/java/technologies/downloads/#jdk21-windows) **(Если нету)**
-
-### Что нужно выбрать при установке Spring Boot:
-- **Project:** Maven  
-- **Language:** Java  
-- **Spring Boot:** 3.4.1  
-- **Project Metadata:** На ваше усмотрение  
-- **Packing:** Jar  
-- **Java:** 21
-
 # Инструкция по установке и настройке Maven и Java
 
 ## 1. Установка Apache Maven
