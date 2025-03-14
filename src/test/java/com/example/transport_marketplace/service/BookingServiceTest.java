@@ -184,7 +184,7 @@ class BookingServiceTest {
         // Use the existing booking owned by bookingOwner (user2)
         when(bookingRepository.findById(1)).thenReturn(Optional.of(booking));
 
-        AccessDeniedException ex = assertThrows(AccessDeniedException.class, 
+        AccessDeniedException ex = assertThrows(AccessDeniedException.class,
             () -> bookingService.cancelBooking(1, "user1"));
         assertEquals("Нет прав для отмены бронирования", ex.getMessage());
         verify(userRepository, times(1)).findByUsername("user1");

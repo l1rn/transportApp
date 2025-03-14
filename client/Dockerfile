@@ -6,6 +6,9 @@ COPY package*.json ./
 RUN npm cache clean --force && \
     npm install --force --include=dev
 COPY . .
+
+COPY public/fonts /app/public/fonts
+
 RUN npm run build
 
 FROM nginx:alpine

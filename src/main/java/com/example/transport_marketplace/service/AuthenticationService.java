@@ -49,7 +49,7 @@
                     )
             );
             User user = userRepository.findByUsername(request.getUsername())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
             refreshTokenRepository.deleteByUser(user);
 

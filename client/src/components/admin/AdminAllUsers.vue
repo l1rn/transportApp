@@ -31,14 +31,15 @@
           <td class="actions">
             <button class="give-permission-button"
             v-if="roleNotAdmin.find(u => u.id === user.id)?.notAdmin" 
-            @click="getPermissionAdmin(user.id)">Дать права</button>
-            <button 
-            :disabled="deletingId === user.id"
-            class="delete-user-button"
-            @click="deleteUser(user.id)">
-            <span v-if="deletingId === user.id">Удаление...</span>
-            <span v-else>Удалить</span>
+            @click="getPermissionAdmin(user.id)">Дать права
           </button>
+            <button 
+              :disabled="user.role === 'ROLE_ADMIN' || deletingId === user.id"
+              class="delete-user-button"
+              @click="deleteUser(user.id)">
+              <span v-if="deletingId === user.id">Удаление...</span>
+              <span v-else>Удалить</span>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -84,54 +85,36 @@ const roleNotAdmin = computed(() => {
 
 const deletingId = ref(null);
 const deletedUser = ref(null);
-
 const deleteUser = async(userId) => {
-  let fullIndex
-  if(!confirm('Вы уверены, что хотите удалить пользователя?')) return;
+  let userIndex;
   try{
-
     deletingId.value = userId;
-
-    fullIndex = users.value.findIndex(u => u.id === userId)
-    if (fullIndex === -1) return;
-
-    const hasBooking = await checkUserForBooking(userId)
-    if(hasBooking){
-      notifications.value.showNotification('error', 'У пользователя есть бронь!')
-      return
+    userIndex = users.value.findIndex(user => user.id === userId);
+    if (userIndex === -1) {
+      throw new Error('Пользователь не найден');
     }
-
-    deletedUser.value = users.value[fullIndex]
-    users.value.splice(fullIndex, 1);
+    deletedUser.value = users.value[userIndex];
+    users.value.splice(userIndex, 1);
 
     await AdminService.deleteUser(userId);
     notifications.value.showNotification('success', "Пользователь удален!")
   }catch(error){
-    if (deletedUser.value && fullIndex !== -1) {
-            users.value.splice(fullIndex, 0, deletedUser.value);
-        }
-        notifications.value.showNotification(
-            'error', 
-            error.response?.data?.message || 'Ошибка при удалении маршрута'
-        );
+    if (deletedUser.value && userIndex !== -1) {
+      users.value.splice(userIndex, 0, deletedUser.value);
+    }
+    notifications.value.showNotification(
+      'error', 
+      error.response?.data?.message || 'Ошибка при удалении пользователя'
+    );
   }
   finally {
         deletingId.value = null;
-        deletedUser.value = null;
     }
 }
 
+
 const notifications = ref(null);
 
-const checkUserForBooking = async(userId) => {
-  try{
-    const response = await AdminService.getAllBookings();
-    return response.data.some(booking => booking.user.id === userId)
-  }catch(error){
-    notifications.value.showNotification('error', 'Ошибка при проверке бронирований')
-    return false
-  }
-}
 
 const formatRole = (role) =>{
     switch(role){
