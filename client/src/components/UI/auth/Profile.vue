@@ -120,7 +120,7 @@ export default {
 
 <style scoped>
 *{
-  font-family: Montserrat;
+  font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 .profile-container {
   position: relative;

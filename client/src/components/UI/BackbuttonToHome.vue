@@ -16,6 +16,10 @@ export default {
 }
 </script>
 <style lang="scss">
+*{
+  font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
+}
 .button-container{
     display: flex;
     justify-content: center;

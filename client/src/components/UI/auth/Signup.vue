@@ -144,6 +144,9 @@ export default{
 }
 </script>
 <style scoped>
+*{
+  font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
 .container{
     font-family: Montserrat;
 }
