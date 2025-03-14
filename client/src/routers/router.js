@@ -11,6 +11,11 @@ const routes = [
     { path: '/routes/search', component: SearchRoutes},
     { path:'/panel/admin', component: AdminPanel},
     { path: '/home', component: Home},
+
+    { 
+        path: '/:catchAll(.*)',
+        redirect: '/home'
+    }
 ]
 
 const router = createRouter({
