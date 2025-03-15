@@ -1,10 +1,13 @@
 {
+    "homepage": "https://l1rn.github.io/transportApp/",
     "name": "app",
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "serve": "vue-cli-service serve",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d dist",
         "build": "vue-cli-service build",
+        "serve": "vue-cli-service serve",
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
         "prepare": "husky"
