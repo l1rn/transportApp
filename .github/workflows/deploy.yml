@@ -10,24 +10,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./client
+      - name: Install dependencies and build
+        run: |
+          cd client
+          npm ci
+          npm run build
+        working-directory: ./
 
-      - name: Build
-        run: npm run build
-        working-directory: ./client
+      - name: Check dist folder
+        run: |
+          ls -la ./client/dist
+          echo "Dist folder content above"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.DEPLOY_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./client/dist
+          publish_branch: gh-pages
+          force_orphan: true
       
