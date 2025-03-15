@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "predeploy": "npm run build",
-        "deploy": "gh-pages -d dist",
+        "deploy": "gh-pages -d dist -r https://github.com/l1rn/transportApp.git -t true",
         "build": "vue-cli-service build",
         "serve": "vue-cli-service serve",
         "lint": "vue-cli-service lint",
