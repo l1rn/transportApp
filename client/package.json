@@ -4,9 +4,9 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "predeploy": "npm run build",
-        "deploy": "gh-pages -d dist -r https://github.com/l1rn/transportApp.git -t true",
-        "build": "vue-cli-service build",
+        "predeploy": "npm run build && rm -rf dist/README.md && touch dist/.nojekyll",
+        "deploy": "gh-pages -d dist -r https://github.com/l1rn/transportApp.git -t -f",
+        "build": "vue-cli-service build && touch dist/.nojekyll",   
         "serve": "vue-cli-service serve",
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
