@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./
+        working-directory: ./client
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
