@@ -86,11 +86,16 @@
 		</dependency>
 
 		<!-- optimization -->
-
 		<dependency>
 			<groupId>com.bucket4j</groupId>
 			<artifactId>bucket4j_jdk17-core</artifactId>
 			<version>8.14.0</version>
+		</dependency>
+			<!-- local cache -->
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+			<version>3.1.8</version>
 		</dependency>
 
 		<!-- JJWT -->
@@ -140,8 +145,6 @@
 			<version>5.11.0</version>
 			<scope>test</scope>
 		</dependency>
-
-
 	</dependencies>
 
 	<dependencyManagement>
@@ -207,8 +210,5 @@
 			<id>spring-release</id>
 			<url>https://repo.spring.io/release</url>
 		</repository>
-
 	</repositories>
-
-
 </project>

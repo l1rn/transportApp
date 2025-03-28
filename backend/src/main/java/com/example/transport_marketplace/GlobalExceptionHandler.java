@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 @Hidden
-public class GlobalExcaptionHandler {
+public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleTokenExceptions(RuntimeException ex){
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());

@@ -106,7 +106,7 @@ public class RouteController {
     public ResponseEntity<Void> deleteRoute(@PathVariable int id){
         boolean deleted = routeService.deleteRoute(id);
         return deleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                        : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                        : new ResponseEntity<>(HttpStatus   .NOT_FOUND);
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))

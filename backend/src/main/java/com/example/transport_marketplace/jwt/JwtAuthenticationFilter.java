@@ -1,16 +1,13 @@
 package com.example.transport_marketplace.jwt;
 
-import com.example.transport_marketplace.service.UserService;
 import com.example.transport_marketplace.service.impl.UserDetailsServiceImpl;
+import io.github.bucket4j.Bucket;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -25,6 +22,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailsService;
     private final TokenBlacklist tokenBlacklist;
+
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -34,26 +33,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = parseJwt(request);
 
-            if (jwt != null){
-                if (tokenBlacklist.isRevoked(jwt)) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token revoked");
-                    return;
-                }
+            if (jwt == null){
+                filterChain.doFilter(request, response);
+                return;
             }
-            if(jwtService.validateToken(jwt)) {
-                String username = jwtService.getUsernameFromToken(jwt);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if(tokenBlacklist.isRevoked(jwt)){
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+            if(!jwtService.validateToken(jwt)){
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+            String username = jwtService.getUsernameFromToken(jwt);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities()
+            );
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             logger.error("Ошибка аутентификации: ", e);
+            return;
         }
         filterChain.doFilter(request, response);
     }

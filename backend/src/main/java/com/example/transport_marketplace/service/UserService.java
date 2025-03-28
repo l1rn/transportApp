@@ -51,7 +51,7 @@ public class UserService {
         if(repository.existsByUsername(user.getUsername())){
             throw new RuntimeException("Имя пользователя занято!");
         }
-        return repository.save(user);
+        return save(user);
     }
 
     public List<User> getAllUsers(){
@@ -88,10 +88,6 @@ public class UserService {
 
     public User setAdmin(User user){
         user.setRole(Role.ROLE_ADMIN);
-        return repository.save(user);
-    }
-    public User setUser(User user){
-        user.setRole(Role.ROLE_USER);
-        return repository.save(user);
+        return save(user);
     }
 }
