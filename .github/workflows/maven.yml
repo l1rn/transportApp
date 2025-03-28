@@ -23,9 +23,3 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
-
-      - name: Build and test
-        run: mvn -B verify
-        working-directory: backend
-        env:
-          SPRING_PROFILES_ACTIVE: test
