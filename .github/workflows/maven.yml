@@ -25,8 +25,18 @@ jobs:
           java-version: ${{ matrix.java }}
           distribution: temurin
 
+      - name: Start backend server
+        run: |
+          nohup java -jar backend/target/*.jar &
+        working-directory: .
+
       - name: Build and test
-        run: mvn -B verify -Ptest -Dspring.profiles.active=test
+        run: mvn -B verify -Ptest "-Dspring.profiles.active=test"
         working-directory: ./backend
         env:
           SPRING_PROFILES_ACTIVE: test
+      - name: Install Newman (Postman CLI)
+        run: npm install -g newman
+  
+      - name: Run Postman Tests
+        run: newman run postman/collection.json -e postman/environment.json
