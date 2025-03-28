@@ -39,10 +39,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/auth/sign-in",
+							"raw": "http://localhost:8080/api/auth/sign-in",
+							"protocol": "http",
 							"host": [
-								"{{host}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"api",
 								"auth",
@@ -56,7 +58,29 @@
 					"name": "register",
 					"request": {
 						"method": "POST",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"username\": \"newbie\",\r\n\t\"password\": \"newbie\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/sign-up",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"sign-up"
+							]
+						}
 					},
 					"response": []
 				}
@@ -74,7 +98,7 @@
 			"name": "routes",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "getAllRoutes",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -88,26 +112,16 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{{ requestString }}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{host}}/api/routes",
+							"raw": "http://localhost:8080/api/routes",
+							"protocol": "http",
 							"host": [
-								"{{host}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"api",
 								"routes"
@@ -153,11 +167,6 @@
 	],
 	"variable": [
 		{
-			"key": "host",
-			"value": "http://localhost:8080\n\n",
-			"type": "string"
-		},
-		{
 			"key": "accessToken",
 			"value": "",
 			"type": "string"
@@ -165,6 +174,11 @@
 		{
 			"key": "refreshToken\n",
 			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "host",
+			"value": "{{host}}",
 			"type": "string"
 		}
 	]
