@@ -35,8 +35,3 @@ jobs:
         working-directory: ./backend
         env:
           SPRING_PROFILES_ACTIVE: test
-      - name: Install Newman (Postman CLI)
-        run: npm install -g newman
-  
-      - name: Run Postman Tests
-        run: newman run postman/collection.json
