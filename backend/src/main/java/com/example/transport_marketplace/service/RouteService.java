@@ -24,7 +24,7 @@ public class RouteService {
         return routeRepository.findAll();
     }
 
-    @Cacheable(value = "route", key = "#id", unless = "#result.isEmpty()")
+    @Cacheable(value = "route", key = "#id")
     public Optional<Route> getRouteById(int id){
         return routeRepository.findById(id);
     }
