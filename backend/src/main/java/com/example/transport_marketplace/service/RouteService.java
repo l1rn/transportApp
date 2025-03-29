@@ -73,7 +73,11 @@ public class RouteService {
     })
     public boolean deleteRoute(int id){
         Optional<Route> route = routeRepository.findById(id);
-        return route.isPresent();
+        if(route.isPresent()){
+            routeRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Caching(

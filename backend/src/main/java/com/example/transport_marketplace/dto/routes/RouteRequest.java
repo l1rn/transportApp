@@ -4,10 +4,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @Schema(description = "Запрос на создание маршрута")
+@NoArgsConstructor
+@AllArgsConstructor
 public class RouteRequest {
     @Schema(description = "Пункт отправления", example = "Москва")
     @NotBlank(message = "Пункт отправления обязателен")
