@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.repo;
 
+import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.model.User;
@@ -21,4 +22,5 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Query("DELETE FROM Booking b WHERE b.user.id = :userId")
     void deleteByUserId(@Param("userId") int userId);
     boolean existsByUserAndRoute(User user, Route route);
+    List<Booking> findAllByStatus(BookingStatus status);
 }

@@ -44,7 +44,8 @@ public class RouteController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Route.class, type = "array")))
     })
-    public ResponseEntity<List<Route>> getRoutes() throws IOException {
+    @GetMapping
+    public ResponseEntity<List<Route>> getRoutes() {
         List<Route> routes = routeService.getRoutes();
         return new ResponseEntity<>(routes, HttpStatus.OK);
     }

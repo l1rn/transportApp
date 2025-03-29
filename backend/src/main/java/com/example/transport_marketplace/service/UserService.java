@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,12 +35,15 @@ public class UserService {
     @Autowired
     private final RouteRepository routeRepository;
 
-    @CachePut(value = "users", key = "#users.id")
+    @CachePut(value = "users", key = "#user.id")
     public User save(User user){
         return repository.save(user);
     }
 
-    @CacheEvict(value = "users", key = "#id")
+    @Caching(evict = {
+            @CacheEvict(value = "users", key = "#id"),
+            @CacheEvict(value = "users", key = "#username")
+    })
     @Transactional
     public void delete(int id){
         User user = repository.findById(id)
@@ -78,6 +82,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь c ID" + id + " не найден"));
     }
 
+    @Cacheable(value = "users", key = "#username")
     public User getByUsername(String username) {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));

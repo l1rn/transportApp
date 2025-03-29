@@ -28,6 +28,8 @@ spring:
       data-locations: classpath:data.sql
   cache:
     type: redis
+    redis:
+      time-to-live: "10m"
 
   redis:
     host: localhost

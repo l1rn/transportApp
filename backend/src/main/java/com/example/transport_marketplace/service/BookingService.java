@@ -9,6 +9,9 @@ import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -38,9 +41,13 @@ public class BookingService {
     public List<Booking> getAllBooking() {
         return bookingRepository.findAll();
     }
+
+    @Cacheable(value = "booking", key = "#id")
     public Optional<Booking> getBookingById(int id){
         return bookingRepository.findById(id);
     }
+
+    @CachePut(value = "booking", key = "#booking.id")
     @Transactional
     public Booking createBooking(int routeId, int userId){
 
@@ -84,7 +91,7 @@ public class BookingService {
 
         return true;
     }
-
+    @CacheEvict(value = "booking", key = "#id")
     @Transactional
     public boolean cancelBooking(Integer id, String username){
 

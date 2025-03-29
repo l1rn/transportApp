@@ -6,6 +6,9 @@ import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,14 +19,20 @@ public class RouteService {
     @Autowired
     private RouteRepository routeRepository;
 
+    @Cacheable(value = "allRoutes")
     public List<Route> getRoutes(){
         return routeRepository.findAll();
     }
 
+    @Cacheable(value = "route", key = "#id", unless = "#result.isEmpty()")
     public Optional<Route> getRouteById(int id){
         return routeRepository.findById(id);
     }
 
+    @Caching(
+            put = @CachePut(value = "route", key = "#result.id"),
+            evict = @CacheEvict(value = "allRoutes", allEntries = true)
+    )
     public RouteDTO addRoute(RouteRequest request) {
         Route route = convertToEntity(request);
         Route savedRoute = routeRepository.save(route);
@@ -57,14 +66,23 @@ public class RouteService {
                 .build();
     }
 
-    @CacheEvict(value = "routes", key = "#id")
+    @Caching(evict = {
+            @CacheEvict(value = "route", key = "#id"),
+            @CacheEvict(value = "allRoutes", allEntries = true),
+            @CacheEvict(value = "route", allEntries = true)
+    })
     public boolean deleteRoute(int id){
-        if(routeRepository.existsById(id)){
-            routeRepository.deleteById(id);
-            return true;
-        }
-        return false;
+        Optional<Route> route = routeRepository.findById(id);
+        return route.isPresent();
     }
+
+    @Caching(
+            put = @CachePut(value = "route", key = "#id"),
+            evict = {
+                    @CacheEvict(value = "allRoutes", allEntries = true),
+                    @CacheEvict(value = "routeSearch", allEntries = true)
+            }
+    )
     public Route updateRoute(int id, Route updatedRoute){
         Optional<Route> existingRoute = routeRepository.findById(id);
         if(existingRoute.isPresent()){
@@ -81,9 +99,11 @@ public class RouteService {
         }
         return null;
     }
+
+    @Cacheable(value = "routeSearch", key = "#routeFrom,#routeTo,#date,#transport")
     public List<Route> searchRoutes(String routeFrom, String routeTo, String date, String transport){
         if(routeFrom == null && routeTo == null && date == null && transport == null){
-            return routeRepository.findAll();
+            return getRoutes();
         }
         return routeRepository.searchRoutes(routeFrom, routeTo, date, transport);
     }
