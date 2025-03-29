@@ -26,6 +26,12 @@ spring:
     init:
       mode: always
       data-locations: classpath:data.sql
+  cache:
+    type: redis
+
+  redis:
+    host: localhost
+    port: 6379
 
 server:
   port: 8080

@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -88,7 +89,7 @@ public class RouteController {
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/panel/add")
-    public ResponseEntity<RouteDTO> addRoute(
+    public void addRoute(
             @Valid @RequestBody RouteRequest request,
             BindingResult result
     ) {
@@ -96,7 +97,7 @@ public class RouteController {
             throw new ValidationException(String.valueOf(result));
         }
         RouteDTO response = routeService.addRoute(request);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Удаление маршрута", security = @SecurityRequirement(name = "bearerAuth"))

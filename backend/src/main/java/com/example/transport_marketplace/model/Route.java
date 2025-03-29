@@ -31,5 +31,4 @@ public class Route {
     private int availableSeats;
     @Column(name = "price", unique = false, nullable = false, updatable = true)
     private double price;
-
 }

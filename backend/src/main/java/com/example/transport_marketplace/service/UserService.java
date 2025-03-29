@@ -1,7 +1,5 @@
 package com.example.transport_marketplace.service;
-import com.example.transport_marketplace.dto.auth.CurrentRoleResponse;
 import com.example.transport_marketplace.enums.Role;
-import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.model.User;
@@ -11,26 +9,37 @@ import com.example.transport_marketplace.repo.RouteRepository;
 import com.example.transport_marketplace.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    @Autowired
     private final UserRepository repository;
+    @Autowired
     private final BookingService bookingService;
+    @Autowired
     private final RefreshTokenRepository refreshTokenRepository;
+    @Autowired
     private final BookingRepository bookingRepository;
+    @Autowired
     private final RouteRepository routeRepository;
 
+    @CachePut(value = "users", key = "#users.id")
     public User save(User user){
         return repository.save(user);
     }
 
+    @CacheEvict(value = "users", key = "#id")
     @Transactional
     public void delete(int id){
         User user = repository.findById(id)
@@ -63,6 +72,7 @@ public class UserService {
         return user.getRole();
     }
 
+    @Cacheable(value = "users", key = "#id")
     public User getById(int id){
         return repository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь c ID" + id + " не найден"));
@@ -86,8 +96,8 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
-    public User setAdmin(User user){
+    public void setAdmin(User user){
         user.setRole(Role.ROLE_ADMIN);
-        return save(user);
+        save(user);
     }
 }

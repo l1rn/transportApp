@@ -54,17 +54,17 @@ class RouteServiceTest {
         verify(routeRepository, times(1)).findById(1);
     }
 
-    @Test
-    void testAddRoute() {
-        Route route = new Route(1, "Moscow", "Saint Petersburg", "2025-03-10", "Train", "10:00", "14:00", 50, 1000.50);
-        when(routeRepository.save(route)).thenReturn(route);
-
-        Route result = routeService.addRoute(route);
-
-        assertNotNull(result);
-        assertEquals("Moscow", result.getRouteFrom());
-        verify(routeRepository, times(1)).save(route);
-    }
+//    @Test
+//    void testAddRoute() {
+//        Route route = new Route(1, "Moscow", "Saint Petersburg", "2025-03-10", "Train", "10:00", "14:00", 50, 1000.50);
+//        when(routeRepository.save(route)).thenReturn(route);
+//
+//        Route result = routeService.addRoute(route);
+//
+//        assertNotNull(result);
+//        assertEquals("Moscow", result.getRouteFrom());
+//        verify(routeRepository, times(1)).save(route);
+//    }
 
     @Test
     void testDeleteRoute() {

@@ -13,16 +13,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -72,7 +67,6 @@ class RouteControllerTest {
     }
     @Test
     void searchRoutes_WithFilters_ReturnsPaginatedResults() {
-        // Given
         List<Route> mockRoutes = IntStream.range(0, 15)
                 .mapToObj(i -> new Route())
                 .collect(Collectors.toList());
@@ -80,12 +74,10 @@ class RouteControllerTest {
         when(routeService.searchRoutes(any(), any(), any(), any()))
                 .thenReturn(mockRoutes);
 
-        // When
         ResponseEntity<?> response = routeController.searchRoutes(
                 "Moscow", "Saint-Petersburg", "2024-03-15", "bus", 0, 10
         );
 
-        // Then
         Map<String, Object> body = (Map<String, Object>) response.getBody();
         assertEquals(15, body.get("totalElements"));
         assertEquals(2, body.get("totalPages"));

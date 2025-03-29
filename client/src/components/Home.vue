@@ -124,7 +124,6 @@
         @require-auth="handleAuthRequired"
       />
     </div> 
-    <div class="pagination" />
     <div class="footer">
       <div>l1rn</div>
       <div>
@@ -182,7 +181,7 @@ const responses = ref({
 
 const handleAuthRequired = () => {
   showLoginForm.value = true;
-  showMessage('error', '❌ Для бронирования необходимо авторизоваться');
+  showMessage('error', 'Для бронирования необходимо авторизоваться');
 };
 
 const isAuthenticated = computed(() => !!responses.value.token);
@@ -203,7 +202,7 @@ const handleUserRegistered = (result) => {
     showMessage('success:register', result.message);
     showLoginForm.value = true;
   } else {
-    showMessage('error', `❌ ${result.message}`);
+    showMessage('error', `${result.message}`);
   }
 };
 
@@ -217,7 +216,7 @@ const handleUserLogined = async (result) => {
     responses.value.haveToken = true;
     showLoginForm.value = false;
   } else {
-    showMessage('error', `❌ ${result.message}`);
+    showMessage('error', `${result.message}`);
   }
 };
 
@@ -239,7 +238,7 @@ const userLogout = async () => {
     }
   } catch (error) {
     const message = error.response?.data?.message || 'Ошибка выхода';
-    showMessage('error', `❌ ${message}`);
+    showMessage('error', `${message}`);
   }
 };
 

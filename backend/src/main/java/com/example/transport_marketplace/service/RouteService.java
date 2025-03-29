@@ -5,6 +5,7 @@ import com.example.transport_marketplace.dto.routes.RouteRequest;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,10 +22,6 @@ public class RouteService {
 
     public Optional<Route> getRouteById(int id){
         return routeRepository.findById(id);
-    }
-
-    public Route addRoute(Route route){
-        return routeRepository.save(route);
     }
 
     public RouteDTO addRoute(RouteRequest request) {
@@ -59,6 +56,8 @@ public class RouteService {
                 .price(route.getPrice())
                 .build();
     }
+
+    @CacheEvict(value = "routes", key = "#id")
     public boolean deleteRoute(int id){
         if(routeRepository.existsById(id)){
             routeRepository.deleteById(id);
