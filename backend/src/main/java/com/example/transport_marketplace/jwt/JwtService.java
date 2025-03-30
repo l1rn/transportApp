@@ -2,6 +2,7 @@ package com.example.transport_marketplace.jwt;
 
 import com.example.transport_marketplace.model.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 
 
@@ -63,9 +64,7 @@ public class JwtService {
     public String getUsernameFromToken(String token){
         return extractClaim(token, Claims::getSubject);
     }
-    public Date extractExpiration(String token){
-        return extractClaim(token, Claims::getExpiration);
-    }
+
     public String getRoleFromToken(String token) {
         return extractClaim(token, claims -> claims.get("role", String.class));
     }
@@ -73,12 +72,13 @@ public class JwtService {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser()
-                    .verifyWith(getSigningKey())
-                    .build()
-                    .parse(token);
-            return true;
-        } catch (Exception e) {
+            Claims claims = extractAllClaims(token);
+            return !claims.getExpiration().before(new Date());
+        }catch (ExpiredJwtException e){
+            System.out.println("Token expired");
+            return false;
+        }
+        catch (Exception e) {
             return false;
         }
     }

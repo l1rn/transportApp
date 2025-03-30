@@ -15,38 +15,14 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class RateLimitFilter implements Filter {
     @Autowired
-    private final Bucket defaultBucket;
-    @Autowired
-    private final Bucket authBucket;
-    @Autowired
-    private final Bucket bookingBucket;
+    private final Bucket bucket;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String path = ((HttpServletRequest) request).getRequestURI();
-        if(path.startsWith("/api/routes")){
-            if(defaultBucket.tryConsume(1)) {
-                chain.doFilter(request, response);
-            }
-            else {
-                ((HttpServletResponse) response).setStatus(429);
-            }
-        }
-        else if (path.startsWith("/api/auth")) {
-            if(authBucket.tryConsume(1)){
-                chain.doFilter(request, response);
-            }else {
-                ((HttpServletResponse) response).setStatus(429);
-            }
-        } else if (path.startsWith("/api/booking")) {
-            if(bookingBucket.tryConsume(1)){
-                chain.doFilter(request, response);
-            }
-            else{
-                ((HttpServletResponse) response).setStatus(429);
-            }
-        }else{
+        if (bucket.tryConsume(1)) {
             chain.doFilter(request, response);
+        } else {
+            ((HttpServletResponse) response).setStatus(429);
         }
 
     }

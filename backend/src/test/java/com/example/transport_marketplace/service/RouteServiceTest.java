@@ -82,7 +82,7 @@ class RouteServiceTest {
         assertEquals("2025-03-10", result.getDate());
         assertEquals("2025-03-10 10:00", result.getTime());
         assertEquals("2025-03-10 14:00", result.getArrivalTime());
-        assertEquals("Train", result.getTransport());
+        assertEquals("Поезд", result.getTransport());
         assertEquals(50, result.getAvailableSeats());
         assertEquals(1000.50, result.getPrice(), 0.001);
         verify(routeRepository, times(1)).save(any(Route.class));

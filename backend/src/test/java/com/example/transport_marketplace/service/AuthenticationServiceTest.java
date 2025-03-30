@@ -9,6 +9,7 @@ import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.repo.RefreshTokenRepository;
 import com.example.transport_marketplace.repo.UserRepository;
 import com.example.transport_marketplace.jwt.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -80,12 +81,13 @@ class AuthenticationServiceTest {
     @Test
     void testSignIn_Success() {
         SignInRequest request = new SignInRequest();
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+
         request.setUsername("user1");
         request.setPassword("pass1");
 
         User user = new User(1, "user1", "encodedPass", Role.ROLE_USER);
 
-        // Вместо doNothing() возвращаем объект аутентификации
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         when(userRepository.findByUsername("user1")).thenReturn(Optional.of(user));

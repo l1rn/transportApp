@@ -44,6 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             if(!jwtService.validateToken(jwt)){
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
             String username = jwtService.getUsernameFromToken(jwt);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
