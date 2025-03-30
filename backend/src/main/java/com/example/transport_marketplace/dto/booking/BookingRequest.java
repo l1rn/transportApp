@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class BookingRequest {
-    @Schema(description = "ID маршрута", example = "195", required = true)
+    @Schema(description = "ID маршрута", example = "195")
     @NotNull(message = "Поле routeId обязательно для заполнения")
     @Positive(message = "ID маршрута должен быть положительным числом")
     private Integer routeId;

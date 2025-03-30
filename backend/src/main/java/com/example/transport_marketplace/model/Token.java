@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
@@ -14,7 +15,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "refresh_tokens")
-public class Token {
+public class Token implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
