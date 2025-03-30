@@ -31,7 +31,7 @@ public class RateLimitFilter implements Filter {
             else {
                 ((HttpServletResponse) response).setStatus(429);
             }
-        } 
+        }
         else if (path.startsWith("/api/auth")) {
             if(authBucket.tryConsume(1)){
                 chain.doFilter(request, response);
@@ -45,7 +45,10 @@ public class RateLimitFilter implements Filter {
             else{
                 ((HttpServletResponse) response).setStatus(429);
             }
+        }else{
+            chain.doFilter(request, response);
         }
+
     }
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

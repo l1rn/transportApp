@@ -1,6 +1,4 @@
 package com.example.transport_marketplace.controllers;
-import com.example.transport_marketplace.dto.routes.RouteDTO;
-import com.example.transport_marketplace.dto.routes.RouteRequest;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.BadRequestException;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
 import com.example.transport_marketplace.model.Route;
@@ -84,21 +82,20 @@ public class RouteController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Маршрут создан",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = RouteDTO.class))),
+                            schema = @Schema(implementation = Route.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещён")
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/panel/add")
-    public void addRoute(
-            @Valid @RequestBody RouteRequest request,
-            BindingResult result
-    ) {
-        if (result.hasErrors()) {
-            throw new ValidationException(String.valueOf(result));
+    public ResponseEntity<?> addRoute(
+            @RequestBody Route route)
+    {
+        try{
+            return ResponseEntity.status(HttpStatus.CREATED).body(routeService.addRoute(route));
+        }catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Не удалось создать маршрут");
         }
-        RouteDTO response = routeService.addRoute(request);
-        new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Удаление маршрута", security = @SecurityRequirement(name = "bearerAuth"))
@@ -107,7 +104,7 @@ public class RouteController {
     public ResponseEntity<Void> deleteRoute(@PathVariable int id){
         boolean deleted = routeService.deleteRoute(id);
         return deleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                        : new ResponseEntity<>(HttpStatus   .NOT_FOUND);
+                        : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
@@ -118,7 +115,7 @@ public class RouteController {
         if(route == null){
             throw new RouteNotFoundException(id);
         }
-         return new ResponseEntity<>(route, HttpStatus.OK);
+         return ResponseEntity.ok(route);
     }
 
     @Operation(
@@ -166,7 +163,7 @@ public class RouteController {
         List<Route> filteredRoutes = routeService.getRoutes().stream()
                 .filter(route -> route.getPrice() >= minPrice && route.getPrice() <= maxPrice)
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(filteredRoutes, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(filteredRoutes);
     }
 
 }

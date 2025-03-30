@@ -1,7 +1,5 @@
 package com.example.transport_marketplace.service;
 
-import com.example.transport_marketplace.dto.routes.RouteDTO;
-import com.example.transport_marketplace.dto.routes.RouteRequest;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,7 @@ public class RouteService {
     @Autowired
     private RouteRepository routeRepository;
 
-    @Cacheable(value = "allRoutes")
+    @CachePut(value = "route")
     public List<Route> getRoutes(){
         return routeRepository.findAll();
     }
@@ -29,48 +27,17 @@ public class RouteService {
         return routeRepository.findById(id);
     }
 
+    @CachePut(value = "route", key = "#route.id")
+    public Route addRoute(Route route) {
+        return routeRepository.save(route);
+    }
+
     @Caching(
-            put = @CachePut(value = "route", key = "#result.id"),
-            evict = @CacheEvict(value = "allRoutes", allEntries = true)
+            evict = {
+                    @CacheEvict(value = "route", allEntries = true),
+                    @CacheEvict(value = "routes", allEntries = true)
+            }
     )
-    public RouteDTO addRoute(RouteRequest request) {
-        Route route = convertToEntity(request);
-        Route savedRoute = routeRepository.save(route);
-        return convertToDTO(savedRoute);
-    }
-
-    private Route convertToEntity(RouteRequest request) {
-        return Route.builder()
-                .routeFrom(request.getRouteFrom())
-                .routeTo(request.getRouteTo())
-                .date(request.getDate())
-                .time(request.getDepartureTime())
-                .arrivalTime(request.getArrivalTime())
-                .transport(request.getTransport())
-                .availableSeats(request.getAvailableSeats())
-                .price(request.getPrice())
-                .build();
-    }
-
-    private RouteDTO convertToDTO(Route route) {
-        return RouteDTO.builder()
-                .id(route.getId())
-                .routeFrom(route.getRouteFrom())
-                .routeTo(route.getRouteTo())
-                .date(route.getDate())
-                .departureTime(route.getTime())
-                .arrivalTime(route.getArrivalTime())
-                .transport(route.getTransport())
-                .availableSeats(route.getAvailableSeats())
-                .price(route.getPrice())
-                .build();
-    }
-
-    @Caching(evict = {
-            @CacheEvict(value = "route", key = "#id"),
-            @CacheEvict(value = "allRoutes", allEntries = true),
-            @CacheEvict(value = "route", allEntries = true)
-    })
     public boolean deleteRoute(int id){
         Optional<Route> route = routeRepository.findById(id);
         if(route.isPresent()){
@@ -80,13 +47,7 @@ public class RouteService {
         return false;
     }
 
-    @Caching(
-            put = @CachePut(value = "route", key = "#id"),
-            evict = {
-                    @CacheEvict(value = "allRoutes", allEntries = true),
-                    @CacheEvict(value = "routeSearch", allEntries = true)
-            }
-    )
+    @CachePut(value = "route", key = "#id")
     public Route updateRoute(int id, Route updatedRoute){
         Optional<Route> existingRoute = routeRepository.findById(id);
         if(existingRoute.isPresent()){
@@ -104,7 +65,7 @@ public class RouteService {
         return null;
     }
 
-    @Cacheable(value = "routeSearch", key = "#routeFrom,#routeTo,#date,#transport")
+    @Cacheable(value = "routes")
     public List<Route> searchRoutes(String routeFrom, String routeTo, String date, String transport){
         if(routeFrom == null && routeTo == null && date == null && transport == null){
             return getRoutes();

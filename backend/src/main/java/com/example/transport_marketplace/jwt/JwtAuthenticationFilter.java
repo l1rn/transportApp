@@ -32,7 +32,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         try {
 
-
             String jwt = parseJwt(request);
 
             if (jwt == null){

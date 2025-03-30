@@ -1,7 +1,6 @@
 package com.example.transport_marketplace.test_controllers;
 
 import com.example.transport_marketplace.controllers.RouteController;
-import com.example.transport_marketplace.dto.routes.RouteRequest;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.BadRequestException;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.service.RouteService;
@@ -13,9 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
 import java.io.IOException;
 import java.util.List;
@@ -85,15 +81,4 @@ class RouteControllerTest {
         assertEquals(10, ((List<?>) body.get("content")).size());
     }
 
-    @Test
-    void addRoute_InvalidRequest_ThrowsValidationException() {
-        RouteRequest invalidRequest = new RouteRequest();
-        BindingResult bindingResult = new BeanPropertyBindingResult(
-                invalidRequest, "routeRequest");
-        bindingResult.addError(new FieldError("routeRequest", "date", "required"));
-
-        assertThrows(ValidationException.class, () -> {
-            routeController.addRoute(invalidRequest, bindingResult);
-        });
-    }
 }

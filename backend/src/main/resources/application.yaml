@@ -6,7 +6,7 @@ spring:
       settings:
         web-allow-others: true
   datasource:
-    url: jdbc:h2:file:/app/data/transport_db;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    url: jdbc:h2:file:./data/transport_db;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
     driverClassName: org.h2.Driver
     username: root
     password: root
@@ -21,11 +21,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
-      data-locations: classpath:data.sql
+#  sql:
+#    init:
+#      mode: always
+#      data-locations: classpath:data.sql
   cache:
     type: redis
     redis:

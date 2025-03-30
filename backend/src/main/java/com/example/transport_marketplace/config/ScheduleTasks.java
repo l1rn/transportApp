@@ -16,7 +16,7 @@ import java.util.List;
 public class ScheduleTasks {
     @Autowired
     private final BookingRepository bookingRepository;
-    @Scheduled(fixedRate = 3600000)
+    @Scheduled(fixedRate = 6000)
     public void deleteBookingByOneDay() {
         List<Booking> canceledBookings = bookingRepository.findAllByStatus(BookingStatus.CANCELED);
         if(!canceledBookings.isEmpty()){

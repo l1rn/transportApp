@@ -46,7 +46,6 @@ public class BookingService {
         return bookingRepository.findById(id);
     }
 
-    @CachePut(value = "booking", key = "#booking.id")
     @Transactional
     public Booking createBooking(int routeId, int userId){
 

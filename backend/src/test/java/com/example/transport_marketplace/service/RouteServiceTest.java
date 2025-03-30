@@ -1,7 +1,6 @@
 package com.example.transport_marketplace.service;
 
-import com.example.transport_marketplace.dto.routes.RouteDTO;
-import com.example.transport_marketplace.dto.routes.RouteRequest;
+
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,39 +58,29 @@ class RouteServiceTest {
     // new
     @Test
     void testAddRoute() {
-        RouteRequest request = new RouteRequest(
-                "Moscow",
-                "Saint Petersburg",
-                "2025-03-10",
-                "2025-03-10 10:00",
-                "2025-03-10 14:00",
-                "Train",
-                50,
-                1000.50
-        );
 
         Route mockRoute = Route.builder()
-                .routeFrom(request.getRouteFrom())
-                .routeTo(request.getRouteTo())
-                .date(request.getDate())
-                .time(request.getDepartureTime())
-                .arrivalTime(request.getArrivalTime())
-                .transport(request.getTransport())
-                .availableSeats(request.getAvailableSeats())
-                .price(request.getPrice())
+                .routeFrom("Moscow")
+                .routeTo("Saint Petersburg")
+                .date("2025-03-10")
+                .time("2025-03-10 10:00")
+                .arrivalTime("2025-03-10 14:00")
+                .transport("Поезд")
+                .availableSeats(50)
+                .price(1000.50)
                 .build();
         mockRoute.setId(1);
 
         when(routeRepository.save(any(Route.class))).thenReturn(mockRoute);
 
-        RouteDTO result = routeService.addRoute(request);
+        Route result = routeService.addRoute(mockRoute);
 
         assertNotNull(result);
         assertEquals(1, result.getId());
         assertEquals("Moscow", result.getRouteFrom());
         assertEquals("Saint Petersburg", result.getRouteTo());
         assertEquals("2025-03-10", result.getDate());
-        assertEquals("2025-03-10 10:00", result.getDepartureTime());
+        assertEquals("2025-03-10 10:00", result.getTime());
         assertEquals("2025-03-10 14:00", result.getArrivalTime());
         assertEquals("Train", result.getTransport());
         assertEquals(50, result.getAvailableSeats());
