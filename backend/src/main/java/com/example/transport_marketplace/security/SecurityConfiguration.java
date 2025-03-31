@@ -48,7 +48,7 @@ public class SecurityConfiguration {
                                                             "http://localhost:8081/")); // frontend address
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-                    corsConfig.setAllowCredentials(false);
+                    corsConfig.setAllowCredentials(true);
                     return corsConfig;
                 }))
                 .httpBasic(Customizer.withDefaults())

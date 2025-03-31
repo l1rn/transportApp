@@ -1,14 +1,15 @@
 package com.example.transport_marketplace.test_controllers;
 
 import com.example.transport_marketplace.controllers.AuthController;
+import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
 import com.example.transport_marketplace.dto.auth.LogoutRequest;
 import com.example.transport_marketplace.dto.jwt.RefreshTokenRequest;
-import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
 import com.example.transport_marketplace.service.AuthenticationService;
 import com.example.transport_marketplace.jwt.TokenBlacklist;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -22,9 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -80,25 +79,26 @@ public class AuthControllerTest {
         Mockito.verify(authenticationService).signUp(any(SignUpRequest.class));
     }
 
-//    @Test
-//    void testSignIn() throws Exception {
-//        SignInRequest request = new SignInRequest();
-//        request.setUsername("user1");
-//        request.setPassword("pass1");
-//
-//        JwtAuthenticationResponse response = new JwtAuthenticationResponse("access-token", "refresh-token");
-//
-//        when(authenticationService.signIn(any(SignInRequest.class))).thenReturn(response);
-//
-//        mockMvc.perform(post("/api/auth/sign-in")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(request)))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.accessToken").value("access-token"))
-//                .andExpect(jsonPath("$.refreshToken").value("refresh-token"));
-//
-//        Mockito.verify(authenticationService).signIn(any(SignInRequest.class));
-//    }
+    @Test
+    void testSignIn() throws Exception {
+        SignInRequest request = new SignInRequest();
+        request.setUsername("user1");
+        request.setPassword("pass1");
+
+        JwtAuthenticationResponse response = new JwtAuthenticationResponse("access-token", "refresh-token");
+
+        when(authenticationService.signIn(any(SignInRequest.class), any(HttpServletRequest.class)))
+                .thenReturn(response);
+
+        mockMvc.perform(post("/api/auth/sign-in")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").value("access-token"))
+                .andExpect(jsonPath("$.refreshToken").value("refresh-token"));
+
+        Mockito.verify(authenticationService).signIn(any(SignInRequest.class), any(HttpServletRequest.class));
+    }
 
     @Test
     void testRefreshToken() throws Exception {

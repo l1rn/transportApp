@@ -4,6 +4,7 @@ import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
 import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
 import com.example.transport_marketplace.dto.jwt.RefreshTokenRequest;
+import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.jwt.TokenBlacklist;
 
 import com.example.transport_marketplace.service.AuthenticationService;
@@ -15,18 +16,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -35,7 +35,10 @@ import java.util.Arrays;
 public class AuthController {
     private final TokenBlacklist tokenBlacklist;
     private final AuthenticationService authenticationService;
-
+    @Value("${jwt.refresh-token-expiration}")
+    private long refreshExpirationMs;
+    @Value("${jwt.access-token-expiration}")
+    private long accessExpirationMs;
     @Operation(
             summary = "Регистрация пользователя",
             description = "Создаёт нового пользователя в системе. Требуется уникальный имя и пароль. Возвращает сообщение об успешной регистрации."
@@ -120,14 +123,14 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
-                .maxAge(10)
+                .maxAge(accessExpirationMs / 1000)
                 .sameSite("Lax")
                 .build();
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
-                .maxAge(604800)
+                .maxAge(refreshExpirationMs / 1000)
                 .sameSite("Lax")
                 .build();
 
