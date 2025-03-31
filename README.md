@@ -176,6 +176,10 @@ http://localhost:8080/swagger-ui.html
  | `user`  | `user_password` |
 
 # Новые фичи🔥
+- Cookie
+- Кеширование
+- Rate limit
+
 ## Redis💾
 ### 1. Теперь все частые запросы кешируются 
 
@@ -195,5 +199,4 @@ http://localhost:8080/swagger-ui.html
 redis-cli monitor
 ```
 ![Как выглядит редис консоль](documentation/images/7.png)
-
 
