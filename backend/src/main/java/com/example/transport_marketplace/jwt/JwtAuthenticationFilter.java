@@ -4,6 +4,7 @@ import com.example.transport_marketplace.service.impl.UserDetailsServiceImpl;
 import io.github.bucket4j.Bucket;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +66,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String parseJwt(HttpServletRequest request) {
+        if(request.getCookies() != null){
+            for(Cookie cookie : request.getCookies()){
+                if("accessToken".equals(cookie.getName())){
+                    return cookie.getValue();
+                }
+            }
+        }
         String headerAuth = request.getHeader("Authorization");
         if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
             return headerAuth.substring(7);

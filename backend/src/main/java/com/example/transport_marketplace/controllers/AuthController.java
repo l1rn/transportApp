@@ -15,13 +15,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -60,9 +65,12 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Неверные учетные данные")
     })
     @PostMapping("/sign-in")
-public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody SignInRequest request, HttpServletRequest httpServletRequest) {
-
-        return ResponseEntity.ok(authenticationService.signIn(request, httpServletRequest));
+    public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody SignInRequest request,
+                                                            HttpServletRequest httpServletRequest,
+                                                            HttpServletResponse response) {
+        JwtAuthenticationResponse authenticationResponse = authenticationService.signIn(request, httpServletRequest);
+        setAuthCookies(response, authenticationResponse.getAccessToken(), authenticationResponse.getRefreshToken());
+        return ResponseEntity.ok(authenticationResponse);
     }
 
     @Operation(
@@ -77,10 +85,13 @@ public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody SignInReque
             @ApiResponse(responseCode = "400", description = "Недействительный refresh-токен")
     })
     @PostMapping("/refresh")
-    public ResponseEntity<JwtAuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
-        return ResponseEntity.ok(authenticationService.refreshToken(request.getRefreshToken()));
-    }
+    public ResponseEntity<JwtAuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request,
+                                                                  HttpServletResponse response) {
 
+        JwtAuthenticationResponse newTokens = authenticationService.refreshToken(request.getRefreshToken());
+        setAuthCookies(response, newTokens.getAccessToken(), newTokens.getRefreshToken());
+        return ResponseEntity.ok(newTokens);
+    }
     @Operation(
             summary = "Выход из системы",
             security = @SecurityRequirement(name = "bearerAuth"),
@@ -94,12 +105,48 @@ public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody SignInReque
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> logout(
             @RequestBody LogoutRequest request,
-            @RequestHeader(name = "Authorization") String authHeader
+            @RequestHeader(name = "Authorization") String authHeader,
+            HttpServletResponse response
     ) {
         String accessToken = authHeader.substring(7);
         tokenBlacklist.revoke(accessToken);
         authenticationService.deleteTokenByUser(request.getRefreshToken());
+        clearAuthCookies(response);
         return ResponseEntity.noContent().build();
     }
+    private void setAuthCookies(HttpServletResponse response, String accessToken,
+                                String refreshToken){
+        ResponseCookie accessCookie = ResponseCookie.from("accessToken", accessToken)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(10)
+                .sameSite("Lax")
+                .build();
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(604800)
+                .sameSite("Lax")
+                .build();
 
+        response.addHeader("Set-Cookie", accessCookie.toString());
+        response.addHeader("Set-Cookie", refreshCookie.toString());
+    }
+
+    private void clearAuthCookies(HttpServletResponse response){
+        ResponseCookie accessCookie = ResponseCookie.from("accessToken", "")
+                .maxAge(0)
+                .path("/")
+                .build();
+
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", "")
+                .maxAge(0)
+                .path("/")
+                .build();
+
+        response.addHeader("Set-Cookie", accessCookie.toString());
+        response.addHeader("Set-Cookie", refreshCookie.toString());
+    }
 }

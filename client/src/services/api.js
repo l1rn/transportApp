@@ -8,13 +8,14 @@ axios.interceptors.request.use(config => {
     return config;
 });
 
+let retryAttempts = 0;
 axios.interceptors.response.use(
     response => response,
     async error => {
         const originalRequest = error.config;
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        if (error.response?.status === 401 && !originalRequest._retry && retryAttempts < 5) {
             originalRequest._retry = true;
-
+            retryAttempts = retryAttempts + 1;
             try {
                 const newAccessToken = await refreshTokenRequest(
                     localStorage.getItem("refreshToken")
@@ -25,6 +26,9 @@ axios.interceptors.response.use(
                 handleAuthError();
                 return Promise.reject(refreshError);
             }
+        } 
+        else{
+            retryAttempts = 0;
         }
         
         return Promise.reject(error);
