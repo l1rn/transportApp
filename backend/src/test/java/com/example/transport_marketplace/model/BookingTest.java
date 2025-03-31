@@ -10,7 +10,7 @@ public class BookingTest {
     void testBookingBuilder() {
         Route route = new Route();
         route.setId(1);
-        User user = new User(1, "user1", "password", null);
+        User user = new User(1, "user1", "password", null, null);
         Booking booking = Booking.builder()
                 .id(100)
                 .route(route)
@@ -29,7 +29,7 @@ public class BookingTest {
         Booking booking = new Booking();
         Route route = new Route();
         route.setId(2);
-        User user = new User(2, "user2", "password", null);
+        User user = new User(2, "user2", "password", null, null);
         booking.setId(200);
         booking.setRoute(route);
         booking.setUser(user);

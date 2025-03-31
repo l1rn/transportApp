@@ -12,8 +12,8 @@ class TokenTest {
     @Test
     void testTokenCreation_AllArgsConstructor() {
         Instant expiry = Instant.now().plusSeconds(3600);
-        User user = new User(1, "testUser", "password123", Role.ROLE_USER);
-        Token token = new Token(1, "sample-token", expiry, user);
+        User user = new User(1, "testUser", "password123", Role.ROLE_USER, null);
+        Token token = new Token(1, "sample-token", expiry, user, null);
 
         assertEquals(1, token.getId());
         assertEquals("sample-token", token.getToken());
@@ -24,7 +24,7 @@ class TokenTest {
     @Test
     void testTokenBuilder() {
         Instant expiry = Instant.now().plusSeconds(7200);
-        User user = new User(2, "builderUser", "builderPass", Role.ROLE_ADMIN);
+        User user = new User(2, "builderUser", "builderPass", Role.ROLE_ADMIN, null);
         Token token = Token.builder()
                 .id(2)
                 .token("builder-token")

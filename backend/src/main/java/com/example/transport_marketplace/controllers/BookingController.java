@@ -131,7 +131,7 @@ public class BookingController {
             if (response) {
                 return ResponseEntity.ok("Бронь успешно отменена");
             } else {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Бронирование уже отменено");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Бронирование уже отменено");
             }
         } catch (BookingNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

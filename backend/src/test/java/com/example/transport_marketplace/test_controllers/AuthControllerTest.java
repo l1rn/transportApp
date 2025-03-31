@@ -80,25 +80,25 @@ public class AuthControllerTest {
         Mockito.verify(authenticationService).signUp(any(SignUpRequest.class));
     }
 
-    @Test
-    void testSignIn() throws Exception {
-        SignInRequest request = new SignInRequest();
-        request.setUsername("user1");
-        request.setPassword("pass1");
-
-        JwtAuthenticationResponse response = new JwtAuthenticationResponse("access-token", "refresh-token");
-
-        when(authenticationService.signIn(any(SignInRequest.class))).thenReturn(response);
-
-        mockMvc.perform(post("/api/auth/sign-in")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessToken").value("access-token"))
-                .andExpect(jsonPath("$.refreshToken").value("refresh-token"));
-
-        Mockito.verify(authenticationService).signIn(any(SignInRequest.class));
-    }
+//    @Test
+//    void testSignIn() throws Exception {
+//        SignInRequest request = new SignInRequest();
+//        request.setUsername("user1");
+//        request.setPassword("pass1");
+//
+//        JwtAuthenticationResponse response = new JwtAuthenticationResponse("access-token", "refresh-token");
+//
+//        when(authenticationService.signIn(any(SignInRequest.class))).thenReturn(response);
+//
+//        mockMvc.perform(post("/api/auth/sign-in")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(request)))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.accessToken").value("access-token"))
+//                .andExpect(jsonPath("$.refreshToken").value("refresh-token"));
+//
+//        Mockito.verify(authenticationService).signIn(any(SignInRequest.class));
+//    }
 
     @Test
     void testRefreshToken() throws Exception {

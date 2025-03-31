@@ -2,21 +2,26 @@
 
     import com.example.transport_marketplace.dto.auth.SignInRequest;
     import com.example.transport_marketplace.dto.auth.SignUpRequest;
+    import com.example.transport_marketplace.model.Device;
     import com.example.transport_marketplace.model.Token;
     import com.example.transport_marketplace.enums.Role;
     import com.example.transport_marketplace.model.User;
     import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
     import com.example.transport_marketplace.jwt.JwtService;
+    import com.example.transport_marketplace.repo.DeviceRepository;
     import com.example.transport_marketplace.repo.RefreshTokenRepository;
     import com.example.transport_marketplace.repo.UserRepository;
+    import jakarta.servlet.http.HttpServletRequest;
     import jakarta.transaction.Transactional;
     import lombok.AllArgsConstructor;
     import org.springframework.security.authentication.AuthenticationManager;
     import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
     import org.springframework.security.crypto.password.PasswordEncoder;
     import org.springframework.stereotype.Service;
+    import org.springframework.util.DigestUtils;
 
     import java.time.Instant;
+    import java.util.List;
 
     @Service
     @AllArgsConstructor
@@ -25,6 +30,7 @@
         private final JwtService jwtService;
         private final PasswordEncoder passwordEncoder;
         private final AuthenticationManager authenticationManager;
+        private final DeviceRepository deviceRepository;
         private final RefreshTokenRepository refreshTokenRepository;
 
         public void signUp(SignUpRequest request){
@@ -41,7 +47,7 @@
         }
 
         @Transactional
-        public JwtAuthenticationResponse signIn(SignInRequest request) {
+        public JwtAuthenticationResponse signIn(SignInRequest request, HttpServletRequest httpServletRequest) {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getUsername(),
@@ -51,14 +57,32 @@
             User user = userRepository.findByUsername(request.getUsername())
                     .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
-            refreshTokenRepository.deleteByUser(user);
+            String userAgent = httpServletRequest.getHeader("User-Agent");
+            String ipAddress = httpServletRequest.getRemoteAddr();
+            String deviceFingerprint = userAgent + ipAddress;
+
+            Device newDevice = Device.builder()
+                    .deviceFingerprint(deviceFingerprint)
+                    .userAgent(userAgent)
+                    .user(user)
+                    .build();
+
+            Device device = deviceRepository.findByDeviceFingerprintAndUser(deviceFingerprint, user)
+                            .orElseGet(() -> deviceRepository.save(newDevice));
+
+            user.getDevices().add(device);
+
+
 
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
+            refreshTokenRepository.deleteByUserAndDevice(user, device);
+            refreshTokenRepository.flush();
 
             Token refreshTokenEntity = Token.builder()
                     .token(refreshToken)
                     .user(user)
+                    .device(device)
                     .expiryDate(Instant.now().plusMillis(jwtService.getRefreshExpirationMs()))
                     .build();
 
@@ -73,7 +97,6 @@
                 throw new RuntimeException("Invalid refresh token");
             }
 
-            String username = jwtService.getUsernameFromToken(refreshToken);
 
             Token storedToken = refreshTokenRepository.findByToken(refreshToken)
                     .orElseThrow(() -> new RuntimeException("Refresh token not found"));
@@ -92,6 +115,7 @@
             Token newToken = Token.builder()
                     .token(newRefreshToken)
                     .user(user)
+                    .device(storedToken.getDevice())
                     .expiryDate(Instant.now().plusMillis(jwtService.getRefreshExpirationMs()))
                     .build();
             refreshTokenRepository.save(newToken);

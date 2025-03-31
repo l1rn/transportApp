@@ -9,7 +9,7 @@ class UserTest {
 
     @Test
     void testUserCreation() {
-        User user = new User(1, "testUser", "password123", Role.ROLE_USER);
+        User user = new User(1, "testUser", "password123", Role.ROLE_USER,null);
 
         assertEquals(1, user.getId());
         assertEquals("testUser", user.getUsername());

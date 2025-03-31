@@ -28,7 +28,7 @@ class UserServiceTest {
 
     @Test
     void testSaveUser() {
-        User user = new User(1, "testUser", "password123", Role.ROLE_USER);
+        User user = new User(1, "testUser", "password123", Role.ROLE_USER, null);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         User result = userService.save(user);
@@ -40,7 +40,7 @@ class UserServiceTest {
 
     @Test
     void testCreateUser_Success() {
-        User user = new User(1, "newUser", "password123", Role.ROLE_USER);
+        User user = new User(1, "newUser", "password123", Role.ROLE_USER, null);
         when(userRepository.existsByUsername("newUser")).thenReturn(false);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
@@ -53,7 +53,7 @@ class UserServiceTest {
 
     @Test
     void testCreateUser_UsernameTaken() {
-        User user = new User(1, "existingUser", "password123", Role.ROLE_USER);
+        User user = new User(1, "existingUser", "password123", Role.ROLE_USER, null);
         when(userRepository.existsByUsername("existingUser")).thenReturn(true);
 
         Exception exception = assertThrows(RuntimeException.class, () -> userService.create(user));
@@ -64,8 +64,8 @@ class UserServiceTest {
     @Test
     void testGetAllUsers() {
         List<User> users = List.of(
-                new User(1, "user1", "password1", Role.ROLE_USER),
-                new User(2, "user2", "password2", Role.ROLE_ADMIN)
+                new User(1, "user1", "password1", Role.ROLE_USER, null),
+                new User(2, "user2", "password2", Role.ROLE_ADMIN, null)
         );
         when(userRepository.findAll()).thenReturn(users);
 
@@ -77,7 +77,7 @@ class UserServiceTest {
 
     @Test
     void testGetByUsername_Success() {
-        User user = new User(1, "testUser", "password123", Role.ROLE_USER);
+        User user = new User(1, "testUser", "password123", Role.ROLE_USER, null);
         when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(user));
 
         User result = userService.getByUsername("testUser");

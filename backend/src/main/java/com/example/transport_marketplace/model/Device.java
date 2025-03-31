@@ -1,8 +1,10 @@
 package com.example.transport_marketplace.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
@@ -13,13 +15,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "devices")
-public class Device {
+public class Device implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String deviceId;
-    private String name;
-    private String os;
-    private String ipAddress;
+    private String deviceFingerprint;
+    private String userAgent;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 }

@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 
 @Service
@@ -60,6 +61,7 @@ public class JwtService {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
 
     public String getUsernameFromToken(String token){
         return extractClaim(token, Claims::getSubject);

@@ -24,7 +24,7 @@ public class JwtServiceTest {
 
     @Test
     void testGenerateAccessToken() {
-        User user = new User(1, "testuser", "password", Role.ROLE_USER);
+        User user = new User(1, "testuser", "password", Role.ROLE_USER, null);
         String token = jwtService.generateAccessToken(user);
         assertNotNull(token);
 
@@ -39,7 +39,8 @@ public class JwtServiceTest {
 
     @Test
     void testGenerateRefreshToken() {
-        User user = new User(1, "testuser", "password", Role.ROLE_USER);
+
+        User user = new User(1, "testuser", "password", Role.ROLE_USER, null);
         String token = jwtService.generateRefreshToken(user);
         assertNotNull(token);
         assertEquals("testuser", jwtService.getUsernameFromToken(token));

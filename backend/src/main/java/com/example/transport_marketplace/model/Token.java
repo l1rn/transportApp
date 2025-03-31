@@ -14,7 +14,11 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "refresh_tokens")
+@Table(name = "refresh_tokens",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_user_device",
+                columnNames = {"user_id", "device_id"}
+        ))
 public class Token implements Serializable {
 
     @Id
@@ -27,8 +31,11 @@ public class Token implements Serializable {
     @Column(nullable = false)
     private Instant expiryDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "device_id", nullable = false)
+    private Device device;
 }

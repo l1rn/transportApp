@@ -42,8 +42,8 @@ class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
-        userCaller = new User(1, "user1", "password", Role.ROLE_USER);
-        bookingOwner = new User(2, "user2", "password", Role.ROLE_USER);
+        userCaller = new User(1, "user1", "password", Role.ROLE_USER, null);
+        bookingOwner = new User(2, "user2", "password", Role.ROLE_USER, null);
 
         route = new Route();
         route.setId(1);
