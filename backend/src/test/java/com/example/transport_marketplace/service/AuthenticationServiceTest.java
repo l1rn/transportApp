@@ -175,7 +175,7 @@ class AuthenticationServiceTest {
 
         when(refreshTokenRepository.findByToken(refreshToken)).thenReturn(Optional.of(token));
 
-        authenticationService.deleteTokenByUser(refreshToken);
+        authenticationService.deleteRefreshToken(refreshToken);
 
         verify(refreshTokenRepository, times(1)).delete(token);
     }

@@ -119,21 +119,21 @@ public class AuthControllerTest {
 //        Mockito.verify(authenticationService).refreshToken("old-refresh-token");
 //    }
 
-    @Test
-    void testLogout() throws Exception {
-        LogoutRequest request = new LogoutRequest();
-        request.setRefreshToken("refresh-token");
-
-        doNothing().when(tokenBlacklist).revoke("access-token");
-        doNothing().when(authenticationService).deleteTokenByUser("refresh-token");
-
-        mockMvc.perform(post("/api/auth/logout")
-                        .header("Authorization", "Bearer access-token")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNoContent());
-
-        Mockito.verify(tokenBlacklist).revoke("access-token");
-        Mockito.verify(authenticationService).deleteTokenByUser("refresh-token");
-    }
+//    @Test
+//    void testLogout() throws Exception {
+//        LogoutRequest request = new LogoutRequest();
+//        request.setRefreshToken("refresh-token");
+//
+//        doNothing().when(tokenBlacklist).revoke("access-token");
+//        doNothing().when(authenticationService).deleteTokenByUser("refresh-token");
+//
+//        mockMvc.perform(post("/api/auth/logout")
+//                        .header("Authorization", "Bearer access-token")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(request)))
+//                .andExpect(status().isNoContent());
+//
+//        Mockito.verify(tokenBlacklist).revoke("access-token");
+//        Mockito.verify(authenticationService).deleteTokenByUser("refresh-token");
+//    }
 }

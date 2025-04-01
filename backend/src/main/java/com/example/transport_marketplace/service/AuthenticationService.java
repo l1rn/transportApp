@@ -123,7 +123,7 @@ public class AuthenticationService {
         return new JwtAuthenticationResponse(newAccessToken, newRefreshToken);
     }
     @Transactional
-    public void deleteTokenByUser(String refreshToken) {
+    public void deleteRefreshToken(String refreshToken) {
         refreshTokenRepository.findByToken(refreshToken)
                 .ifPresent(refreshTokenRepository::delete);
     }

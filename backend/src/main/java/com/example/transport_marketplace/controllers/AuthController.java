@@ -28,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.Arrays;
 
 
@@ -38,6 +39,7 @@ import java.util.Arrays;
 public class AuthController {
     private final TokenBlacklist tokenBlacklist;
     private final AuthenticationService authenticationService;
+    private final JwtService jwtService;
     @Value("${jwt.refresh-token-expiration}")
     private long refreshExpirationMs;
     @Value("${jwt.access-token-expiration}")
@@ -71,12 +73,15 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Неверные учетные данные")
     })
     @PostMapping("/sign-in")
-    public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody SignInRequest request,
+    public ResponseEntity<?> signIn(@RequestBody SignInRequest request,
                                                             HttpServletRequest httpServletRequest,
                                                             HttpServletResponse response) {
         JwtAuthenticationResponse authenticationResponse = authenticationService.signIn(request, httpServletRequest);
+
+        response.setHeader("X-Token-Expires", String.valueOf(accessExpirationMs));
+
         setAuthCookies(response, authenticationResponse.getAccessToken(), authenticationResponse.getRefreshToken());
-        return ResponseEntity.ok(authenticationResponse);
+        return ResponseEntity.ok("Авторизовались");
     }
 
     @Operation(
@@ -98,8 +103,10 @@ public class AuthController {
                 .filter(c -> "refreshToken".equals(c.getName()))
                 .findFirst()
                 .map(Cookie::getValue)
-                .orElseThrow(() -> new RuntimeException("Токена нету"));
+                .orElseThrow(() -> new RuntimeException("Рефреш токена нету"));
         JwtAuthenticationResponse newTokens = authenticationService.refreshToken(refreshToken);
+        response.addHeader("X-Token-Expires", String.valueOf(accessExpirationMs));
+
         setAuthCookies(response, newTokens.getAccessToken(), newTokens.getRefreshToken());
         return ResponseEntity.ok().build();
     }
@@ -113,17 +120,35 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован")
     })
     @PostMapping("/logout")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> logout(
-            @RequestBody LogoutRequest request,
-            @RequestHeader(name = "Authorization") String authHeader,
+            HttpServletRequest request,
             HttpServletResponse response
     ) {
-        String accessToken = authHeader.substring(7);
-        tokenBlacklist.revoke(accessToken);
-        authenticationService.deleteTokenByUser(request.getRefreshToken());
-        clearAuthCookies(response);
-        return ResponseEntity.noContent().build();
+        try{
+            Cookie[] cookies = request.getCookies();
+            String accessToken = Arrays.stream(cookies)
+                    .filter(c -> "accessToken".equals(c.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElseThrow(() -> new RuntimeException("Акцес токена нету"));
+            String refreshToken = Arrays.stream(cookies)
+                    .filter(c -> "refreshToken".equals(c.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElseThrow(() -> new RuntimeException("Рефреш токена нету"));
+
+            tokenBlacklist.revoke(accessToken);
+            authenticationService.deleteRefreshToken(refreshToken);
+            clearAuthCookies(response);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){
+            return ResponseEntity.noContent().build();
+        }
+    }
+    @GetMapping("/check")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> checkAuth(){
+        return ResponseEntity.ok().build();
     }
     private void setAuthCookies(HttpServletResponse response, String accessToken,
                                 String refreshToken){

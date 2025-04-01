@@ -196,9 +196,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-help-plugin</artifactId>
 				<version>3.4.1</version>
-				<configuration>
-					<jvmArguments>-Dspring.profiles.active=${activatedProfile}</jvmArguments>
-				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -257,6 +254,12 @@
 			<id>test-profile</id>
 			<properties>
 				<activatedProfile>test-profile</activatedProfile>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<activatedProfile>prod</activatedProfile>
 			</properties>
 		</profile>
 	</profiles>
