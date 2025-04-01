@@ -152,6 +152,8 @@ import Signin from "@/components/UI/auth/Signin.vue";
 import CustomProfile from "@/components/UI/auth/Profile.vue";
 import LogoutService from "@/services/LogoutService";
 import { cancelTokenRefresh, scheduleTokenRefresh } from "@/services/api";
+import { useLoginStore } from '@/stores/authStore';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const showLoginForm = ref(false);
@@ -168,15 +170,16 @@ const handleSeatsUpdate = (routeId) => {
     return route;
   })
 }
+const loginStore = useLoginStore()
+
+const { logined } = storeToRefs(loginStore);
+
 const responses = ref({
   success: {
     register: false,
-    login: false,
     logout: false,
   },
   error: null,
-  haveToken: !!localStorage.getItem("refreshToken"),
-  token: localStorage.getItem("refreshToken"),
 });
 
 const handleAuthRequired = () => {
@@ -184,7 +187,7 @@ const handleAuthRequired = () => {
   showMessage('error', 'Для бронирования необходимо авторизоваться');
 };
 
-const isAuthenticated = computed(() => !!responses.value.token);
+const isAuthenticated = computed(() => !!logined.value);
 
 const handleScroll = () => {
   scrollY.value = window.scrollY || document.documentElement.scrollTop;
@@ -209,11 +212,9 @@ const handleUserRegistered = (result) => {
 const handleUserLogined = async (result) => {
   if (result.success) {
     showMessage('success:login', ` ${result.message}`);
-    localStorage.setItem("refreshToken", result.refreshToken);
-    localStorage.setItem("accessToken", result.accessToken);
+    loginStore.auth();
+    console.log(logined.value)
     scheduleTokenRefresh();
-    responses.value.token = result.refreshToken;
-    responses.value.haveToken = true;
     showLoginForm.value = false;
   } else {
     showMessage('error', `${result.message}`);
@@ -222,18 +223,13 @@ const handleUserLogined = async (result) => {
 
 const userLogout = async () => {
   try {
-    const success = await LogoutService.logoutUser(
-      localStorage.getItem('accessToken'),
-      localStorage.getItem('refreshToken')
-    );
+    const success = await LogoutService.logoutUser();
     
     if (success) {
       cancelTokenRefresh();
       showMessage('success:logout', '✅ Успешный выход!');
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      responses.value.token = null;
-      responses.value.haveToken = false;
+      loginStore.logout();
+      console.log(logined.value)
       router.push('/');
     }
   } catch (error) {
@@ -244,9 +240,7 @@ const userLogout = async () => {
 
 onMounted(async () => {
   window.addEventListener('scroll', handleScroll);
-  if (localStorage.getItem("refreshToken")) {
     scheduleTokenRefresh();
-  }
 });
 
 onBeforeUnmount(() => {

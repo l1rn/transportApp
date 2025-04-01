@@ -79,16 +79,11 @@ export default {
                   username: this.user.username,
                   password: this.user.password,
                 };
-                const response = await SigninUsersService.signinUser(userData);
+                await SigninUsersService.signinUser(userData);
 
-                localStorage.setItem("accessToken", response.data.accessToken);
-                localStorage.setItem("refreshToken", response.data.refreshToken);
-                
                 this.$emit('logined', {
                   success: true,
                   message: '✅ Успешний вход!',
-                  accessToken: response.data.accessToken,
-                  refreshToken: response.data.refreshToken
                   }
                 );
                 this.user.username = '';

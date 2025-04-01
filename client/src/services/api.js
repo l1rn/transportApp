@@ -1,26 +1,28 @@
 import axios from "axios";
 import router from "@/routers/router";
-axios.interceptors.request.use(config => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-});
+
+axios.defaults.withCredentials = true;
 
 let retryAttempts = 0;
+let tokenExpiration;
 axios.interceptors.response.use(
-    response => response,
+    response => {
+        if(response.config.url.includes('/auth')){
+            const expiresHeader = response.headers['x-token-expires'];
+            if (expiresHeader) {
+                tokenExpiration = Date.now() + parseInt(expiresHeader, 10);
+                scheduleTokenRefresh();
+            }
+        }
+        return response;
+    },
     async error => {
         const originalRequest = error.config;
         if (error.response?.status === 401 && !originalRequest._retry && retryAttempts < 5) {
             originalRequest._retry = true;
             retryAttempts = retryAttempts + 1;
             try {
-                const newAccessToken = await refreshTokenRequest(
-                    localStorage.getItem("refreshToken")
-                );
-                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                await refreshTokenRequest();
                 return axios(originalRequest);
             } catch (refreshError) {
                 handleAuthError();
@@ -35,13 +37,10 @@ axios.interceptors.response.use(
     }
 );
 
-async function refreshTokenRequest(refreshToken) {
+async function refreshTokenRequest() {
     try {
-        const response = await axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/refresh`, { refreshToken });
-        localStorage.setItem('accessToken', response.data.accessToken);
-        localStorage.setItem('refreshToken', response.data.refreshToken);
-        scheduleTokenRefresh();
-        return response.data.accessToken;
+        const response = await axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/refresh`);
+        return response.data;
     } catch (error) {
         handleAuthError();
         throw error;
@@ -50,41 +49,39 @@ async function refreshTokenRequest(refreshToken) {
 
 function handleAuthError() {
     cancelTokenRefresh();
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    if (router.currentRoute.path !== '/home') {
-        router.replace('/home').then(() => {
-            window.location.reload(); 
-        });
-    }
+    axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/logout`);
+    router.replace('/home').then(() => {
+        window.location.reload(); 
+    });
 }
 
 let refreshTimeoutId = null;
 export function getRoleFromToken(){
-    const accessToken = localStorage.getItem('accessToken');
-    if(!accessToken) return null;
-    try{
-        const payload = JSON.parse(atob(accessToken.split('.')[1]));
-        return payload.role;
-    }catch(error){
-        return null;
-    }
+    return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/users/me/role`)
+        .then(response => response.data.role)
+        .catch(() => null)
 }
 export function scheduleTokenRefresh() {
     cancelTokenRefresh();
-
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) return;
-
-    const payload = JSON.parse(atob(accessToken.split('.')[1]));
-    const expiresAt = payload.exp * 1000;
-    const timeout = expiresAt - Date.now() - 5000 ;
-
-    if (timeout > 0) {
-        refreshTimeoutId = setTimeout(() => {
-            refreshTokenRequest(localStorage.getItem("refreshToken"));
+    if (!tokenExpiration) {
+        console.warn('No token expiration time available');
+        return;
+      }
+    
+      const timeout = tokenExpiration - Date.now() - 5000; // Refresh 5s before expiration
+      
+      if (timeout > 0) {
+        refreshTimeoutId = setTimeout(async () => {
+          try {
+            await refreshTokenRequest();
+            scheduleTokenRefresh(); // Reschedule after successful refresh
+          } catch (error) {
+            handleAuthError();
+          }
         }, timeout);
-    }
+      } else {
+        refreshTokenRequest(); // Immediate refresh if expiration is near
+      }
 }
 
 export function cancelTokenRefresh() {
@@ -93,3 +90,4 @@ export function cancelTokenRefresh() {
         refreshTimeoutId = null;
     }
 }
+

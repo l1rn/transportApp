@@ -48,8 +48,6 @@ export default {
           break;
         case "logout":
           this.$emit('logout');
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
           this.$router.push('/');
           break;
       }

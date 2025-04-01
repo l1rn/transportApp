@@ -2,18 +2,9 @@ import axios from "axios";
 
 
 class LogoutService {
-    logoutUser(accessToken, refreshToken) {
+    logoutUser() {
         try{
-            axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/logout`, {
-                    refreshToken,
-                },
-                {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': "application/json",
-                    }
-                },
-            );
+            axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/logout`,);
             return true;
         }
         catch(err){
