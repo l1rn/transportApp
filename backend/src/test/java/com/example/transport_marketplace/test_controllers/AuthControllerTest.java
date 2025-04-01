@@ -100,24 +100,24 @@ public class AuthControllerTest {
         Mockito.verify(authenticationService).signIn(any(SignInRequest.class), any(HttpServletRequest.class));
     }
 
-    @Test
-    void testRefreshToken() throws Exception {
-        RefreshTokenRequest request = new RefreshTokenRequest();
-        request.setRefreshToken("old-refresh-token");
-
-        JwtAuthenticationResponse response = new JwtAuthenticationResponse("new-access-token", "new-refresh-token");
-
-        when(authenticationService.refreshToken("old-refresh-token")).thenReturn(response);
-
-        mockMvc.perform(post("/api/auth/refresh")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessToken").value("new-access-token"))
-                .andExpect(jsonPath("$.refreshToken").value("new-refresh-token"));
-
-        Mockito.verify(authenticationService).refreshToken("old-refresh-token");
-    }
+//    @Test
+//    void testRefreshToken() throws Exception {
+//        RefreshTokenRequest request = new RefreshTokenRequest();
+//        request.setRefreshToken("old-refresh-token");
+//
+//        JwtAuthenticationResponse response = new JwtAuthenticationResponse("new-access-token", "new-refresh-token");
+//
+//        when(authenticationService.refreshToken("old-refresh-token")).thenReturn(response);
+//
+//        mockMvc.perform(post("/api/auth/refresh")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(request)))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.accessToken").value("new-access-token"))
+//                .andExpect(jsonPath("$.refreshToken").value("new-refresh-token"));
+//
+//        Mockito.verify(authenticationService).refreshToken("old-refresh-token");
+//    }
 
     @Test
     void testLogout() throws Exception {

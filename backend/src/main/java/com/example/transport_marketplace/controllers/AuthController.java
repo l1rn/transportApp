@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -26,6 +27,8 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 
 @RestController
@@ -88,12 +91,17 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Недействительный refresh-токен")
     })
     @PostMapping("/refresh")
-    public ResponseEntity<JwtAuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request,
+    public ResponseEntity<JwtAuthenticationResponse> refreshToken(HttpServletRequest request,
                                                                   HttpServletResponse response) {
-
-        JwtAuthenticationResponse newTokens = authenticationService.refreshToken(request.getRefreshToken());
+        Cookie[] cookies = request.getCookies();
+        String refreshToken = Arrays.stream(cookies)
+                .filter(c -> "refreshToken".equals(c.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElseThrow(() -> new RuntimeException("Токена нету"));
+        JwtAuthenticationResponse newTokens = authenticationService.refreshToken(refreshToken);
         setAuthCookies(response, newTokens.getAccessToken(), newTokens.getRefreshToken());
-        return ResponseEntity.ok(newTokens);
+        return ResponseEntity.ok().build();
     }
     @Operation(
             summary = "Выход из системы",

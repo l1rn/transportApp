@@ -4,8 +4,10 @@ import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
 import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
 import com.example.transport_marketplace.enums.Role;
+import com.example.transport_marketplace.model.Device;
 import com.example.transport_marketplace.model.Token;
 import com.example.transport_marketplace.model.User;
+import com.example.transport_marketplace.repo.DeviceRepository;
 import com.example.transport_marketplace.repo.RefreshTokenRepository;
 import com.example.transport_marketplace.repo.UserRepository;
 import com.example.transport_marketplace.jwt.JwtService;
@@ -20,6 +22,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +45,8 @@ class AuthenticationServiceTest {
 
     @Mock
     private RefreshTokenRepository refreshTokenRepository;
+    @Mock
+    private DeviceRepository deviceRepository;
 
     @InjectMocks
     private AuthenticationService authenticationService;
@@ -78,35 +84,49 @@ class AuthenticationServiceTest {
         verify(userRepository, never()).save(any(User.class));
     }
 
-//    @Test
-//    void testSignIn_Success() {
-//        SignInRequest request = new SignInRequest();
-//        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
-//
-//        request.setUsername("user1");
-//        request.setPassword("pass1");
-//
-//        User user = new User(1, "user1", "encodedPass", Role.ROLE_USER);
-//
-//        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-//                .thenReturn(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-//        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(user));
-//        doNothing().when(refreshTokenRepository).deleteByUser(user);
-//        when(jwtService.generateAccessToken(user)).thenReturn("access-token");
-//        when(jwtService.generateRefreshToken(user)).thenReturn("refresh-token");
-//        when(jwtService.getRefreshExpirationMs()).thenReturn(60000L);
-//        when(refreshTokenRepository.save(any(Token.class))).thenAnswer(invocation -> invocation.getArgument(0));
-//
-//        JwtAuthenticationResponse response = authenticationService.signIn(request);
-//
-//        assertNotNull(response);
-//        assertEquals("access-token", response.getAccessToken());
-//        assertEquals("refresh-token", response.getRefreshToken());
-//
-//        verify(authenticationManager, times(1)).authenticate(any(UsernamePasswordAuthenticationToken.class));
-//        verify(userRepository, times(1)).findByUsername("user1");
-//        verify(refreshTokenRepository, times(1)).deleteByUser(user);
-//    }
+    @Test
+    void testSignIn_Success() {
+        SignInRequest request = new SignInRequest();
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+
+        Device device = Device.
+                builder().id(1).deviceFingerprint("finger").userAgent("win").build();
+        List<Device> devices = new ArrayList<>();
+        request.setUsername("user1");
+        request.setPassword("pass1");
+        devices.add(device);
+        User user = new User(1, "user1", "encodedPass", Role.ROLE_USER, devices);
+        device.setUser(user);
+
+        when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(deviceRepository.save(any(Device.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        when(authenticationManager.authenticate(any()))
+                .thenReturn(new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword())
+                );
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(user));
+        doNothing().when(refreshTokenRepository).deleteByUser(user);
+
+        when(jwtService.generateAccessToken(user)).thenReturn("access-token");
+        when(jwtService.generateRefreshToken(user)).thenReturn("refresh-token");
+        when(jwtService.getRefreshExpirationMs()).thenReturn(604800L);
+        when(refreshTokenRepository.save(any(Token.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Token mockToken = mock(Token.class);
+        when(refreshTokenRepository.save(any(Token.class))).thenReturn(mockToken);
+
+        JwtAuthenticationResponse response = authenticationService.signIn(request, mockRequest);
+
+        assertNotNull(response);
+        assertEquals("access-token", response.getAccessToken());
+        assertEquals("refresh-token", response.getRefreshToken());
+
+        verify(authenticationManager).authenticate(any());
+        verify(userRepository).findByUsername("user1");
+        verify(refreshTokenRepository).deleteByUserAndDevice(any(User.class), any(Device.class));
+    }
 
     @Test
     void testRefreshToken_Success() {
