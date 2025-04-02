@@ -1,9 +1,7 @@
 package com.example.transport_marketplace.controllers;
-import com.example.transport_marketplace.dto.auth.LogoutRequest;
 import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
 import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
-import com.example.transport_marketplace.dto.jwt.RefreshTokenRequest;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.jwt.TokenBlacklist;
 
@@ -28,7 +26,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.Arrays;
 
 
@@ -60,7 +57,7 @@ public class AuthController {
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) {
         authenticationService.signUp(request);
-        return ResponseEntity.ok("Пользователь зарегистрирован");
+        return ResponseEntity.ok("Registered");
     }
     @Operation(
             summary = "Вход пользователя",
@@ -74,14 +71,14 @@ public class AuthController {
     })
     @PostMapping("/sign-in")
     public ResponseEntity<?> signIn(@RequestBody SignInRequest request,
-                                                            HttpServletRequest httpServletRequest,
-                                                            HttpServletResponse response) {
+                                    HttpServletRequest httpServletRequest,
+                                    HttpServletResponse response) {
         JwtAuthenticationResponse authenticationResponse = authenticationService.signIn(request, httpServletRequest);
 
         response.setHeader("X-Token-Expires", String.valueOf(accessExpirationMs));
 
         setAuthCookies(response, authenticationResponse.getAccessToken(), authenticationResponse.getRefreshToken());
-        return ResponseEntity.ok("Авторизовались");
+        return ResponseEntity.ok("Authorized");
     }
 
     @Operation(

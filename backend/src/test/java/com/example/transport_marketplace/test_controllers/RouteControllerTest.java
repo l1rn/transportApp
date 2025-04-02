@@ -4,7 +4,6 @@ import com.example.transport_marketplace.controllers.RouteController;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.BadRequestException;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.service.RouteService;
-import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,7 +31,7 @@ class RouteControllerTest {
     private RouteController routeController;
 
     @Test
-    void getRoutes_ReturnsAllRoutes() throws IOException {
+    void getRoutes_ReturnsAllRoutes() {
         List<Route> expectedRoutes = List.of(new Route(), new Route());
         when(routeService.getRoutes()).thenReturn(expectedRoutes);
 

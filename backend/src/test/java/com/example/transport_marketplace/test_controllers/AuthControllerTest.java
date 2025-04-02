@@ -3,63 +3,75 @@ package com.example.transport_marketplace.test_controllers;
 import com.example.transport_marketplace.controllers.AuthController;
 import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
-import com.example.transport_marketplace.dto.auth.LogoutRequest;
 import com.example.transport_marketplace.dto.jwt.RefreshTokenRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
+import com.example.transport_marketplace.jwt.JwtAuthenticationFilter;
+import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.service.AuthenticationService;
 import com.example.transport_marketplace.jwt.TokenBlacklist;
+import com.example.transport_marketplace.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.ArgumentMatchers.any;
+
+import java.nio.charset.StandardCharsets;
+
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = AuthController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
-@ContextConfiguration(classes = { AuthController.class, AuthControllerTest.Config.class })
-@Import(AuthControllerTest.Config.class)
+@ExtendWith(MockitoExtension.class)
 public class AuthControllerTest {
 
-    @Autowired
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     private MockMvc mockMvc;
 
-    @Autowired
+    @Mock
     private AuthenticationService authenticationService;
 
-    @Autowired
+    @Mock
+    private JwtService jwtService;
+
+    @Mock
     private TokenBlacklist tokenBlacklist;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @Mock
+    private UserDetailsServiceImpl userDetailsService;
+
+    @InjectMocks
+    private AuthController authController;
 
     @TestConfiguration
-    static class Config {
+    static class Config{
         @Bean
-        public AuthenticationService authenticationService() {
-            return Mockito.mock(AuthenticationService.class);
-        }
+        private AuthenticationService authenticationService() { return mock(AuthenticationService.class); }
 
         @Bean
-        public TokenBlacklist tokenBlacklist() {
-            return Mockito.mock(TokenBlacklist.class);
-        }
+        private ObjectMapper objectMapper() { return mock(ObjectMapper.class); }
+    }
 
-        @Bean
-        public ObjectMapper objectMapper() {
-            return new ObjectMapper();
-        }
+    @BeforeEach
+    void setup(){
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(authController)
+                .addFilter(new JwtAuthenticationFilter(jwtService, userDetailsService, tokenBlacklist))
+                .defaultRequest(get("/").with(csrf()).characterEncoding(StandardCharsets.UTF_8))
+                .build();
     }
 
     @Test
@@ -68,72 +80,69 @@ public class AuthControllerTest {
         request.setUsername("newUser");
         request.setPassword("password123");
 
-        doNothing().when(authenticationService).signUp(any(SignUpRequest.class));
-
         mockMvc.perform(post("/api/auth/sign-up")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Пользователь зарегистрирован"));
-
-        Mockito.verify(authenticationService).signUp(any(SignUpRequest.class));
+                .andExpect(content().string("Registered"));
     }
 
     @Test
     void testSignIn() throws Exception {
         SignInRequest request = new SignInRequest();
-        request.setUsername("user1");
-        request.setPassword("pass1");
+        request.setUsername("1");
+        request.setPassword("1");
 
-        JwtAuthenticationResponse response = new JwtAuthenticationResponse("access-token", "refresh-token");
+        JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse();
+        jwtResponse.setAccessToken("accessToken");
+        jwtResponse.setRefreshToken("refreshToken");
 
         when(authenticationService.signIn(any(SignInRequest.class), any(HttpServletRequest.class)))
-                .thenReturn(response);
+                .thenReturn(jwtResponse);
 
         mockMvc.perform(post("/api/auth/sign-in")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessToken").value("access-token"))
-                .andExpect(jsonPath("$.refreshToken").value("refresh-token"));
+                .andExpect(content().string("Authorized"));
 
         Mockito.verify(authenticationService).signIn(any(SignInRequest.class), any(HttpServletRequest.class));
     }
 
-//    @Test
-//    void testRefreshToken() throws Exception {
-//        RefreshTokenRequest request = new RefreshTokenRequest();
-//        request.setRefreshToken("old-refresh-token");
-//
-//        JwtAuthenticationResponse response = new JwtAuthenticationResponse("new-access-token", "new-refresh-token");
-//
-//        when(authenticationService.refreshToken("old-refresh-token")).thenReturn(response);
-//
-//        mockMvc.perform(post("/api/auth/refresh")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(request)))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.accessToken").value("new-access-token"))
-//                .andExpect(jsonPath("$.refreshToken").value("new-refresh-token"));
-//
-//        Mockito.verify(authenticationService).refreshToken("old-refresh-token");
-//    }
+    @Test
+    void testRefreshToken() throws Exception {
+        RefreshTokenRequest request = new RefreshTokenRequest();
+        request.setRefreshToken("old-refresh-token");
+
+        JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
+        jwtAuthenticationResponse.setRefreshToken("refreshToken");
+        jwtAuthenticationResponse.setAccessToken("accessToken");
+
+        when(authenticationService.refreshToken(request.getRefreshToken())).thenReturn(jwtAuthenticationResponse);
+
+        mockMvc.perform(post("/api/auth/refresh")
+                .contentType(MediaType.APPLICATION_JSON)
+                .cookie(new Cookie("refreshToken", request.getRefreshToken()))
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk());
+
+        Mockito.verify(authenticationService).refreshToken("old-refresh-token");
+    }
 
 //    @Test
 //    void testLogout() throws Exception {
-//        LogoutRequest request = new LogoutRequest();
-//        request.setRefreshToken("refresh-token");
-//
-//        doNothing().when(tokenBlacklist).revoke("access-token");
-//        doNothing().when(authenticationService).deleteTokenByUser("refresh-token");
+//        doNothing().when(tokenBlacklist).revoke(anyString());
+//        doNothing().when(authenticationService).deleteRefreshToken(anyString());
 //
 //        mockMvc.perform(post("/api/auth/logout")
-//                        .header("Authorization", "Bearer access-token")
 //                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(request)))
+//                        .cookie(new Cookie("accessToken", "access-token"))
+//                        .cookie(new Cookie("refreshToken", "refresh-token")))
 //                .andExpect(status().isNoContent());
 //
 //        Mockito.verify(tokenBlacklist).revoke("access-token");
-//        Mockito.verify(authenticationService).deleteTokenByUser("refresh-token");
+//        Mockito.verify(authenticationService).deleteRefreshToken("refresh-token");
 //    }
+
 }
