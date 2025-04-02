@@ -35,15 +35,12 @@ public class UserService {
     @Autowired
     private final RouteRepository routeRepository;
 
-    @CachePut(value = "users", key = "#user.id")
+    @CachePut(value = "users", key = "#id")
     public User save(User user){
         return repository.save(user);
     }
 
-    @Caching(evict = {
-            @CacheEvict(value = "users", key = "#id"),
-            @CacheEvict(value = "users", key = "#username")
-    })
+    @CacheEvict(value = "users")
     @Transactional
     public void delete(int id){
         User user = repository.findById(id)

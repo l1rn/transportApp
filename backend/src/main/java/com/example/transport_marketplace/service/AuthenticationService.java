@@ -74,8 +74,6 @@ public class AuthenticationService {
 
         user.getDevices().add(device);
 
-
-
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         refreshTokenRepository.deleteByUserAndDevice(user, device);

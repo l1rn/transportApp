@@ -5,6 +5,7 @@ axios.defaults.withCredentials = true;
 
 let retryAttempts = 0;
 let tokenExpiration;
+
 axios.interceptors.response.use(
     response => {
         if(response.config.url.includes('/auth')){
@@ -68,19 +69,19 @@ export function scheduleTokenRefresh() {
         return;
       }
     
-      const timeout = tokenExpiration - Date.now() - 5000; // Refresh 5s before expiration
+      const timeout = tokenExpiration - Date.now() - 5000; 
       
       if (timeout > 0) {
         refreshTimeoutId = setTimeout(async () => {
           try {
             await refreshTokenRequest();
-            scheduleTokenRefresh(); // Reschedule after successful refresh
+            scheduleTokenRefresh(); 
           } catch (error) {
             handleAuthError();
           }
         }, timeout);
       } else {
-        refreshTokenRequest(); // Immediate refresh if expiration is near
+        refreshTokenRequest(); 
       }
 }
 

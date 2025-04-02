@@ -57,6 +57,11 @@
 import BackbuttonToHome from "./BackbuttonToHome.vue";
 import { onMounted, ref  } from "vue";
 import AdminPanel from "../admin/AdminPanel.vue";
+import { useRoleStore } from "@/stores/roleStore";
+
+const roleStore = useRoleStore();
+
+let { currentRole } = storeToRefs(roleStore);
 
 const checkTokenInProfile = async() => {
   try{
@@ -67,17 +72,20 @@ const checkTokenInProfile = async() => {
   }
 }
 
+const hasRoleAdmin = ref(false)
+
 const checkAdminRole = () => {
   try{
-    const role = getRoleFromToken();
-    hasRoleAdmin.value = role === 'ROLE_ADMIN';
-  }
-  catch(error){
-    console.error('Role check failed:', error);
-    hasRoleAdmin.value = false; 
-  }
+    roleStore.getRole()
+    console.log(currentRole.value)
+    hasRoleAdmin.value = currentRole.value === "ADMIN"
+    console.log(hasRoleAdmin.value)
+  }catch(error){
+    console.error("НЕ АДМИН", error)
+    hasRoleAdmin.value = false;
+  }  
 };
-const hasRoleAdmin = ref(false);
+
 onMounted(() =>{
   checkTokenInProfile();
   checkAdminRole();
@@ -85,8 +93,8 @@ onMounted(() =>{
 </script>
 <script>
 import BookingCard from "@/components/bookings/BookingCard.vue";
-import { getRoleFromToken } from "@/services/api";
 import BookingService from "@/services/BookingService";
+import { storeToRefs } from "pinia";
 export default {
   name: 'AppProfile',
   components: {

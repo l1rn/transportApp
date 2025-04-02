@@ -11,5 +11,5 @@ export const useLoginStore = defineStore('auth', () => {
     }
 
     return {logined, auth, logout}
-    
+
 })
