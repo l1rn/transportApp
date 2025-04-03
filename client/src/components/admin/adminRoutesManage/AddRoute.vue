@@ -179,6 +179,7 @@ const handleSubmit = async () => {
             departureTime: formatDateTime(formData.value.departureTime),
             arrivalTime: formatDateTime(formData.value.arrivalTime)
         }
+        
         await AdminService.addRoute(payload)
         
         successMessage.value = 'Маршрут успешно создан!'

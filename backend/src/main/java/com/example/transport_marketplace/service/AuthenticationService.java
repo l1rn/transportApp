@@ -131,12 +131,16 @@ public class AuthenticationService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        if(request.getOldPassword().equals(user.getPassword())){
-            user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        String oldPassword = request.getOldPassword();
+        String newPassword = request.getNewPassword();
+
+        String userDecodedPassword = user.getPassword();
+
+        if(!passwordEncoder.matches(oldPassword, user.getPassword())){
+            throw new RuntimeException("Старый пароль неправильный!");
         }
-        else{
-            throw new RuntimeException("Пароли не совпадают");
-        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
         return userRepository.save(user);
     }
 

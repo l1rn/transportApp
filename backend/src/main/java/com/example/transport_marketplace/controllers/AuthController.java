@@ -156,7 +156,7 @@ public class AuthController {
             String username = userDetails.getUsername();
             return ResponseEntity.ok(authenticationService.changePasswordByUsername(username, changePasswordRequest));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Don't have permission");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
 

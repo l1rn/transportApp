@@ -103,6 +103,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         UserSettingsResponse response = new UserSettingsResponse();
         List<Device> devices = deviceRepository.findByUser(user);
+        response.setId(user.getId());
         response.setUsername(user.getUsername());
         response.setDevices(devices);
         return response;

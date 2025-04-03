@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class UserSettingsResponse {
+    private int id;
     private String username;
     private List<Device> devices;
 }
