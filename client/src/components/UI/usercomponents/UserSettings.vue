@@ -1,4 +1,5 @@
 <template>
+    <Notifications ref="notifications" />
     <div class="main-container">
         <h1>Пользователь - {{ userData.username }} </h1>
         <div class="info-container">
@@ -10,20 +11,32 @@
                 type="password" 
                 placeholder="старый пароль"
                 v-model="passwordRequest.oldPassword"
+                required
                 >
-                <label for="oldConfirm">Подтвердите пароль</label>
+                <label for="new">Новый пароль</label>
                 <input 
-                id="oldConfirm"
-                type="password"
-                placeholder="подтвердите пароль">
-                <label for="">Новый пароль</label>
-                <input 
+                id="new"
                 type="password"
                 placeholder="новый пароль"
-                v-model="passwordRequest.newPassword">
+                v-model="passwordRequest.newPassword"
+                required>
+                <label for="passwordConfirm">Подтвердите пароль</label>
+                <input 
+                id="passwordConfirm"
+                type="password"
+                v-model="confirmPassword"
+                placeholder="подтвердите пароль"
+                required>
+                <div
+                class="password-do-not-match"
+                v-if="!doPasswordMatch">
+                    Пароли не совпадают
+                </div>
                 <button 
                 type="submit"
                 class="submit-button"
+                :disabled="!doPasswordMatch"
+                :class="{'disabled': !doPasswordMatch}"
                 >Подтвердить</button>
             </form>
             <h2>Сессии</h2>
@@ -37,15 +50,17 @@
                     {{ device.userAgent }}
                 </div>
                 <div class="delete-item">
-                    <button type="submit">Удалить</button>
+                    <button type="submit"
+                    >Удалить</button>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script setup>
+import Notifications from '@/components/UI/Notifications.vue'
 import UserService from '@/services/UserService';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 const userData = ref([])
 const fetchUserDevices = async () => {
@@ -59,17 +74,31 @@ const passwordRequest = ref({
     newPassword: ''
 })
 
+const confirmPassword = ref('')
+
+const doPasswordMatch = computed(() => {
+    return passwordRequest.value.newPassword === confirmPassword.value
+})
+
 const changePassword = async() => {
+    if(!doPasswordMatch.value) return;
     try{
         await UserService.changeUserPassword(passwordRequest.value);
-    }catch(e){
+        showMessage("success", "Пароль успешно изменен")
+    } catch(e){
         console.log(e)
+        showMessage("error", "Ошибка! Вы не смогли сменить пароль")
     }
 }
 
 onMounted(() => {
     fetchUserDevices();
 })
+const notifications = ref(null);
+
+const showMessage = (type, message) => {
+  notifications.value.showNotification(type.split(':')[0], message);
+};
 </script>
 <style scoped lang="sass">
 @import '@/assets/styles/usersObjects/userSetting.sass'

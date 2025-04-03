@@ -39,10 +39,14 @@
     color: #ffffff
     transition: all 0.4s
     box-shadow: 0 0 8px #16357040
-    &:hover
+    &:hover:not(:disabled)
         background: #0f409b
         transform: translateY(-1px)
         box-shadow: 0 0 16px #16357080
+    &:disabled
+        background: #444
+        cursor: not-allowed
+        box-shadow: none
         
 .useragent-container
     padding: 1.5rem 2rem
@@ -66,4 +70,8 @@
             &:hover
                 background: #bb2c2c
                 transform: translateY(1px)
-
+            &:disabled
+                background: #444
+.password-do-not-match
+    margin: 0 1.5rem
+    color: #c92626
