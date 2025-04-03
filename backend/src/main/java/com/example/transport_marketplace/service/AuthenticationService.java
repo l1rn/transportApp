@@ -2,6 +2,7 @@ package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
+import com.example.transport_marketplace.dto.users.ChangePasswordRequest;
 import com.example.transport_marketplace.model.Device;
 import com.example.transport_marketplace.model.Token;
 import com.example.transport_marketplace.enums.Role;
@@ -15,24 +16,29 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
-
 import java.time.Instant;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class AuthenticationService {
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final JwtService jwtService;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Autowired
     private final AuthenticationManager authenticationManager;
+    @Autowired
     private final DeviceRepository deviceRepository;
+    @Autowired
     private final RefreshTokenRepository refreshTokenRepository;
 
     public void signUp(SignUpRequest request){
@@ -61,7 +67,7 @@ public class AuthenticationService {
 
         String userAgent = httpServletRequest.getHeader("User-Agent");
         String ipAddress = httpServletRequest.getRemoteAddr();
-        String deviceFingerprint = userAgent + ipAddress;
+        String deviceFingerprint = "agent:" + userAgent + "!ip:" + ipAddress;
 
         Device newDevice = Device.builder()
                 .deviceFingerprint(deviceFingerprint)
@@ -120,6 +126,20 @@ public class AuthenticationService {
 
         return new JwtAuthenticationResponse(newAccessToken, newRefreshToken);
     }
+
+    public User changePasswordByUsername(String username, ChangePasswordRequest request){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+        if(request.getOldPassword().equals(user.getPassword())){
+            user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        }
+        else{
+            throw new RuntimeException("Пароли не совпадают");
+        }
+        return userRepository.save(user);
+    }
+
     @Transactional
     public void deleteRefreshToken(String refreshToken) {
         refreshTokenRepository.findByToken(refreshToken)

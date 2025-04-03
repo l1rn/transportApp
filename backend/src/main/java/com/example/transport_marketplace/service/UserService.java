@@ -1,19 +1,17 @@
 package com.example.transport_marketplace.service;
+import com.example.transport_marketplace.dto.users.UserSettingsResponse;
 import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.model.Booking;
+import com.example.transport_marketplace.model.Device;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.model.User;
-import com.example.transport_marketplace.repo.BookingRepository;
-import com.example.transport_marketplace.repo.RefreshTokenRepository;
-import com.example.transport_marketplace.repo.RouteRepository;
-import com.example.transport_marketplace.repo.UserRepository;
+import com.example.transport_marketplace.repo.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,6 +32,8 @@ public class UserService {
     private final BookingRepository bookingRepository;
     @Autowired
     private final RouteRepository routeRepository;
+    @Autowired
+    private final DeviceRepository deviceRepository;
 
     @CachePut(value = "users", key = "#id")
     public User save(User user){
@@ -96,6 +96,16 @@ public class UserService {
 
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    }
+
+    public UserSettingsResponse getSettingsByUsername(String username){
+        User user = repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+        UserSettingsResponse response = new UserSettingsResponse();
+        List<Device> devices = deviceRepository.findByUser(user);
+        response.setUsername(user.getUsername());
+        response.setDevices(devices);
+        return response;
     }
 
     public void setAdmin(User user){

@@ -24,19 +24,14 @@
           Настройки
         </button>
         <button
-          v-if="hasRoleAdmin"
+          v-if="!!hasRoleAdmin"
           class="nav-link"
           :class="{ active: nav.chooseModeration}"
           @click="chooseNav('moderation')"
         >
           Модерирование
         </button>
-        <button
-          v-else
-          class="nav-link"
-        >
-          Информация о пользователе
-        </button>
+        
       </div>
     </div>
 
@@ -45,17 +40,19 @@
         <BookingCard />
       </div>
       <div v-if="nav.chooseSettings">
-        Настройки профиля
+        <UserSettings />
       </div>
       <div v-if="nav.chooseModeration">
         <AdminPanel />
       </div>
+      
     </div>
   </div>
 </template>
 <script setup>
+import UserSettings from '@/components/UI/usercomponents/UserSettings.vue'
 import BackbuttonToHome from "./BackbuttonToHome.vue";
-import { onMounted, ref  } from "vue";
+import { onMounted, onUnmounted, ref, watch  } from "vue";
 import AdminPanel from "../admin/AdminPanel.vue";
 import { useRoleStore } from "@/stores/roleStore";
 
@@ -74,21 +71,24 @@ const checkTokenInProfile = async() => {
 
 const hasRoleAdmin = ref(false)
 
-const checkAdminRole = () => {
+const checkAdminRole = async() => {
   try{
-    roleStore.getRole()
-    console.log(currentRole.value)
+    await roleStore.getRole()
     hasRoleAdmin.value = currentRole.value === "ADMIN"
-    console.log(hasRoleAdmin.value)
   }catch(error){
     console.error("НЕ АДМИН", error)
     hasRoleAdmin.value = false;
   }  
 };
-
+watch(hasRoleAdmin, (newValue) => {
+  console.log('Admin status changed:', newValue);
+})
 onMounted(() =>{
   checkTokenInProfile();
   checkAdminRole();
+})
+onUnmounted(() => {
+  hasRoleAdmin.value = false
 })
 </script>
 <script>

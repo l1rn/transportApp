@@ -2,6 +2,7 @@ package com.example.transport_marketplace.controllers;
 import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
 import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
+import com.example.transport_marketplace.dto.users.ChangePasswordRequest;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.jwt.TokenBlacklist;
 
@@ -20,10 +21,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -142,11 +146,20 @@ public class AuthController {
             return ResponseEntity.noContent().build();
         }
     }
-    @GetMapping("/check")
+
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> checkAuth(){
-        return ResponseEntity.ok().build();
+    @PostMapping("/change/password")
+    public ResponseEntity<?> changePassword(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody ChangePasswordRequest changePasswordRequest){
+        try {
+            String username = userDetails.getUsername();
+            return ResponseEntity.ok(authenticationService.changePasswordByUsername(username, changePasswordRequest));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Don't have permission");
+        }
     }
+
     private void setAuthCookies(HttpServletResponse response, String accessToken,
                                 String refreshToken){
         ResponseCookie accessCookie = ResponseCookie.from("accessToken", accessToken)

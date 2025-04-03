@@ -9,7 +9,7 @@ export const useRoleStore = defineStore('role', () => {
         ADMIN_ROLE: "ADMIN"
     });
 
-    let currentRole = ref(""); 
+    const currentRole = ref(""); 
 
     async function getRole() {
         const response = await axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/users/me/role`)
