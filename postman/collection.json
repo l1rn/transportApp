@@ -17,9 +17,17 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -31,7 +39,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"secure_admin\"\r\n}",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -39,12 +47,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/auth/sign-in",
-							"protocol": "http",
+							"raw": "{{host}}/api/auth/sign-in",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"auth",
@@ -61,7 +67,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"username\": \"newbie\",\r\n\t\"password\": \"newbie\"\r\n}",
+							"raw": "{\r\n\t\"username\": \"newbie1\",\r\n\t\"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -69,16 +75,121 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/auth/sign-up",
-							"protocol": "http",
+							"raw": "{{host}}/api/auth/sign-up",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"auth",
 								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refreshToken",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/auth/refresh",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/auth/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\": \"123\",\r\n    \"newPassword\": \"111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/change/password",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"change",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSession",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/auth/session/delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"session",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkSessionNow",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/auth/session/now",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"session",
+								"now"
 							]
 						}
 					},
@@ -88,11 +199,135 @@
 		},
 		{
 			"name": "user interaction",
-			"item": []
+			"item": [
+				{
+					"name": "getUserById",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users/admin/2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"admin",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AllUsers(admin)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users/all",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "myRole",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users/me/role",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDeviceByContext",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "booking",
-			"item": []
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profile/bookings",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "routes",
@@ -104,8 +339,17 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"let combined = `${pm.iterationData.get(\"username\")}:${pm.iterationData.get(\"password\")}`;\r",
-									"pm.variables.set(\"authString\", combined);"
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -116,15 +360,64 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/routes",
-							"protocol": "http",
+							"raw": "{{host}}/api/routes",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"routes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRouteById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/routes/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"routes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addRoute(admin)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"routeFrom\": \"11\",\r\n    \"routeTo\": \"11\",\r\n    \"date\": \"2025-03-30\",\r\n    \"time\": \"2025-03-30 14:54:00\",\r\n    \"arrivalTime\": \"2025-04-04 19:54:00\",\r\n    \"transport\": \"Поезд\",\r\n    \"availableSeats\": 231,\r\n    \"price\": 123213\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/routes/panel/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"routes",
+								"panel",
+								"add"
 							]
 						}
 					},
@@ -168,18 +461,15 @@
 	"variable": [
 		{
 			"key": "accessToken",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"key": "refreshToken\n",
-			"value": "",
-			"type": "string"
+			"key": "refreshToken",
+			"value": ""
 		},
 		{
 			"key": "host",
-			"value": "{{host}}",
-			"type": "string"
+			"value": "http://localhost:8080"
 		}
 	]
 }

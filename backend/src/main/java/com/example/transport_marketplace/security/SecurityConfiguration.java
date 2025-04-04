@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.security;
 
+import com.example.transport_marketplace.config.RateLimitConfig;
 import com.example.transport_marketplace.jwt.JwtAuthenticationFilter;
 import com.example.transport_marketplace.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,6 +38,8 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
     private final UserService userService;
+    @Autowired
+    private final RateLimitFilter rateLimitFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,7 +52,9 @@ public class SecurityConfiguration {
                                                             "http://localhost:8081/")); // frontend address
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-                    corsConfig.setExposedHeaders(List.of("X-Token-Expires"));
+                    corsConfig.setExposedHeaders(List.of(
+                            "X-Token-Expires",
+                            "X-Rate-Limit-Remaining"));
                     corsConfig.setAllowCredentials(true);
                     return corsConfig;
                 }))
@@ -78,6 +83,7 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider())
+                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(AbstractHttpConfigurer::disable);
 

@@ -12,9 +12,21 @@ import java.time.Duration;
 public class RateLimitConfig {
 
     @Bean
-    public Bucket bucket(){
-        Bandwidth limit = Bandwidth.classic(50, Refill.greedy(50, Duration.ofMinutes(1)));
-        return Bucket.builder().addLimit(limit).build();
+    public Bucket anonymousBucket(){
+        return Bucket.builder()
+                .addLimit(limit -> limit.capacity(50).refillGreedy(10, Duration.ofMinutes(1)))
+                .build();
+    }
+    @Bean
+    public Bucket userBucket(){
+        return Bucket.builder()
+                .addLimit(limit -> limit.capacity(200).refillGreedy(50, Duration.ofMinutes(1)))
+                .build();
     }
 
+    @Bean Bucket adminBucket(){
+        return Bucket.builder()
+                .addLimit(limit -> limit.capacity(500).refillGreedy(100, Duration.ofMinutes(1)))
+                .build();
+    }
 }

@@ -5,33 +5,54 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class RateLimitFilter implements Filter {
-    @Autowired
-    private final Bucket bucket;
+    private final Bucket anonymousBucket;
+    private final Bucket userBucket;
+    private final Bucket adminBucket;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (bucket.tryConsume(1)) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+
+        Bucket bucket = selectBucket(httpServletRequest);
+
+        if(bucket.tryConsume(1)){
+            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+            httpServletResponse.setHeader("X-Rate-Limit-Remaining", String.valueOf(bucket.getAvailableTokens()));
             chain.doFilter(request, response);
-        } else {
-            ((HttpServletResponse) response).setStatus(429);
+        }
+        else{
+            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+            httpServletResponse.setStatus(429);
+            httpServletResponse.setHeader("X-Rate-Limit-Retry-After-Seconds", "60");
+            response.getWriter().write("Слишком много запросов");
+        }
+    }
+
+    private Bucket selectBucket(HttpServletRequest request){
+        if(request.getRequestURI().startsWith("/api/auth/sign-in")) {
+            return anonymousBucket;
         }
 
-    }
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        // Initialization code if needed
-    }
-    @Override
-    public void destroy() {
-        // Cleanup code if needed
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && authentication.isAuthenticated()){
+            if(authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
+                return adminBucket;
+            }
+            return userBucket;
+        }
+        return anonymousBucket;
     }
 }
