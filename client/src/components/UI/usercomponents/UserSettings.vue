@@ -39,6 +39,16 @@
                 :class="{'disabled': !doPasswordMatch}"
                 >Подтвердить</button>
             </form>
+            <h2>Текущая сессия</h2>
+            <div v-for="device in userData.devices"
+            :key="device.id"
+            >
+                <div
+                class="useragent-container"
+                v-if="device.id === deviceId">
+                    {{ device.userAgent }}
+                </div>
+            </div>
             <h2>Сессии</h2>
             <div 
             class="useragent-container"
@@ -50,7 +60,8 @@
                     {{ device.userAgent }}
                 </div>
                 <div class="delete-item">
-                    <button type="submit"
+                    <button 
+                    @click="deleteSession(device.id)"
                     >Удалить</button>
                 </div>
             </div>
@@ -59,10 +70,14 @@
 </template>
 <script setup>
 import Notifications from '@/components/UI/Notifications.vue'
+import LogoutService from '@/services/LogoutService';
 import UserService from '@/services/UserService';
 import { ref, onMounted, computed } from 'vue';
 
 const userData = ref([])
+
+// const userSessionNow = ref(false)
+
 const fetchUserDevices = async () => {
     const response = await UserService.getUserAgent();
     userData.value = response.data;
@@ -90,9 +105,41 @@ const changePassword = async() => {
         showMessage("error", "Ошибка! Вы не смогли сменить пароль")
     }
 }
+const deviceId = ref();
+
+const checkSession = async() => {
+    try{
+        const response = await UserService.checkSession();  
+        deviceId.value = response.data.deviceId
+        console.log(deviceId.value);
+    }catch(e){
+        console.log(e)
+        showMessage("error", "Не получилось получить сессию")
+    }
+}
+const deleteSession = async(id) => {
+    checkSession();
+    try{
+        if(deviceId.value === id){
+            await UserService.deleteSession(id);
+            await LogoutService.logoutUser();
+            showMessage("success", "Сессия успешна удалена!")
+        }
+        else{
+            await UserService.deleteSession(id);
+            await LogoutService.logoutUser();
+            showMessage("success", "Сессия успешна удалена!")
+        }
+    }
+    catch(e){
+        console.log(e)
+        showMessage("error", "Ошибка! Не удалось завершить сессию")
+    }
+}
 
 onMounted(() => {
     fetchUserDevices();
+    checkSession();
 })
 const notifications = ref(null);
 

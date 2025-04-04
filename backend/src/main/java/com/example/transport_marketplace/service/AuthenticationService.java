@@ -3,6 +3,7 @@ package com.example.transport_marketplace.service;
 import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
 import com.example.transport_marketplace.dto.users.ChangePasswordRequest;
+import com.example.transport_marketplace.dto.users.sessions.UserDeviceNowResponse;
 import com.example.transport_marketplace.model.Device;
 import com.example.transport_marketplace.model.Token;
 import com.example.transport_marketplace.enums.Role;
@@ -12,12 +13,11 @@ import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.repo.DeviceRepository;
 import com.example.transport_marketplace.repo.RefreshTokenRepository;
 import com.example.transport_marketplace.repo.UserRepository;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,6 +40,7 @@ public class AuthenticationService {
     private final DeviceRepository deviceRepository;
     @Autowired
     private final RefreshTokenRepository refreshTokenRepository;
+
 
     public void signUp(SignUpRequest request){
 
@@ -129,12 +130,10 @@ public class AuthenticationService {
 
     public User changePasswordByUsername(String username, ChangePasswordRequest request){
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + username));
 
         String oldPassword = request.getOldPassword();
         String newPassword = request.getNewPassword();
-
-        String userDecodedPassword = user.getPassword();
 
         if(!passwordEncoder.matches(oldPassword, user.getPassword())){
             throw new RuntimeException("Старый пароль неправильный!");
@@ -142,6 +141,29 @@ public class AuthenticationService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         return userRepository.save(user);
+    }
+
+    public UserDeviceNowResponse checkSession(String username, HttpServletRequest request){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + username));
+
+        Device device = deviceRepository.findByUserAndUserAgent(user, request.getHeader("User-Agent"))
+                .orElseThrow(() -> new RuntimeException("Устройство не найдено"));
+
+        int deviceId = device.getId();
+
+        return new UserDeviceNowResponse(deviceId);
+    }
+
+    @Transactional
+    public void deleteSession(String username, HttpServletRequest request, int id){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+
+        Device device = deviceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Устройство не найдено"));
+        refreshTokenRepository.deleteByUserAndDevice(user, device);
+        deviceRepository.delete(device);
     }
 
     @Transactional

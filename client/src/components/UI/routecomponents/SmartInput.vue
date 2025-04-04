@@ -136,6 +136,7 @@ const searchRoutes = async () => {
       isLoading.value = false
   }
 }
+
 const clearFilter = () => {
   inputRouteFrom.value = ''
   inputRouteTo.value = ''

@@ -148,6 +148,35 @@ public class AuthController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @PostMapping("/session/delete/{id}")
+    public ResponseEntity<?> deleteSessionByAgent(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable int id,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        try {
+            String username = userDetails.getUsername();
+            authenticationService.deleteSession(username, request, id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось удалить сессию");
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/session/now")
+    public ResponseEntity<?> checkNow(
+            @AuthenticationPrincipal UserDetails userDetails,
+            HttpServletRequest request){
+        try {
+            String username = userDetails.getUsername();
+            return ResponseEntity.ok(authenticationService.checkSession(username, request));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось получить сессию");
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/change/password")
     public ResponseEntity<?> changePassword(
             @AuthenticationPrincipal UserDetails userDetails,
