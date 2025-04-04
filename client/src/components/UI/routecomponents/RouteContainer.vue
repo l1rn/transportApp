@@ -2,6 +2,8 @@
 import BookingService from '@/services/BookingService'
 import {defineProps, watch, ref, defineEmits} from 'vue'
 import Notifications from '@/components/UI/Notifications.vue';
+import { useLoginStore } from '@/stores/authStore';
+import { storeToRefs } from 'pinia';
 const props = defineProps({
   currentPage: Number,
   itemsPerPage: Number,
@@ -28,11 +30,12 @@ const routes = ref([...props.searchResults])
 watch(() => props.searchResults, (newResults) => {
   routes.value = [...newResults]
 })
-
+const loginStore = useLoginStore();
+const {logined} = storeToRefs(loginStore);
 
 const bookingRoute = async (routeId, event) => { 
   event.preventDefault();
-  if (!localStorage.getItem('accessToken')) {
+  if (!logined.value) {
     emit('require-auth');
     return;
   }

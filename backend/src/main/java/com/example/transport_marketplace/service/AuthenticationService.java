@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
+import java.util.Arrays;
 
 @Service
 @AllArgsConstructor
@@ -155,6 +156,18 @@ public class AuthenticationService {
         return new UserDeviceNowResponse(deviceId);
     }
 
+    public boolean checkForAuth(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        String accessToken = Arrays.stream(cookies)
+                .filter(c -> "accessToken".equals(c.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElseThrow(() -> new RuntimeException("Токена нет"));
+
+        return jwtService.validateToken(accessToken);
+    }
+
     @Transactional
     public void deleteSession(String username, HttpServletRequest request, int id){
         User user = userRepository.findByUsername(username)
@@ -171,6 +184,4 @@ public class AuthenticationService {
         refreshTokenRepository.findByToken(refreshToken)
                 .ifPresent(refreshTokenRepository::delete);
     }
-
-
 }

@@ -39,7 +39,9 @@
                 :class="{'disabled': !doPasswordMatch}"
                 >Подтвердить</button>
             </form>
-            <h2>Текущая сессия</h2>
+            <div>
+                <h2 class="subtitle-position1">Текущая сессия</h2>
+            </div>
             <div v-for="device in userData.devices"
             :key="device.id"
             >
@@ -49,7 +51,9 @@
                     {{ device.userAgent }}
                 </div>
             </div>
-            <h2>Сессии</h2>
+            <div>
+                <h2 class="subtitle-position2">Сессии</h2>
+            </div>
             <div 
             class="useragent-container"
             v-for="device in userData.devices" 
@@ -76,8 +80,6 @@ import { ref, onMounted, computed } from 'vue';
 
 const userData = ref([])
 
-// const userSessionNow = ref(false)
-
 const fetchUserDevices = async () => {
     const response = await UserService.getUserAgent();
     userData.value = response.data;
@@ -99,9 +101,13 @@ const changePassword = async() => {
     if(!doPasswordMatch.value) return;
     try{
         await UserService.changeUserPassword(passwordRequest.value);
+        passwordRequest.value = ''
+        confirmPassword.value = ''
         showMessage("success", "Пароль успешно изменен")
     } catch(e){
         console.log(e)
+        passwordRequest.value = ''
+        confirmPassword.value = ''
         showMessage("error", "Ошибка! Вы не смогли сменить пароль")
     }
 }
@@ -115,19 +121,24 @@ const checkSession = async() => {
     }catch(e){
         console.log(e)
         showMessage("error", "Не получилось получить сессию")
+        try{
+            await UserService.checkAuth();
+        }
+        catch{
+            await UserService.refreshIfCheckAuth()
+        }
     }
 }
 const deleteSession = async(id) => {
     checkSession();
     try{
-        if(deviceId.value === id){
+        if(deviceId.value === id) {
             await UserService.deleteSession(id);
             await LogoutService.logoutUser();
             showMessage("success", "Сессия успешна удалена!")
         }
         else{
             await UserService.deleteSession(id);
-            await LogoutService.logoutUser();
             showMessage("success", "Сессия успешна удалена!")
         }
     }

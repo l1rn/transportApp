@@ -11,7 +11,4 @@ public interface DeviceRepository extends JpaRepository<Device, Integer> {
     Optional<Device> findByDeviceFingerprintAndUser(String deviceFingerPrint, User user);
     List<Device> findByUser(User user);
     Optional<Device> findByUserAndUserAgent(User user, String userAgent);
-//    @Modifying
-//    @Query("DELETE FROM Device d WHERE d.user = :user AND d.refreshToken = :refreshToken")
-//    Device deleteDevice(@Param("user") User user, @Param("refreshToken")Token token);
 }

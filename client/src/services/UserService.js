@@ -13,5 +13,11 @@ class UserService{
     checkSession(){
         return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/auth/session/now`)
     }
+    checkAuth() {
+        return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/auth/check`)
+    }
+    refreshIfCheckAuth(){
+        return axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/refresh`)
+    }
 }
 export default new UserService()

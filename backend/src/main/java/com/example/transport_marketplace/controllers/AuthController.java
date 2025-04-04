@@ -188,6 +188,20 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/check")
+    public ResponseEntity<?> checkForAuth(HttpServletRequest request) {
+        try {
+            boolean auth = authenticationService.checkForAuth(request);
+            if(auth){
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Токен истек");
+            }
+        } catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Невозможно получить информацию о вас");
+        }
+    }
 
     private void setAuthCookies(HttpServletResponse response, String accessToken,
                                 String refreshToken){
