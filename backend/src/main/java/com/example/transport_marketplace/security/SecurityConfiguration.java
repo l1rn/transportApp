@@ -1,6 +1,5 @@
 package com.example.transport_marketplace.security;
 
-import com.example.transport_marketplace.config.RateLimitConfig;
 import com.example.transport_marketplace.jwt.JwtAuthenticationFilter;
 import com.example.transport_marketplace.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,10 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.Arrays;
 import java.util.List;
 @Configuration
 @EnableWebSecurity
