@@ -22,7 +22,7 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private DeviceRepositoryTest deviceRepositoryTest;
+    private DeviceRepository deviceRepository;
 
     @Test
     void testSaveAndFindByUsername(){
