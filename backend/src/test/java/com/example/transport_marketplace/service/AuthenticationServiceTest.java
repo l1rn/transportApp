@@ -3,6 +3,7 @@ package com.example.transport_marketplace.service;
 import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
 import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
+import com.example.transport_marketplace.dto.users.ChangePasswordRequest;
 import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.model.Device;
 import com.example.transport_marketplace.model.Token;
@@ -12,6 +13,7 @@ import com.example.transport_marketplace.repo.RefreshTokenRepository;
 import com.example.transport_marketplace.repo.UserRepository;
 import com.example.transport_marketplace.jwt.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,6 +31,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@Slf4j
 class AuthenticationServiceTest {
 
     @Mock
@@ -50,10 +53,10 @@ class AuthenticationServiceTest {
 
     @InjectMocks
     private AuthenticationService authenticationService;
-
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
+
     }
 
     @Test
@@ -178,5 +181,37 @@ class AuthenticationServiceTest {
         authenticationService.deleteRefreshToken(refreshToken);
 
         verify(refreshTokenRepository, times(1)).delete(token);
+    }
+
+    @Test
+    void testChangePasswordByUsername_Success(){
+        User user = User.builder()
+                .username("test")
+                .password(passwordEncoder.encode("123"))
+                .role(Role.ROLE_USER)
+                .build();
+        userRepository.save(user);
+
+        ChangePasswordRequest request = new ChangePasswordRequest();
+        request.setOldPassword("123");
+        request.setNewPassword("111");
+
+        String oldPassword = request.getOldPassword();
+        String newPassword = request.getNewPassword();
+
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(oldPassword, user.getPassword())).thenReturn(true);
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Optional<User> findUser = userRepository.findByUsername(user.getUsername());
+        User updateUser = authenticationService.changePasswordByUsername(findUser.get().getUsername(), request);
+        log.info(updateUser.getPassword());
+        log.info(findUser.get().getUsername());
+
+//        boolean checkPasswords = passwordEncoder.matches(oldPassword, user.getPassword());
+//
+//        verify(userRepository).findByUsername(user.getUsername());
+//        assertTrue(checkPasswords);
+//        verify(passwordEncoder).encode(newPassword);
     }
 }

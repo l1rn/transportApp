@@ -9,6 +9,7 @@ import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.service.UserService;
 import com.example.transport_marketplace.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +28,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Slf4j
 @ExtendWith(MockitoExtension.class)
 class UsersControllerTest {
 
@@ -83,6 +85,24 @@ class UsersControllerTest {
         mockMvc.perform(get("/api/users/me/role"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.role").value("ROLE_USER"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void deleteUserById_ShouldReturnNoContent() throws Exception {
+        User user = User.builder()
+                .id(100)
+                .username("123")
+                .password("123")
+                .role(Role.ROLE_USER)
+                .build();
+
+        when(userService.getById(100)).thenReturn(user);
+
+        mockMvc.perform(delete("/api/users/admin/delete/100"))
+                .andExpect(status().isNoContent());
+
+        verify(userService).delete(100);
     }
 
 }
