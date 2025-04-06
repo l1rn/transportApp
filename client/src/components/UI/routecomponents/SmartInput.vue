@@ -180,7 +180,7 @@ const clearFilter = () => {
             v-for="from in filteredFroms"
             :key="from"
             class="suggestion-item"
-            @click="selectFrom(from)"
+            @mousedown.prevent="selectFrom(from)"
           >
             {{ from }}
           </div>
@@ -215,11 +215,11 @@ const clearFilter = () => {
             v-else
             class="suggestions"
           >
-            <div
+             <div
               v-for="to in filteredTos"
               :key="to"
               class="suggestion-item"
-              @click="selectTo(to)"
+              @mousedown.prevent="selectTo(to)"
             >
               {{ to }}
             </div>
