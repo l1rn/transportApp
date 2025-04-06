@@ -4,30 +4,29 @@
   <div class="header-container-custom">
     <div class="main-header" :class="{ 'header-scrolled': isScrolled }">
       <div class="navbar-custom-header">
-        <div style="cursor: pointer;" class="brand" @click="$router.replace('/home')">
+        <div class="navbar-subheader">
+          <div style="cursor: pointer;" class="brand" @click="$router.replace('/home')">
           ololotravel
+          </div>
+          <div class="profile-header-custom">
+            <custom-profile :is-authenticated="isAuthenticated" @open-auth="showLoginForm = true" @logout="userLogout" />
+          </div>
         </div>
-        <div v-if="responses.success.login" class="success-message">
-          Успешный вход!
-        </div>
-        <div class="header-item">
+        
+        <div class="sub-header-items">
+          
+          <div class="header-item">
           <button @click="$router.push('/routes')">
             Все маршруты
           </button>
+          </div>
+          <div class="header-item">
+            <button @click="$router.push('/routes/search')">
+              Поиск маршрутов
+            </button>
+          </div>
         </div>
-        <div v-if="hasRoleAdmin">
-          <button @click="$router.push('/panel/admin')">
-            Модерирование
-          </button>
-        </div>
-        <div class="header-item">
-          <button @click="$router.push('/routes/search')">
-            Поиск маршрутов
-          </button>
-        </div>
-        <div class="profile-header-custom">
-          <custom-profile :is-authenticated="isAuthenticated" @open-auth="showLoginForm = true" @logout="userLogout" />
-        </div>
+       
       </div>
       <div class="header-title-container">
         OloloTravel — с комфортом в любую точку мира.
@@ -36,10 +35,15 @@
         <span>🚂</span>
       </div>
     </div>
-    <div class="sub-header-container" :class="{ 'sub-header-fixed': isScrolled }">
-      <smart-input @transport-selected="handleTransportSelect" @search-results="handleResults"
+    <div class="search-container">
+      <div class="sub-header-container" :class="{ 'sub-header-fixed': isScrolled }">
+        <smart-input 
+        @transport-selected="handleTransportSelect" 
+        @search-results="handleResults"
         @search-start="showLoading" />
+      </div>
     </div>
+   
   </div>
 
   <!-- auth form -->

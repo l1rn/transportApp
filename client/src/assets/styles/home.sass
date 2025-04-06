@@ -15,12 +15,8 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 *
     box-sizing: border-box
     transition: $transition
-    font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 
-.header-item
-    font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-    button
-        color: #ffffff
 
 .header-container-custom
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
@@ -53,8 +49,32 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
         &::after
             content: '🚀'
             top: -1.2rem
-
             position: absolute
+    .navbar-subheader
+        display: flex
+        justify-content: space-around
+        align-items: center
+        width: 70%
+
+.sub-header-items
+    display: flex
+    justify-content: space-around
+    align-items: center
+    width: 70%
+    button
+        padding: 0.6rem 1.5rem 
+        background: linear-gradient(35deg, darken($secondary, 5%), darken($secondary, 5%))
+        border: 0
+        border-radius: 16px
+        font-size: 17px
+        font-weight: 600
+        box-shadow: 0 0 8px rgba(0,0,0, 0.15)  
+        transition: all 0.3s ease
+        color: #ffffff
+        white-space: nowrap
+        &:hover
+            transform: translateY(1px)
+            box-shadow: 0 0 16px rgba(0,0,0, 0.21) 
 .custom-container
     min-height: 100vh
     display: flex
@@ -89,19 +109,6 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
     &::before
         background-image: url('data:image/svg+xml;utf8,<svg ...>⚠</svg>')
 
-@media (max-width: 768px)
-    .navbar-custom
-        padding: 1rem
-        height: auto
-
-    .search-section
-        margin: 1rem
-        padding: 1.5rem
-
-    .search-button-custom
-        width: 100%
-        margin-top: 1rem
-
 .main-header
     position: relative
     z-index: 1000
@@ -111,37 +118,34 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
     &.header-hidden
         transform: translateY(-100%)
         opacity: 0
-    button
-        padding: 0.75rem 1.7rem 
-        background: linear-gradient(35deg, darken($secondary, 5%), darken($secondary, 5%))
-        border: 0
-        border-radius: 16px
-        font-size: 17px
-        font-weight: 600
-        font-family: Montserrat
-        box-shadow: 0 0 8px rgba(0,0,0, 0.15)  
-        transition: all 0.3s ease
-        &:hover
-            transform: translateY(1px)
-            box-shadow: 0 0 16px rgba(0,0,0, 0.21) 
+    
 .navbar-custom-header
     display: flex
     place-content: center
     flex-direction: row
     justify-content: space-evenly
     align-items: center
+.search-container
+    max-width: 1200px
+    position: relative
+    margin: 0 auto
+    top: -200px
+    display: flex
+    justify-content: center
+    align-items: center
 .sub-header-container
     box-shadow: 0 2px 15px rgba(0,0,0,0.1)
     position: absolute
     top: 200px
-    margin: 0 30rem
     transition: all 0.4s ease
+    padding: 0.3rem
     z-index: 999
+    width: 80%
     border-radius: 24px
 
     &.sub-header-fixed
         position: fixed
-        top: 0
+        top: 10px
         animation: slideDown 1.5s ease
         box-shadow: 0 2px 15px rgba(0,0,0,0.1)
         background: #F7F9FB
@@ -160,3 +164,30 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
     to
         transform: translateY(0)
         opacity: 1
+
+@media (max-width: 768px)
+    .navbar-custom
+        padding: 1rem
+        height: auto
+
+    .search-section
+        margin: 1rem
+        padding: 1.5rem
+
+    .search-button-custom
+        width: 100%
+        margin-top: 1rem
+
+    .sub-header-container
+        top: 210px
+
+    .navbar-custom-header
+        flex-direction: column
+        gap: 1rem
+        .sub-header-items
+            display: flex
+            gap: 3rem
+
+    .main-header
+        button
+            font-size: 16px

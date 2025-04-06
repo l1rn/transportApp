@@ -16,13 +16,18 @@ $shadow-focus: rgba(37, 99, 235, 0.4)
     background: $input-bg url("@/assets/datepicker.png") no-repeat right 0.75rem center
     background-size: 16px
     font-size: 16px
-    padding: 0.4rem 0 
+    width: 100%
+    padding: 0.4rem 0.5rem
     border: 2px solid $input-border
     border-radius: $border-radius
     outline: none
     cursor: pointer
     transition: all 0.25s ease-in-out
     appearance: none
+    -moz-appearance: textfield
+    &::-moz-focus-inner
+      border: 0
+      opacity: 0
 
     &::-webkit-calendar-picker-indicator
       position: absolute
