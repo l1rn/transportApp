@@ -1,56 +1,60 @@
-<script>
-import BookingContainer from "@/components/bookings/BookingContainer.vue";
-import BookingService from "@/services/BookingService";
+<script setup>
+import UserService from "@/services/UserService";
 
-export default {
-  name: 'BookingCard',
-  components: {BookingContainer},
-  data(){
-    return{
-      bookings: [],
-      isLoading: false,
-      cancelingIds: new Set(),
+import { ref, onMounted } from 'vue';
+import BookingContainer from './BookingContainer.vue';
+import BookingService from '@/services/BookingService';
+import router from "@/routers/router";
+
+const bookings = ref([]);
+const isLoading = ref(false);
+const cancelingIds = ref(new Set());
+
+const getBookings = async () => {
+  isLoading.value = true;
+  try {
+    const response = await BookingService.getMyBooking();
+    bookings.value = response.data;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const cancelBooking = async (bookingId) => {
+  cancelingIds.value.add(bookingId);
+  try {
+    await BookingService.cancelMyBooking(bookingId);
+    bookings.value = bookings.value.map(b => {
+      if (b.id === bookingId) {
+        return { ...b, status: 'CANCELED' };
+      }
+      return b;
+    });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    cancelingIds.value.delete(bookingId);
+  }
+};
+
+const checkAuth = async() => {
+  try{
+    await UserService.checkAuth();
+  } catch{
+    try{
+      await UserService.refreshIfCheckAuth()
+    }catch{
+      router.push('/');
     }
-  },
-  created(){
-    this.getBookings();
-  },
-  methods: {
-    async getBookings(){
-      this.isLoading = true;
-      try {
-        const response = await BookingService.getMyBooking();
-        this.bookings = response.data;
-      }
-      catch(error){
-        console.error(error);
-      }
-      finally{
-        this.isLoading = false;
-      }
-    },
-    async cancelBooking(bookingId){
-      this.cancelingIds.add(bookingId);
-      try {
-        await BookingService.cancelMyBooking(bookingId);
-        this.bookings = this.bookings.map(b => {
-          if (b.id === bookingId) {
-            b.status = 'CANCELED';
-          }
-          return b;
-        });
-      } catch(error){
-        console.error(error);
-      }
-      finally {
-        this.cancelingIds.delete(bookingId);
-      }
   }
 }
-
-}
+onMounted(() => {
+  checkAuth(),
+  getBookings()
+})
 </script>
-
 <template>
   <div class="d-flex flex-column align-items-center">
     <BookingContainer

@@ -9,6 +9,7 @@ export const useLoginStore = defineStore('auth', () => {
     function logout() {
         logined.value = false;
     }
+    
 
     return {logined, auth, logout}
 

@@ -11,4 +11,5 @@ public interface DeviceRepository extends JpaRepository<Device, Integer> {
     Optional<Device> findByDeviceFingerprintAndUser(String deviceFingerPrint, User user);
     List<Device> findByUser(User user);
     Optional<Device> findByUserAndUserAgent(User user, String userAgent);
+    Optional<Device> findByUserAgent(String userAgent);
 }

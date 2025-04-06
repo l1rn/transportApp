@@ -17,6 +17,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +26,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AuthenticationService {
@@ -164,7 +167,25 @@ public class AuthenticationService {
                 .findFirst()
                 .map(Cookie::getValue)
                 .orElseThrow(() -> new RuntimeException("Токена нет"));
+        if (!jwtService.validateToken(accessToken)) {
+            throw new RuntimeException("Токен недействителей");
+        }
 
+        String userAgent = request.getHeader("User-Agent");
+        if (userAgent == null || userAgent.isEmpty()) {
+            throw new RuntimeException("Нету устройства");
+        }
+
+        List<Integer> devices = jwtService.getDevicesFromToken(accessToken);
+
+        Device device = deviceRepository.findByUserAgent(userAgent)
+                        .orElseThrow(() -> new RuntimeException("Устройство не найден"));
+
+        log.info(String.valueOf(device.getId()));
+        log.info(devices.toString());
+        if(!devices.contains(device.getId())){
+            throw new RuntimeException("Устройства больше нет в сессии");
+        }
         return jwtService.validateToken(accessToken);
     }
 
