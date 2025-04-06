@@ -149,7 +149,8 @@ const clearFilter = () => {
 <template>
 <div class="search-sidebar">
   <div class="main-container">
-    <div class="input-group">
+    <div class="input-wrapper">
+      <div class="input-group">
       <input
         v-model="inputRouteFrom"
         type="text"
@@ -187,60 +188,61 @@ const clearFilter = () => {
       </div>
     </div>
 
-    <div class="input-group">
-      <input
-        ref="toInput"
-        v-model="inputRouteTo"
-        class="b-form-input ms-1"
-        placeholder="Куда"
-        type="text"
-        @focus="handleToFocus"
-        @blur="handleToBlur"
-      >
-      <div v-if="showToSuggestions">
-        <div
-          v-if="isLoading"
-          class="loading"
+      <div class="input-group">
+        <input
+          ref="toInput"
+          v-model="inputRouteTo"
+          class="b-form-input"
+          placeholder="Куда"
+          type="text"
+          @focus="handleToFocus"
+          @blur="handleToBlur"
         >
-          Загрузка...
-        </div>
-        <div
-          v-else-if="error"
-          class="error"
-        >
-          {{ error }}
-        </div>
-        <div
-          v-else
-          class="suggestions"
-        >
+        <div v-if="showToSuggestions">
           <div
-            v-for="to in filteredTos"
-            :key="to"
-            class="suggestion-item"
-            @click="selectTo(to)"
+            v-if="isLoading"
+            class="loading"
           >
-            {{ to }}
+            Загрузка...
+          </div>
+          <div
+            v-else-if="error"
+            class="error"
+          >
+            {{ error }}
+          </div>
+          <div
+            v-else
+            class="suggestions"
+          >
+            <div
+              v-for="to in filteredTos"
+              :key="to"
+              class="suggestion-item"
+              @click="selectTo(to)"
+            >
+              {{ to }}
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-
-    <div
-      class="date-input-wrapper"
-      :class="{ 'has-value': selectedDate}"
-    >
-      <input
-        id="date-input"
-        v-model="selectedDate"
-        type="date"
-        style="background-color: #f8fafc"
-        @change="updatePlaceholder"
-        @input="updatePlaceholder"
+    
+    <div class="input-wrapper">
+      <div
+        class="date-input-wrapper"
+        :class="{ 'has-value': selectedDate}"
       >
-      <span class="custom-placeholder">Когда</span>
-    </div>
+        <input
+          id="date-input"
+          v-model="selectedDate"
+          type="date"
+          style="background-color: #f8fafc"
+          @change="updatePlaceholder"
+          @input="updatePlaceholder"
+        >
+        <span class="custom-placeholder">Когда</span>
+      </div>
 
 
     <div class="transport-wrapper">
@@ -255,44 +257,51 @@ const clearFilter = () => {
         <span class="arrow">▼</span>
       </div>
 
-      <transition name="slide-fade">
-        <div
-          v-if="isOpen"
-          class="transport-menu"
-        >
+        <transition name="slide-fade">
           <div
-            v-for="transport in transports"
-            :key="transport.value"
-            class="transport-item"
-            @click="selectTransport(transport.value)"
+            v-if="isOpen"
+            class="transport-menu"
           >
-            <span class="emoji">{{ transport.emoji }}</span>
-            {{ transport.label }}
+            <div
+              v-for="transport in transports"
+              :key="transport.value"
+              class="transport-item"
+              @click="selectTransport(transport.value)"
+            >
+              <span class="emoji">{{ transport.emoji }}</span>
+              {{ transport.label }}
+            </div>
           </div>
-        </div>
-      </transition>
+        </transition>
+      </div>
     </div>
-
-    <button 
-      class="search-button-custom btn"
-      :class="{'opacity-50': isLoading}"
-      :disabled="isLoading"
-      @click="searchRoutes"
-    >
-      <span v-if="!isLoading">Поиск</span>
-      <span v-else>⌛</span>
-      <span class="search-icon">🔍</span>
-    </button>
+    <div class="search-wrapper">
+     <div class="sub-search-wrapper">
+      <button 
+        class="search-button-custom"
+        :class="{'opacity-50': isLoading}"
+        :disabled="isLoading"
+        @click="searchRoutes"
+      >
+        <span v-if="!isLoading">Поиск</span>
+        <span v-else>⌛</span>
+        <span class="search-icon">🔍</span>
+      </button>
+      <button
+        @click="clearFilter"
+        class="clear-wrapper">
+        <span
+        class="custom-clear-button"
+        >✕</span>
+      </button>
+     </div>
+      <div class="sub-search-container">
+        <label>Транспорт: {{ selectedTransport }}{{ selectedEmoji }}</label>
+      </div>
+    </div>
   </div>
-  <div class="sub-search-container">
-    <label>Выбран транспорт: {{ selectedTransport }}{{ selectedEmoji }}</label>
-    <button
-      class="custom-clear-button"
-      @click="clearFilter"
-    >
-      Очистить фильтр
-    </button>
-  </div>
+  
+  
 </div>
 </template>
 

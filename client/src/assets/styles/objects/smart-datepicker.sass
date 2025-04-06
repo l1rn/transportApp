@@ -15,9 +15,9 @@ $shadow-focus: rgba(37, 99, 235, 0.4)
   input[type="date"]
     background: $input-bg url("@/assets/datepicker.png") no-repeat right 0.75rem center
     background-size: 16px
-    font-size: 16px
+    font-size: 18px
     width: 100%
-    padding: 0.4rem 0.5rem
+    padding: 0.4rem 1rem
     border: 2px solid $input-border
     border-radius: $border-radius
     outline: none
@@ -42,7 +42,6 @@ $shadow-focus: rgba(37, 99, 235, 0.4)
     &:hover
       border-color: $input-focus
       box-shadow: 0 0 8px $shadow-focus
-
 input[type="date"]:not(:placeholder-shown)
   color: #1e293b
 
@@ -61,6 +60,6 @@ input[type="date"]:placeholder-shown
 
 input[type="date"]:focus + .custom-placeholder,
 input[type="date"]:not(:placeholder-shown) + .custom-placeholder
-  transform: translateY(-28px)
-  font-size: 17px
-  color: #ff9203
+  transform: translateY(-30px)
+  font-size: 16px
+  color: #eb911b
