@@ -44,4 +44,4 @@ jobs:
       - name: Run k6 tests
         uses: grafana/k6-action@v0.3.0
         with:
-          filename: tests/load-test.js
+          filename: tests/load-test-github.js

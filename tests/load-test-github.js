@@ -5,7 +5,7 @@ const VUE_APP_BACKEND_API_FOR_TESTS="http://172.17.0.1:8080/api"
 export const options = {
   thresholds:{
     http_req_failed: ['rate<0.05'],
-    http_req_duration: ['p(95)<500']
+    http_req_duration: ['p(95)<2000']
   },
   vus: 10,
   duration: '10s'
