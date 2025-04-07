@@ -11,6 +11,7 @@ import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import java.time.Duration;
@@ -18,10 +19,15 @@ import java.util.function.Supplier;
 
 @Configuration
 public class RedisConfig {
+    @Value("${spring.redis.host}")
+    private String redisHost;
+    @Value("${spring.redis.port}")
+    private int redisPort;
+
     private RedisClient redisClient(){
         return RedisClient.create(RedisURI.builder()
-                .withHost("localhost")
-                .withPort(6379)
+                .withHost(redisHost)
+                .withPort(redisPort)
                 .withSsl(false)
                 .build());
     }

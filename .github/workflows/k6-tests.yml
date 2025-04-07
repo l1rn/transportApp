@@ -4,31 +4,34 @@ on: [push, pull_request]
 jobs:
   load-test:
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 3
     
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - uses: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: 21
-        distribution: 'temurin'
-      
-    - name: Build and Start
-      run: |
-        ./mvnw clean package -DskipTests
-        java -jar target/app.jar --spring.profiles.active = test &
-        sleep 10
+      - name: Build Docker image
+        env: 
+          SPRING_REDIS_HOST: localhost
+        run: |
+          docker-compose up -d
+          ./mvnw dev
 
-    - name: Verify server is ready
-      run: | 
-        until curl -s http://localhost:8080/api/health; do
-          sleep 1
-        done
-    
-    - name: Run k6 tests
-      uses: grafana/k6-actions@v0.3.0
-      with:
-        filename: tests/load-test.js
+      - name: Verify server is ready
+        run: | 
+          until curl -s http://localhost:8080/api/health; do
+            sleep 1
+          done
       
-    - name: 
+      - name: Run k6 tests
+        uses: grafana/k6-action@v0.3.0
+        with:
+          filename: tests/load-test.js
+
+      - name: Cleanup
+        if: always()  
+        run: docker rm -f transport-app
