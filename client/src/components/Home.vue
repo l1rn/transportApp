@@ -12,9 +12,14 @@
             <custom-profile :is-authenticated="isAuthenticated" @open-auth="showLoginForm = true" @logout="userLogout" />
           </div>
         </div>
-        
-        <div class="sub-header-items">
-          
+      </div>
+      <div class="header-title-container">
+        OloloTravel — с комфортом в любую точку мира.
+        <span>🚌</span>
+        <span>✈️</span>
+        <span>🚂</span>
+      </div>
+      <div class="sub-header-items">
           <div class="header-item">
           <button @click="$router.push('/routes')">
             Все маршруты
@@ -26,14 +31,6 @@
             </button>
           </div>
         </div>
-       
-      </div>
-      <div class="header-title-container">
-        OloloTravel — с комфортом в любую точку мира.
-        <span>🚌</span>
-        <span>✈️</span>
-        <span>🚂</span>
-      </div>
     </div>
     <div class="search-container">
       <div class="sub-header-container" :class="{ 'sub-header-fixed': isScrolled }">

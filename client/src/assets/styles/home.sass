@@ -30,8 +30,8 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 
 .header-title-container
     font-family: $font-family-base
-    margin-top: 1rem
-    font-size: 1.2rem
+    margin-top: .75rem
+    font-size: 1.8rem
     color: $text
     display: flex
     justify-content: center
@@ -57,10 +57,11 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
         width: 70%
 
 .sub-header-items
+    margin-top: 1rem
     display: flex
-    justify-content: space-around
     align-items: center
-    width: 70%
+    justify-content: center
+    gap: 5rem
     button
         padding: 0.6rem 1.5rem 
         background: linear-gradient(35deg, darken($secondary, 5%), darken($secondary, 5%))
@@ -74,10 +75,12 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
         &:hover
             transform: translateY(1px)
             box-shadow: 0 0 16px rgba(0,0,0, 0.21) 
+
 .custom-container
-    min-height: 100vh
+    min-height: 120vh
     display: flex
     flex-direction: column
+
 .success-message, .error-message
     padding: 1rem 1rem
     border-radius: 16px
@@ -121,9 +124,10 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 .navbar-custom-header
     display: flex
     place-content: center
-    flex-direction: row
+    flex-direction: column
     justify-content: space-evenly
     align-items: center
+
 .search-container
     max-width: 1200px
     position: relative
@@ -132,6 +136,7 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
     display: flex
     justify-content: center
     align-items: center
+
 .sub-header-container
     box-shadow: 0 2px 15px rgba(0,0,0,0.1)
     position: absolute
@@ -140,6 +145,7 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
     padding: 0.3rem
     z-index: 999
     width: 80%
+    max-width: 1200px
     border-radius: 24px
 
     &.sub-header-fixed
@@ -166,6 +172,8 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 
 
 @media (max-width: 768px)
+    .header-title-container
+        font-size: 1rem
     .navbar-custom
         padding: 1rem
         height: auto
@@ -185,7 +193,6 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
         flex-direction: column
         gap: 1rem
         .sub-header-items
-            display: flex
             gap: 3rem
 
     .main-header

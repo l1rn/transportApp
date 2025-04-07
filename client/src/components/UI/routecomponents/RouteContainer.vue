@@ -63,6 +63,7 @@ const getStatus = (seats) => {
 
 <template>
   <Notifications ref="notifications"></Notifications>
+  <div class="space"></div>
   <div
     v-for="route in searchResults"
     :key="route.id"

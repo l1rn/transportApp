@@ -76,15 +76,12 @@
 import Notifications from '@/components/UI/Notifications.vue'
 import LogoutService from '@/services/LogoutService';
 import UserService from '@/services/UserService';
+import { useDataSource } from '@/stores/userDataStore';
+import { storeToRefs } from 'pinia';
 import { ref, onMounted, computed } from 'vue';
 
-const userData = ref([])
-
-const fetchUserDevices = async () => {
-    const response = await UserService.getUserAgent();
-    userData.value = response.data;
-    console.log(userData.value)
-}
+const userStore = useDataSource();
+const { userData } = storeToRefs(userStore)
 
 const passwordRequest = ref({
     oldPassword: '',
@@ -111,6 +108,7 @@ const changePassword = async() => {
         showMessage("error", "Ошибка! Вы не смогли сменить пароль")
     }
 }
+
 const deviceId = ref();
 
 const checkSession = async() => {
@@ -149,7 +147,6 @@ const deleteSession = async(id) => {
 }
 
 onMounted(() => {
-    fetchUserDevices();
     checkSession();
 })
 const notifications = ref(null);

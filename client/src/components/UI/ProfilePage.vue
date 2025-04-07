@@ -3,7 +3,7 @@
     <BackbuttonToHome />
     <div class="header-profile">
       <div class="header-profile__title">
-        <h1>Профиль</h1>
+        <h1>Профиль - "{{ userData.username }}"</h1>
       </div>
     </div>
 
@@ -57,8 +57,14 @@ import AdminPanel from "../admin/AdminPanel.vue";
 import { useRoleStore } from "@/stores/roleStore";
 
 const roleStore = useRoleStore();
+const userStore = useDataSource();
 
+const { userData } = storeToRefs(userStore);
 let { currentRole } = storeToRefs(roleStore);
+
+const getDevices = async() => {
+  await userStore.getUserData()
+}
 
 const checkTokenInProfile = async() => {
   try{
@@ -86,6 +92,7 @@ watch(hasRoleAdmin, (newValue) => {
 onMounted(() =>{
   checkTokenInProfile();
   checkAdminRole();
+  getDevices()
 })
 onUnmounted(() => {
   hasRoleAdmin.value = false
@@ -95,6 +102,7 @@ onUnmounted(() => {
 import BookingCard from "@/components/bookings/BookingCard.vue";
 import BookingService from "@/services/BookingService";
 import { storeToRefs } from "pinia";
+import { useDataSource } from '@/stores/userDataStore';
 export default {
   name: 'AppProfile',
   components: {
