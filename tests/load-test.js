@@ -8,7 +8,7 @@ export const options = {
     http_req_duration: ['p(95)<500']
   },
   vus: 10,
-  duration: '20s'
+  duration: '10s'
 };
 
 export default function () {
