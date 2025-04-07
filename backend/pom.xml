@@ -90,10 +90,23 @@
 		<!-- optimization -->
 		<dependency>
 			<groupId>com.bucket4j</groupId>
-			<artifactId>bucket4j_jdk17-core</artifactId>
-			<version>8.14.0</version>
+			<artifactId>bucket4j-redis</artifactId>
+			<version>8.10.0</version>
 		</dependency>
-			<!-- redis and cache -->
+
+		<dependency>
+			<groupId>com.bucket4j</groupId>
+			<artifactId>bucket4j-core</artifactId>
+			<version>8.10.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.lettuce</groupId>
+			<artifactId>lettuce-core</artifactId>
+			<version>6.4.1.RELEASE</version>
+		</dependency>
+
+		<!-- redis and cache -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>

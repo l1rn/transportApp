@@ -35,7 +35,7 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
     private final UserService userService;
-    @Autowired
+
     private final RateLimitFilter rateLimitFilter;
 
     @Bean

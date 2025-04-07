@@ -1,0 +1,14 @@
+name: k6 Load Test
+on: [push, pull_request]
+
+jobs:
+  k6-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run k6 test
+        uses: grafana/k6-action@v0.3.0
+        with:
+          filename: tests/load-test.js 
+          flags: --out prometheus=http://localhost:9090/api/v1/write

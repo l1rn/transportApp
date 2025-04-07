@@ -7,7 +7,6 @@ import Datepicker from '@vuepic/vue-datepicker';
 import router from '@/routers/router'
 
 import '@/assets/styles/global.sass';
-import '@vuepic/vue-datepicker/dist/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
