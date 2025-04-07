@@ -21,7 +21,7 @@ jobs:
         env: 
           SPRING_REDIS_HOST: localhost
         run: |
-          docker-compose up -d
+          docker compose up -d
           ./mvnw dev
 
       - name: Verify Redis
