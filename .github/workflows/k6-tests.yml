@@ -7,7 +7,7 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
-        
+
     services:
       redis:
         image: redis:7-alpine
@@ -21,7 +21,6 @@ jobs:
       - name: Build app
         env:
           SPRING_REDIS_HOST: localhost
-          SPRING_PROFILES_ACTIVE: test
         run: |
           ./mvnw clean package -DskipTests
 
