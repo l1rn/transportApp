@@ -1,33 +1,13 @@
-name: k6 Full Pipeline
-on: 
-  push:
-    branches: [main]
-  schedule:
-    - cron: "0 0 * * *"
+name: k6 Load Test
+on: [push, pull_request]
 
 jobs:
-  load-test:
+  k6-test:
     runs-on: ubuntu-latest
-    services:
-      prometheus:
-        image: prom/prometheus
-        ports:
-          - 9090:9090
-
     steps:
       - uses: actions/checkout@v4
       
       - name: Run k6 test
         uses: grafana/k6-action@v0.3.0
-        env:
-          API_URL: ${{ secrets.API_URL }}
         with:
-          filename: tests/load-test.js
-          flags: --summary-export=results.json
-
-      - name: Upload results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: k6-results
-          path: results.json
+          filename: tests/load-test.js 
