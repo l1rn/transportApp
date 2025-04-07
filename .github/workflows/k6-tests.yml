@@ -2,12 +2,33 @@ name: k6 Load Test
 on: [push, pull_request]
 
 jobs:
-  k6-test:
-    runs-on: ubuntu-latest
-    steps:
+  load-test:
+     runs-on: ubuntu-latest
+     
+     steps:
       - uses: actions/checkout@v4
-      
-      - name: Run k6 test
-        uses: grafana/k6-action@v0.3.0
+
+      - uses: Set up JDK 21
+        uses: actions/setup-java@v4
         with:
-          filename: tests/load-test.js 
+          java-version: 21
+          distribution: 'temurin'
+        
+      - name: Build and Start
+        run: |
+          ./mvnw clean package -DskipTests
+          java -jar target/app.jar --spring.profiles.active = test &
+          sleep 10
+
+      - name: Verify server is ready
+        run: | 
+          until curl -s http://localhost:8080/api/health; do
+            sleep 1
+          done
+      
+      - name: Run k6 tests
+        uses: grafana/k6-actions@v0.3.0
+        with:
+          filename: tests/load-test.js
+        
+      - name: 
