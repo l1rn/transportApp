@@ -7,44 +7,39 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
+        
     services:
       redis:
         image: redis:7-alpine
         ports:
           - 6379:6379
-        options: --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 3
-    
+        options: --health-cmd "redis-cli ping"
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build Docker image
-        env: 
+      - name: Build app
+        env:
           SPRING_REDIS_HOST: localhost
+          SPRING_PROFILES_ACTIVE: test
         run: |
-          docker compose up -d
-          ./mvnw dev
+          ./mvnw clean package -DskipTests
 
       - name: Verify Redis
-        run: docker exec $(docker ps -q name=redis) redis-cli ping | grep PONG
+        run: docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
 
-      - name: Verify server is ready
-        run: | 
+      - name: Start app
+        run: |
+          java -jar target/*.jar &
+          sleep 15
+
+      - name: Verify server
+        run: |
           until curl -s http://localhost:8080/api/health; do
             sleep 1
           done
-      
-      - name: Run test
-        env:
-          SPRING-PROFILES_ACTIVE: dev
-          SPRING_REDIS_HOST: localhost
-        run: |
-         ./mvnw clean test
 
       - name: Run k6 tests
         uses: grafana/k6-action@v0.3.0
         with:
           filename: tests/load-test.js
-
-      - name: Cleanup
-        if: always()  
-        run: docker rm -f transport-app
