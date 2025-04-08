@@ -26,6 +26,7 @@ jobs:
       - name: Build
         run: |
           ./mvnw clean package -DskipTests
+          
       - name: Verify Redis
         run: docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
 
