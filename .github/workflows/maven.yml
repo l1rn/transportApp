@@ -12,7 +12,7 @@ jobs:
         java: [21]
 
     services:
-      redis: 
+      redis:
         image: redis:latest
         ports:
           - 6379:6379
@@ -20,7 +20,8 @@ jobs:
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 10
+
     steps:
       - uses: actions/checkout@v4
 
@@ -36,15 +37,10 @@ jobs:
           java-version: ${{ matrix.java }}
           distribution: temurin
 
-      - name: Start backend server
-        run: |
-          nohup java -jar backend/target/*.jar &
-        working-directory: .
-
       - name: Build and test
         run: mvn -B verify -Ptest-profile "-Dspring.profiles.active=test-profile"
         working-directory: ./backend
         env:
           SPRING_PROFILES_ACTIVE: test-profile
-          SPRING_REDIS_HOST: localhost
+          SPRING_REDIS_HOST: redis  
           SPRING_REDIS_PORT: 6379
