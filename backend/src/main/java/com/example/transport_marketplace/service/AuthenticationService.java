@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -161,15 +162,16 @@ public class AuthenticationService {
 
     public boolean checkForAuth(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
-
+        if (cookies == null) {
+            log.error("No cookies in request!");
+        } else {
+            Arrays.stream(cookies).forEach(c -> log.info("Cookie: " + c.getName() + "=" + c.getValue()));
+        }
         String accessToken = Arrays.stream(cookies)
                 .filter(c -> "accessToken".equals(c.getName()))
                 .findFirst()
                 .map(Cookie::getValue)
                 .orElseThrow(() -> new RuntimeException("Токена нет"));
-        if (!jwtService.validateToken(accessToken)) {
-            throw new RuntimeException("Токен недействителей");
-        }
 
         String userAgent = request.getHeader("User-Agent");
         if (userAgent == null || userAgent.isEmpty()) {
@@ -178,11 +180,15 @@ public class AuthenticationService {
 
         List<Integer> devices = jwtService.getDevicesFromToken(accessToken);
 
-        Device device = deviceRepository.findByUserAgent(userAgent)
+        String username = jwtService.getUsernameFromToken(accessToken);
+        Optional<User> user = userRepository.findByUsername(username);
+
+        Device device = (Device) deviceRepository.findByUserAndUserAgent(user, userAgent)
                         .orElseThrow(() -> new RuntimeException("Устройство не найден"));
 
         log.info(String.valueOf(device.getId()));
         log.info(devices.toString());
+
         if(!devices.contains(device.getId())){
             throw new RuntimeException("Устройства больше нет в сессии");
         }

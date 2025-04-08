@@ -27,22 +27,23 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ matrix.java }}
+          java-version: 21
           distribution: temurin
 
       - name: Cache Maven
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
-          key: maven-${{ runner.os }}-${{ hashFiles('backend/pom.xml') }}
+          key: maven-21-${{ hashFiles('backend/pom.xml') }}
 
-      - name: Build
-        run: |
-          ./mvnw clean package -DskipTests
+      - name: Build and test
+        run: mvn -B verify -Ptest-profile "-Dspring.profiles.active=test-profile"
+        env:
+          SPRING_PROFILES_ACTIVE: test-profile
 
       - name: Verify redis
         run: |
-          timeout 30 bash -c 'while !redis-cli -h redis -p 6379 ping; do sleep 2; done'
+          docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
         shell: bash
 
       - name: Start app
@@ -54,8 +55,3 @@ jobs:
           until curl -s http://localhost:8080/api/health; do
             sleep 1
           done
-
-      - name: Build and test
-        run: mvn -B verify -Ptest-profile "-Dspring.profiles.active=test-profile"
-        env:
-          SPRING_PROFILES_ACTIVE: test-profile

@@ -188,7 +188,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/check")
     public ResponseEntity<?> checkForAuth(HttpServletRequest request) {
         try {
@@ -199,7 +198,7 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Токен истек");
             }
         } catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Невозможно получить информацию о вас");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Невозможно получить информацию о вас");
         }
     }
 
