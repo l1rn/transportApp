@@ -44,12 +44,12 @@ jobs:
       - name: Verify redis
         run: |
           docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
-        shell: bash
 
       - name: Start app
         run: |
           java -jar target/*.jar &
           sleep 15
+          
       - name: Verify server
         run: |
           until curl -s http://localhost:8080/api/health; do

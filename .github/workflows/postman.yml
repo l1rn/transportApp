@@ -5,9 +5,37 @@ on: push
 jobs:
   automated-api-tests:
     runs-on: ubuntu-latest
+    defaults:
+      run: 
+        working-directory: './backend'
+    
+    services:
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: --health-cmd "redis-cli ping"
+    
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          ditribution: temurin
+
+      - name: Build and start
+        run: |
+          mvn clean package -DskipTests -P dev &&
+          mvn spring-boot:run
+          sleep 20
+      - name: Check server health
+        run: |
+          until curl -s -s http://localhost:8080/api/health; do
+            sleep 1
+          done
+
       - name: Install Postman CLI
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
