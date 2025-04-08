@@ -254,7 +254,6 @@
 
 	</build>
 	<profiles>
-
 		<profile>
 			<id>dev</id>
 			<activation>
@@ -264,14 +263,13 @@
 				<activatedProfile>dev</activatedProfile>
 			</properties>
 		</profile>
-
 		<profile>
 			<id>test-profile</id>
 			<properties>
 				<activatedProfile>test-profile</activatedProfile>
 			</properties>
 		</profile>
-
+		
 		<profile>
 			<id>prod</id>
 			<properties>
