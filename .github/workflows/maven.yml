@@ -5,19 +5,22 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ./backend
+    services:
+      redis: 
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: --health-cmd "redis-cli ping"
+        
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
         java: [21]
 
-    services:
-      redis: 
-        image: redis:latest
-        ports:
-          - 6379:6379
-        options: --health-cmd "redis-cli ping"
-        
+
     steps:
       - uses: actions/checkout@v4
 
@@ -54,6 +57,5 @@ jobs:
 
       - name: Build and test
         run: mvn -B verify -Ptest-profile "-Dspring.profiles.active=test-profile"
-        working-directory: ./backend
         env:
           SPRING_PROFILES_ACTIVE: test-profile
