@@ -4,13 +4,12 @@ on: [push, pull_request]
 jobs:
   load-test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
 
     steps:
       - name: Build app
+        env: 
         run: |
+          cd ./backend
           docker compose up -d
 
       - name: Verify Redis
@@ -18,6 +17,7 @@ jobs:
 
       - name: Start app
         run: |
+          cd ./backend
           java -jar target/*.jar &
           sleep 15
 
