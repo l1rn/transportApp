@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          ditribution: temurin
+          ditribution: 'temurin'
 
       - name: Build and start
         run: |
