@@ -39,7 +39,7 @@ jobs:
         working-directory: .
 
       - name: Build and test
-        run: mvn -B verify -Ptest "-Dspring.profiles.active=test"
+        run: mvn -B verify -Ptest-profile "-Dspring.profiles.active=test-profile"
         working-directory: ./backend
         env:
-          SPRING_PROFILES_ACTIVE: test
+          SPRING_PROFILES_ACTIVE: test-profile
