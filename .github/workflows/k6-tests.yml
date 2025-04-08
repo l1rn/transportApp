@@ -4,24 +4,41 @@ on: [push, pull_request]
 jobs:
   load-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: --health-cmd "redis-cli ping"
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
 
-      - name: Build app
+      - name: Build
         run: |
-          cd ./backend
-          docker compose up -d
+          ./mvnw clean package -DskipTests
+      - name: Verify Redis
+        run: docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
 
+      - name: Start app
+        run: |
+          java -jar target/*.jar &
+          sleep 15
       - name: Verify server
         run: |
-          docker ps -a
-          docker compose exec backend-app curl -s http://localhost:8080/api/health
-          docker compose exec redis redis-cli ping
-
+          until curl -s http://localhost:8080/api/health; do
+            sleep 1
+          done
       - name: Run k6 tests
         uses: grafana/k6-action@v0.3.0
         with:
           filename: tests/load-test-github.js
-          flags: --verbose --http-debug=full

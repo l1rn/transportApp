@@ -1,6 +1,6 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
-const VUE_APP_BACKEND_API_FOR_TESTS="http://backend-app:8080/api"
+const VUE_APP_BACKEND_API_FOR_TESTS="http://172.17.0.1:8080/api"
 
 export const options = {
   thresholds:{
