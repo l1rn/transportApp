@@ -9,27 +9,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build app (from backend folder)
+      - name: Build app
         run: |
           cd ./backend
           docker compose up -d
 
-      - name: Verify Redis
-        run: docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
-
-      - name: Start app
-        run: |
-          cd ./backend
-          java -jar target/*.jar &
-          sleep 15
-
       - name: Verify server
         run: |
-          until curl -s http://localhost:8080/api/health; do
-            sleep 1
-          done
+          docker ps -a
+          docker compose exec app curl -s http://localhost:8080/api/health
+          docker compose exec redis redis-cli ping
 
       - name: Run k6 tests
         uses: grafana/k6-action@v0.3.0
         with:
           filename: tests/load-test-github.js
+          flags: --verbose --http-debug=full
