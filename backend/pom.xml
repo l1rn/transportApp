@@ -269,7 +269,7 @@
 				<activatedProfile>test-profile</activatedProfile>
 			</properties>
 		</profile>
-		
+
 		<profile>
 			<id>prod</id>
 			<properties>
