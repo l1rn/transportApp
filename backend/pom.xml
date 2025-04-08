@@ -270,6 +270,9 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>test</id>
+		</profile>
+		<profile>
 			<id>prod</id>
 			<properties>
 				<activatedProfile>prod</activatedProfile>
