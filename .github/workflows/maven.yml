@@ -24,10 +24,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
     
-      # - name: Wait for redis
-      #   run: |
-      #     timeout 30 bash -c 'while !redis-cli -h redis -p 6379 ping; do sleep 2; done'
-      #   shell: bash
+      - name: Wait for redis
+        run: |
+          timeout 30 bash -c 'while !redis-cli -h redis -p 6379 ping; do sleep 2; done'
+        shell: bash
 
       - name: Cache Maven
         uses: actions/cache@v3
