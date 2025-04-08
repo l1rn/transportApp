@@ -162,11 +162,7 @@ public class AuthenticationService {
 
     public boolean checkForAuth(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            log.error("No cookies in request!");
-        } else {
-            Arrays.stream(cookies).forEach(c -> log.info("Cookie: " + c.getName() + "=" + c.getValue()));
-        }
+
         String accessToken = Arrays.stream(cookies)
                 .filter(c -> "accessToken".equals(c.getName()))
                 .findFirst()

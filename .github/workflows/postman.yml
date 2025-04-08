@@ -25,12 +25,15 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Build and start
+      - name: Build
         run: |
-          mvn clean package -DskipTests -P dev &&
-          mvn spring-boot:run
-          sleep 20
-
+          ./mvnw clean package -DskipTests -P dev 
+          
+      - name: Start 
+        run: | 
+          java -jar target/*.jar &
+          sleep 15
+          
       - name: Check server health
         run: |
           until curl -s -s http://localhost:8080/api/health; do
@@ -46,4 +49,4 @@ jobs:
 
       - name: Run API tests
         run: |
-          postman collection run "43572409-0303a959-1afa-478b-84e3-0f692ee527a1"
+          postman collection run "43572409-4992a297-2320-4638-960c-d7513cfb6320"
