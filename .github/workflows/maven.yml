@@ -24,7 +24,7 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: temurin
-
+          
       - name: Start backend server
         run: |
           nohup java -jar backend/target/*.jar &
