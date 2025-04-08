@@ -17,7 +17,7 @@ jobs:
       - name: Verify server
         run: |
           docker ps -a
-          docker compose exec app curl -s http://localhost:8080/api/health
+          docker compose exec backend-app curl -s http://localhost:8080/api/health
           docker compose exec redis redis-cli ping
 
       - name: Run k6 tests
