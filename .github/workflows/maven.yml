@@ -11,6 +11,13 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         java: [21]
 
+    services:
+      redis: 
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: --health-cmd "redis-cli ping"
+
     steps:
       - uses: actions/checkout@v4
 
@@ -36,3 +43,5 @@ jobs:
         working-directory: ./backend
         env:
           SPRING_PROFILES_ACTIVE: test-profile
+          SPRING_REDIS_HOST: localhost
+          SPRING_REDIS_PORT: 6379
