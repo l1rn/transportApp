@@ -6,11 +6,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        
-      - name: Build app
-        env: 
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build app (from backend folder)
         run: |
           cd ./backend
           docker compose up -d
