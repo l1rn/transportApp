@@ -2,29 +2,25 @@ name: Backend CI
 
 on: [push, pull_request]
 
-jobs:
-  build:
+jobs:          
+  deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: ./backend      
     services:
       redis: 
         image: redis:7-alpine
         ports:
           - 6379:6379
         options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s
-        
+    
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
         with:
           java-version: 21
-          distribution: 'temurin'
-
+          distribution: 'temurin' 
+          
       - name: Cache Maven
         uses: actions/cache@v3
         with:
@@ -40,28 +36,6 @@ jobs:
       - name: Test Redis connection
         run: |
           docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
-          
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
-    services:
-      redis: 
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          java-version: 21
-          distribution: 'temurin'
-
-      - name: Build dev profile 
-        run: mvn clean package -P dev
-        
       - name: Start Spring Boot (Background)
         run: |
           mvn spring-boot:run -P test-profile &
