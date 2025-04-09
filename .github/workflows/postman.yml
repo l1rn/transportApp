@@ -26,11 +26,11 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Build
+      - name: Build app
         run: |
-          ./mvnw clean package -DskipTests -P dev 
+          ./mvnw clean package -DskipTests -P test-profile
           
-      - name: Start 
+      - name: Start app
         run: | 
           java -jar target/*.jar &
           sleep 15
