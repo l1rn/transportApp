@@ -31,8 +31,11 @@ jobs:
           path: ~/.m2/repository
           key: maven-21-${{ hashFiles('backend/pom.xml') }}
 
-      - name: Build and test
-        run: mvn clean test -P test-profile
+      - name: Test
+        run: mvn test
+
+      - name: Build
+        run: mvn clean install -DskipTests
       
       - name: Test Redis connection
         run: |
