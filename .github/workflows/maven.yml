@@ -64,16 +64,7 @@ jobs:
           
       - name: Test Health Endpoint
         run: |
-          for i in {1..5}; do
-            if curl -s http://localhost:8080/api/health | grep -q "OK"; then
-              echo "Health check passed"
-              exit 0
-            fi
-            echo "Attempt $i/5 failed - retrying in 5 seconds..."
-            sleep 5
-          done
-          echo "Health check failed after 5 attempts"
-          exit 1
+          curl -s http://localhost:8080/api/health | grep "OK"
 
       - name: Verify redis
         run: |
