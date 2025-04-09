@@ -32,7 +32,7 @@ jobs:
           key: maven-21-${{ hashFiles('backend/pom.xml') }}
 
       - name: Build and test
-        run: mvn clean test -P test-profile
+        run: mvn clean test -P dev
       
       - name: Test Redis connection
         run: |
@@ -58,8 +58,8 @@ jobs:
       
       - name: Start Spring Boot (Background)
         run: |
-          mvn spring-boot:run -Dspring-boot.run.profiles=test-profile &
-          sleep 30
+          mvn spring-boot:run &
+          sleep 20
           
       - name: Test Health Endpoint
         run: |
