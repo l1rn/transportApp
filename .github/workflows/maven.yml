@@ -47,12 +47,6 @@ jobs:
         run: |
           java -jar target/*.jar &
           sleep 15
-          
-      - name: Verify server
-        run: |
-          until curl -s http://localhost:8080/api/health; do
-            sleep 1
-          done
 
       - name: Test server
         run: mvn -B verify -Ptest-profile "-Dspring.profiles.active=test-profile"
