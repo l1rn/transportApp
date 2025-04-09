@@ -58,13 +58,7 @@ jobs:
       
       - name: Start Spring Boot (Background)
         run: |
-
-          mvn spring-boot:start -Dspring-boot.run.profiles=test-profile > spring-boot.log 2>&1 &
-          sleep 20 
-          
-          tail -n 50 spring-boot.log
-          
-          pgrep -f 'java.*spring-boot' || (echo "Spring Boot failed to start"; exit 1)
+          mvn spring-boot:start -Dspring-boot.run.profiles=test-profile
         
       - name: Test Health Endpoint (With Retry)
         run: |
