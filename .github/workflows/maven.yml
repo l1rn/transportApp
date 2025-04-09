@@ -36,7 +36,7 @@ jobs:
       
       - name: Test Redis connection
         run: |
-          redis-cli -h localhost -p 6379 ping | grep PONG
+          docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
           
   deploy:
     needs: build
