@@ -33,7 +33,7 @@ jobs:
       - name: Start app
         run: | 
           java -jar target/*.jar &
-          sleep 10
+          sleep 15
           
       - name: Check server health
         run: |
