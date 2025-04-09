@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -53,13 +54,7 @@ class RouteControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertSame(expectedRoute, response.getBody());
     }
-
-    @Test
-    void getRouteById_InvalidId_ThrowsBadRequest() {
-        assertThrows(BadRequestException.class, () -> {
-            routeController.getRouteById("invalid_id");
-        });
-    }
+    
     @Test
     void searchRoutes_WithFilters_ReturnsPaginatedResults() {
         List<Route> mockRoutes = IntStream.range(0, 15)

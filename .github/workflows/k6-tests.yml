@@ -33,14 +33,24 @@ jobs:
 
       - name: Start app
         run: |
-          java -jar target/*.jar &
-          sleep 15
+          java -jar target/*.jar > server.log 2>&1 &
+          timeout 60 bash -c 'until curl -s http://localhost:8080/api/health; do sleep 2; done'
+          cat server.log
       - name: Verify server
         run: |
-          until curl -s http://localhost:8080/api/health; do
-            sleep 1
-          done
+          curl -v http://localhost:8080/api/health
+          netstat -tulpn
+
       - name: Run k6 tests
         uses: grafana/k6-action@v0.3.0
         with:
           filename: tests/load-test-github.js
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v0.3.0
+        with:
+          name: test-artifacts
+          path: |
+            server.log
+            results.json
