@@ -74,7 +74,6 @@ public class DataInitializer {
     @EventListener(ApplicationReadyEvent.class)
     @Order(2)
     public void initRoutes() {
-        // Создание 3-х маршрутов
         createRouteIfNotExists(
                 "Челябинск",
                 "Омск",
@@ -133,42 +132,37 @@ public class DataInitializer {
                 "demo_admin",
                 "Москва",
                 "Санкт-Петербург",
-                "2026-07-15",
-                "BOOKED"
+                "2026-07-15"
         );
         createBookingIfNotExists(
                 "manager",
                 "Челябинск",
                 "Омск",
-                "2026-12-27",
-                "BOOKED"
+                "2026-12-27"
         );
         createBookingIfNotExists(
                 "test_user",
                 "Новосибирск",
                 "Красноярск",
-                "2026-08-01",
-                "CANCELED"
+                "2026-08-01"
+
         );
     }
 
 
     private void createBookingIfNotExists(String username, String from,
-                                          String to, String routeDate,
-                                          String statusStr) {
+                                          String to, String routeDate) {
         try {
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("User " + username + " not found"));
 
             Route route = routeRepository.findByRouteFromAndRouteToAndDate(from, to, routeDate);
 
-            BookingStatus status = BookingStatus.valueOf(statusStr);
-
             if (!bookingRepository.existsByUserAndRoute(user, route)) {
                 Booking booking = Booking.builder()
                         .user(user)
                         .route(route)
-                        .status(status)
+                        .status(BookingStatus.BOOKED)
                         .build();
 
                 bookingRepository.save(booking);
@@ -177,4 +171,6 @@ public class DataInitializer {
             System.err.println("Error creating booking: " + e.getMessage());
         }
     }
+
+
 }

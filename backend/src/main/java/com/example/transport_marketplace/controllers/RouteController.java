@@ -40,7 +40,7 @@ public class RouteController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список маршрутов",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Route.class, type = "array")))
+                    schema = @Schema(implementation = Route.class, type = "array")))
     })
     @GetMapping
     public ResponseEntity<List<Route>> getRoutes() {
@@ -55,28 +55,27 @@ public class RouteController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Маршрут найден",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Route.class))),
+                    schema = @Schema(implementation = Route.class))),
             @ApiResponse(responseCode = "400", description = "Некорректный ID"),
             @ApiResponse(responseCode = "404", description = "Маршрут не найден")
     })
     @GetMapping("/{id}")
     public ResponseEntity<?> getRouteById(@PathVariable(name = "id") String id) {
         if (id == null || id.isBlank()) {
-            return ResponseEntity.badRequest().body("Invalid request: ID cannot be empty.");
+            return ResponseEntity.badRequest().body("Айди не указан");
         }
         try {
             int routeId = Integer.parseInt(id);
             Route route = routeService.getRouteById(routeId)
                     .orElseThrow(() -> new RouteNotFoundException(routeId));
             return new ResponseEntity<>(route, HttpStatus.OK);
-        } catch (NumberFormatException e) {
-            throw new BadRequestException();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Невозможно найти маршрут по этому id");
         }
     }
 
     @Operation(
             summary = "Добавление нового маршрута",
-            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Создаёт новый маршрут. Доступно только администраторам."
     )
     @ApiResponses(value = {
@@ -94,11 +93,11 @@ public class RouteController {
         try{
             return ResponseEntity.status(HttpStatus.CREATED).body(routeService.addRoute(route));
         }catch(RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Не удалось создать маршрут");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Не удалось создать маршрут");
         }
     }
 
-    @Operation(summary = "Удаление маршрута", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Удаление маршрута")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/panel/delete/{id}")
     public ResponseEntity<Void> deleteRoute(@PathVariable int id){
@@ -107,15 +106,20 @@ public class RouteController {
                         : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Обновление маршрута")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/panel/update/{id}")
-    public ResponseEntity<Route> updateRoute(@PathVariable int id, @RequestBody Route updatedRoute){
-        Route route = routeService.updateRoute(id, updatedRoute);
-        if(route == null){
-            throw new RouteNotFoundException(id);
+    public ResponseEntity<?> updateRoute(@PathVariable int id, @RequestBody Route updatedRoute){
+
+        try {
+            Route route = routeService.updateRoute(id, updatedRoute);
+            if(route == null){
+                throw new RouteNotFoundException(id);
+            }
+            return ResponseEntity.ok(route);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось обновить маршут");
         }
-         return ResponseEntity.ok(route);
     }
 
     @Operation(
@@ -124,7 +128,7 @@ public class RouteController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список маршрутов",
-                    content = @Content(mediaType = "application/json"))
+                content = @Content(mediaType = "application/json"))
     })
     @GetMapping("/search")
     public ResponseEntity<?> searchRoutes(
@@ -156,14 +160,35 @@ public class RouteController {
     }
 
     @GetMapping("/priceRange")
-    public ResponseEntity<List<Route>> searchByPriceRange(
-            @RequestParam Double minPrice,
-            @RequestParam Double maxPrice
+    public ResponseEntity<?> searchByPriceRange(
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice
     ) {
-        List<Route> filteredRoutes = routeService.getRoutes().stream()
-                .filter(route -> route.getPrice() >= minPrice && route.getPrice() <= maxPrice)
-                .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(filteredRoutes);
-    }
+        try {
+            if(minPrice == null && maxPrice == null){
+                return ResponseEntity.ok(routeService.getRoutes());
+            }
+            else if(minPrice == null){
+                List<Route> filteredByMax = routeService.getRoutes().stream()
+                        .filter(route -> route.getPrice() <= maxPrice)
+                        .collect(Collectors.toList());
+                return ResponseEntity.ok(filteredByMax);
+            }
+            else if(maxPrice == null){
+                List<Route> filteredByMin = routeService.getRoutes().stream()
+                        .filter(route -> route.getPrice() >= minPrice)
+                        .collect(Collectors.toList());
+                return ResponseEntity.ok(filteredByMin);
+            }
+            else{
+                List<Route> filteredRoutes = routeService.getRoutes().stream()
+                        .filter(route -> route.getPrice() >= minPrice && route.getPrice() <= maxPrice)
+                        .collect(Collectors.toList());
+                return ResponseEntity.status(HttpStatus.OK).body(filteredRoutes);
+            }
 
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Невозможно найти маршрут по данным ценам");
+        }
+    }
 }
