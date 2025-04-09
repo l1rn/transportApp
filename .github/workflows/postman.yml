@@ -37,7 +37,7 @@ jobs:
           
       - name: Check server health
         run: |
-          until curl -s -s http://localhost:8080/api/health; do
+          until curl -s http://localhost:8080/api/health; do
             sleep 1
           done
 
