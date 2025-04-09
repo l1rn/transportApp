@@ -9,6 +9,13 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
+    services:
+      redis: 
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s
+        
     steps:
       - uses: actions/checkout@v4
 
@@ -26,11 +33,11 @@ jobs:
 
       - name: Build and test
         run: mvn clean test -P test-profile
-
-      - name: Verify redis
+      
+      - name: Test Redis connection
         run: |
-          docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
-
+          redis-cli -h localhost -p 6379 ping | grep PONG
+          
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -57,6 +64,10 @@ jobs:
       - name: Test Health Endpoint
         run: |
           curl -s http://localhost:8080/api/health | grep "OK"
+
+      - name: Verify redis
+        run: |
+          docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
 
   automated-api-tests:
     needs: deploy
