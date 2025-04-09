@@ -58,7 +58,8 @@ jobs:
       
       - name: Start Spring Boot (Background)
         run: |
-          mvn spring-boot:start -Dspring-boot.run.profiles=test-profile
+          mvn spring-boot:run -Dspring-boot.run.profiles=test-profile
+          sleep 15
         
       - name: Test Health Endpoint (With Retry)
         run: |
