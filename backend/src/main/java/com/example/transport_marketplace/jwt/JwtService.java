@@ -83,7 +83,7 @@ public class JwtService {
         try {
             Claims claims = extractAllClaims(token);
             return !claims.getExpiration().before(new Date());
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e){
             System.out.println("Token expired");
             return false;
         }

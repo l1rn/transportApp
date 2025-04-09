@@ -123,7 +123,12 @@ const checkSession = async() => {
             await UserService.checkAuth();
         }
         catch{
-            await UserService.refreshIfCheckAuth()
+            try{
+                await UserService.refreshIfCheckAuth()
+            }
+            catch{
+                await LogoutService.logoutUser();
+            }
         }
     }
 }
@@ -135,7 +140,7 @@ const deleteSession = async(id) => {
             await LogoutService.logoutUser();
             showMessage("success", "Сессия успешна удалена!")
         }
-        else{
+        else {
             await UserService.deleteSession(id);
             showMessage("success", "Сессия успешна удалена!")
         }

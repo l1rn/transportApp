@@ -192,14 +192,14 @@ public class AuthenticationService {
     }
 
     @Transactional
-    public void deleteSession(String username, HttpServletRequest request, int id){
+    public void deleteSession(String username, int deviceId){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
-        Device device = deviceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Устройство не найдено"));
-        refreshTokenRepository.deleteByUserAndDevice(user, device);
-        deviceRepository.delete(device);
+        refreshTokenRepository.deleteByUserAndDevice(user, deviceRepository.findById(deviceId)
+                .orElseThrow(() -> new RuntimeException("Устройство не найдено")));
+
+        deviceRepository.deleteById(deviceId);
     }
 
     @Transactional

@@ -1,0 +1,434 @@
+{
+	"info": {
+		"_postman_id": "84bf2f90-654f-43fe-b0d7-8881a65a3e21",
+		"name": "Routes Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43572409"
+	},
+	"item": [
+		{
+			"name": "routes",
+			"item": [
+				{
+					"name": "Get all routes",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get all routes - success\", () => pm.response.to.have.status(200))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/routes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"routes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get route by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get route by ID - success\", () => pm.response.to.have.status(200))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/routes/5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"routes",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search - Bus, Moscow, Page 3, Size 5 / Check correct pagination",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Search with bus, mocsow, page 3, size 5 - success\", () => pm.response.to.have.status(200))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/routes/search?routeFrom=Москва&transport=Автобус&page=3&size=5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"routes",
+								"search"
+							],
+							"query": [
+								{
+									"key": "routeFrom",
+									"value": "Москва"
+								},
+								{
+									"key": "transport",
+									"value": "Автобус"
+								},
+								{
+									"key": "page",
+									"value": "3"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search route with price range",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Search with price range - success\", () => pm.response.to.have.status(200))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/routes/priceRange?minPrice=2000&maxPrice=4000",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"routes",
+								"priceRange"
+							],
+							"query": [
+								{
+									"key": "minPrice",
+									"value": "2000"
+								},
+								{
+									"key": "maxPrice",
+									"value": "4000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add route (admin)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {",
+									"    url: \"http://localhost:8080/api/auth/sign-in\",",
+									"    method: \"POST\",",
+									"    body: {",
+									"        mode: \"raw\",",
+									"        raw: JSON.stringify({",
+									"            username: \"admin\",",
+									"            password: \"secure_admin\"",
+									"        })",
+									"    },",
+									"    header: {",
+									"        \"Content-Type\": \"application/json\"",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(loginRequest, (err, res) => {",
+									"    if(err){",
+									"        console.error(err)",
+									"    }",
+									"    else{",
+									"        console.log(res)",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Auth and add route success\", () => pm.response.to.have.status(201))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"routeFrom\": \"11\",\r\n    \"routeTo\": \"11\",\r\n    \"date\": \"2025-03-30\",\r\n    \"time\": \"2025-03-30 14:54:00\",\r\n    \"arrivalTime\": \"2025-04-04 19:54:00\",\r\n    \"transport\": \"Поезд\",\r\n    \"availableSeats\": 231,\r\n    \"price\": 123213\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/routes/panel/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"routes",
+								"panel",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update route (admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Auth and update route success\", () => pm.response.to.have.status(200))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {",
+									"    url: \"http://localhost:8080/api/auth/sign-in\",",
+									"    method: \"POST\",",
+									"    body: {",
+									"        mode: \"raw\",",
+									"        raw: JSON.stringify({",
+									"            username: \"admin\",",
+									"            password: \"secure_admin\"",
+									"        })",
+									"    },",
+									"    header: {",
+									"        \"Content-Type\": \"application/json\"",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(loginRequest, (err, res) => {",
+									"    if(err){",
+									"        console.error(err)",
+									"    }",
+									"    else{",
+									"        console.log(res)",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeFrom\": \"Челябинск\",\n    \"routeTo\": \"Омск\",\n    \"date\": \"2025-12-22\",\n    \"transport\": \"Авиа\",\n    \"time\": \"2025-12-22 04:00:00\",\n    \"arrivalTime\": \"2026-12-27 8:30:00\",\n    \"availableSeats\": 100,\n    \"price\": 5555.0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/routes/panel/update/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"routes",
+								"panel",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete route (admin)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {",
+									"    url: \"http://localhost:8080/api/auth/sign-in\",",
+									"    method: \"POST\",",
+									"    body: {",
+									"        mode: \"raw\",",
+									"        raw: JSON.stringify({",
+									"            username: \"admin\",",
+									"            password: \"secure_admin\"",
+									"        })",
+									"    },",
+									"    header: {",
+									"        \"Content-Type\": \"application/json\"",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(loginRequest, (err, res) => {",
+									"    if(err){",
+									"        console.error(err)",
+									"    }",
+									"    else{",
+									"        console.log(res)",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Auth and delete route success\", () => pm.response.to.have.status(204))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/routes/panel/delete/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"routes",
+								"panel",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "localhost:8080/api",
+			"type": "string"
+		}
+	]
+}

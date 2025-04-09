@@ -17,6 +17,8 @@ public interface RefreshTokenRepository extends JpaRepository<Token, Integer> {
     @Modifying
     @Query("DELETE FROM Token t WHERE t.user = :user AND t.device = :device")
     void deleteByUserAndDevice(@Param("user") User user, @Param("device")Device device);
+
+
     @Modifying
     @Transactional
     @Query("DELETE FROM Token t WHERE t.user = :user")

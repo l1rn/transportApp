@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 
 
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "Аутентификация")
@@ -51,12 +53,12 @@ public class AuthController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь успешно зарегистрирован",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = String.class),
-                            examples = @ExampleObject(value = "\"Пользователь зарегистрирован\""))),
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = String.class),
+            examples = @ExampleObject(value = "\"Пользователь зарегистрирован\""))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные или имя уже занят",
-                    content = @Content(mediaType = "application/json",
-                            examples = @ExampleObject(value = "\"Имя уже используется\"")))
+            content = @Content(mediaType = "application/json",
+            examples = @ExampleObject(value = "\"Имя уже используется\"")))
     })
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) {
@@ -69,8 +71,8 @@ public class AuthController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешный вход",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = JwtAuthenticationResponse.class))),
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = JwtAuthenticationResponse.class))),
             @ApiResponse(responseCode = "401", description = "Неверные учетные данные")
     })
     @PostMapping("/sign-in")
@@ -87,13 +89,12 @@ public class AuthController {
 
     @Operation(
             summary = "Обновление токенов",
-            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Обновляет access-токен с помощью refresh-токена."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Токены обновлены",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = JwtAuthenticationResponse.class))),
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = JwtAuthenticationResponse.class))),
             @ApiResponse(responseCode = "400", description = "Недействительный refresh-токен")
     })
     @PostMapping("/refresh")
@@ -113,8 +114,8 @@ public class AuthController {
     }
     @Operation(
             summary = "Выход из системы",
-            security = @SecurityRequirement(name = "bearerAuth"),
-            description = "Завершает сессию пользователя, добавляя access-токен в blacklist и удаляя refresh-токен."
+            description = "Завершает сессию пользователя, добавляя access-токен в blacklist" +
+                    " и удаляя refresh-токен."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Успешный выход"),
@@ -148,17 +149,16 @@ public class AuthController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/session/delete/{id}")
+    @DeleteMapping("/session/delete/{id}")
     public ResponseEntity<?> deleteSessionByAgent(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable int id,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+            @PathVariable int id) {
         try {
             String username = userDetails.getUsername();
-            authenticationService.deleteSession(username, request, id);
+            authenticationService.deleteSession(username, id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
+            log.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось удалить сессию");
         }
     }
@@ -177,7 +177,7 @@ public class AuthController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/change/password")
+    @PatchMapping("/change/password")
     public ResponseEntity<?> changePassword(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ChangePasswordRequest changePasswordRequest){

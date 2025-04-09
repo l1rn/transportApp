@@ -30,13 +30,12 @@ public class UsersController {
 
     @Operation(
             summary = "Получение списка всех пользователей",
-            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Возвращает список всех пользователей. Доступно только администраторам."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список пользователей",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = User.class, type = "array"))),
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = User.class, type = "array"))),
             @ApiResponse(responseCode = "403", description = "Доступ запрещён (не администратор)")
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -51,8 +50,8 @@ public class UsersController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Роль пользователя",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CurrentRoleResponse.class))),
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = CurrentRoleResponse.class))),
             @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован")
     })
     @PreAuthorize("isAuthenticated()")
@@ -65,13 +64,12 @@ public class UsersController {
 
     @Operation(
             summary = "Назначение роли администратора",
-            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Делает пользователя администратором. Доступно только текущим администраторам."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Роль обновлена",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = User.class))),
+                    schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "403", description = "Доступ запрещён"),
             @ApiResponse(responseCode = "400", description = "Пользователь уже администратор")
     })
@@ -85,7 +83,8 @@ public class UsersController {
         userService.setAdmin(user);
         return ResponseEntity.ok(user);
     }
-    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+
+    @Operation(summary = "Удаление юзера")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id){
@@ -103,7 +102,7 @@ public class UsersController {
         try {
             String username = userDetails.getUsername();
             return ResponseEntity.ok(userService.getSettingsByUsername(username));
-        }catch (RuntimeException e){
+        } catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Не удалось получать информацию о вас");
         }
     }
