@@ -58,7 +58,10 @@ jobs:
         with:
           java-version: 21
           distribution: 'temurin'
-      
+
+      - name: Build dev profile 
+        run: mvn clean package -P dev
+        
       - name: Start Spring Boot (Background)
         run: |
           mvn spring-boot:run -P test-profile &
