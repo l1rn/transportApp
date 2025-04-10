@@ -22,5 +22,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Query("DELETE FROM Booking b WHERE b.user.id = :userId")
     void deleteByUserId(@Param("userId") int userId);
     boolean existsByUserAndRoute(User user, Route route);
-    List<Booking> findAllByStatus(BookingStatus status);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Booking b WHERE b.status = :status")
+    void deleteByStatus(@Param("status") BookingStatus status);
 }
