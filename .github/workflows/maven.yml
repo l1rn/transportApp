@@ -19,7 +19,7 @@ jobs:
           java-version: 21
           distribution: 'temurin'
       - name: Test
-        run: mvn test
+        run: mvn test -P test-profile
 
       - name: Build
         run: mvn clean package -DskipTests
