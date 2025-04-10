@@ -45,9 +45,10 @@ jobs:
       - name: Verify redis
         run: |
           docker exec $(docker ps -q -f name=redis) redis-cli ping | grep PONG
-          - name: Install Postman CLI
-          run: |
-            curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+          
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
   
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
