@@ -64,7 +64,15 @@ jobs:
       - name: Run User interaction API tests
         run: |
           postman collection run "42372019-73fbe162-beb0-4c27-b64b-6cc67d706cc9"
-      
+          
+      - name: Run Booking API tests
+        run: |
+          postman collection run "42372019-1cd358b1-2029-4cd4-a91d-0595d1d9c644"
+
+      - name: Run Sessions API tests
+        run: |
+          postman collection run "42372019-282a7c4c-4440-4459-a335-6cb4d38f3f7d"
+
       - name: Run k6 tests
         uses: grafana/k6-action@v0.3.0
         with:
