@@ -34,7 +34,7 @@ jobs:
         run: |
           nohup java -jar target/*.jar > app.log 2>&1 &
           echo $! > app.pid
-          until curl -s http://localhost:8080/actuator/health; do\
+          until curl -s http://localhost:8080/actuator/health; do
             sleep 2
           done
           
