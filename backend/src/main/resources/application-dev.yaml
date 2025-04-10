@@ -52,9 +52,3 @@ token:
 jwt:
   access-token-expiration: 60000
   refresh-token-expiration: 604800000
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health
