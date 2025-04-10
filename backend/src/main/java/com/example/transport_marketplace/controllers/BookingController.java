@@ -39,13 +39,12 @@ public class BookingController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @Operation(
             summary = "Получение своих бронирований",
-            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Возвращает список бронирований, сделанных текущим аутентифицированным пользователем."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список бронирований пользователя",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = Booking.class)))),
+                    array = @ArraySchema(schema = @Schema(implementation = Booking.class)))),
             @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован"),
             @ApiResponse(responseCode = "404", description = "Бронирования не найдены для данного пользователя")
     })
@@ -63,13 +62,12 @@ public class BookingController {
 
     @Operation(
             summary = "Получение всех бронирований (для администраторов)",
-            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Возвращает список всех бронирований в системе. Доступно только пользователям с ролью ROLE_ADMIN."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список всех бронирований",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = Booking.class)))),
+                    array = @ArraySchema(schema = @Schema(implementation = Booking.class)))),
             @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещён (не администратор)")
     })
@@ -87,7 +85,7 @@ public class BookingController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Бронирование успешно создано",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Booking.class))),
+                    schema = @Schema(implementation = Booking.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные или маршрут не найден"),
             @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован")
     })
@@ -109,13 +107,12 @@ public class BookingController {
 
     @Operation(
             summary = "Отмена бронирования администратором",
-            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Позволяет администратору отменить бронирование по его ID."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Бронирование успешно отменено",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(example = "\"Бронь успешно отменена\""))),
+                    schema = @Schema(example = "\"Бронь успешно отменена\""))),
             @ApiResponse(responseCode = "404", description = "Бронирование не найдено"),
             @ApiResponse(responseCode = "409", description = "Бронирование уже отменено"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещён (не администратор)"),
@@ -131,7 +128,7 @@ public class BookingController {
             if (response) {
                 return ResponseEntity.ok("Бронь успешно отменена");
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Бронирование уже отменено");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Бронирование уже отменено");
             }
         } catch (BookingNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -142,13 +139,12 @@ public class BookingController {
 
     @Operation(
             summary = "Отмена своего бронирования",
-            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Позволяет аутентифицированному пользователю отменить своё бронирование по ID."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Бронирование успешно отменено",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(example = "\"Бронирование отменено\""))),
+                    schema = @Schema(example = "\"Бронирование отменено\""))),
             @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещён (попытка отменить чужое бронирование)"),
             @ApiResponse(responseCode = "404", description = "Бронирование не найдено"),

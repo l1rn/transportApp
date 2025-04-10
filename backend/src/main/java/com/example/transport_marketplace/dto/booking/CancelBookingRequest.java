@@ -12,8 +12,6 @@ import lombok.Setter;
 @Setter
 public class CancelBookingRequest {
     @Min(value = 1, message = "ID бронирования должно быть больше 0")
-    @NotNull(message = "Booking ID is required")
+    @NotNull(message = "Booking ID обязательно")
     private Integer bookingId;
-    @Schema(description = "Токен авторизации", example = "eyJhbGciOiJIUzI1NiIsInР5cCI6IkpXVCJ9...")
-    private String token;
 }
