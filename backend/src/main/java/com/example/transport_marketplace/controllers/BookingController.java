@@ -115,7 +115,7 @@ public class BookingController {
                     schema = @Schema(example = "\"Бронь успешно отменена\""))),
             @ApiResponse(responseCode = "404", description = "Бронирование не найдено"),
             @ApiResponse(responseCode = "409", description = "Бронирование уже отменено"),
-            @ApiResponse(responseCode = "403", description = "Доступ запрещён (не администратор)"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещён"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -132,7 +132,10 @@ public class BookingController {
             }
         } catch (BookingNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
+        } catch (AccessDeniedException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+        catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

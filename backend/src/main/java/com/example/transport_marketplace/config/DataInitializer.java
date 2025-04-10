@@ -149,7 +149,6 @@ public class DataInitializer {
         );
     }
 
-
     private void createBookingIfNotExists(String username, String from,
                                           String to, String routeDate) {
         try {
@@ -171,6 +170,4 @@ public class DataInitializer {
             System.err.println("Error creating booking: " + e.getMessage());
         }
     }
-
-
 }
