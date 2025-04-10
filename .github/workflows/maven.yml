@@ -34,8 +34,9 @@ jobs:
         run: |
           nohup java -jar target/*.jar > app.log 2>&1 &
           echo $! > app.pid
-          until
-          sleep 20
+          until curl -s http://localhost:8080/actuator/health; do\
+            sleep 2
+          done
           
       - name: Test Health Endpoint
         run: |
@@ -69,3 +70,5 @@ jobs:
       - name: Stop Spring Boot
         run: |
           kill $(cat app.pid)
+  build-on-other-profiles:
+    nee
