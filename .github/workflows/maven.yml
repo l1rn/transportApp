@@ -59,12 +59,12 @@ jobs:
 
       - name: Start Spring Boot (Background)
         run: |
-          mvn spring-boot:run -P test-profile &
-          sleep 25
+          nohup mvn spring-boot:run -P dev &
+          sleep 20
           
       - name: Test Health Endpoint
         run: |
-          curl -s http://localhost:8080/api/health | grep "OK"
+          curl http://localhost:8080/actuator/health
 
       - name: Verify redis
         run: |
@@ -79,7 +79,6 @@ jobs:
       - name: Install Postman CLI
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-          echo "$HOME/.postman/cli/bin" >> $GITHUB_PATH
 
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
@@ -95,7 +94,6 @@ jobs:
       - name: Run User interaction API tests
         run: |
           postman collection run "43572409-565a6a34-bed0-4587-8b03-ce1d00b849b5" -e "43572409-1a6ea748-5deb-4ace-bf6c-ba9d68ca130a"
-
 
   load-test: 
     needs: deploy
