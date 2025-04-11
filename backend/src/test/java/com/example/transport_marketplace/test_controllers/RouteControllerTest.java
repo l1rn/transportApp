@@ -1,22 +1,20 @@
 package com.example.transport_marketplace.test_controllers;
 
 import com.example.transport_marketplace.controllers.RouteController;
-import com.example.transport_marketplace.exceptions.routes.Exceptions.BadRequestException;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.service.RouteService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -24,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@AutoConfigureMockMvc
 class RouteControllerTest {
 
     @Mock
@@ -32,15 +31,31 @@ class RouteControllerTest {
     @InjectMocks
     private RouteController routeController;
 
+    private List<Route> mockRoutes;
+
+    @BeforeEach
+    void setUp(){
+        mockRoutes = Arrays.asList(
+                new Route(1,"Челябинск", "Омск", "2026-12-27", "2026-12-27 08:00:00",
+                        "2026-12-27 12:30:00", "Авиа", 55, 3100),
+                new Route(2, "Москва", "Санкт-Петербург", "2026-07-15", "2026-07-15 10:30:00",
+                        "2026-07-15 14:45:00", "Поезд", 120, 2500)
+        );
+    }
+
     @Test
     void getRoutes_ReturnsAllRoutes() {
-        List<Route> expectedRoutes = List.of(new Route(), new Route());
-        when(routeService.getRoutes()).thenReturn(expectedRoutes);
+        when(routeService.getRoutes()).thenReturn(mockRoutes);
 
         ResponseEntity<List<Route>> response = routeController.getRoutes();
 
+        assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, Objects.requireNonNull(response.getBody()).size());
+        assertEquals(2, response.getBody().size());
+        assertEquals("Челябинск", response.getBody().get(0).getRouteFrom());
+
+        verify(routeService, times(1)).getRoutes();
+        verifyNoMoreInteractions(routeService);
     }
 
     @Test

@@ -233,4 +233,10 @@ mvn spring-boot:run -P test-profile
 ### `/h2-console`
 ![](documentation/images/8.png)
 
+# Теперь можно загрузить коллекции в Postman
+Я создал коллекции, которые можно импортировать, они находятся в папке `/collections`.
+###
+![](documentation/images/9.png)
 
+### Тут уже импортируйте папку `transportApp/collections`
+![](documentation/images/10.png)

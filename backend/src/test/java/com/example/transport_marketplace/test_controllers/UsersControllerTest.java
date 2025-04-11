@@ -63,7 +63,7 @@ class UsersControllerTest {
     @WithMockUser(roles = "ADMIN")
     void getAllUsers_ShouldReturnUsersList() throws Exception {
         User user = new User();
-        user.setUsername("admin");
+        user.setUsername("admin123");
         user.setRole(Role.ROLE_ADMIN);
         List<User> users = Collections.singletonList(user);
 
@@ -71,7 +71,7 @@ class UsersControllerTest {
 
         mockMvc.perform(get("/api/users/all"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].username").value("admin"));
+                .andExpect(jsonPath("$[0].username").value("admin123"));
     }
 
     @Test

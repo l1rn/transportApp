@@ -116,7 +116,7 @@ public class RouteController {
             if(route == null){
                 throw new RouteNotFoundException(id);
             }
-            return ResponseEntity.ok(route);
+            return ResponseEntity.status(HttpStatus.OK).body(route);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось обновить маршут");
         }

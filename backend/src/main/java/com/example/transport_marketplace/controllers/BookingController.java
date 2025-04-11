@@ -30,8 +30,6 @@ import java.util.List;
 @RequestMapping("/api/profile/bookings")
 @RequiredArgsConstructor
 public class BookingController {
-    public static final String BEARER_PREFIX = "Bearer ";
-
     private final BookingService bookingService;
 
     private final UserService userService;

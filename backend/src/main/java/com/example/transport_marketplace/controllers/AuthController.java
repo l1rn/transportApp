@@ -1,4 +1,5 @@
 package com.example.transport_marketplace.controllers;
+
 import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
 import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
@@ -13,7 +14,6 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,6 +47,7 @@ public class AuthController {
     private long refreshExpirationMs;
     @Value("${jwt.access-token-expiration}")
     private long accessExpirationMs;
+
     @Operation(
             summary = "Регистрация пользователя",
             description = "Создаёт нового пользователя в системе. Требуется уникальный имя и пароль. Возвращает сообщение об успешной регистрации."
@@ -65,6 +66,7 @@ public class AuthController {
         authenticationService.signUp(request);
         return ResponseEntity.ok("Registered");
     }
+
     @Operation(
             summary = "Вход пользователя",
             description = "Аутентифицирует пользователя и возвращает JWT-токены (access и refresh)."
@@ -112,6 +114,7 @@ public class AuthController {
         setAuthCookies(response, newTokens.getAccessToken(), newTokens.getRefreshToken());
         return ResponseEntity.ok().build();
     }
+
     @Operation(
             summary = "Выход из системы",
             description = "Завершает сессию пользователя, добавляя access-токен в blacklist" +

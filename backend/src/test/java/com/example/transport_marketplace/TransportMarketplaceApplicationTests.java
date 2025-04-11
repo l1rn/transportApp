@@ -2,6 +2,8 @@ package com.example.transport_marketplace;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.annotation.EnableCaching;
+
 @SpringBootTest(
 		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = {
@@ -10,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 				"spring.h2.console.enabled=true"
 		}
 )
+@EnableCaching
 class TransportMarketplaceApplicationTests {
 
 	@Test
