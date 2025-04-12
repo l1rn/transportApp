@@ -13,7 +13,6 @@ spring:
       minimum-idle: 1
       maximum-pool-size: 5
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
     show-sql: true

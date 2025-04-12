@@ -37,7 +37,7 @@ import java.util.Arrays;
 @Slf4j
 @RestController
 @RequestMapping("/api/auth")
-@Tag(name = "Аутентификация")
+@Tag(name = "Authentication API")
 @RequiredArgsConstructor
 public class AuthController {
     private final TokenBlacklist tokenBlacklist;
@@ -50,7 +50,7 @@ public class AuthController {
 
     @Operation(
             summary = "Регистрация пользователя",
-            description = "Создаёт нового пользователя в системе. Требуется уникальный имя и пароль. Возвращает сообщение об успешной регистрации."
+            description = "Создаёт нового пользователя в системе. Требуется уникальный имя и пароль."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь успешно зарегистрирован",
@@ -90,15 +90,8 @@ public class AuthController {
     }
 
     @Operation(
-            summary = "Обновление токенов",
-            description = "Обновляет access-токен с помощью refresh-токена."
+            summary = "Обновление токенов"
     )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Токены обновлены",
-            content = @Content(mediaType = "application/json",
-            schema = @Schema(implementation = JwtAuthenticationResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Недействительный refresh-токен")
-    })
     @PostMapping("/refresh")
     public ResponseEntity<JwtAuthenticationResponse> refreshToken(HttpServletRequest request,
                                                                   HttpServletResponse response) {
@@ -151,6 +144,9 @@ public class AuthController {
         }
     }
 
+    @Operation(
+            summary = "Удаляет сессию по deviceID"
+    )
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/session/delete/{id}")
     public ResponseEntity<?> deleteSessionByAgent(
@@ -166,6 +162,10 @@ public class AuthController {
         }
     }
 
+    @Operation(
+            summary = "Просматривает, какой девайс сейчас в контексте",
+            description = "Дает deviceID"
+    )
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/session/now")
     public ResponseEntity<?> checkNow(
@@ -179,6 +179,10 @@ public class AuthController {
         }
     }
 
+    @Operation(
+            summary = "Меняет пароль",
+            description = "Нужно ввести старый пароль и новый"
+    )
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/change/password")
     public ResponseEntity<?> changePassword(
@@ -191,6 +195,11 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
+
+    @Operation(
+            summary = "Смотри на авторизацию",
+            description = "Если все нормально - 200, нет - 401/403"
+    )
     @GetMapping("/check")
     public ResponseEntity<?> checkForAuth(HttpServletRequest request) {
         try {

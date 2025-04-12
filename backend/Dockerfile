@@ -5,9 +5,9 @@ RUN apk add --no-cache bash dos2unix
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
+RUN dos2unix mvnw && chmod +x mvnw
 
-RUN dos2unix mvnw && chmod +x mvnw && ./mvnw dependency:go-offline -B
-
+RUN ./mvnw dependency:go-offline -B
 COPY src src
 
 RUN ./mvnw clean package -DskipTests

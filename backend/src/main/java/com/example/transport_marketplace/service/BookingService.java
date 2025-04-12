@@ -38,7 +38,7 @@ public class BookingService {
         return bookingRepository.findByUser(user);
     }
 
-    public List<Booking> getAllBooking() {
+    public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
     }
 
@@ -47,6 +47,7 @@ public class BookingService {
         return bookingRepository.findById(id);
     }
 
+    @CachePut(value = "booking", key = "#result.id")
     @Transactional
     public Booking createBooking(int routeId, int userId){
 
@@ -69,6 +70,7 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+    @CacheEvict(value = "booking", key = "#bookingId")
     @Transactional
     public boolean cancelBookingAdmin(int bookingId){
 

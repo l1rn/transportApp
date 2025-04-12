@@ -15,7 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/profile/bookings")
 @RequiredArgsConstructor
+@Tag(name = "Booking API")
 public class BookingController {
     private final BookingService bookingService;
 
@@ -37,12 +38,12 @@ public class BookingController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @Operation(
             summary = "Получение своих бронирований",
-            description = "Возвращает список бронирований, сделанных текущим аутентифицированным пользователем."
+            description = "Возвращает список бронирований, сделанных текущим аутентифицированным пользователем в контексте."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список бронирований пользователя",
-                    content = @Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = Booking.class)))),
+            content = @Content(mediaType = "application/json",
+            array = @ArraySchema(schema = @Schema(implementation = Booking.class)))),
             @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован"),
             @ApiResponse(responseCode = "404", description = "Бронирования не найдены для данного пользователя")
     })
@@ -60,7 +61,7 @@ public class BookingController {
 
     @Operation(
             summary = "Получение всех бронирований (для администраторов)",
-            description = "Возвращает список всех бронирований в системе. Доступно только пользователям с ролью ROLE_ADMIN."
+            description = "Возвращает список всех бронирований в системе."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список всех бронирований",
@@ -71,19 +72,18 @@ public class BookingController {
     })
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> getAllBookingsForAdmin() {
-        return ResponseEntity.ok(bookingService.getAllBooking());
+    public ResponseEntity<List<Booking>> getAllBookingsForAdmin() {
+        return ResponseEntity.ok(bookingService.getAllBookings());
     }
 
     @Operation(
             summary = "Создание бронирования",
-            security = @SecurityRequirement(name = "bearerAuth"),
             description = "Позволяет аутентифицированному пользователю забронировать маршрут по указанному ID."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Бронирование успешно создано",
-                    content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Booking.class))),
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = Booking.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные или маршрут не найден"),
             @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован")
     })
@@ -109,8 +109,8 @@ public class BookingController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Бронирование успешно отменено",
-                    content = @Content(mediaType = "application/json",
-                    schema = @Schema(example = "\"Бронь успешно отменена\""))),
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(example = "\"Бронь успешно отменена\""))),
             @ApiResponse(responseCode = "404", description = "Бронирование не найдено"),
             @ApiResponse(responseCode = "409", description = "Бронирование уже отменено"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещён"),
