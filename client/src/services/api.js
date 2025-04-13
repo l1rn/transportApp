@@ -1,10 +1,16 @@
 import axios from "axios";
 import router from "@/routers/router";
 
+
 axios.defaults.withCredentials = true;
 
 let retryAttempts = 0;
 let tokenExpiration;
+
+axios.interceptors.request.use(config => {
+    config.headers['ngrok-skip-browser-warning'] = '69420';
+    return config;
+  });
 
 axios.interceptors.response.use(
     response => {

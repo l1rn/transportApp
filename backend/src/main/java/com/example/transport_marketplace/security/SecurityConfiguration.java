@@ -46,13 +46,15 @@ public class SecurityConfiguration {
                     CorsConfiguration corsConfig = new CorsConfiguration();
                     corsConfig.setAllowedOrigins(List.of("http://localhost:80/",
                                                             "http://localhost/",
-                                                            "http://localhost:8081/")); // frontend address
+                                                            "http://localhost:8081/",
+                                                            "https://*.ngrok-free.app"));
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-                    corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+                    corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type", "ngrok-skip-browser-warning"));
                     corsConfig.setExposedHeaders(List.of(
                             "X-Token-Expires",
                             "X-Rate-Limit-Remaining"));
                     corsConfig.setAllowCredentials(true);
+                    corsConfig.setMaxAge(3600L);
                     return corsConfig;
                 }))
                 .httpBasic(Customizer.withDefaults())
