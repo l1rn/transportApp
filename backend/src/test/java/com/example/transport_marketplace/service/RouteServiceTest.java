@@ -134,17 +134,17 @@ class RouteServiceTest {
         verify(routeRepository, times(1)).save(any(Route.class));
     }
 
-//    @Test
-//    void testSearchRoutes() {
-//        List<Route> routes = Arrays.asList(
-//                new Route(1, "Moscow", "Saint Petersburg", "2025-03-10", "Train", "10:00", "14:00", 50, 1000.50),
-//                new Route(2, "Moscow", "Kazan", "2025-03-12", "Bus", "08:00", "16:00", 40, 750.75)
-//        );
-//        when(routeRepository.searchRoutes("Moscow", null, null, null)).thenReturn(routes);
-//
-//        List<Route> result = routeService.searchRoutes("Moscow", null, null, null);
-//
-//        assertEquals(2, result.size());
-//        verify(routeRepository, times(1)).searchRoutes("Moscow", null, null, null);
-//    }
+    @Test
+    void testSearchRoutes() {
+        List<Route> routes = Arrays.asList(
+                new Route(1, "Moscow", "Saint Petersburg", "2025-03-10", "Train", "10:00", "14:00", 50, 1000.50),
+                new Route(2, "Moscow", "Kazan", "2025-03-12", "Bus", "08:00", "16:00", 40, 750.75)
+        );
+        when(routeRepository.searchRoutes("Moscow", null, null, null, null, null)).thenReturn(routes);
+
+        List<Route> result = routeService.searchRoutes("Moscow", null, null, null, null, null);
+
+        assertEquals(2, result.size());
+        verify(routeRepository, times(1)).searchRoutes("Moscow", null, null, null, null, null);
+    }
 }

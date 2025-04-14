@@ -82,15 +82,15 @@ public class RouteControllerWithEndpointsTest {
     void getAllRoutesWithMockMvc_ShouldReturn200() throws Exception {
         when(routeService.getRoutes()).thenReturn(mockRoutes);
 
-        mockMvc.perform(get("/api/routes"))
+        mockMvc.perform(get("/api/routes?page=0&size=10"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(sizeof)))
-                .andExpect(jsonPath("$[0].routeFrom").value("Челябинск"))
-                .andExpect(jsonPath("$[1].routeFrom").value("Москва"))
-                .andExpect(jsonPath("$[2].routeFrom").value("Новосибирск"))
-                .andExpect(jsonPath("$[0].price").value(3100))
-                .andExpect(jsonPath("$[1].transport").value("Поезд"))
-                .andExpect(jsonPath("$[2].arrivalTime").value("2026-08-01 10:15:00"));
+                .andExpect(jsonPath("$.content", hasSize(sizeof)))
+                .andExpect(jsonPath("$.content[0].routeFrom").value("Челябинск"))
+                .andExpect(jsonPath("$.content[1].routeFrom").value("Москва"))
+                .andExpect(jsonPath("$.content[2].routeFrom").value("Новосибирск"))
+                .andExpect(jsonPath("$.content[0].price").value(3100))
+                .andExpect(jsonPath("$.content[1].transport").value("Поезд"))
+                .andExpect(jsonPath("$.content[2].arrivalTime").value("2026-08-01 10:15:00"));
     }
     @Test
     @Order(1)
@@ -102,35 +102,33 @@ public class RouteControllerWithEndpointsTest {
                 .andExpect(status().isOk());
     }
 
-//    @Test
-//    @Order(1)
-//    void searchRoutes_WithDifferentFilters_ShouldReturnFilteredRoutes() throws Exception{
-//        when(routeService.searchRoutes(null, null, null, null))
-//                .thenReturn(mockRoutes);
-//
-//        mockMvc.perform(get("/api/routes/search")
-//                .param("page", "0")
-//                .param("size", "10"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.content", hasSize(sizeof)))
-//                .andExpect(jsonPath("$.totalElements").value(sizeof));
-//
-//        List<Route> filteredByFrom = mockRoutes.stream()
-//                .filter(r -> r.getRouteFrom().equals("Челябинск"))
-//                .toList();
-//
-//        when(routeService.searchRoutes("Челябинск", null, null, null))
-//                .thenReturn(filteredByFrom);
-//
-//        mockMvc.perform(get("/api/routes/search")
-//                .param("routeFrom", "Челябинск")
-//                .param("page", "0")
-//                .param("size", "10"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.content", hasSize(2)))
-//                .andExpect(jsonPath("$.content[0].routeFrom").value("Челябинск"))
-//                .andExpect(jsonPath("$.content[1].availableSeats").value(100));
-//    }
+    @Test
+    @Order(1)
+    void searchRoutes_WithDifferentFilters_ShouldReturnFilteredRoutes() throws Exception{
+        when(routeService.searchRoutes(null, null, null, null, null, null))
+                .thenReturn(mockRoutes);
+
+        mockMvc.perform(get("/api/routes/search"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(sizeof)))
+                .andExpect(jsonPath("$.totalElements").value(sizeof));
+
+        List<Route> filteredByFrom = mockRoutes.stream()
+                .filter(r -> r.getRouteFrom().equals("Челябинск"))
+                .toList();
+
+        when(routeService.searchRoutes("Челябинск", null, null, null, null, null))
+                .thenReturn(filteredByFrom);
+
+        mockMvc.perform(get("/api/routes/search")
+                .param("routeFrom", "Челябинск")
+                .param("page", "0")
+                .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.content[0].routeFrom").value("Челябинск"))
+                .andExpect(jsonPath("$.content[1].availableSeats").value(100));
+    }
 
     @Test
     @Order(2)

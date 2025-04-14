@@ -1,0 +1,341 @@
+{
+	"info": {
+		"_postman_id": "3f25ccbb-2564-4b97-95c9-aa180bec3ca9",
+		"name": "Booking Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42372019",
+		"_collection_link": "https://www.postman.com/maintenance-architect-45713368/workspace/my-workspace/collection/42372019-3f25ccbb-2564-4b97-95c9-aa180bec3ca9?action=share&source=collection_link&creator=42372019"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user\",\r\n    \"password\": \"user_password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/sign-in",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Booking",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"routeId\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/profile/bookings",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"profile",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all my bookings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"console.log(response[0].id)\r",
+							"pm.collectionVariables.set(\"bookingId\", response[0].id)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/profile/bookings/my",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"profile",
+						"bookings",
+						"my"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel my booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.code\r",
+							"\r",
+							"if(response === 401){\r",
+							"    pm.test(\"You are not authorized\", () => pm.response.to.have.status(401))\r",
+							"}\r",
+							"else if(response === 409){\r",
+							"    pm.test(\"Booking already canceled\", () => pm.response.to.have.status(409))\r",
+							"}\r",
+							"else if(response === 200){\r",
+							"    pm.test(\"Booking canceled\", () => pm.response.to.have.status(200))\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"bookingId\": \"{{bookingId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/profile/bookings/my/cancel",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"profile",
+						"bookings",
+						"my",
+						"cancel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/auth/logout",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login as Admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"username\": \"admin\",\r\n\t\"password\": \"secure_admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/sign-in",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all bookings (admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"console.log(response[0].id)\r",
+							"pm.collectionVariables.set(\"bookingIdCancelAdmin\", response[0].id)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/profile/bookings/all",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"profile",
+						"bookings",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel booking by Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.code\r",
+							"\r",
+							"if(response === 401){\r",
+							"    pm.test(\"You are not authorized\", () => pm.response.to.have.status(401))\r",
+							"}\r",
+							"else if(response === 409){\r",
+							"    pm.test(\"Booking already canceled\", () => pm.response.to.have.status(409))\r",
+							"}\r",
+							"else if(response === 200){\r",
+							"    pm.test(\"Booking canceled\", () => pm.response.to.have.status(200))\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/profile/bookings/cancel/{{bookingIdCancelAdmin}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"profile",
+						"bookings",
+						"cancel",
+						"{{bookingIdCancelAdmin}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "localhost:8080/api",
+			"type": "string"
+		},
+		{
+			"key": "bookingId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bookingIdCancelAdmin",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

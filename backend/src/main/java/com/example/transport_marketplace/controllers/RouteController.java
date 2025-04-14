@@ -152,7 +152,8 @@ public class RouteController {
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size){
+            @RequestParam(defaultValue = "10") int size) {
+
         if (minPrice != null && maxPrice != null && minPrice > maxPrice){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Максимальная цена должна быть больше минимальной");
