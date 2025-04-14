@@ -372,8 +372,8 @@ const toggleMenu = () => {
         10
       )
       if (response.data && response.data.content) {
-      searchResults.value = response.data
-      totalPages.value = response.data.totalPages || 0
+        searchResults.value = response.data
+        totalPages.value = response.data.totalPages || 0
       }
       if (currentPage.value >= totalPages.value) {
         currentPage.value = Math.max(totalPages.value - 1, 0)

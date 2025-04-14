@@ -16,7 +16,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -61,6 +60,7 @@ public class DataInitializer {
     }
 
     @EventListener(ApplicationReadyEvent.class)
+    @Order(1)
     public void initTestUsers() {
         createUserIfNotExists("manager", "managerPass123!", Role.ROLE_ADMIN, null);
         createUserIfNotExists("test_user", "testPassword456", Role.ROLE_USER, null);
@@ -145,7 +145,6 @@ public class DataInitializer {
                 "Новосибирск",
                 "Красноярск",
                 "2026-08-01"
-
         );
     }
 

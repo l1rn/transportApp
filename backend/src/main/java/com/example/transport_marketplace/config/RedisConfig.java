@@ -1,6 +1,6 @@
 package com.example.transport_marketplace.config;
 
-import io.github.bucket4j.Bandwidth;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bucket4j.BucketConfiguration;
 import io.github.bucket4j.distributed.ExpirationAfterWriteStrategy;
 import io.github.bucket4j.distributed.proxy.ProxyManager;
@@ -12,13 +12,18 @@ import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
 import java.time.Duration;
 import java.util.function.Supplier;
@@ -30,7 +35,8 @@ public class RedisConfig {
     @Value("${spring.redis.port}")
     private int redisPort;
 
-    private RedisClient redisClient(){
+    @Bean(destroyMethod = "shutdown")
+    public RedisClient redisClient(){
         return RedisClient.create(RedisURI.builder()
                 .withHost(redisHost)
                 .withPort(redisPort)
@@ -43,13 +49,40 @@ public class RedisConfig {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(redisHost, redisPort);
         return new LettuceConnectionFactory(configuration);
     }
+
     @Bean
     public RedisTemplate<String, Object> redisTemplate(){
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory());
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setKeySerializer(RedisSerializer.string());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        GenericJackson2JsonRedisSerializer serializer =
+                new GenericJackson2JsonRedisSerializer(objectMapper);
+        template.setValueSerializer(serializer);
+        template.setHashValueSerializer(serializer);
+        template.afterPropertiesSet();
         return template;
+    }
+
+    @Bean(destroyMethod = "close")
+    public StatefulRedisConnection<String, byte[]> statefulRedisConnection(){
+        return redisClient().connect(
+                RedisCodec.of(StringCodec.UTF8, ByteArrayCodec.INSTANCE)
+        );
+    }
+
+    @Bean
+    public CacheManager cacheManager(RedisConnectionFactory factory){
+        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(
+                        RedisSerializer.string()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(new GenericJackson2JsonRedisSerializer()));
+        return RedisCacheManager.builder(factory)
+                .cacheDefaults(configuration)
+                .build();
     }
 
     @Bean
@@ -60,14 +93,18 @@ public class RedisConfig {
 
         return LettuceBasedProxyManager.builderFor(redisConnection)
                 .withExpirationStrategy(
-                        ExpirationAfterWriteStrategy.basedOnTimeForRefillingBucketUpToMax(Duration.ofMinutes(1L)))
+                        ExpirationAfterWriteStrategy.basedOnTimeForRefillingBucketUpToMax(
+                                Duration.ofSeconds(65))
+                )
                 .build();
     }
 
     @Bean
     public Supplier<BucketConfiguration> bucketConfiguration() {
-        return () -> BucketConfiguration.builder()
-                .addLimit(Bandwidth.simple(200L, Duration.ofMinutes(1L)))
+        BucketConfiguration configuration = BucketConfiguration.builder()
+                .addLimit(limit -> limit.capacity(200)
+                        .refillIntervally(200, Duration.ofMinutes(1)))
                 .build();
+        return () -> configuration;
     }
 }

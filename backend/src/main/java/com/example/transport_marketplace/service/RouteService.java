@@ -66,10 +66,20 @@ public class RouteService {
     }
 
     @Cacheable(value = "routes")
-    public List<Route> searchRoutes(String routeFrom, String routeTo, String date, String transport){
-        if(routeFrom == null && routeTo == null && date == null && transport == null){
+    public List<Route> searchRoutes(String routeFrom,
+                                    String routeTo,
+                                    String date,
+                                    String transport,
+                                    Double minPrice,
+                                    Double maxPrice){
+        if(routeFrom == null &&
+                routeTo == null &&
+                date == null &&
+                transport == null &&
+                minPrice == null &&
+                maxPrice == null) {
             return getRoutes();
         }
-        return routeRepository.searchRoutes(routeFrom, routeTo, date, transport);
+        return routeRepository.searchRoutes(routeFrom, routeTo, date, transport, minPrice, maxPrice);
     }
 }

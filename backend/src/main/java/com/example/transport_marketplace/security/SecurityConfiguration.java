@@ -44,9 +44,9 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:80/",
-                                                            "http://localhost/",
-                                                            "http://localhost:8081/")); // frontend address
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:8081",
+                                                "http://localhost",
+                                                "http://localhost:80")); // frontend address
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
                     corsConfig.setExposedHeaders(List.of(
@@ -68,10 +68,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/routes/**").permitAll()
                         .requestMatchers("swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/bookings/**").authenticated()
-                        .requestMatchers("/api/routes/**").permitAll()
                         .requestMatchers("/api/users/admin").hasRole("ADMIN")
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()

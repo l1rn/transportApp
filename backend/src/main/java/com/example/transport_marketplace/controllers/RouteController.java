@@ -20,11 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/routes")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @Tag(name = "Route API")
 public class RouteController {
@@ -41,9 +39,26 @@ public class RouteController {
                     schema = @Schema(implementation = Route.class, type = "array")))
     })
     @GetMapping
-    public ResponseEntity<List<Route>> getRoutes() {
+    public ResponseEntity<?> getRoutes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
         List<Route> routes = routeService.getRoutes();
-        return new ResponseEntity<>(routes, HttpStatus.OK);
+        int start = page * size;
+        int end = Math.min(start + size, routes.size());
+
+        List<Route> paginatedRoutes = start < end
+                ? routes.subList(start, end)
+                : List.of();
+        return new ResponseEntity<>(
+                new HashMap<String, Object>(){{
+                    put("content", paginatedRoutes);
+                    put("totalElements", routes.size());
+                    put("totalPages", (int) Math.ceil((double)routes.size() / size));
+                    put("currentPage", page);
+                }},
+                HttpStatus.OK
+        );
     }
 
     @Operation(
@@ -134,10 +149,17 @@ public class RouteController {
             @RequestParam(required = false) String routeTo,
             @RequestParam(required = false) String date,
             @RequestParam(required = false) String transport,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size){
+        if (minPrice != null && maxPrice != null && minPrice > maxPrice){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Максимальная цена должна быть больше минимальной");
+        }
 
-        List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, date, transport);
+        List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, date,
+                transport, minPrice, maxPrice);
 
         int start = page * size;
         int end = Math.min(start + size, filteredRoutes.size());
@@ -155,38 +177,5 @@ public class RouteController {
                 }},
                 HttpStatus.OK
         );
-    }
-
-    @GetMapping("/priceRange")
-    public ResponseEntity<?> searchByPriceRange(
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice
-    ) {
-        try {
-            if(minPrice == null && maxPrice == null){
-                return ResponseEntity.ok(routeService.getRoutes());
-            }
-            else if(minPrice == null){
-                List<Route> filteredByMax = routeService.getRoutes().stream()
-                        .filter(route -> route.getPrice() <= maxPrice)
-                        .collect(Collectors.toList());
-                return ResponseEntity.ok(filteredByMax);
-            }
-            else if(maxPrice == null){
-                List<Route> filteredByMin = routeService.getRoutes().stream()
-                        .filter(route -> route.getPrice() >= minPrice)
-                        .collect(Collectors.toList());
-                return ResponseEntity.ok(filteredByMin);
-            }
-            else{
-                List<Route> filteredRoutes = routeService.getRoutes().stream()
-                        .filter(route -> route.getPrice() >= minPrice && route.getPrice() <= maxPrice)
-                        .collect(Collectors.toList());
-                return ResponseEntity.status(HttpStatus.OK).body(filteredRoutes);
-            }
-
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Невозможно найти маршрут по данным ценам");
-        }
     }
 }

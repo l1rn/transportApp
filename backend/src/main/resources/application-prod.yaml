@@ -27,7 +27,6 @@ spring:
     type: redis
     redis:
       time-to-live: "10m"
-      key-prefix: "tm:"
       use-key-prefix: true
       cache-null-values: false
 
@@ -36,9 +35,9 @@ spring:
     port: 6379
     lettuce:
       pool:
-        max-active: 10
-        max-idle: 5
-        min-idle: 1
+        max-active: 16
+        max-idle: 8
+        min-idle: 4
         timeout: 5000
 
 server:

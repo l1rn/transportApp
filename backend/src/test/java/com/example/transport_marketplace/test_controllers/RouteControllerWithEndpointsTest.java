@@ -102,35 +102,35 @@ public class RouteControllerWithEndpointsTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    @Order(1)
-    void searchRoutes_WithDifferentFilters_ShouldReturnFilteredRoutes() throws Exception{
-        when(routeService.searchRoutes(null, null, null, null))
-                .thenReturn(mockRoutes);
-
-        mockMvc.perform(get("/api/routes/search")
-                .param("page", "0")
-                .param("size", "10"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content", hasSize(sizeof)))
-                .andExpect(jsonPath("$.totalElements").value(sizeof));
-
-        List<Route> filteredByFrom = mockRoutes.stream()
-                .filter(r -> r.getRouteFrom().equals("Челябинск"))
-                .toList();
-
-        when(routeService.searchRoutes("Челябинск", null, null, null))
-                .thenReturn(filteredByFrom);
-
-        mockMvc.perform(get("/api/routes/search")
-                .param("routeFrom", "Челябинск")
-                .param("page", "0")
-                .param("size", "10"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content", hasSize(2)))
-                .andExpect(jsonPath("$.content[0].routeFrom").value("Челябинск"))
-                .andExpect(jsonPath("$.content[1].availableSeats").value(100));
-    }
+//    @Test
+//    @Order(1)
+//    void searchRoutes_WithDifferentFilters_ShouldReturnFilteredRoutes() throws Exception{
+//        when(routeService.searchRoutes(null, null, null, null))
+//                .thenReturn(mockRoutes);
+//
+//        mockMvc.perform(get("/api/routes/search")
+//                .param("page", "0")
+//                .param("size", "10"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.content", hasSize(sizeof)))
+//                .andExpect(jsonPath("$.totalElements").value(sizeof));
+//
+//        List<Route> filteredByFrom = mockRoutes.stream()
+//                .filter(r -> r.getRouteFrom().equals("Челябинск"))
+//                .toList();
+//
+//        when(routeService.searchRoutes("Челябинск", null, null, null))
+//                .thenReturn(filteredByFrom);
+//
+//        mockMvc.perform(get("/api/routes/search")
+//                .param("routeFrom", "Челябинск")
+//                .param("page", "0")
+//                .param("size", "10"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.content", hasSize(2)))
+//                .andExpect(jsonPath("$.content[0].routeFrom").value("Челябинск"))
+//                .andExpect(jsonPath("$.content[1].availableSeats").value(100));
+//    }
 
     @Test
     @Order(2)

@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "deploy": "gh-pages -d dist",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "prepare": "husky"
@@ -22,7 +23,7 @@
     "vue": "^3.4.19",
     "vue-router": "^4.3.0"
   },
-    "devDependencies": {
+  "devDependencies": {
     "@babel/core": "^7.24.5",
     "@babel/eslint-parser": "^7.24.5",
     "@commitlint/cli": "^19.8.0",
@@ -37,6 +38,7 @@
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^9.33.0",
+    "gh-pages": "^6.3.0",
     "globals": "^16.0.0",
     "husky": "^9.1.7",
     "prettier": "3.2.5",

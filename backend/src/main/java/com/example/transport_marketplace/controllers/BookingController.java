@@ -35,7 +35,6 @@ public class BookingController {
 
     private final UserService userService;
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @Operation(
             summary = "Получение своих бронирований",
             description = "Возвращает список бронирований, сделанных текущим аутентифицированным пользователем в контексте."

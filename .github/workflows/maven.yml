@@ -80,3 +80,11 @@ jobs:
       - name: Stop Spring Boot
         run: |
           kill $(cat app.pid)
+  docker-deploy:
+    needs: build-and-run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check docker compose v2
+        run: docker compose up
