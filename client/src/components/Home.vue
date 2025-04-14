@@ -9,7 +9,9 @@
           ololotravel
           </div>
           <div class="profile-header-custom">
-            <custom-profile :is-authenticated="isAuthenticated" @open-auth="showLoginForm = true" @logout="userLogout" />
+            <custom-profile 
+             @open-auth="showLoginForm = true" 
+             @logout="userLogout" />
           </div>
         </div>
       </div>
@@ -30,7 +32,6 @@
               Поиск маршрутов
             </button>
           </div>
-          
         </div>
     </div>
     <div class="search-container">
@@ -84,7 +85,7 @@
 <script setup>
 import Notifications from './UI/Notifications.vue';
 import github from '@/assets/github-mark.svg';
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { BModal, BTab, BTabs } from 'bootstrap-vue-next';
 import SmartInput from "@/components/UI/routecomponents/SmartInput.vue";
@@ -128,8 +129,6 @@ const handleAuthRequired = () => {
   showLoginForm.value = true;
   showMessage('error', 'Для бронирования необходимо авторизоваться');
 };
-
-const isAuthenticated = computed(() => !!logined.value);
 
 const handleScroll = () => {
   scrollY.value = window.scrollY || document.documentElement.scrollTop;

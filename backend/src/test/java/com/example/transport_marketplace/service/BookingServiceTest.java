@@ -56,17 +56,17 @@ class BookingServiceTest {
                 .status(BookingStatus.BOOKED)
                 .build();
     }
-//
-//    @Test
-//    void testGetBookingByUser_Success() {
-//        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userCaller));
-//        when(bookingRepository.findByUser(userCaller)).thenReturn(List.of(booking));
-//
-//        List<Booking> result = bookingService.getBookingByUser("user1");
-//        assertNotNull(result);
-//        verify(userRepository, times(1)).findByUsername("user1");
-//        verify(bookingRepository, times(1)).findByUser(userCaller);
-//    }
+
+    @Test
+    void testGetBookingByUser_Success() {
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userCaller));
+        when(bookingRepository.findByUser(userCaller)).thenReturn(List.of(booking));
+
+        List<Booking> result = bookingService.getBookingByUser("user1");
+        assertNotNull(result);
+        verify(userRepository, times(1)).findByUsername("user1");
+        verify(bookingRepository, times(1)).findByUser(userCaller);
+    }
 
     @Test
     void testGetBookingByUser_UserNotFound() {

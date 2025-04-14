@@ -1,6 +1,5 @@
 package com.example.transport_marketplace.controllers;
 
-
 import com.example.transport_marketplace.dto.booking.BookingRequest;
 import com.example.transport_marketplace.dto.booking.CancelBookingRequest;
 import com.example.transport_marketplace.exceptions.booking.AccessDeniedException;

@@ -18,6 +18,10 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+      - JWT_SIGNING_KEY=4ca9f2b1d0481c33acb8dcbeaf08a6d1aba6cc2e0a24401493365361308677998b291cda035f59e1587fa3b847e477b4e9baf200e9a748856845c3f65c71db98
+      - ACCESS_TOKEN_EXP=600000
+      - REFRESH_TOKEN_EXP=604800000
     volumes:
       - h2_data:/app/data
     depends_on:

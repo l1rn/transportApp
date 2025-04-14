@@ -32,7 +32,7 @@ spring:
 
   redis:
     host: ${SPRING_REDIS_HOST:localhost}
-    port: 6379
+    port: ${SPRING_REDIS_PORT}
     lettuce:
       pool:
         max-active: 16
@@ -54,7 +54,7 @@ springdoc:
 
 token:
   signing:
-    key: 4ca9f2b1d0481c33acb8dcbeaf08a6d1aba6cc2e0a24401493365361308677998b291cda035f59e1587fa3b847e477b4e9baf200e9a748856845c3f65c71db98
+    key: ${JWT_SIGNING_KEY}
 jwt:
-  access-token-expiration: 600000
-  refresh-token-expiration: 604800000
+  access-token-expiration: ${ACCESS_TOKEN_EXP}
+  refresh-token-expiration: ${REFRESH_TOKEN_EXP}

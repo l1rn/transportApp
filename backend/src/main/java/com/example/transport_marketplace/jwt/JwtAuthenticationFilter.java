@@ -1,7 +1,6 @@
 package com.example.transport_marketplace.jwt;
 
 import com.example.transport_marketplace.service.impl.UserDetailsServiceImpl;
-import io.github.bucket4j.Bucket;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

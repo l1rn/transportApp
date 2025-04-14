@@ -1,10 +1,7 @@
 <script setup>
-import UserService from "@/services/UserService";
-
 import { ref, onMounted } from 'vue';
 import BookingContainer from './BookingContainer.vue';
 import BookingService from '@/services/BookingService';
-import router from "@/routers/router";
 
 const bookings = ref([]);
 const isLoading = ref(false);
@@ -39,19 +36,7 @@ const cancelBooking = async (bookingId) => {
   }
 };
 
-const checkAuth = async() => {
-  try{
-    await UserService.checkAuth();
-  } catch{
-    try{
-      await UserService.refreshIfCheckAuth()
-    }catch{
-      router.push('/');
-    }
-  }
-}
 onMounted(() => {
-  checkAuth(),
   getBookings()
 })
 </script>

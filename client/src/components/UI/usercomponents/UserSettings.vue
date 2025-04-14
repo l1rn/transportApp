@@ -1,7 +1,6 @@
 <template>
     <Notifications ref="notifications" />
     <div class="main-container">
-        <h1>Пользователь - {{ userData.username }} </h1>
         <div class="info-container">
             <form class="change-password" @submit.prevent="changePassword">
                 <label class="form-title" for="">СМЕНА ПАРОЛЯ</label>

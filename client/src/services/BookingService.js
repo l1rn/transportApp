@@ -12,12 +12,9 @@ class BookingService {
     );
   }
   checkRefreshToken() {
-    return axios
-      .post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/refresh`)
-      .then((response) => {
-        scheduleTokenRefresh();
-        return response;
-      });
+    scheduleTokenRefresh();
+    localStorage.setItem('logined', 'true')
+    return axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/refresh`);
   }
   getMyBooking() {
     return axios.get(

@@ -3,7 +3,7 @@
     <BackbuttonToHome />
     <div class="header-profile">
       <div class="header-profile__title">
-        <h1>Профиль - "{{ userData.username }}"</h1>
+        <h1>Профиль - {{ userData.username }}</h1>
       </div>
     </div>
 
@@ -68,7 +68,7 @@ const getDevices = async() => {
 
 const checkTokenInProfile = async() => {
   try{
-    await BookingService.checkRefreshToken;
+    await BookingService.checkRefreshToken();
   }
   catch(error){
     console.log(error);

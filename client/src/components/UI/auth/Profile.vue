@@ -1,5 +1,8 @@
 <script>
+import { useLoginStore } from "@/stores/authStore";
 import {BAvatar} from "bootstrap-vue-next";
+import { storeToRefs } from "pinia";
+import { computed, onMounted } from "vue";
 
 export default {
   name: "CustomProfile",
@@ -15,10 +18,6 @@ export default {
       type: String,
       default: 'Профиль'
     },
-    isAuthenticated: {
-      type: Boolean,
-      default: false
-    }
   },
   data() {
     return {
@@ -26,7 +25,6 @@ export default {
       defaultAvatarUrl:BAvatar,
     }
   },
-
   mounted() {
     document.addEventListener('click', this.handleClickOutside);
   },
@@ -64,7 +62,14 @@ export default {
   }
 }
 </script>
-
+<script setup>
+const loginStore = useLoginStore();
+const { logined } = storeToRefs(loginStore)
+const isAuthenticated = computed(() => logined.value);
+onMounted(() => {
+  loginStore.initLoginState()
+})
+</script>
 <template>
   <div
     ref="profileDropdown"
@@ -87,7 +92,6 @@ export default {
         <slot name="menu-items">
           <div
             v-if="isAuthenticated"
-
             class="menu-item"
             @logined-auth="handleLogout"
             @click="handleMenuItemClick('orders')"

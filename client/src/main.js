@@ -3,7 +3,6 @@ import App from './App.vue'
 
 import BootstrapVueNext from 'bootstrap-vue-next';
 import { MotionPlugin } from '@vueuse/motion';
-import Datepicker from '@vuepic/vue-datepicker';
 import router from '@/routers/router'
 
 import '@/assets/styles/global.sass';
@@ -19,6 +18,5 @@ app.use(BootstrapVueNext);
 app.use(router);
 app.use(pinia);
 app.use(MotionPlugin);
-app.use(Datepicker);
 
 app.mount('#app');
