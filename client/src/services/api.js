@@ -62,6 +62,7 @@ export function getRoleFromToken(){
         .then(response => response.data.role)
         .catch(() => null)
 }
+
 export function scheduleTokenRefresh() {
     cancelTokenRefresh();
     if (!tokenExpiration) {

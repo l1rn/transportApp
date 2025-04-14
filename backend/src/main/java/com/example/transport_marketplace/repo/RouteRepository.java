@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Repository
@@ -24,6 +25,7 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             @Param("transport") String transport,
             @Param("minPrice") Double minPrice,
             @Param("maxPrice") Double maxPrice);
+
 
     Route findByRouteFromAndRouteToAndDate(String routeFrom, String routeTo, String date);
     boolean existsByRouteFromAndRouteToAndDate(String routeFrom, String routeTo, String date);

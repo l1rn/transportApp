@@ -2,17 +2,8 @@ import axios from "axios";
 
 
 class RoutesService{
-    getRoutes(page = 0, size = 10){
-        const params = {
-            page: page,
-            size: size
-        }
-        Object.keys(params).forEach(key => {
-            if (params[key] === null || params[key] === undefined) {
-                delete params[key];
-            }
-        });
-        return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/routes`, {params});
+    getRoutes(){
+        return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/routes`);
     }
     searchRoutes(routeFrom, routeTo, date, transport, page = 0, size = 10){
         const params = {

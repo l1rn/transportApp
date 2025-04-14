@@ -39,26 +39,9 @@ public class RouteController {
                     schema = @Schema(implementation = Route.class, type = "array")))
     })
     @GetMapping
-    public ResponseEntity<?> getRoutes(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+    public ResponseEntity<List<Route>> getRoutes() {
         List<Route> routes = routeService.getRoutes();
-        int start = page * size;
-        int end = Math.min(start + size, routes.size());
-
-        List<Route> paginatedRoutes = start < end
-                ? routes.subList(start, end)
-                : List.of();
-        return new ResponseEntity<>(
-                new HashMap<String, Object>(){{
-                    put("content", paginatedRoutes);
-                    put("totalElements", routes.size());
-                    put("totalPages", (int) Math.ceil((double)routes.size() / size));
-                    put("currentPage", page);
-                }},
-                HttpStatus.OK
-        );
+        return ResponseEntity.ok(routes);
     }
 
     @Operation(
@@ -152,8 +135,7 @@ public class RouteController {
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
+            @RequestParam(defaultValue = "10") int size){
         if (minPrice != null && maxPrice != null && minPrice > maxPrice){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Максимальная цена должна быть больше минимальной");

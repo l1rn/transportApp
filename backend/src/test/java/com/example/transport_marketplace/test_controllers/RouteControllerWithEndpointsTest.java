@@ -82,15 +82,15 @@ public class RouteControllerWithEndpointsTest {
     void getAllRoutesWithMockMvc_ShouldReturn200() throws Exception {
         when(routeService.getRoutes()).thenReturn(mockRoutes);
 
-        mockMvc.perform(get("/api/routes?page=0&size=10"))
+        mockMvc.perform(get("/api/routes"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content", hasSize(sizeof)))
-                .andExpect(jsonPath("$.content[0].routeFrom").value("Челябинск"))
-                .andExpect(jsonPath("$.content[1].routeFrom").value("Москва"))
-                .andExpect(jsonPath("$.content[2].routeFrom").value("Новосибирск"))
-                .andExpect(jsonPath("$.content[0].price").value(3100))
-                .andExpect(jsonPath("$.content[1].transport").value("Поезд"))
-                .andExpect(jsonPath("$.content[2].arrivalTime").value("2026-08-01 10:15:00"));
+                .andExpect(jsonPath("$", hasSize(sizeof)))
+                .andExpect(jsonPath("$[0].routeFrom").value("Челябинск"))
+                .andExpect(jsonPath("$[1].routeFrom").value("Москва"))
+                .andExpect(jsonPath("$[2].routeFrom").value("Новосибирск"))
+                .andExpect(jsonPath("$[0].price").value(3100))
+                .andExpect(jsonPath("$[1].transport").value("Поезд"))
+                .andExpect(jsonPath("$[2].arrivalTime").value("2026-08-01 10:15:00"));
     }
     @Test
     @Order(1)

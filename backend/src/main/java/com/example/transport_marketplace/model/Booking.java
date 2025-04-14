@@ -1,6 +1,7 @@
 package com.example.transport_marketplace.model;
 
 import com.example.transport_marketplace.enums.BookingStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
