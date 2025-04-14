@@ -37,7 +37,9 @@ const cancelBooking = async (bookingId) => {
 };
 
 onMounted(() => {
-  getBookings()
+  setTimeout(() => {
+    getBookings()
+  }, 500) 
 })
 </script>
 <template>

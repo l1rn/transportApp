@@ -89,7 +89,6 @@ export function scheduleTokenRefresh() {
     refreshTimeoutId = setTimeout(async () => {
       try {
         await refreshTokenRequest();
-        scheduleTokenRefresh();
       } catch (error) {
         handleAuthError();
       }

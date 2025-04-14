@@ -91,8 +91,12 @@ watch(hasRoleAdmin, (newValue) => {
 })
 onMounted(() =>{
   checkTokenInProfile();
-  checkAdminRole();
-  getDevices()
+  setTimeout(() => {
+    checkAdminRole();
+    getDevices()
+  }, 500)
+  
+  
 })
 onUnmounted(() => {
   hasRoleAdmin.value = false
