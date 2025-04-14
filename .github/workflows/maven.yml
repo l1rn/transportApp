@@ -96,4 +96,4 @@ jobs:
           docker compose wait || true
 
       - name: Remove docker
-        run: docker down
+        run: docker compose down
