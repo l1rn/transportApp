@@ -36,24 +36,14 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
     border-radius: 0.5rem
     cursor: pointer
     transition: background 0.3s ease
-    margin-bottom: 2rem
     font-weight: 500
-    margin-bottom: 2rem
-  h1
 
 .search-container
-  margin: 0 10%
+  margin: 0 5%
   padding: 1.4rem
   box-shadow: 0 0 8px rgba(0,0,0, 0.3)
   border-radius: 16px
   background: linear-gradient(135deg, lighten(#007bff, 15%), darken(#007bff, 5%))
-
-.main-container
-  display: flex
-  justify-content: center
-  place-content: center
-  align-items: center
-  gap: 0.1rem
 
 .slide-fade-enter-active
   transition: all 0.3s ease-out
@@ -71,57 +61,44 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
   align-items: center
   label
     color: #fff
-  
-.custom-clear-button
-  z-index: 10
-  border: 0
-  outline:none
-  border-radius: 8px
-  background: $bg-color
-  color:#666
-  padding: 0.2rem 1.8rem
-  font-size: 17px
-  transition: all 0.3s ease
-
-  &:hover
-    color: #2b2b2b
-    background: #e8f2ff
-    box-shadow: 0 10px 20px rgba(0, 91, 187, 0.3)
-  &:active
-    box-shadow: 0 5px 10px rgba(0, 91, 187, 0.2)
     
 // suggestions
 .autocomplete
   position: relative
   width: 300px
+.main-container
+  display: flex
+  justify-content: center
+  place-content: center
+  align-items: center
+  flex-direction: row
+  gap: 0.1rem
+.input-wrapper
+  display: flex
+  gap: 0.5rem
+  flex-direction: row
+.b-form-input
+  padding: 0.5rem 1.25rem
+  font-size: 1rem
+  border-radius: $border-radius
+  background-color: $input-bg
+  border: 2px solid $input-border
+  outline: none
+  font-weight: 600
+  color: #1e293b
+  transition: all 0.3s ease
 
+  &:focus
+    border-color: #3b82f6
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2)
+  &:active
+    border-radius: 8px
 
-.input-group
-  position: relative
-  margin-bottom: 1rem
-  width: 100%
-  .b-form-input
-    width: 100%
-    margin-top: 1rem
-    padding: 0.5rem 1.25rem
-    font-size: 1rem
-    border-radius: $border-radius
-    background-color: $input-bg
-    border: 2px solid $input-border
-    outline: none
-    font-weight: 600
-    color: #1e293b
-    transition: all 0.3s ease
+  &:disabled
+    background-color: #f8fafc
+    cursor: not-allowed
 
-    &:focus
-      border-color: #3b82f6
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2)
-
-    &:disabled
-      background-color: #f8fafc
-      cursor: not-allowed
-
-  .suggestions
+.suggestions
     position: absolute
     top: calc(100% + 0.5rem)
     left: 0
@@ -145,7 +122,16 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 
       &:active
         background-color: #e2e8f0
+  
 
+.input-wrapper
+  display: flex
+  flex-direction: row
+  gap: 0.5rem
+
+.search-wrapper
+  display: flex
+  
 .loading, .error
   position: absolute
   top: calc(100% + 0.5rem)
@@ -166,7 +152,28 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
   padding: 8px 12px
   color: #666
   font-size: 0.9em
-
+.clear-wrapper
+  border: none
+  background: #b31c1c
+  margin: 0.3rem
+  padding: 0.3rem
+  border-radius: 8px
+  transition: all 0.3s ease
+  &:hover
+    background: #ca1b1b
+    transform: translateX(1px) translateY(-1px)
+.custom-clear-button
+  border: 0
+  border-radius: 8px
+  padding: 0.6rem
+  font-size: 1.5rem
+  text-transform: uppercase
+  font-weight: 600
+  letter-spacing: 0.03em
+  transition: all 0.3s ease
+  color: #ffffff
+  background: none
+  font-family: Tahoma, Geneva, Verdana, sans-serif
 
 .error
   color: #ff4444
@@ -281,13 +288,22 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 @media (max-width: 1200px)
     .header-routes
         padding: 2rem 5%
-    
+    .input-wrapper
+      flex-direction: column
     .table
         thead th,
         tbody td
             padding: 1rem 1.2rem
 
 @media (max-width: 768px)
+    .main-container
+      flex-direction: column
+    .input-wrapper
+      margin-bottom: 1.3rem
+      width: 100%
+    .input-group
+      input
+        width: 100%
     .table
         min-width: 600px
         
