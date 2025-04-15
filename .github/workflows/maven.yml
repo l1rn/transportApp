@@ -73,10 +73,15 @@ jobs:
         run: |
           postman collection run "42372019-282a7c4c-4440-4459-a335-6cb4d38f3f7d"
 
-      - name: Run k6 tests
+      - name: Run k6 tests with 10 vus
         uses: grafana/k6-action@v0.3.0
         with:
-          filename: tests/load-test-github.js
+          filename: tests/testWithTenVus.js
+      - name: Run k6 tests with 1100 iterations
+        uses: grafana/k6-action@v0.3.0
+        with:
+          filename: tests/testWithRateLimit.js
+
       - name: Stop Spring Boot
         run: |
           kill $(cat app.pid)

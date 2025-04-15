@@ -9,9 +9,7 @@ import com.example.transport_marketplace.jwt.TokenBlacklist;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.model.User;
-import com.example.transport_marketplace.repo.UserRepository;
 import com.example.transport_marketplace.service.BookingService;
-import com.example.transport_marketplace.service.RouteService;
 import com.example.transport_marketplace.service.impl.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,9 +40,6 @@ public class BookingControllerTest {
     List<Route> mockRoutes;
 
     @Mock
-    private RouteService routeService;
-
-    @Mock
     private JwtService jwtService;
 
     @Mock
@@ -52,9 +47,6 @@ public class BookingControllerTest {
 
     @Mock
     private UserDetailsServiceImpl userDetailsService;
-
-    @Mock
-    private UserRepository userRepository;
 
     @Mock
     private BookingService bookingService;
