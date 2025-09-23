@@ -1,0 +1,13 @@
+package com.example.transport_marketplace.dto.account;
+
+import lombok.*;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class AccountUserDTO {
+    private String userName;
+    private double balance;
+}

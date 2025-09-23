@@ -47,6 +47,7 @@ public class DataInitializer {
             userRepository.save(admin);
         }
     }
+
     @EventListener(ApplicationReadyEvent.class)
     public void initFirstUser() {
         if (!userRepository.existsByUsername("user")){

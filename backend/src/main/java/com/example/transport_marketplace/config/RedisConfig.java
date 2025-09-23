@@ -1,9 +1,5 @@
 package com.example.transport_marketplace.config;
 
-import io.github.bucket4j.BucketConfiguration;
-import io.github.bucket4j.distributed.ExpirationAfterWriteStrategy;
-import io.github.bucket4j.distributed.proxy.ProxyManager;
-import io.github.bucket4j.redis.lettuce.cas.LettuceBasedProxyManager;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
@@ -18,9 +14,6 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import java.time.Duration;
-import java.util.function.Supplier;
 
 @Configuration
 public class RedisConfig {
@@ -59,28 +52,5 @@ public class RedisConfig {
         return redisClient().connect(
                 RedisCodec.of(StringCodec.UTF8, ByteArrayCodec.INSTANCE)
         );
-    }
-
-    @Bean
-    public ProxyManager<String> lettuceBasedProxyManager(){
-        RedisClient redisClient = redisClient();
-        StatefulRedisConnection<String, byte[]> redisConnection = redisClient
-                .connect(RedisCodec.of(StringCodec.UTF8, ByteArrayCodec.INSTANCE));
-
-        return LettuceBasedProxyManager.builderFor(redisConnection)
-                .withExpirationStrategy(
-                        ExpirationAfterWriteStrategy.basedOnTimeForRefillingBucketUpToMax(
-                                Duration.ofSeconds(65))
-                )
-                .build();
-    }
-
-    @Bean
-    public Supplier<BucketConfiguration> bucketConfiguration() {
-        BucketConfiguration configuration = BucketConfiguration.builder()
-                .addLimit(limit -> limit.capacity(350)
-                        .refillIntervally(350, Duration.ofMinutes(1)))
-                .build();
-        return () -> configuration;
     }
 }
