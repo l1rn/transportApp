@@ -8,7 +8,6 @@ import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.repo.RouteRepository;
 import com.example.transport_marketplace.repo.UserRepository;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +52,7 @@ class BookingServiceTest {
                 .id(1)
                 .user(bookingOwner)
                 .route(route)
-                .status(BookingStatus.BOOKED)
+                .status(BookingStatus.PENDING)
                 .build();
     }
 
@@ -103,7 +102,7 @@ class BookingServiceTest {
 
         Booking newBooking = bookingService.createBooking(1, 1);
         assertNotNull(newBooking);
-        assertEquals(BookingStatus.BOOKED, newBooking.getStatus());
+        assertEquals(BookingStatus.PENDING, newBooking.getStatus());
         assertEquals(9, route.getAvailableSeats());
         verify(routeRepository, times(1)).findById(1);
         verify(userRepository, times(1)).findById(1);

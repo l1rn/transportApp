@@ -172,7 +172,7 @@ public class DataInitializer {
                 Booking booking = Booking.builder()
                         .user(user)
                         .route(route)
-                        .status(BookingStatus.BOOKED)
+                        .status(BookingStatus.PENDING)
                         .build();
 
                 bookingRepository.save(booking);

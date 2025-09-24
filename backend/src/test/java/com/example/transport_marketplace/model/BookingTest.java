@@ -15,13 +15,13 @@ public class BookingTest {
                 .id(100)
                 .route(route)
                 .user(user)
-                .status(BookingStatus.BOOKED)
+                .status(BookingStatus.PENDING)
                 .build();
 
         assertEquals(100, booking.getId());
         assertEquals(route, booking.getRoute());
         assertEquals(user, booking.getUser());
-        assertEquals(BookingStatus.BOOKED, booking.getStatus());
+        assertEquals(BookingStatus.PENDING, booking.getStatus());
     }
 
     @Test

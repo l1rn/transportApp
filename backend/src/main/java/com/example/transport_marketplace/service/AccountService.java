@@ -61,13 +61,8 @@ public class AccountService {
                     .collect(Collectors.toList());
     }
 
-    public AccountUserDTO getAccountByUserId(int userId){
-        Account account = accountRepository.findByUserId(userId)
+    public Account getAccountByUserId(int userId){
+        return accountRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Не удалось найти кошелен по User ID"));
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по User ID"));
-
-        return new AccountUserDTO(user.getUsername(), account.getBalance());
     }
 }

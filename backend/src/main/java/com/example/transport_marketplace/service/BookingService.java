@@ -1,6 +1,9 @@
 package com.example.transport_marketplace.service;
 
+import com.example.transport_marketplace.jwt.JwtService;
+import com.example.transport_marketplace.model.Account;
 import com.example.transport_marketplace.model.Booking;
+import com.example.transport_marketplace.repo.AccountRepository;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.model.Route;
@@ -8,6 +11,7 @@ import com.example.transport_marketplace.repo.RouteRepository;
 import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.repo.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -20,13 +24,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class BookingService {
     @Autowired
-    private BookingRepository bookingRepository;
+    private final BookingRepository bookingRepository;
     @Autowired
-    private RouteRepository routeRepository;
+    private final RouteRepository routeRepository;
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    @Autowired
+    private final JwtService jwtService;
+    @Autowired
+    private final AccountRepository accountRepository;
 
     public List<Booking> getBookingByUserId(int userId){
         return bookingRepository.findByUserId(userId);
@@ -58,16 +67,47 @@ public class BookingService {
         }
 
         User user = userRepository.findById(userId).orElseThrow(() ->new RuntimeException("Такого пользователя нет"));
-        route.setAvailableSeats(route.getAvailableSeats() - 1);
+        route.setAvailableSeats(route.getAvailableSeats());
         routeRepository.save(route);
 
         Booking booking = Booking.builder()
                 .route(route)
                 .user(user)
-                .status(BookingStatus.BOOKED)
+                .status(BookingStatus.PENDING)
                 .build();
 
         return bookingRepository.save(booking);
+    }
+
+    public boolean confirmBooking(String accessToken, int bookingId){
+        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+                .orElseThrow(() -> new RuntimeException("Не удалось найти пользователя"));
+
+        Account account = accountRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Не удалось найти счет"));
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Не удалось найти бронь"));
+
+        if(booking.getStatus() == BookingStatus.CANCELED){
+            return false;
+        }
+
+        if(account.getBalance() - booking.getRoute().getPrice() < 0){
+            throw new RuntimeException("Недостаточно средств на балансе");
+        }
+
+        Route route = booking.getRoute();
+
+        route.setAvailableSeats(route.getAvailableSeats() - 1);
+        booking.setStatus(BookingStatus.PAID);
+        account.setBalance(account.getBalance() - booking.getRoute().getPrice());
+
+        routeRepository.save(route);
+        bookingRepository.save(booking);
+        accountRepository.save(account);
+
+        return true;
     }
 
     @CacheEvict(value = "booking", key = "#bookingId")

@@ -85,7 +85,7 @@ public class BookingControllerTest {
     @WithMockUser(roles = "ROLE_ADMIN")
     void getAllBookings() throws Exception {
         Booking mockBooking = new Booking();
-        mockBooking.setStatus(BookingStatus.BOOKED);
+        mockBooking.setStatus(BookingStatus.PENDING);
         mockBooking.setUser(user);
         mockBooking.setRoute(mockRoutes.getFirst());
 
