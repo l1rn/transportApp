@@ -1,6 +1,6 @@
 <template>
-  <Notifications ref="notifications"></Notifications>  
-<div class="routes-container">
+  <Notifications ref="notifications" />  
+  <div class="routes-container">
     <div class="header">
       <h1>Все маршруты</h1>
     </div>
@@ -50,9 +50,9 @@
             </td>
             <td class="actions">
               <button 
-              class="delete-btn"
-              :disabled="deletingId === route.id"
-              @click="deleteRoute(route.id)"
+                class="delete-btn"
+                :disabled="deletingId === route.id"
+                @click="deleteRoute(route.id)"
               >
                 <span v-if="deletingId === route.id">Удаление...</span>
                 <span v-else>Удалить</span>

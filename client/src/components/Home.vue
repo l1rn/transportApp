@@ -2,16 +2,24 @@
   <!-- header  -->
   <Notifications ref="notifications" />
   <div class="header-container-custom">
-    <div class="main-header" :class="{ 'header-scrolled': isScrolled }">
+    <div
+      class="main-header"
+      :class="{ 'header-scrolled': isScrolled }"
+    >
       <div class="navbar-custom-header">
         <div class="navbar-subheader">
-          <div style="cursor: pointer;" class="brand" @click="$router.replace('/home')">
-          ololotravel
+          <div
+            style="cursor: pointer;"
+            class="brand"
+            @click="$router.replace('/home')"
+          >
+            ololotravel
           </div>
           <div class="profile-header-custom">
             <custom-profile 
-             @open-auth="showLoginForm = true" 
-             @logout="userLogout" />
+              @open-auth="showLoginForm = true" 
+              @logout="userLogout"
+            />
           </div>
         </div>
       </div>
@@ -22,61 +30,102 @@
         <span>🚂</span>
       </div>
       <div class="sub-header-items">
-          <div class="header-item">
+        <div class="header-item">
           <button @click="$router.push('/routes')">
             Все маршруты
           </button>
-          </div>
-          <div class="header-item">
-            <button @click="$router.push('/routes/search')">
-              Поиск маршрутов
-            </button>
-          </div>
         </div>
-    </div>
-    <div class="search-container">
-      <div class="sub-header-container" :class="{ 'sub-header-fixed': isScrolled }">
-        <smart-input 
-        @transport-selected="handleTransportSelect" 
-        @search-results="handleResults"
-        @search-start="showLoading" />
+        <div class="header-item">
+          <button @click="$router.push('/routes/search')">
+            Поиск маршрутов
+          </button>
+        </div>
       </div>
     </div>
-   
+    <div class="search-container">
+      <div
+        class="sub-header-container"
+        :class="{ 'sub-header-fixed': isScrolled }"
+      >
+        <smart-input 
+          @transport-selected="handleTransportSelect" 
+          @search-results="handleResults"
+          @search-start="showLoading"
+        />
+      </div>
+    </div>
   </div>
 
   <!-- auth form -->
-  <BModal v-model="showLoginForm" class="b-modal" title="Регистрация профиля" size="xl" no-footer no-stacking>
+  <BModal
+    v-model="showLoginForm"
+    class="b-modal"
+    title="Регистрация профиля"
+    size="xl"
+    no-footer
+    no-stacking
+  >
     <div class="status-messages">
       <transition name="slide">
-        <div v-if="responses.success.register" class="success-message">
+        <div
+          v-if="responses.success.register"
+          class="success-message"
+        >
           Успешная регистрация!
         </div>
       </transition>
       <transition name="slide">
-        <div v-if="responses.error" class="error-message">
+        <div
+          v-if="responses.error"
+          class="error-message"
+        >
           {{ responses.error }}
         </div>
       </transition>
     </div>
-    <b-tabs class="b-tabs" content-class="mt-3" fill>
-      <b-tab class="nav-link" title="Войти">
-        <Signin @logined="handleUserLogined" @close="showLoginForm = false" />
+    <b-tabs
+      class="b-tabs"
+      content-class="mt-3"
+      fill
+    >
+      <b-tab
+        class="nav-link"
+        title="Войти"
+      >
+        <Signin
+          @logined="handleUserLogined"
+          @close="showLoginForm = false"
+        />
       </b-tab>
-      <b-tab class="nav-link" title="Зарегистрироваться">
+      <b-tab
+        class="nav-link"
+        title="Зарегистрироваться"
+      >
         <Signup @registered="handleUserRegistered" />
       </b-tab>
     </b-tabs>
   </BModal>
-  <div class="content" :class="{ 'content-padded': isScrolled }">
+  <div
+    class="content"
+    :class="{ 'content-padded': isScrolled }"
+  >
     <div class="custom-container">
-      <route-container :search-results="searchResults" @update-seats="handleSeatsUpdate"
-        @require-auth="handleAuthRequired" />
+      <route-container
+        :search-results="searchResults"
+        @update-seats="handleSeatsUpdate"
+        @require-auth="handleAuthRequired"
+      />
     </div>
     <div class="footer">
       <div>l1rn</div>
       <div>
-        <a href="https://github.com/l1rn" target="_blank"><img :src="github" alt="Логотип"></a>
+        <a
+          href="https://github.com/l1rn"
+          target="_blank"
+        ><img
+          :src="github"
+          alt="Логотип"
+        ></a>
       </div>
       <div>2025</div>
     </div>

@@ -8,49 +8,102 @@
       <div class="main-container">
         <div class="input-wrapper">
           <div class="input-group">
-            <input v-model="inputRouteFrom" type="text" class="b-form-input" placeholder="Откуда"
-              @focus="showFromSuggestions = true" @blur="handleFromBlur">
+            <input
+              v-model="inputRouteFrom"
+              type="text"
+              class="b-form-input"
+              placeholder="Откуда"
+              @focus="showFromSuggestions = true"
+              @blur="handleFromBlur"
+            >
             <div v-if="showFromSuggestions">
-              <div v-if="isLoading" class="loading">
+              <div
+                v-if="isLoading"
+                class="loading"
+              >
                 Загрузка...
               </div>
-              <div v-else-if="error" class="error">
+              <div
+                v-else-if="error"
+                class="error"
+              >
                 {{ error }}
               </div>
-              <div v-else class="suggestions">
-                <div v-for="from in filteredFroms" :key="from" class="suggestion-item" @click="selectFrom(from)">
+              <div
+                v-else
+                class="suggestions"
+              >
+                <div
+                  v-for="from in filteredFroms"
+                  :key="from"
+                  class="suggestion-item"
+                  @click="selectFrom(from)"
+                >
                   {{ from }}
                 </div>
               </div>
             </div>
           </div>
           <div class="input-group">
-            <input ref="toInput" v-model="inputRouteTo" class="b-form-input" placeholder="Куда" type="text"
-              :disabled="!inputRouteFrom" @focus="handleToFocus" @blur="handleToBlur">
+            <input
+              ref="toInput"
+              v-model="inputRouteTo"
+              class="b-form-input"
+              placeholder="Куда"
+              type="text"
+              :disabled="!inputRouteFrom"
+              @focus="handleToFocus"
+              @blur="handleToBlur"
+            >
             <div v-if="showToSuggestions">
-              <div v-if="isLoading" class="loading">
+              <div
+                v-if="isLoading"
+                class="loading"
+              >
                 Загрузка...
               </div>
-              <div v-else-if="error" class="error">
+              <div
+                v-else-if="error"
+                class="error"
+              >
                 {{ error }}
               </div>
-              <div v-else class="suggestions">
-                <div v-for="to in filteredTos" :key="to" class="suggestion-item" @click="selectTo(to)">
+              <div
+                v-else
+                class="suggestions"
+              >
+                <div
+                  v-for="to in filteredTos"
+                  :key="to"
+                  class="suggestion-item"
+                  @click="selectTo(to)"
+                >
                   {{ to }}
                 </div>
               </div>
             </div>
           </div>
-
         </div>
         <div class="input-wrapper">
-          <div class="date-input-wrapper" :class="{ 'has-value': selectedDate }">
-            <input id="date-input" v-model="selectedDate" type="date" style="background-color: #f8fafc">
+          <div
+            class="date-input-wrapper"
+            :class="{ 'has-value': selectedDate }"
+          >
+            <input
+              id="date-input"
+              v-model="selectedDate"
+              type="date"
+              style="background-color: #f8fafc"
+            >
             <span class="custom-placeholder">Когда</span>
           </div>
 
           <div class="transport-wrapper">
-            <div class="transport-toggle" :class="{ 'active': isOpen }" @click="toggleMenu">
+            <div
+              class="transport-toggle"
+              :class="{ 'active': isOpen }"
+              @click="toggleMenu"
+            >
               <span class="current-transport">
                 Транспорт
               </span>
@@ -58,9 +111,17 @@
             </div>
 
             <transition name="slide-fade">
-              <div v-if="isOpen" ref="menu" class="transport-menu">
-                <div v-for="transport in transports" :key="transport.value" class="transport-item"
-                  @click="selectTransport(transport.value)">
+              <div
+                v-if="isOpen"
+                ref="menu"
+                class="transport-menu"
+              >
+                <div
+                  v-for="transport in transports"
+                  :key="transport.value"
+                  class="transport-item"
+                  @click="selectTransport(transport.value)"
+                >
                   <span class="emoji">{{ transport.emoji }}</span>
                   {{ transport.label }}
                 </div>
@@ -70,11 +131,18 @@
         </div>
 
         <div class="search-wrapper">
-          <button @click="clearFilter" class="clear-wrapper">
+          <button
+            class="clear-wrapper"
+            @click="clearFilter"
+          >
             <span class="custom-clear-button">✕</span>
           </button>
-          <button class="search-button-custom btn" :class="{ 'opacity-50': isLoading }" :disabled="isLoading"
-            @click="paginatedRoutes">
+          <button
+            class="search-button-custom btn"
+            :class="{ 'opacity-50': isLoading }"
+            :disabled="isLoading"
+            @click="paginatedRoutes"
+          >
             <span v-if="!isLoading">Поиск</span>
             <span v-else>⌛</span>
             <span class="search-icon">🔍</span>
@@ -102,7 +170,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="route in searchResults.content" :key="route.id">
+          <tr
+            v-for="route in searchResults.content"
+            :key="route.id"
+          >
             <td>{{ route.id }}</td>
             <td>{{ route.routeFrom }}</td>
             <td>{{ route.routeTo }}</td>
@@ -123,7 +194,11 @@
       </table>
     </div>
     <div class="pagination">
-      <button :disabled="currentPage === 0" class="page-button" @click="currentPage = currentPage - 1">
+      <button
+        :disabled="currentPage === 0"
+        class="page-button"
+        @click="currentPage = currentPage - 1"
+      >
         Назад
       </button>
 
@@ -131,7 +206,11 @@
         Страница {{ currentPage + 1 }} из {{ totalPages }}
       </span>
 
-      <button :disabled="currentPage + 1 >= totalPages" class="page-button" @click="currentPage = currentPage + 1">
+      <button
+        :disabled="currentPage + 1 >= totalPages"
+        class="page-button"
+        @click="currentPage = currentPage + 1"
+      >
         Вперед
       </button>
     </div>
