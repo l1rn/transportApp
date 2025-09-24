@@ -8,6 +8,6 @@ import lombok.*;
 @Getter
 @Setter
 public class AccountUserDTO {
-    private String userName;
+    private String username;
     private double balance;
 }

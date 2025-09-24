@@ -2,14 +2,13 @@ package com.example.transport_marketplace.config;
 
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.Role;
-import com.example.transport_marketplace.model.Booking;
-import com.example.transport_marketplace.model.Device;
-import com.example.transport_marketplace.model.Route;
-import com.example.transport_marketplace.model.User;
+import com.example.transport_marketplace.model.*;
+import com.example.transport_marketplace.repo.AccountRepository;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.repo.RouteRepository;
 import com.example.transport_marketplace.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
@@ -21,10 +20,16 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class DataInitializer {
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Autowired
     private final RouteRepository routeRepository;
+    @Autowired
     private final BookingRepository bookingRepository;
+    @Autowired
+    private final AccountRepository accountRepository;
     private void createUserIfNotExists(String username, String password, Role role, List<Device> devices) {
         if (!userRepository.existsByUsername(username)) {
             User user = User.builder()
@@ -49,7 +54,7 @@ public class DataInitializer {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void initFirstUser() {
+    public void initFirstAndAccountUser() {
         if (!userRepository.existsByUsername("user")){
             User user = User.builder()
                     .username("user")
@@ -57,6 +62,12 @@ public class DataInitializer {
                     .role(Role.ROLE_USER)
                     .build();
             userRepository.save(user);
+
+            Account account = Account.builder()
+                    .user(user)
+                    .balance(1000)
+                    .build();
+            accountRepository.save(account);
         }
     }
 

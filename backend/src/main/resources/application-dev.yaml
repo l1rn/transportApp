@@ -22,7 +22,7 @@ spring:
   sql:
     init:
       mode: always
-      data-locations: classpath:data.sql
+#      data-locations: classpath:data.sql
   cache:
     type: redis
     redis:
