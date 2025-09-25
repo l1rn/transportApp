@@ -6,6 +6,7 @@ import com.example.transport_marketplace.exceptions.booking.AccessDeniedExceptio
 import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.User;
+import com.example.transport_marketplace.repo.UserRepository;
 import com.example.transport_marketplace.service.BookingService;
 import com.example.transport_marketplace.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,9 +32,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Booking API")
 public class BookingController {
+    @Autowired
     private final BookingService bookingService;
 
+    @Autowired
     private final UserService userService;
+
 
     @Operation(
             summary = "Получение своих бронирований",
@@ -100,6 +105,8 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+
 
     @Operation(
             summary = "Отмена бронирования администратором",
