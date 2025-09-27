@@ -4,10 +4,10 @@ class UserService{
     getUserAgent(){
         return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/users/me`)
     }
-    changeUserPassword(passwordRequest){
+    changeUserPassword(passwordRequest: string){
         return axios.patch(`${process.env.VUE_APP_BACKEND_APP_API}/auth/change/password`, passwordRequest)
     }
-    deleteSession(id){
+    deleteSession(id: number){
         return axios.delete(`${process.env.VUE_APP_BACKEND_APP_API}/auth/session/delete/${id}`)
     }
     checkSession(){

@@ -1,5 +1,5 @@
-export const formatToDatabase = (tempdate) => {
-    const date = new Date(tempdate);
+export const formatToDatabase = (template: string) => {
+    const date = new Date(template);
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
@@ -11,7 +11,7 @@ export const formatToDatabase = (tempdate) => {
 }
 
 
-export const getDateSource = (route, isArrival = false) => {
+export const getDateSource = (route: any, isArrival = false) => {
     const timeString = isArrival ? route.arrivalTime : route.time;
     
     if(timeString.includes(' ')) {
@@ -20,7 +20,7 @@ export const getDateSource = (route, isArrival = false) => {
     return route.date;
     };
     
-export const formatDate = (dateString) => {
+export const formatDate = (dateString: string) => {
     try {
     const [month, day] = dateString.split('-');
     return `${day}-${month}`;
@@ -29,7 +29,7 @@ export const formatDate = (dateString) => {
     }
     };
     
-export const formatTime = (timeString) => {
+export const formatTime = (timeString: string) => {
     try {
     const timePart = timeString.includes(' ') 
       ? timeString.split(' ')[1] 
