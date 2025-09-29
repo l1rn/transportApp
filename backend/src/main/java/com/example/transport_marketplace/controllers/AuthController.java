@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.example.transport_marketplace.controllers;
 
 import com.example.transport_marketplace.dto.auth.SignInRequest;
@@ -250,4 +251,257 @@ public class AuthController {
         response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
     }
+=======
+package com.example.transport_marketplace.controllers;
+
+import com.example.transport_marketplace.dto.auth.SignInRequest;
+import com.example.transport_marketplace.dto.auth.SignUpRequest;
+import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
+import com.example.transport_marketplace.dto.users.ChangePasswordRequest;
+import com.example.transport_marketplace.jwt.JwtService;
+import com.example.transport_marketplace.jwt.TokenBlacklist;
+
+import com.example.transport_marketplace.service.AuthenticationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+
+
+@Slf4j
+@RestController
+@RequestMapping("/api/auth")
+@Tag(name = "Authentication API")
+@RequiredArgsConstructor
+public class AuthController {
+    private final TokenBlacklist tokenBlacklist;
+    private final AuthenticationService authenticationService;
+    private final JwtService jwtService;
+    @Value("${jwt.refresh-token-expiration}")
+    private long refreshExpirationMs;
+    @Value("${jwt.access-token-expiration}")
+    private long accessExpirationMs;
+
+    @Operation(
+            summary = "Регистрация пользователя",
+            description = "Создаёт нового пользователя в системе. Требуется уникальный имя и пароль."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Пользователь успешно зарегистрирован",
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = String.class),
+            examples = @ExampleObject(value = "\"Пользователь зарегистрирован\""))),
+            @ApiResponse(responseCode = "400", description = "Некорректные данные или имя уже занят",
+            content = @Content(mediaType = "application/json",
+            examples = @ExampleObject(value = "\"Имя уже используется\"")))
+    })
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) {
+        authenticationService.signUp(request);
+        return ResponseEntity.ok("Registered");
+    }
+
+    @Operation(
+            summary = "Вход пользователя",
+            description = "Аутентифицирует пользователя и возвращает JWT-токены (access и refresh)."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешный вход",
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = JwtAuthenticationResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Неверные учетные данные")
+    })
+    @PostMapping("/sign-in")
+    public ResponseEntity<?> signIn(@RequestBody SignInRequest request,
+                                    HttpServletRequest httpServletRequest,
+                                    HttpServletResponse response) {
+        JwtAuthenticationResponse authenticationResponse = authenticationService.signIn(request, httpServletRequest);
+
+        response.setHeader("X-Token-Expires", String.valueOf(accessExpirationMs));
+
+        setAuthCookies(response, authenticationResponse.getAccessToken(), authenticationResponse.getRefreshToken());
+        return ResponseEntity.ok("Authorized");
+    }
+
+    @Operation(
+            summary = "Обновление токенов"
+    )
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtAuthenticationResponse> refreshToken(HttpServletRequest request,
+                                                                  HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        String refreshToken = Arrays.stream(cookies)
+                .filter(c -> "refreshToken".equals(c.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElseThrow(() -> new RuntimeException("Рефреш токена нету"));
+        JwtAuthenticationResponse newTokens = authenticationService.refreshToken(refreshToken);
+        response.addHeader("X-Token-Expires", String.valueOf(accessExpirationMs));
+
+        setAuthCookies(response, newTokens.getAccessToken(), newTokens.getRefreshToken());
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(
+            summary = "Выход из системы",
+            description = "Завершает сессию пользователя, добавляя access-токен в blacklist" +
+                    " и удаляя refresh-токен."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Успешный выход"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован")
+    })
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        try{
+            Cookie[] cookies = request.getCookies();
+            String accessToken = Arrays.stream(cookies)
+                    .filter(c -> "accessToken".equals(c.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElseThrow(() -> new RuntimeException("Акцес токена нету"));
+            String refreshToken = Arrays.stream(cookies)
+                    .filter(c -> "refreshToken".equals(c.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElseThrow(() -> new RuntimeException("Рефреш токена нету"));
+
+            tokenBlacklist.revoke(accessToken);
+            authenticationService.deleteRefreshToken(refreshToken);
+            clearAuthCookies(response);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @Operation(
+            summary = "Удаляет сессию по deviceID"
+    )
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/session/delete/{id}")
+    public ResponseEntity<?> deleteSessionByAgent(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable int id) {
+        try {
+            String username = userDetails.getUsername();
+            authenticationService.deleteSession(username, id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            log.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось удалить сессию");
+        }
+    }
+
+    @Operation(
+            summary = "Просматривает, какой девайс сейчас в контексте",
+            description = "Дает deviceID"
+    )
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/session/now")
+    public ResponseEntity<?> checkNow(
+            @AuthenticationPrincipal UserDetails userDetails,
+            HttpServletRequest request){
+        try {
+            String username = userDetails.getUsername();
+            return ResponseEntity.ok(authenticationService.checkSession(username, request));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось получить сессию");
+        }
+    }
+
+    @Operation(
+            summary = "Меняет пароль",
+            description = "Нужно ввести старый пароль и новый"
+    )
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/change/password")
+    public ResponseEntity<?> changePassword(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody ChangePasswordRequest changePasswordRequest){
+        try {
+            String username = userDetails.getUsername();
+            return ResponseEntity.ok(authenticationService.changePasswordByUsername(username, changePasswordRequest));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
+    @Operation(
+            summary = "Смотри на авторизацию",
+            description = "Если все нормально - 200, нет - 401/403"
+    )
+    @GetMapping("/check")
+    public ResponseEntity<?> checkForAuth(HttpServletRequest request) {
+        try {
+            boolean auth = authenticationService.checkForAuth(request);
+            if(auth){
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Токен истек");
+            }
+        } catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Невозможно получить информацию о вас");
+        }
+    }
+
+    private void setAuthCookies(HttpServletResponse response, String accessToken,
+                                String refreshToken){
+        ResponseCookie accessCookie = ResponseCookie.from("accessToken", accessToken)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(accessExpirationMs / 1000)
+                .sameSite("Lax")
+                .build();
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(refreshExpirationMs / 1000)
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader("Set-Cookie", accessCookie.toString());
+        response.addHeader("Set-Cookie", refreshCookie.toString());
+    }
+
+    private void clearAuthCookies(HttpServletResponse response){
+        ResponseCookie accessCookie = ResponseCookie.from("accessToken", "")
+                .maxAge(0)
+                .path("/")
+                .build();
+
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", "")
+                .maxAge(0)
+                .path("/")
+                .build();
+
+        response.addHeader("Set-Cookie", accessCookie.toString());
+        response.addHeader("Set-Cookie", refreshCookie.toString());
+    }
+>>>>>>> 8a6cce314fb11973cf56c7551e6cfb08585b32bb
 }
