@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import BookingContainer from './BookingContainer.vue';
+import BookingContainer from './AllBookingsView.vue';
 import BookingService from '@/services/BookingService';
 
 const bookings = ref([]);

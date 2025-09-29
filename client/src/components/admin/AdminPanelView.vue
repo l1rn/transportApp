@@ -44,10 +44,10 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-import AdminAllUsers from './AdminAllUsers.vue';
-import AdminAllBookings from './AdminAllBookings.vue';
-import AdminAllRoutes from './AdminAllRoutes.vue';
-import SearchRoutes from '../SearchRoutes.vue';
+import AdminAllUsers from './AdminAllUsersView.vue';
+import AdminAllBookings from './AdminAllBookingsView.vue';
+import AdminAllRoutes from './AdminAllRoutesView.vue';
+import SearchRoutes from '../SearchRoutesView.vue';
 let chooseAllUsers = ref(false);
 let chooseAllBookings = ref(false);
 let chooseAllRoutes = ref(false);

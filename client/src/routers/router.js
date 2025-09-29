@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory} from 'vue-router';
-import ProfilePage from '@/components/UI/ProfilePage.vue';
-import Home from "@/components/Home.vue";
-import AllRoutesByFilter from '@/components/AllRoutesByFilter.vue';
-import SearchRoutes from '@/components/SearchRoutes.vue'
-import AdminPanel from '@/components/admin/AdminPanel.vue';
-import PriceRangeRoutesContainer from '@/components/UI/routecomponents/PriceRangeRoutesContainer.vue'
+import ProfilePage from '@/components/UI/ProfilePageView.vue';
+import Home from "@/components/HomeView.vue";
+import AllRoutesByFilter from '@/components/AllRoutesFilterView.vue';
+import SearchRoutes from '@/components/SearchRoutesView.vue'
+import AdminPanel from '@/components/admin/AdminPanelView.vue';
+import PriceRangeRoutesContainer from '@/components/UI/routecomponents/PriceRangeRoutesView.vue'
 const routes = [
     {path: '/', redirect: '/home'},
     { path: '/profile', component: ProfilePage, meta:{requiresAuth: true} },

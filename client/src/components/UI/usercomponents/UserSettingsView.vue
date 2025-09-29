@@ -72,7 +72,7 @@
     </div>
 </template>
 <script setup>
-import Notifications from '@/components/UI/Notifications.vue'
+import Notifications from '@/components/UI/NotificationsView.vue'
 import LogoutService from '@/services/LogoutService';
 import UserService from '@/services/UserService';
 import { useDataSource } from '@/stores/userDataStore';

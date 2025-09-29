@@ -1,6 +1,5 @@
 package com.example.transport_marketplace.security;
 
-import com.example.transport_marketplace.jwt.JwtAuthenticationFilter;
 import com.example.transport_marketplace.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

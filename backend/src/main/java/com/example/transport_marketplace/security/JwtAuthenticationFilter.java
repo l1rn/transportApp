@@ -1,5 +1,7 @@
-package com.example.transport_marketplace.jwt;
+package com.example.transport_marketplace.security;
 
+import com.example.transport_marketplace.jwt.JwtService;
+import com.example.transport_marketplace.jwt.TokenBlacklist;
 import com.example.transport_marketplace.service.impl.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
@@ -41,6 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
+
             if(tokenBlacklist.isRevoked(jwt)){
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
@@ -69,11 +73,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String parseJwt(HttpServletRequest request) {
         if(request.getCookies() != null){
-            for(Cookie cookie : request.getCookies()){
-                if("accessToken".equals(cookie.getName())){
-                    return cookie.getValue();
-                }
-            }
+            return Arrays.stream(request.getCookies())
+                    .filter(c -> "accessToken".equals(c.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElse(null);
         }
         String headerAuth = request.getHeader("Authorization");
         if (headerAuth != null && headerAuth.startsWith("Bearer ")) {

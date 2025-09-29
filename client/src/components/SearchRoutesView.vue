@@ -138,7 +138,7 @@
   </div>
 </template>
 <script setup>
-import BackbuttonToHome from './UI/BackbuttonToHome.vue';
+import BackbuttonToHome from './UI/BackButtonView.vue';
 import RoutesService from '@/services/RoutesService';
 import { onBeforeMount, onMounted, reactive, ref, computed, nextTick, watch } from 'vue';
 

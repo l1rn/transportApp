@@ -20,9 +20,9 @@
 </template>
 <script setup>
 import { ref, computed } from 'vue';
-import AddRoute from './adminRoutesManage/AddRoute.vue';
-import DeleteRoute from './adminRoutesManage/DeleteRoute.vue';
-import PutRoute from './adminRoutesManage/PutRoute.vue';
+import AddRoute from './adminRoutesManage/AddRouteView.vue';
+import DeleteRoute from './adminRoutesManage/DeleteRouteView.vue';
+import PutRoute from './adminRoutesManage/PutRouteView.vue';
 
 const tabs = [
     { type: 'add', title: 'Добавление маршрутов', component: AddRoute },

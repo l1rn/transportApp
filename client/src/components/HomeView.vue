@@ -1,4 +1,13 @@
 <template>
+  <div class="modal-auth-form">
+    <div class="sign-in">
+      <Signin @logined="handleUserLogined" @close="showLoginForm = false" />
+    </div>
+    <div class="sign-up">
+      <Signup @registered="handleUserRegistered" />
+    </div>
+  </div>
+
   <!-- header  -->
   <Notifications ref="notifications" />
   <div class="header-container-custom">
@@ -42,32 +51,9 @@
         @search-start="showLoading" />
       </div>
     </div>
-   
   </div>
-
-  <!-- auth form -->
-  <BModal v-model="showLoginForm" class="b-modal" title="Регистрация профиля" size="xl" no-footer no-stacking>
-    <div class="status-messages">
-      <transition name="slide">
-        <div v-if="responses.success.register" class="success-message">
-          Успешная регистрация!
-        </div>
-      </transition>
-      <transition name="slide">
-        <div v-if="responses.error" class="error-message">
-          {{ responses.error }}
-        </div>
-      </transition>
-    </div>
-    <b-tabs class="b-tabs" content-class="mt-3" fill>
-      <b-tab class="nav-link" title="Войти">
-        <Signin @logined="handleUserLogined" @close="showLoginForm = false" />
-      </b-tab>
-      <b-tab class="nav-link" title="Зарегистрироваться">
-        <Signup @registered="handleUserRegistered" />
-      </b-tab>
-    </b-tabs>
-  </BModal>
+    
+  <!-- main content -->
   <div class="content" :class="{ 'content-padded': isScrolled }">
     <div class="custom-container">
       <route-container :search-results="searchResults" @update-seats="handleSeatsUpdate"
@@ -83,16 +69,15 @@
   </div>
 </template>
 <script setup>
-import Notifications from './UI/Notifications.vue';
+import Notifications from './UI/NotificationsView.vue';
 import github from '@/assets/github-mark.svg';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
-import { BModal, BTab, BTabs } from 'bootstrap-vue-next';
-import SmartInput from "@/components/UI/routecomponents/SmartInput.vue";
-import RouteContainer from './UI/routecomponents/RouteContainer.vue';
-import Signup from '@/components/UI/auth/Signup.vue';
-import Signin from "@/components/UI/auth/Signin.vue";
-import CustomProfile from "@/components/UI/auth/Profile.vue";
+import SmartInput from "@/components/UI/routecomponents/SmartInputView.vue";
+import RouteContainer from './UI/routecomponents/RouteContainerView.vue';
+import Signup from '@/components/UI/auth/SignupView.vue';
+import Signin from "@/components/UI/auth/SigninView.vue";
+import CustomProfile from "@/components/UI/auth/ProfileView.vue";
 import LogoutService from "@/services/LogoutService";
 import { cancelTokenRefresh, scheduleTokenRefresh } from "@/services/api";
 import { useLoginStore } from '@/stores/authStore';
@@ -116,14 +101,6 @@ const handleSeatsUpdate = (routeId) => {
 const loginStore = useLoginStore()
 
 const { logined } = storeToRefs(loginStore);
-
-const responses = ref({
-  success: {
-    register: false,
-    logout: false,
-  },
-  error: null,
-});
 
 const handleAuthRequired = () => {
   showLoginForm.value = true;
@@ -196,11 +173,6 @@ const showLoading = (state) => {
   isLoading.value = state;
 };
 
-</script>
-<script>
-export default {
-  name: "AppHome"
-}
 </script>
 <style scoped lang="sass">
 @import '@/assets/styles/home.sass'

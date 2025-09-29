@@ -1,7 +1,7 @@
 <script setup>
 import BookingService from '@/services/BookingService'
 import {defineProps, watch, ref, defineEmits} from 'vue'
-import Notifications from '@/components/UI/Notifications.vue';
+import Notifications from '@/components/UI/NotificationsView.vue';
 import { useLoginStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 const props = defineProps({

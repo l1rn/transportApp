@@ -5,7 +5,7 @@ import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.jwt.JwtAuthenticationResponse;
 import com.example.transport_marketplace.dto.jwt.RefreshTokenRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
-import com.example.transport_marketplace.jwt.JwtAuthenticationFilter;
+import com.example.transport_marketplace.security.JwtAuthenticationFilter;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.service.AuthenticationService;

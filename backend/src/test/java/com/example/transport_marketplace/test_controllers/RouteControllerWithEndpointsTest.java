@@ -1,7 +1,7 @@
 package com.example.transport_marketplace.test_controllers;
 
 import com.example.transport_marketplace.controllers.RouteController;
-import com.example.transport_marketplace.jwt.JwtAuthenticationFilter;
+import com.example.transport_marketplace.security.JwtAuthenticationFilter;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.jwt.TokenBlacklist;
 import com.example.transport_marketplace.model.Route;
@@ -23,7 +23,6 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;

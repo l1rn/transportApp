@@ -52,7 +52,8 @@ public class BookingController {
         try {
             List<Booking> bookings = bookingService.getBookingByUser(username);
             return ResponseEntity.ok(bookings);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

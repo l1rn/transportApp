@@ -50,10 +50,10 @@
   </div>
 </template>
 <script setup>
-import UserSettings from '@/components/UI/usercomponents/UserSettings.vue'
-import BackbuttonToHome from "./BackbuttonToHome.vue";
+import UserSettings from '@/components/UI/usercomponents/UserSettingsView.vue'
+import BackbuttonToHome from "./BackButtonView.vue";
 import { onMounted, onUnmounted, ref, watch  } from "vue";
-import AdminPanel from "../admin/AdminPanel.vue";
+import AdminPanel from "../admin/AdminPanelView.vue";
 import { useRoleStore } from "@/stores/roleStore";
 
 const roleStore = useRoleStore();
@@ -95,15 +95,13 @@ onMounted(() =>{
     checkAdminRole();
     getDevices()
   }, 500)
-  
-  
 })
 onUnmounted(() => {
   hasRoleAdmin.value = false
 })
 </script>
 <script>
-import BookingCard from "@/components/bookings/BookingCard.vue";
+import BookingCard from "@/components/bookings/BookingCardView.vue";
 import BookingService from "@/services/BookingService";
 import { storeToRefs } from "pinia";
 import { useDataSource } from '@/stores/userDataStore';

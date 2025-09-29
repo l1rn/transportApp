@@ -3,7 +3,7 @@ package com.example.transport_marketplace.test_controllers;
 import com.example.transport_marketplace.controllers.BookingController;
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.Role;
-import com.example.transport_marketplace.jwt.JwtAuthenticationFilter;
+import com.example.transport_marketplace.security.JwtAuthenticationFilter;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.jwt.TokenBlacklist;
 import com.example.transport_marketplace.model.Booking;
