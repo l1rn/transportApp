@@ -1,5 +1,6 @@
 <template>
   <div class="modal-auth-form">
+    <div class="close">X</div>
     <div class="sign-in">
       <Signin @logined="handleUserLogined" @close="showLoginForm = false" />
     </div>
