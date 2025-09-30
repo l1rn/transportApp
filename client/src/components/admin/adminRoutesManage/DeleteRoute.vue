@@ -83,7 +83,7 @@
   </div>
 </template>
 <script setup>
-import Notifications from '@/components/UI/Notifications.vue'
+import Notifications from '@/components/UI/NotificationsView.vue'
 import AdminService from '@/services/AdminService';
 import RoutesService from '@/services/RoutesService';
 

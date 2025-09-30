@@ -31,20 +31,8 @@
         >
           Модерирование
         </button>
+        
       </div>
-    </div>
-
-    <div class="tab-content">
-      <div v-if="nav.chooseOrders">
-        <BookingCard />
-      </div>
-      <div v-if="nav.chooseSettings">
-        <UserSettings />
-      </div>
-      <div v-if="nav.chooseModeration">
-        <AdminPanel />
-      </div>
-<<<<<<< HEAD:client/src/components/UI/ProfilePageView.vue
     </div>
 
     <div class="tab-content">
@@ -64,91 +52,6 @@
 <script setup>
 import UserSettings from '@/components/UI/usercomponents/UserSettingsView.vue'
 import BackbuttonToHome from "./BackButtonView.vue";
-import { onMounted, onUnmounted, ref, watch  } from "vue";
-import AdminPanel from "../admin/AdminPanelView.vue";
-import { useRoleStore } from "@/stores/roleStore";
-
-const roleStore = useRoleStore();
-const userStore = useDataSource();
-
-const { userData } = storeToRefs(userStore);
-let { currentRole } = storeToRefs(roleStore);
-
-const getDevices = async() => {
-  await userStore.getUserData()
-}
-
-const checkTokenInProfile = async() => {
-  try{
-    await BookingService.checkRefreshToken();
-  }
-  catch(error){
-    console.log(error);
-  }
-}
-
-const hasRoleAdmin = ref(false)
-
-const checkAdminRole = async() => {
-  try{
-    await roleStore.getRole()
-    hasRoleAdmin.value = currentRole.value === "ADMIN"
-  }catch(error){
-    console.error("НЕ АДМИН", error)
-    hasRoleAdmin.value = false;
-  }  
-};
-watch(hasRoleAdmin, (newValue) => {
-  console.log('Admin status changed:', newValue);
-})
-onMounted(() =>{
-  checkTokenInProfile();
-  setTimeout(() => {
-    checkAdminRole();
-    getDevices()
-  }, 500)
-})
-onUnmounted(() => {
-  hasRoleAdmin.value = false
-})
-</script>
-<script>
-import BookingCard from "@/components/bookings/BookingCardView.vue";
-import BookingService from "@/services/BookingService";
-import { storeToRefs } from "pinia";
-import { useDataSource } from '@/stores/userDataStore';
-export default {
-  name: 'AppProfile',
-  components: {
-    BookingCard
-  },
-  data(){
-    return {
-      nav:{
-        chooseOrders: true,
-        chooseSettings: false,
-        chooseModeration: false,
-      }
-    }
-  },
-  methods: {
-    chooseNav(type){
-      this.nav.chooseOrders = type === 'orders'
-      this.nav.chooseSettings = type === 'settings'
-      this.nav.chooseModeration = type === 'moderation'
-    },
-  },
-}
-</script>
-<style scoped lang="sass">
-@import '@/assets/styles/profilepage.sass'
-=======
-    </div>
-  </div>
-</template>
-<script setup>
-import UserSettings from '@/components/UI/usercomponents/UserSettings.vue'
-import BackbuttonToHome from "./BackbuttonToHome.vue";
 import { onMounted, onUnmounted, ref, watch  } from "vue";
 import AdminPanel from "../admin/AdminPanel.vue";
 import { useRoleStore } from "@/stores/roleStore";
@@ -229,5 +132,4 @@ export default {
 </script>
 <style scoped lang="sass">
 @import '@/assets/styles/profilepage.sass'
->>>>>>> 8a6cce314fb11973cf56c7551e6cfb08585b32bb:client/src/components/UI/ProfilePage.vue
 </style>

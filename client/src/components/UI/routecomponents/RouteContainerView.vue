@@ -1,4 +1,3 @@
-<<<<<<< HEAD:client/src/components/UI/routecomponents/RouteContainerView.vue
 <script setup>
 import BookingService from '@/services/BookingService'
 import {defineProps, watch, ref, defineEmits} from 'vue'
@@ -79,89 +78,6 @@ const getStatus = (seats) => {
       <div class="transport-icon">
         {{ checkRoutesEmoji(route.transport) }}
       </div>
-=======
-<script setup>
-import BookingService from '@/services/BookingService'
-import {defineProps, watch, ref, defineEmits} from 'vue'
-import Notifications from '@/components/UI/Notifications.vue';
-import { useLoginStore } from '@/stores/authStore';
-import { storeToRefs } from 'pinia';
-const props = defineProps({
-  currentPage: Number,
-  itemsPerPage: Number,
-  searchResults:{
-    type:Array,
-    required: true,
-    validator: value => value.every(item =>
-      'id' in item && 'transport' in item
-    )
-  }
-})
-const checkRoutesEmoji = (transport) =>{
-  switch(transport){
-    case 'Поезд': return '🚂'
-    case 'Авиа': return '✈️'
-    case 'Автобус': return '🚌'
-    default: return ''
-  }
-}
-
-const emit = defineEmits(['require-auth','update-seats']);
-
-const routes = ref([...props.searchResults])
-watch(() => props.searchResults, (newResults) => {
-  routes.value = [...newResults]
-})
-const loginStore = useLoginStore();
-const {logined} = storeToRefs(loginStore);
-
-const bookingRoute = async (routeId, event) => { 
-  event.preventDefault();
-  if (!logined.value) {
-    emit('require-auth');
-    return;
-  }
-  try {
-    const route = routes.value.find(r => r.id === routeId);
-    if (!route || route.availableSeats <= 0) return;
-    await BookingService.addBooking(routeId);
-    emit('update-seats', routeId);
-    showMessage('success',"Успошное бронирование!");
-  } catch (error) {
-    showMessage('error', error.response?.data?.message || 'Ошибка бронирования');
-  }
-};
-
-const notifications = ref(null);
-
-const showMessage = (type, message) => {
-  notifications.value?.showNotification(type, message);
-};
-const getStatus = (seats) => {
-  return seats > 0 ? 'ОТКРЫТО' : 'ЗАКРЫТО';
-};
-
-</script>
-
-<template>
-  <Notifications ref="notifications" />
-  <div class="space" />
-  <div
-    v-for="route in searchResults"
-    :key="route.id"
-    class="flight-card"
-  >
-    <div
-      class="status"
-      :class="{'on-time': route.availableSeats > 0, 'closed': route.availableSeats >= 0}"
-    >
-      {{ getStatus(route.availableSeats) }}
-    </div>
-
-    <div class="header">
-      <div class="transport-icon">
-        {{ checkRoutesEmoji(route.transport) }}
-      </div>
       <div>
         <div class="info-label">
           ID Маршрута
@@ -200,17 +116,14 @@ const getStatus = (seats) => {
       <div class="info-item">
         <span class="info-label">ОСТАЛОСЬ МЕСТ</span>
         <span class="info-value">{{ Math.max(0, route.availableSeats) }}
-          <span
-            v-if="route.availableSeats <= 0"
-            class="sold-out-text"
-          >(мест нет)</span>
+          <span v-if="route.availableSeats <= 0" class="sold-out-text">(мест нет)</span>
         </span>
       </div>
     </div>
 
     <div class="price-section">
->>>>>>> 8a6cce314fb11973cf56c7551e6cfb08585b32bb:client/src/components/UI/routecomponents/RouteContainer.vue
       <div>
+
         <div class="price">
           {{ route.price }} р.
         </div>

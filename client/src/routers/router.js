@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory} from 'vue-router';
-import ProfilePage from '@/components/UI/ProfilePage.vue';
-import Home from "@/components/Home.vue";
-import AllRoutesByFilter from '@/components/AllRoutesByFilter.vue';
-import SearchRoutes from '@/components/SearchRoutes.vue'
+import ProfilePage from '@/components/UI/ProfilePageView.vue';
+import AllRoutesByFilter from '@/components/AllRoutesFilterView.vue';
+import SearchRoutes from '@/components/SearchRoutesView.vue'
 import AdminPanel from '@/components/admin/AdminPanel.vue';
-import PriceRangeRoutesContainer from '@/components/UI/routecomponents/PriceRangeRoutesContainer.vue'
+import PriceRangeRoutesContainer from '@/components/UI/routecomponents/PriceRangeRoutesView.vue'
+import HomeView from '@/components/HomeView.vue';
+
 const routes = [
     {path: '/', redirect: '/home'},
     { path: '/profile', component: ProfilePage, meta:{requiresAuth: true} },
@@ -12,7 +13,7 @@ const routes = [
     { path: '/routes/search', component: SearchRoutes},
     { path: '/routes/price', component: PriceRangeRoutesContainer},
     { path:'/panel/admin', component: AdminPanel},
-    { path: '/home', component: Home},
+    { path: '/home', component: HomeView},
 
     { 
         path: '/:catchAll(.*)',
