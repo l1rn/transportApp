@@ -29,8 +29,13 @@ public class User implements UserDetails, Serializable {
 
     @Column(name = "username", unique = true, nullable = false)
     private String username;
+
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "email", nullable = true)
+    private String email;
+
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;

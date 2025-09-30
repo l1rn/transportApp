@@ -79,6 +79,7 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+
     public boolean confirmBooking(String accessToken, int bookingId){
         User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
                 .orElseThrow(() -> new RuntimeException("Не удалось найти пользователя"));

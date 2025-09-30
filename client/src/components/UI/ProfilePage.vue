@@ -31,6 +31,7 @@
         >
           Модерирование
         </button>
+        
       </div>
     </div>
 
@@ -44,6 +45,7 @@
       <div v-if="nav.chooseModeration">
         <AdminPanel />
       </div>
+      
     </div>
   </div>
 </template>

@@ -62,17 +62,15 @@ const getStatus = (seats) => {
 </script>
 
 <template>
-  <Notifications ref="notifications" />
-  <div class="space" />
+  <Notifications ref="notifications"></Notifications>
+  <div class="space"></div>
   <div
     v-for="route in searchResults"
     :key="route.id"
     class="flight-card"
   >
-    <div
-      class="status"
-      :class="{'on-time': route.availableSeats > 0, 'closed': route.availableSeats >= 0}"
-    >
+    <div class="status"
+    :class="{'on-time': route.availableSeats > 0, 'closed': route.availableSeats >= 0}">
       {{ getStatus(route.availableSeats) }}
     </div>
 
@@ -118,16 +116,14 @@ const getStatus = (seats) => {
       <div class="info-item">
         <span class="info-label">ОСТАЛОСЬ МЕСТ</span>
         <span class="info-value">{{ Math.max(0, route.availableSeats) }}
-          <span
-            v-if="route.availableSeats <= 0"
-            class="sold-out-text"
-          >(мест нет)</span>
+          <span v-if="route.availableSeats <= 0" class="sold-out-text">(мест нет)</span>
         </span>
       </div>
     </div>
 
     <div class="price-section">
       <div>
+
         <div class="price">
           {{ route.price }} р.
         </div>

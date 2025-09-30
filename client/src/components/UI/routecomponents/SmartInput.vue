@@ -147,161 +147,162 @@ const clearFilter = () => {
 
 </script>
 <template>
-  <div class="search-sidebar">
-    <div class="main-container">
-      <div class="input-wrapper">
-        <div class="input-group">
-          <input
-            v-model="inputRouteFrom"
-            type="text"
-            class="b-form-input"
-            placeholder="Откуда"
-            @focus="showFromSuggestions = true"
-            @blur="handleFromBlur"
-          >
-          <div v-if="showFromSuggestions">
-            <div
-              v-if="isLoading"
-              class="loading"
-            >
-              Загрузка...
-            </div>
-            <div
-              v-else-if="error"
-              class="error"
-            >
-              {{ error }}
-            </div>
-            <div
-              v-else
-              class="suggestions"
-            >
-              <div
-                v-for="from in filteredFroms"
-                :key="from"
-                class="suggestion-item"
-                @mousedown.prevent="selectFrom(from)"
-              >
-                {{ from }}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="input-group">
-          <input
-            ref="toInput"
-            v-model="inputRouteTo"
-            class="b-form-input"
-            placeholder="Куда"
-            type="text"
-            @focus="handleToFocus"
-            @blur="handleToBlur"
-          >
-          <div v-if="showToSuggestions">
-            <div
-              v-if="isLoading"
-              class="loading"
-            >
-              Загрузка...
-            </div>
-            <div
-              v-else-if="error"
-              class="error"
-            >
-              {{ error }}
-            </div>
-            <div
-              v-else
-              class="suggestions"
-            >
-              <div
-                v-for="to in filteredTos"
-                :key="to"
-                class="suggestion-item"
-                @mousedown.prevent="selectTo(to)"
-              >
-                {{ to }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      <div class="input-wrapper">
+<div class="search-sidebar">
+  <div class="main-container">
+    <div class="input-wrapper">
+      <div class="input-group">
+      <input
+        v-model="inputRouteFrom"
+        type="text"
+        class="b-form-input"
+        placeholder="Откуда"
+        @focus="showFromSuggestions = true"
+        @blur="handleFromBlur"
+      >
+      <div v-if="showFromSuggestions">
         <div
-          class="date-input-wrapper"
-          :class="{ 'has-value': selectedDate}"
+          v-if="isLoading"
+          class="loading"
         >
-          <input
-            id="date-input"
-            v-model="selectedDate"
-            type="date"
-            style="background-color: #f8fafc"
-            @change="updatePlaceholder"
-            @input="updatePlaceholder"
-          >
-          <span class="custom-placeholder">Когда</span>
+          Загрузка...
         </div>
-
-
-        <div class="transport-wrapper">
+        <div
+          v-else-if="error"
+          class="error"
+        >
+          {{ error }}
+        </div>
+        <div
+          v-else
+          class="suggestions"
+        >
           <div
-            class="transport-toggle"
-            :class="{ 'active': isOpen }"
-            @click="toggleMenu"
+            v-for="from in filteredFroms"
+            :key="from"
+            class="suggestion-item"
+            @mousedown.prevent="selectFrom(from)"
           >
-            <span class="current-transport">
-              Транспорт
-            </span>
-            <span class="arrow">▼</span>
+            {{ from }}
           </div>
-
-          <transition name="slide-fade">
-            <div
-              v-if="isOpen"
-              class="transport-menu"
-            >
-              <div
-                v-for="transport in transports"
-                :key="transport.value"
-                class="transport-item"
-                @click="selectTransport(transport.value)"
-              >
-                <span class="emoji">{{ transport.emoji }}</span>
-                {{ transport.label }}
-              </div>
-            </div>
-          </transition>
-        </div>
-      </div>
-      <div class="search-wrapper">
-        <div class="sub-search-wrapper">
-          <button 
-            class="search-button-custom"
-            :class="{'opacity-50': isLoading}"
-            :disabled="isLoading"
-            @click="searchRoutes"
-          >
-            <span v-if="!isLoading">Поиск</span>
-            <span v-else>⌛</span>
-            <span class="search-icon">🔍</span>
-          </button>
-          <button
-            class="clear-wrapper"
-            @click="clearFilter"
-          >
-            <span
-              class="custom-clear-button"
-            >✕</span>
-          </button>
-        </div>
-        <div class="sub-search-container">
-          <label>Транспорт: {{ selectedTransport }}{{ selectedEmoji }}</label>
         </div>
       </div>
     </div>
+
+      <div class="input-group">
+        <input
+          ref="toInput"
+          v-model="inputRouteTo"
+          class="b-form-input"
+          placeholder="Куда"
+          type="text"
+          @focus="handleToFocus"
+          @blur="handleToBlur"
+        >
+        <div v-if="showToSuggestions">
+          <div
+            v-if="isLoading"
+            class="loading"
+          >
+            Загрузка...
+          </div>
+          <div
+            v-else-if="error"
+            class="error"
+          >
+            {{ error }}
+          </div>
+          <div
+            v-else
+            class="suggestions"
+          >
+             <div
+              v-for="to in filteredTos"
+              :key="to"
+              class="suggestion-item"
+              @mousedown.prevent="selectTo(to)"
+            >
+              {{ to }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="input-wrapper">
+      <div
+        class="date-input-wrapper"
+        :class="{ 'has-value': selectedDate}"
+      >
+        <input
+          id="date-input"
+          v-model="selectedDate"
+          type="date"
+          style="background-color: #f8fafc"
+          @change="updatePlaceholder"
+          @input="updatePlaceholder"
+        >
+        <span class="custom-placeholder">Когда</span>
+      </div>
+
+
+    <div class="transport-wrapper">
+      <div
+        class="transport-toggle"
+        :class="{ 'active': isOpen }"
+        @click="toggleMenu"
+      >
+        <span class="current-transport">
+          Транспорт
+        </span>
+        <span class="arrow">▼</span>
+      </div>
+
+        <transition name="slide-fade">
+          <div
+            v-if="isOpen"
+            class="transport-menu"
+          >
+            <div
+              v-for="transport in transports"
+              :key="transport.value"
+              class="transport-item"
+              @click="selectTransport(transport.value)"
+            >
+              <span class="emoji">{{ transport.emoji }}</span>
+              {{ transport.label }}
+            </div>
+          </div>
+        </transition>
+      </div>
+    </div>
+    <div class="search-wrapper">
+     <div class="sub-search-wrapper">
+      <button 
+        class="search-button-custom"
+        :class="{'opacity-50': isLoading}"
+        :disabled="isLoading"
+        @click="searchRoutes"
+      >
+        <span v-if="!isLoading">Поиск</span>
+        <span v-else>⌛</span>
+        <span class="search-icon">🔍</span>
+      </button>
+      <button
+        @click="clearFilter"
+        class="clear-wrapper">
+        <span
+        class="custom-clear-button"
+        >✕</span>
+      </button>
+     </div>
+      <div class="sub-search-container">
+        <label>Транспорт: {{ selectedTransport }}{{ selectedEmoji }}</label>
+      </div>
+    </div>
   </div>
+  
+  
+</div>
 </template>
 
 <style scoped lang="sass">

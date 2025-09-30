@@ -18,10 +18,7 @@
             <th>Цена</th>
           </tr>
         </thead>
-        <tbody
-          v-for="route in paginatedRoutes"
-          :key="route.id"
-        >
+        <tbody v-for="route in paginatedRoutes" :key="route.id">
           <tr>
             <td>{{ route.id }}</td>
             <td>{{ route.routeFrom }}</td>
@@ -42,19 +39,11 @@
         </tbody>
       </table>
       <div class="pagination">
-        <button
-          :disabled="currentPage === 1"
-          class="pagination-button"
-          @click="currentPage--; fetchRoutes()"
-        >
+        <button :disabled="currentPage === 1" class="pagination-button" @click="currentPage--; fetchRoutes()">
           Предыдущая
         </button>
         <span class="pagination-info">Страница {{ routes.currentPage }} из {{ routes.totalPages }}</span>
-        <button
-          :disabled="currentPage === routes.totalPages"
-          class="pagination-button"
-          @click="currentPage++; fetchRoutes()"
-        >
+        <button :disabled="currentPage === routes.totalPages" class="pagination-button" @click="currentPage++; fetchRoutes()">
           Следующая
         </button>
       </div>

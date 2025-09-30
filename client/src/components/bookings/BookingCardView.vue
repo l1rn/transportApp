@@ -1,0 +1,121 @@
+<<<<<<< HEAD:client/src/components/bookings/BookingCardView.vue
+<script setup>
+import { ref, onMounted } from 'vue';
+import BookingContainer from './AllBookingsView.vue';
+import BookingService from '@/services/BookingService';
+
+const bookings = ref([]);
+const isLoading = ref(false);
+const cancelingIds = ref(new Set());
+
+const getBookings = async () => {
+  isLoading.value = true;
+  try {
+    const response = await BookingService.getMyBooking();
+    bookings.value = response.data;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const cancelBooking = async (bookingId) => {
+  cancelingIds.value.add(bookingId);
+  try {
+    await BookingService.cancelMyBooking(bookingId);
+    bookings.value = bookings.value.map(b => {
+      if (b.id === bookingId) {
+        return { ...b, status: 'CANCELED' };
+      }
+      return b;
+    });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    cancelingIds.value.delete(bookingId);
+  }
+};
+
+onMounted(() => {
+  setTimeout(() => {
+    getBookings()
+  }, 500) 
+})
+</script>
+<template>
+  <div class="d-flex flex-column align-items-center">
+    <BookingContainer
+      v-for="booking in bookings"
+      :key="booking.id"
+      class="mb-3"
+      :booking="booking"
+      :is-canceling="cancelingIds.has(booking.id)"
+      @cancel-booking-event="cancelBooking"
+    />
+  </div>
+</template>
+
+<style scoped lang="sass">
+</style>
+=======
+<script setup>
+import { ref, onMounted } from 'vue';
+import BookingContainer from './BookingContainer.vue';
+import BookingService from '@/services/BookingService';
+
+const bookings = ref([]);
+const isLoading = ref(false);
+const cancelingIds = ref(new Set());
+
+const getBookings = async () => {
+  isLoading.value = true;
+  try {
+    const response = await BookingService.getMyBooking();
+    bookings.value = response.data;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const cancelBooking = async (bookingId) => {
+  cancelingIds.value.add(bookingId);
+  try {
+    await BookingService.cancelMyBooking(bookingId);
+    bookings.value = bookings.value.map(b => {
+      if (b.id === bookingId) {
+        return { ...b, status: 'CANCELED' };
+      }
+      return b;
+    });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    cancelingIds.value.delete(bookingId);
+  }
+};
+
+onMounted(() => {
+  setTimeout(() => {
+    getBookings()
+  }, 500) 
+})
+</script>
+<template>
+  <div class="d-flex flex-column align-items-center">
+    <BookingContainer
+      v-for="booking in bookings"
+      :key="booking.id"
+      class="mb-3"
+      :booking="booking"
+      :is-canceling="cancelingIds.has(booking.id)"
+      @cancel-booking-event="cancelBooking"
+    />
+  </div>
+</template>
+
+<style scoped lang="sass">
+</style>
+>>>>>>> 8a6cce314fb11973cf56c7551e6cfb08585b32bb:client/src/components/bookings/BookingCard.vue

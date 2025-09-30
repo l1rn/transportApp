@@ -1,10 +1,7 @@
 <template>
-  <Notifications ref="notifications" />
+  <Notifications ref="notifications"></Notifications>
   <div>
-    <div
-      v-if="loading"
-      class="loading-indicator"
-    >
+    <div v-if="loading" class="loading-indicator">
       Загрузка данных...
     </div>
     <table class="table-custom">
@@ -13,8 +10,8 @@
           <th>ID</th>
           <th>Права</th>
           <th>Имя пользователя</th>
-          <th />
-          <th />
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -32,18 +29,14 @@
             {{ user.username }}
           </td>
           <td class="actions">
-            <button
-              v-if="roleNotAdmin.find(u => u.id === user.id)?.notAdmin"
-              class="give-permission-button" 
-              @click="getPermissionAdmin(user.id)"
-            >
-              Дать права
-            </button>
+            <button class="give-permission-button"
+            v-if="roleNotAdmin.find(u => u.id === user.id)?.notAdmin" 
+            @click="getPermissionAdmin(user.id)">Дать права
+          </button>
             <button 
               :disabled="user.role === 'ROLE_ADMIN' || deletingId === user.id"
               class="delete-user-button"
-              @click="deleteUser(user.id)"
-            >
+              @click="deleteUser(user.id)">
               <span v-if="deletingId === user.id">Удаление...</span>
               <span v-else>Удалить</span>
             </button>
