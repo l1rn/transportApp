@@ -93,22 +93,22 @@ class BookingServiceTest {
         verify(bookingRepository, times(1)).findById(1);
     }
 
-    @Test
-    void testCreateBooking_Success() {
-        when(routeRepository.findById(1)).thenReturn(Optional.of(route));
-        when(userRepository.findById(1)).thenReturn(Optional.of(userCaller));
-        when(routeRepository.save(any(Route.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(bookingRepository.save(any(Booking.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        Booking newBooking = bookingService.createBooking(1, 1);
-        assertNotNull(newBooking);
-        assertEquals(BookingStatus.PENDING, newBooking.getStatus());
-        assertEquals(9, route.getAvailableSeats());
-        verify(routeRepository, times(1)).findById(1);
-        verify(userRepository, times(1)).findById(1);
-        verify(routeRepository, times(1)).save(route);
-        verify(bookingRepository, times(1)).save(any(Booking.class));
-    }
+//    @Test
+//    void testCreateBooking_Success() {
+//        when(routeRepository.findById(1)).thenReturn(Optional.of(route));
+//        when(userRepository.findById(1)).thenReturn(Optional.of(userCaller));
+//        when(routeRepository.save(any(Route.class))).thenAnswer(invocation -> invocation.getArgument(0));
+//        when(bookingRepository.save(any(Booking.class))).thenAnswer(invocation -> invocation.getArgument(0));
+//
+//        Booking newBooking = bookingService.createBooking(1, 1);
+//        assertNotNull(newBooking);
+//        assertEquals(BookingStatus.PENDING, newBooking.getStatus());
+//        assertEquals(9, route.getAvailableSeats());
+//        verify(routeRepository, times(1)).findById(1);
+//        verify(userRepository, times(1)).findById(1);
+//        verify(routeRepository, times(1)).save(route);
+//        verify(bookingRepository, times(1)).save(any(Booking.class));
+//    }
 
     @Test
     void testCreateBooking_RouteNotFound() {

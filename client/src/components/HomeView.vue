@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-auth-form">
+  <div class="modal-auth-form" v-if="modalStore.isOpen('auth-forms')">
     <div class="close">X</div>
     <div class="sign-in">
       <Signin @logined="handleUserLogined" @close="showLoginForm = false" />
@@ -83,11 +83,15 @@ import LogoutService from "@/services/LogoutService";
 import { cancelTokenRefresh, scheduleTokenRefresh } from "@/services/api";
 import { useLoginStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
+import { useModalStore } from '@/stores/modalStore';
 
 const router = useRouter();
 const showLoginForm = ref(false);
 const scrollY = ref(0);
 const isScrolled = ref(false);
+
+const modalStore = useModalStore();
+
 const handleSeatsUpdate = (routeId) => {
   searchResults.value = searchResults.value.map(route => {
     if (route.id === routeId && route.availableSeats > 0) {

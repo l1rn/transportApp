@@ -1,5 +1,6 @@
 <script>
 import { useLoginStore } from "@/stores/authStore";
+import { useModalStore } from "@/stores/modalStore";
 import {BAvatar} from "bootstrap-vue-next";
 import { storeToRefs } from "pinia";
 import { computed, onMounted } from "vue";
@@ -41,9 +42,6 @@ export default {
         case "orders": 
           this.$router.push({path:'/profile'});
           break;
-        case "auth":
-          this.$emit('open-auth');
-          break;
         case "logout":
           this.$emit('logout');
           this.$router.push('/');
@@ -63,12 +61,17 @@ export default {
 }
 </script>
 <script setup>
+
 const loginStore = useLoginStore();
 const { logined } = storeToRefs(loginStore)
 const isAuthenticated = computed(() => logined.value);
+
+const modalStore = useModalStore();
+
 onMounted(() => {
   loginStore.initLoginState()
 })
+
 </script>
 <template>
   <div
@@ -109,8 +112,8 @@ onMounted(() => {
           <div
             v-else
             class="menu-item"
-            @click="handleMenuItemClick('auth');
-                    $router.push({path:'/'});"
+            @click="modalStore.toggle('auth-forms')"
+            
           >
             🔑 Авторизация
           </div>
