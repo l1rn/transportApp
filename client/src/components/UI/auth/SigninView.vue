@@ -1,11 +1,11 @@
 <template>
-  <div class="container mt-5">
-    <div class="card shadow-lg p-4 custom-form">
-      <h2 class="text-center mb-4">
+  <div class="sign-in-container">
+    <div class="main-container">
+      <h2>
         Авторизация
       </h2>
       <form @submit.prevent="signIn">
-        <div class="first">
+        <div class="text-area">
           <label for="user">Имя пользователя</label>
           <input 
           id="user" 
@@ -14,7 +14,7 @@
           v-model="user.username"
           />
         </div>
-        <div class="second">
+        <div class="text-area">
           <label for="pwd">Пароль</label>
           <input 
           id="pwd" 
@@ -65,5 +65,6 @@ const signIn = async () => {
 }
 </script>
 
-<style scoped>
+<style scoped lang="sass">
+@import '@/assets/styles/authorizationObjects/sign-in-form.sass'
 </style>

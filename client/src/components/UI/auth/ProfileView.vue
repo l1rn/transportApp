@@ -1,15 +1,11 @@
 <script>
 import { useLoginStore } from "@/stores/authStore";
 import { useModalStore } from "@/stores/modalStore";
-import {BAvatar} from "bootstrap-vue-next";
 import { storeToRefs } from "pinia";
 import { computed, onMounted } from "vue";
 
 export default {
   name: "CustomProfile",
-  components: {
-    BAvatar
-  },
   props: {
     avatarUrl:{
       type: String,
@@ -23,7 +19,6 @@ export default {
   data() {
     return {
       isProfileMenuOpen: false,
-      defaultAvatarUrl:BAvatar,
     }
   },
   mounted() {
@@ -83,7 +78,6 @@ onMounted(() => {
       @click="toggleProfileMenu"
     >
       <div class="profile-content">
-        <BAvatar size="2rem" />
         <span class="profile-text">Профиль</span>
       </div>
     </button>

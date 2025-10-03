@@ -1,7 +1,7 @@
 <template>
-  <div class="container mt-5">
-    <div class="card shadow-lg p-4 custom-form">
-      <h2 class="text-center mb-4">
+  <div class="">
+    <div class="">
+      <h2 class="">
         Регистрация
       </h2>
       <form @submit.prevent="signUp">
@@ -82,6 +82,6 @@ const signUp = async () => {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="sass">
+@import '@/assets/styles/authorizationObjects/sign-up-form.sass'
 </style>
