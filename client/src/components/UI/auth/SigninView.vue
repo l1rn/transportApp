@@ -4,116 +4,66 @@
       <h2 class="text-center mb-4">
         Авторизация
       </h2>
-      <BForm @submit.prevent="">
-        <BFormGroup
-          id="bformgr-1"
-          label="Имя пользователя"
-          label-for="input-username"
-          class="mb-3"
-        >
-          <BFormInput 
-            id="input-username"
-            v-model:="user.username"
-            placeholder="введите имя пользователя"
-            required
+      <form @submit.prevent="signIn">
+        <div class="first">
+          <label for="user">Имя пользователя</label>
+          <input 
+          id="user" 
+          type="text" 
+          placeholder="имя пользователя"
+          v-model="user.username"
           />
-        </BFormGroup>
-
-        <BFormGroup
-          id="bformgr-2"
-          label="Пароль"
-          label-for="input-password"
-          class="mb-3"
-        >
-          <BFormInput 
-            id="input-password"
-            v-model:="user.password"
-            placeholder="введите пароль"
-            type="password"
-            class="mb-2"
-            required
-          />
-          <BFormText
-            v-if="badresponse"
-            text-variant="danger"
-          >
-            Неверное имя или пароль, попробуйте еще!
-          </BFormText>
-          <button
-            type="submit"
-            class="btn btn-primary w-100 mt-3"
-            @click="signIn"
-          >
-            Авторизация
-          </button>
-        </BFormGroup>
-      </BForm>
+        </div>
+        <div class="second">
+          <label for="pwd">Пароль</label>
+          <input 
+          id="pwd" 
+          type="password" 
+          placeholder="пароль"
+          v-model="user.password">
+        </div>
+        <button type="submit">Авторизоваться</button>
+      </form>
+      <div class="unauthorized-user-container">
+        <label for="button-registe">Еще не авторизовались? </label>
+        <button v-on:click="modalStore.toggle('register')">Регистрация</button>
+      </div>
     </div>
   </div>
 </template>
-<script>
-import { BForm, BFormGroup, BFormInput, BFormText } from 'bootstrap-vue-next';
+
+<script setup>
 import SigninUsersService from "@/services/SigninUsersService";
+import { ref } from 'vue';
+import { useLoginStore } from '@/stores/authStore';
+import { scheduleTokenRefresh } from '@/services/api';
+import { useModalStore } from "@/stores/modalStore";
 
-export default {
-    name: "SignIn",
-    components:{
-        BForm,
-        BFormGroup,
-        BFormInput,
-        BFormText
-    },
-    data(){
-        return{
-            user:{
-                username: '',
-                password: ''
-            },
-          isAuthenticated:false,
-        }
-    },
-    methods:{
-        async signIn(){
-            try{
-                const userData = {
-                  username: this.user.username,
-                  password: this.user.password,
-                };
-                await SigninUsersService.signinUser(userData);
+const loginStore = useLoginStore();
 
-                this.$emit('logined', {
-                  success: true,
-                  message: '✅ Успешний вход!',
-                  }
-                );
-                this.user.username = '';
-                this.user.password = ''
-            }
-            catch(error){
-              this.$emit('logined', {
-                success: false,
-                message: error.response?.data?.message || error.message || 'Ошибка входа'
-              })
-            }
-        },
-    },
+const modalStore = useModalStore();
 
+const user = ref({
+  username: '',
+  password: ''
+});
+
+const signIn = async () => {
+  console.log(user.value);
+  try {
+    await SigninUsersService.signinUser(user.value.username, user.value.password);
+
+    scheduleTokenRefresh();
+    loginStore.auth();
+
+    user.value.username = '';
+    user.value.password = ''
+  }
+  catch (error) {
+    console.log(error.message);
+  }
 }
 </script>
+
 <style scoped>
-*{
-  font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-}
-
-.btn-primary {
-    font-size: large;
-    background-color: #089754;
-    border: none;
-    color:#f7d206;
-    transition: transform 0.2s ease-in, background-color 0.2s ease-in-out, color 0.2s ease;
-}
-
-.btn-primary:hover{
-    transform: scale(1.01) translateY(1px);
-}
 </style>

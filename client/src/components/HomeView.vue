@@ -1,11 +1,9 @@
 <template>
   <div class="modal-auth-form" v-if="modalStore.isOpen('auth-forms')">
     <div class="close">X</div>
-    <div class="sign-in">
-      <Signin @logined="handleUserLogined" @close="showLoginForm = false" />
-    </div>
-    <div class="sign-up">
-      <Signup @registered="handleUserRegistered" />
+    <div class="auth-form">
+      <Signup v-if="modalStore.isOpen('register')" />
+      <Signin v-else />
     </div>
   </div>
 
@@ -16,12 +14,10 @@
       <div class="navbar-custom-header">
         <div class="navbar-subheader">
           <div style="cursor: pointer;" class="brand" @click="$router.replace('/home')">
-          ololotravel
+            ololotravel
           </div>
           <div class="profile-header-custom">
-            <custom-profile 
-             @open-auth="showLoginForm = true" 
-             @logout="userLogout" />
+            <custom-profile @open-auth="showLoginForm = true" @logout="userLogout" />
           </div>
         </div>
       </div>
@@ -32,28 +28,26 @@
         <span>🚂</span>
       </div>
       <div class="sub-header-items">
-          <div class="header-item">
+        <div class="header-item">
           <button @click="$router.push('/routes')">
             Все маршруты
           </button>
-          </div>
-          <div class="header-item">
-            <button @click="$router.push('/routes/search')">
-              Поиск маршрутов
-            </button>
-          </div>
         </div>
+        <div class="header-item">
+          <button @click="$router.push('/routes/search')">
+            Поиск маршрутов
+          </button>
+        </div>
+      </div>
     </div>
     <div class="search-container">
       <div class="sub-header-container" :class="{ 'sub-header-fixed': isScrolled }">
-        <smart-input 
-        @transport-selected="handleTransportSelect" 
-        @search-results="handleResults"
-        @search-start="showLoading" />
+        <smart-input @transport-selected="handleTransportSelect" @search-results="handleResults"
+          @search-start="showLoading" />
       </div>
     </div>
   </div>
-    
+
   <!-- main content -->
   <div class="content" :class="{ 'content-padded': isScrolled }">
     <div class="custom-container">
@@ -121,27 +115,6 @@ const notifications = ref(null);
 
 const showMessage = (type, message) => {
   notifications.value.showNotification(type.split(':')[0], message);
-};
-
-const handleUserRegistered = (result) => {
-  if (result.success) {
-    showMessage('success:register', result.message);
-    showLoginForm.value = true;
-  } else {
-    showMessage('error', `${result.message}`);
-  }
-};
-
-const handleUserLogined = async (result) => {
-  if (result.success) {
-    showMessage('success:login', ` ${result.message}`);
-    loginStore.auth();
-    console.log(logined.value)
-    scheduleTokenRefresh();
-    showLoginForm.value = false;
-  } else {
-    showMessage('error', `${result.message}`);
-  }
 };
 
 const userLogout = async () => {

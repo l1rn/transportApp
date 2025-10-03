@@ -2,10 +2,10 @@ import axios from "axios";
 
 
 class SigninUserService{
-    async signinUser(userData) {
+    async signinUser(name, password) {
         return await axios.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/sign-in`, {
-                username: userData.username,
-                password: userData.password
+                username: name,
+                password: password
         });
     }
     getRoleUser(){
