@@ -1,9 +1,12 @@
 package com.example.transport_marketplace.model;
 
+import com.example.transport_marketplace.enums.PaymentMethod;
+import com.example.transport_marketplace.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Entity
@@ -12,17 +15,35 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Table(name = "payments")
-public class Payment {
+public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    private String externalId;
+    private double amount;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
+    private String description;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id")
     private Booking booking;
 
-    private BigDecimal amount;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    private String userName;
-
+    @PrePersist
+    protected void onCreate(){
+        createdAt = LocalDateTime.now();
+    }
 }

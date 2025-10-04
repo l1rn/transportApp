@@ -30,12 +30,18 @@ public class JwtServiceTest {
                 .deviceFingerprint("123")
                 .userAgent("win")
                 .build();
-        User user = new User(1, "testuser", "password", Role.ROLE_USER, List.of(device));
+        User user = User.builder()
+                .id(1)
+                .username("testUser")
+                .password("password123")
+                .role(Role.ROLE_USER)
+                .devices(List.of(device))
+                .build();
         String token = jwtService.generateAccessToken(user);
         assertNotNull(token);
 
         String username = jwtService.getUsernameFromToken(token);
-        assertEquals("testuser", username);
+        assertEquals("testUser", username);
 
         String role = jwtService.getRoleFromToken(token);
         assertEquals("ROLE_USER", role);
@@ -49,10 +55,16 @@ public class JwtServiceTest {
                 .deviceFingerprint("123")
                 .userAgent("win")
                 .build();
-        User user = new User(1, "testuser", "password", Role.ROLE_USER, List.of(device));
+        User user = User.builder()
+                .id(1)
+                .username("testUser")
+                .password("password123")
+                .role(Role.ROLE_USER)
+                .devices(List.of(device))
+                .build();
         String token = jwtService.generateRefreshToken(user);
         assertNotNull(token);
-        assertEquals("testuser", jwtService.getUsernameFromToken(token));
+        assertEquals("testUser", jwtService.getUsernameFromToken(token));
         assertTrue(jwtService.validateToken(token));
     }
 

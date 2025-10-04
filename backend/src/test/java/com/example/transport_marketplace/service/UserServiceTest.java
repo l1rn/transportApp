@@ -28,7 +28,12 @@ class UserServiceTest {
 
     @Test
     void testSaveUser() {
-        User user = new User(1, "testUser", "password123", Role.ROLE_USER, null);
+        User user = User.builder()
+                .id(1)
+                .username("testUser")
+                .password("password123")
+                .role(Role.ROLE_USER)
+                .build();
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         User result = userService.save(user);
@@ -40,21 +45,31 @@ class UserServiceTest {
 
     @Test
     void testCreateUser_Success() {
-        User user = new User(1, "newUser", "password123", Role.ROLE_USER, null);
-        when(userRepository.existsByUsername("newUser")).thenReturn(false);
+        User user = User.builder()
+                .id(1)
+                .username("testUser")
+                .password("password123")
+                .role(Role.ROLE_USER)
+                .build();
+        when(userRepository.existsByUsername("testUser")).thenReturn(false);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         User result = userService.create(user);
 
         assertNotNull(result);
-        assertEquals("newUser", result.getUsername());
+        assertEquals("testUser", result.getUsername());
         verify(userRepository, times(1)).save(user);
     }
 
     @Test
     void testCreateUser_UsernameTaken() {
-        User user = new User(1, "existingUser", "password123", Role.ROLE_USER, null);
-        when(userRepository.existsByUsername("existingUser")).thenReturn(true);
+        User user = User.builder()
+                .id(1)
+                .username("testUser")
+                .password("password123")
+                .role(Role.ROLE_USER)
+                .build();
+        when(userRepository.existsByUsername("testUser")).thenReturn(true);
 
         Exception exception = assertThrows(RuntimeException.class, () -> userService.create(user));
         assertEquals("Имя пользователя занято!", exception.getMessage());
@@ -64,8 +79,18 @@ class UserServiceTest {
     @Test
     void testGetAllUsers() {
         List<User> users = List.of(
-                new User(1, "user1", "password1", Role.ROLE_USER, null),
-                new User(2, "user2", "password2", Role.ROLE_ADMIN, null)
+                User.builder()
+                        .id(1)
+                        .username("testUser")
+                        .password("password123")
+                        .role(Role.ROLE_USER)
+                        .build(),
+                User.builder()
+                        .id(2)
+                        .username("user2")
+                        .password("password2")
+                        .role(Role.ROLE_ADMIN)
+                        .build()
         );
         when(userRepository.findAll()).thenReturn(users);
 
@@ -77,7 +102,12 @@ class UserServiceTest {
 
     @Test
     void testGetByUsername_Success() {
-        User user = new User(1, "testUser", "password123", Role.ROLE_USER, null);
+        User user = User.builder()
+                .id(1)
+                .username("testUser")
+                .password("password123")
+                .role(Role.ROLE_USER)
+                .build();
         when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(user));
 
         User result = userService.getByUsername("testUser");

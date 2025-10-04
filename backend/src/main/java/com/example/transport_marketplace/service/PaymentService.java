@@ -1,32 +1,31 @@
 package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.enums.BookingStatus;
-import com.example.transport_marketplace.model.Account;
-import com.example.transport_marketplace.model.Booking;
-import com.example.transport_marketplace.model.Route;
-import com.example.transport_marketplace.model.User;
+import com.example.transport_marketplace.events.PaymentSuccessEvent;
+import com.example.transport_marketplace.model.*;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.repo.RouteRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentService {
     private final RabbitTemplate rabbitTemplate;
     private final RouteRepository routeRepository;
     private final BookingRepository bookingRepository;
 
-    public void processSuccessfulPayment(Booking booking){
-        Route route = booking.getRoute();
-        route.setAvailableSeats(route.getAvailableSeats() - 1);
-        booking.setStatus(BookingStatus.PAID);
-
-        routeRepository.save(route);
-        bookingRepository.save(booking);
-        accountRepository.save(account);
-
-        return true;
+    private void sendPaymentSuccessEvent(Payment payment){
+        PaymentSuccessEvent event = PaymentSuccessEvent.builder()
+                .paymentId(payment.getId())
+                .bookingId(payment.getBooking().getId())
+                .amount(payment.getAmount())
+                .userEmail(payment.getUser().getEmail())
+                .userName(payment.getUser().getUsername())
+                .paymentMethod(payment.getPaymentMethod())
+                .build();
     }
 }

@@ -27,7 +27,13 @@ class UserTest {
         devices.add(win);
         devices.add(mac);
 
-        User user = new User(1, "testUser", "password123", Role.ROLE_USER, devices);
+        User user = User.builder()
+                .id(1)
+                .username("testUser")
+                .password("password123")
+                .role(Role.ROLE_USER)
+                .devices(devices)
+                .build();
 
         assertEquals(1, user.getId());
         assertEquals("testUser", user.getUsername());

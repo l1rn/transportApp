@@ -12,7 +12,12 @@ class TokenTest {
     @Test
     void testTokenCreation_AllArgsConstructor() {
         Instant expiry = Instant.now().plusSeconds(3600);
-        User user = new User(1, "testUser", "password123", Role.ROLE_USER, null);
+        User user = User.builder()
+                .id(1)
+                .username("testUser")
+                .password("password123")
+                .role(Role.ROLE_USER)
+                .build();
         Device device = new Device(1, "fingerPrint", "Windows 10", user);
         Token token = new Token(1, "sample-token", expiry, user, device);
 
@@ -32,7 +37,13 @@ class TokenTest {
                 .userAgent("win")
                 .build();
 
-        User user = new User(2, "builderUser", "builderPass", Role.ROLE_ADMIN, null);
+        User user = User.builder()
+                .id(1)
+                .username("testUser")
+                .password("password123")
+                .role(Role.ROLE_USER)
+                .build();
+        
         Token token = Token.builder()
                 .id(2)
                 .token("builder-token")
