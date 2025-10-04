@@ -1,6 +1,6 @@
 <script>
+import { useAuthForms } from "@/composable/useAuthForms";
 import { useLoginStore } from "@/stores/authStore";
-import { useModalStore } from "@/stores/modalStore";
 import { storeToRefs } from "pinia";
 import { computed, onMounted } from "vue";
 
@@ -61,7 +61,7 @@ const loginStore = useLoginStore();
 const { logined } = storeToRefs(loginStore)
 const isAuthenticated = computed(() => logined.value);
 
-const modalStore = useModalStore();
+const { openForm } = useAuthForms();
 
 onMounted(() => {
   loginStore.initLoginState()
@@ -106,7 +106,7 @@ onMounted(() => {
           <div
             v-else
             class="menu-item"
-            @click.stop="modalStore.toggle('auth-forms'); modalStore.toggle('login')"
+            @click.stop="openForm('login')"
           >
             🔑 Авторизация
           </div>

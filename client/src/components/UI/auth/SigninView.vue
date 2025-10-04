@@ -12,9 +12,9 @@
             @click="modalStore.close('login')"
           >
         </div>
-        <h2>
+        <h1>
           Авторизация
-        </h2>
+        </h1>
         <form @submit.prevent="signIn">
           <div class="text-area">
             <label for="user">Имя пользователя</label>
@@ -39,8 +39,8 @@
           </button>
         </form>
         <div class="unauthorized-user-container">
-          <label for="button-registe">Еще не авторизовались? </label>
-          <button @click="modalStore.toggle('register')">
+          <label for="button-register">Еще не авторизовались? </label>
+          <button @click.stop="switchForms">
             Регистрация
           </button>
         </div>
@@ -57,6 +57,7 @@ import { scheduleTokenRefresh } from '@/services/api';
 import { useModalStore } from "@/stores/modalStore";
 import { UserData } from "@/types/userdata";
 import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
+import { useAuthForms } from "@/composable/useAuthForms";
 
 const loginStore = useLoginStore();
 
@@ -66,6 +67,8 @@ const user = ref<UserData>({
   username: '',
   password: ''
 });
+
+const { switchForms } = useAuthForms();
 
 const signIn = async () => {
   console.log(user.value);
@@ -91,5 +94,5 @@ useConditionalClickOutside(
 </script>
 
 <style scoped lang="sass">
-@import '@/assets/styles/authorizationObjects/sign-in-form.sass'
+@import '@/assets/styles/authorizationObjects/sign-form.sass'
 </style>

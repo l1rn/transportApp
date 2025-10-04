@@ -11,6 +11,10 @@ export const useModalStore = defineStore('modal-store', () => {
     const toggle = (key: string) => {
         modals.value[key] = !modals.value[key];
     }
+    
+    const open = (key: string) => {
+        modals.value[key] = true;
+    }
 
     const close = (key: string) => {
         modals.value[key] = false;
@@ -20,5 +24,5 @@ export const useModalStore = defineStore('modal-store', () => {
         return !!modals.value[key];
     }
 
-    return { modals , toggle, close, isOpen }
+    return { modals, open, toggle, close, isOpen }
 })

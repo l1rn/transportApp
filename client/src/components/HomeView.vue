@@ -1,11 +1,11 @@
 <template>
   <div
-    v-if="modalStore.isOpen('register') || modalStore.isOpen('login')" 
+    v-if="isAuthFormOpen" 
     class="modal-auth-form"
   >
     <div class="auth-form">
-      <Signup v-if="modalStore.isOpen('register')" />
-      <Signin v-else-if="modalStore.isOpen('login')" />
+      <Signup v-if="currentForm === 'register'" />
+      <Signin v-else-if="currentForm === 'login'" />
     </div>
   </div>
 
@@ -96,7 +96,7 @@
 <script setup>
 import Notifications from './UI/NotificationsView.vue';
 import github from '@/assets/github-mark.svg';
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import SmartInput from "@/components/UI/routecomponents/SmartInputView.vue";
 import RouteContainer from './UI/routecomponents/RouteContainerView.vue';
@@ -107,14 +107,14 @@ import LogoutService from "@/services/LogoutService";
 import { cancelTokenRefresh, scheduleTokenRefresh } from "@/services/api";
 import { useLoginStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
-import { useModalStore } from '@/stores/modalStore';
+import { useAuthForms } from '@/composable/useAuthForms';
 
 const router = useRouter();
 const showLoginForm = ref(false);
 const scrollY = ref(0);
 const isScrolled = ref(false);
 
-const modalStore = useModalStore();
+const { currentForm, isAuthFormOpen } = useAuthForms();
 
 const handleSeatsUpdate = (routeId) => {
   searchResults.value = searchResults.value.map(route => {
@@ -183,14 +183,6 @@ onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
 });
 
-watch(() => {
-  if(modalStore.isOpen('register') || modalStore.isOpen('login')){
-    document.body.style.overflow = "hidden";
-  }
-  else{
-    document.body.style.overflow = "visible";
-  }
-})
 </script>
 <style scoped lang="sass">
 @import '@/assets/styles/home.sass'

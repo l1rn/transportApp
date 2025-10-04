@@ -7,3 +7,16 @@
     color: $color;
     cursor: pointer;
 }
+
+@mixin display-center(){
+    display: $df;
+    justify-content: center;
+    align-content: center;
+}
+
+@mixin display-column($js: none, $ai: none){
+    display: flex;
+    flex-direction: column;
+    justify-content: $js;
+    align-items: $ai;
+}

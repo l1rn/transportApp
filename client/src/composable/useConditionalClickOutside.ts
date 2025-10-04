@@ -1,4 +1,4 @@
-import { onBeforeUnmount, onMounted, Ref, watch } from "vue";
+import { onBeforeUnmount, onMounted, Ref } from "vue";
 
 export const useConditionalClickOutside = 
     (

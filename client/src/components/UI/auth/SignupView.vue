@@ -1,49 +1,70 @@
 <template>
-  <div class="">
-    <div class="">
-      <h2 class="">
-        Регистрация
-      </h2>
-      <form @submit.prevent="signUp">
-        <div class="first">
-          <label for="user">Имя пользователя</label>
-          <input 
-            id="user" 
-            v-model="user.username" 
-            type="text"
-            placeholder="имя пользователя"
+  <div
+    ref="containerRef"
+    class="sign-in-container"
+  >
+    <div class="main-container">
+      <div class="main-wrapper">
+        <div class="close">
+          <img
+            src="../../../assets/icons/close.png"
+            alt="close"
+            @click="modalStore.close('register')"
           >
         </div>
-        <div class="second">
-          <label for="pwd">Пароль</label>
-          <input 
-            id="pwd" 
-            v-model="user.password" 
-            type="password"
-            placeholder="пароль"
-          >
+        <h1>
+          Регистрация
+        </h1>
+        <form @submit.prevent="signUp">
+          <div class="text-area">
+            <label for="user">Имя пользователя</label>
+            <input
+              id="user"
+              v-model="user.username"
+              type="text"
+              placeholder="имя пользователя"
+            >
+          </div>
+          <div class="text-area">
+            <label for="pwd">Пароль</label>
+            <input
+              id="pwd"
+              v-model="user.password"
+              type="password"
+              placeholder="пароль"
+            >
+          </div>
+          <div class="text-area">
+            <label for="confirm-pwd">Подтвердите пароль</label>
+            <input
+              id="confirm-pwd"
+              v-model="user.confirmPassword"
+              type="password"
+              placeholder="пароль"
+            >
+          </div>
+          <div v-if="passwordError">
+            {{ passwordError }}
+          </div>
+          <button type="submit">
+            Зарегистрироваться
+          </button>
+        </form>
+        <div class="unauthorized-user-container">
+          <label for="button-register">Уже зарегистрировались? </label>
+          <button @click.stop="switchForms">
+            Авторизация
+          </button>
         </div>
-        <div class="second">
-          <label for="pwd">Пароль</label>
-          <input 
-            id="pwd" 
-            v-model="user.confirmPassword" 
-            type="password"
-            placeholder="пароль"
-          >
-        </div>
-        <div v-if="passwordError">
-          {{ passwordError }}
-        </div>
-        <button type="submit">
-          Зарегистрироваться
-        </button>
-      </form>
+      </div>
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
+import { useAuthForms } from "@/composable/useAuthForms";
+import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
 import SignupUsersService from "@/services/SignupUsersService";
+import { useModalStore } from "@/stores/modalStore";
 import { ref, watch } from 'vue';
 const user = ref({
   username: '',
@@ -51,10 +72,16 @@ const user = ref({
   confirmPassword: '',
 })
 
-const isLoading = ref(false);
-const passwordError = ref(null);
+const { switchForms } = useAuthForms();
 
-watch(() => {
+const modalStore = useModalStore();
+
+const isLoading = ref(false);
+const passwordError = ref<string | null>(null);
+
+watch(
+() => [user.value.password, user.value.confirmPassword],  
+() => {
   if(user.value.confirmPassword !== user.value.password || user.value.confirmPassword === ''){
     passwordError.value = "Пароли не совпадают!";
   }
@@ -79,15 +106,22 @@ const signUp = async () => {
     user.value.password = '';
     user.value.confirmPassword = '';
   }
-  catch (error) {
+  catch (error: any) {
     console.log(error.message);
   }
   finally {
     isLoading.value = false;
   }
 }
+
+const containerRef = ref<HTMLElement | null>(null);
+useConditionalClickOutside(
+  containerRef, 
+  () => modalStore.isOpen('register'), 
+  () => modalStore.close('register')
+);
 </script>
 
 <style scoped lang="sass">
-@import '@/assets/styles/authorizationObjects/sign-up-form.sass'
+@import '@/assets/styles/authorizationObjects/sign-form.sass'
 </style>

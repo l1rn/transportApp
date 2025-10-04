@@ -117,8 +117,7 @@ class BookingServiceTest {
         assertEquals("Маршрут не найден", ex.getMessage());
     }
 
-    @Test
-    void testCreateBooking_NoAvailableSeats() {
+    @Test    void testCreateBooking_NoAvailableSeats() {
         route.setAvailableSeats(0);
         when(routeRepository.findById(1)).thenReturn(Optional.of(route));
         RuntimeException ex = assertThrows(RuntimeException.class, () -> bookingService.createBooking(1, 1));

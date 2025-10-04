@@ -2,18 +2,15 @@
 @import "../static/mixin.d";
 
 .sign-in-container
-    
     .main-container
-        display: flex
-        flex-direction: column
-        justify-content: center
-        align-items: center
-        
         .main-wrapper
+            @include display-column()
             background: $white
             padding: 2rem 5rem
             border-radius: 16px
             position: relative
+            min-width: 600px
+            gap: 20px
             .close 
                 position: absolute
                 right: 20px
@@ -25,9 +22,11 @@
                     transition: 0.3s all ease
                     &:hover
                         transform: rotate(90deg)
+            h1
+                text-align: center
         .text-area
-            display: flex
-            flex-direction: column
+            @include display-column()
+            gap: 10px
             label
                 font-size: 20px
             input
@@ -35,6 +34,8 @@
                 font-size: 20px
 
         form
+            @include display-column()
+            gap: 15px
             button
                 @include button-clear($primary-blue, $light-gray)
                 width: 100%
@@ -45,5 +46,3 @@
                 transition: 0.2s all ease-in
                 &:hover
                     background: $darken-blue
-        .unauthorized-user-container
-            margin-top: 0.5rem
