@@ -1,5 +1,5 @@
 <template>
-  <div class="sign-in-container">
+  <div class="sign-in-container" ref="sign-container">
     <div class="main-container">
       <div class="main-wrapper">
         <div class="close">

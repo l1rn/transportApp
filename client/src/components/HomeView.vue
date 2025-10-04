@@ -66,7 +66,7 @@
 <script setup>
 import Notifications from './UI/NotificationsView.vue';
 import github from '@/assets/github-mark.svg';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import SmartInput from "@/components/UI/routecomponents/SmartInputView.vue";
 import RouteContainer from './UI/routecomponents/RouteContainerView.vue';
@@ -133,14 +133,7 @@ const userLogout = async () => {
   }
 };
 
-onMounted(async () => {
-  window.addEventListener('scroll', handleScroll);
-  scheduleTokenRefresh();
-});
 
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll);
-});
 const searchResults = ref([]);
 const handleResults = (results) => {
   searchResults.value = results;
@@ -151,6 +144,23 @@ const showLoading = (state) => {
   isLoading.value = state;
 };
 
+onMounted(async () => {
+  window.addEventListener('scroll', handleScroll);
+  scheduleTokenRefresh();
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+
+watch(() => {
+  if(modalStore.isOpen('register') || modalStore.isOpen('login')){
+    document.body.style.overflow = "hidden";
+  }
+  else{
+    document.body.style.overflow = "visible";
+  }
+})
 </script>
 <style scoped lang="sass">
 @import '@/assets/styles/home.sass'
