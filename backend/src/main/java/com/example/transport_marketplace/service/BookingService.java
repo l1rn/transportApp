@@ -79,38 +79,6 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-
-    public boolean confirmBooking(String accessToken, int bookingId){
-        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
-                .orElseThrow(() -> new RuntimeException("Не удалось найти пользователя"));
-
-        Account account = accountRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new RuntimeException("Не удалось найти счет"));
-
-        Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Не удалось найти бронь"));
-
-        if(booking.getStatus() == BookingStatus.CANCELED){
-            return false;
-        }
-
-        if(account.getBalance() - booking.getRoute().getPrice() < 0){
-            throw new RuntimeException("Недостаточно средств на балансе");
-        }
-
-        Route route = booking.getRoute();
-
-        route.setAvailableSeats(route.getAvailableSeats() - 1);
-        booking.setStatus(BookingStatus.PAID);
-        account.setBalance(account.getBalance() - booking.getRoute().getPrice());
-
-        routeRepository.save(route);
-        bookingRepository.save(booking);
-        accountRepository.save(account);
-
-        return true;
-    }
-
     @CacheEvict(value = "booking", key = "#bookingId")
     @Transactional
     public boolean cancelBookingAdmin(int bookingId){
