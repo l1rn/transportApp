@@ -1,14 +1,18 @@
 <template>
-    <transition-group name="notification" tag="div" class="notifications-wrapper">
-      <div
-        v-for="(notification, index) in notifications"
-        :key="index"
-        :class="['notification', notification.type]"
-      >
-        {{ notification.message }}
-      </div>
-    </transition-group>
-  </template>
+  <transition-group
+    name="notification"
+    tag="div"
+    class="notifications-wrapper"
+  >
+    <div
+      v-for="(notification, index) in notifications"
+      :key="index"
+      :class="['notification', notification.type]"
+    >
+      {{ notification.message }}
+    </div>
+  </transition-group>
+</template>
 
 <script setup>
   import { ref } from 'vue';

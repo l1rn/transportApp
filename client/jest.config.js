@@ -1,5 +1,5 @@
 module.exports = {
-  preset: 'ts-test',
+  preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel',
   testEnvironment: 'jsdom',
   moduleFileExtensions: ['js', 'ts', 'vue'],
   transform: {

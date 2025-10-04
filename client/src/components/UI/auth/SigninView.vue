@@ -1,9 +1,16 @@
 <template>
-  <div class="sign-in-container" ref="sign-container">
+  <div
+    ref="sign-container"
+    class="sign-in-container"
+  >
     <div class="main-container">
       <div class="main-wrapper">
         <div class="close">
-          <img @click="modalStore.close('login')" src="../../../assets/icons/close.png" alt="">
+          <img
+            src="../../../assets/icons/close.png"
+            alt=""
+            @click="modalStore.close('login')"
+          >
         </div>
         <h2>
           Авторизация
@@ -11,17 +18,31 @@
         <form @submit.prevent="signIn">
           <div class="text-area">
             <label for="user">Имя пользователя</label>
-            <input id="user" type="text" placeholder="имя пользователя" v-model="user.username" />
+            <input
+              id="user"
+              v-model="user.username"
+              type="text"
+              placeholder="имя пользователя"
+            >
           </div>
           <div class="text-area">
             <label for="pwd">Пароль</label>
-            <input id="pwd" type="password" placeholder="пароль" v-model="user.password">
+            <input
+              id="pwd"
+              v-model="user.password"
+              type="password"
+              placeholder="пароль"
+            >
           </div>
-          <button type="submit">Авторизоваться</button>
+          <button type="submit">
+            Авторизоваться
+          </button>
         </form>
         <div class="unauthorized-user-container">
           <label for="button-registe">Еще не авторизовались? </label>
-          <button v-on:click="modalStore.toggle('register')">Регистрация</button>
+          <button @click="modalStore.toggle('register')">
+            Регистрация
+          </button>
         </div>
       </div>
     </div>

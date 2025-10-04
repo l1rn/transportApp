@@ -8,30 +8,36 @@
         <div class="first">
           <label for="user">Имя пользователя</label>
           <input 
-          id="user" 
-          type="text" 
-          placeholder="имя пользователя"
-          v-model="user.username"
-          />
+            id="user" 
+            v-model="user.username" 
+            type="text"
+            placeholder="имя пользователя"
+          >
         </div>
         <div class="second">
           <label for="pwd">Пароль</label>
           <input 
-          id="pwd" 
-          type="password" 
-          placeholder="пароль"
-          v-model="user.password">
+            id="pwd" 
+            v-model="user.password" 
+            type="password"
+            placeholder="пароль"
+          >
         </div>
         <div class="second">
           <label for="pwd">Пароль</label>
           <input 
-          id="pwd" 
-          type="password" 
-          placeholder="пароль"
-          v-model="user.confirmPassword">
+            id="pwd" 
+            v-model="user.confirmPassword" 
+            type="password"
+            placeholder="пароль"
+          >
         </div>
-        <div v-if="passwordError">{{ passwordError }}</div>
-        <button type="submit">Зарегистрироваться</button>
+        <div v-if="passwordError">
+          {{ passwordError }}
+        </div>
+        <button type="submit">
+          Зарегистрироваться
+        </button>
       </form>
     </div>
   </div>

@@ -1,6 +1,8 @@
 <template>
-  <div class="modal-auth-form" 
-  v-if="modalStore.isOpen('register') || modalStore.isOpen('login')">
+  <div
+    v-if="modalStore.isOpen('register') || modalStore.isOpen('login')" 
+    class="modal-auth-form"
+  >
     <div class="auth-form">
       <Signup v-if="modalStore.isOpen('register')" />
       <Signin v-else-if="modalStore.isOpen('login')" />
@@ -10,14 +12,24 @@
   <!-- header  -->
   <Notifications ref="notifications" />
   <div class="header-container-custom">
-    <div class="main-header" :class="{ 'header-scrolled': isScrolled }">
+    <div
+      class="main-header"
+      :class="{ 'header-scrolled': isScrolled }"
+    >
       <div class="navbar-custom-header">
         <div class="navbar-subheader">
-          <div style="cursor: pointer;" class="brand" @click="$router.replace('/home')">
+          <div
+            style="cursor: pointer;"
+            class="brand"
+            @click="$router.replace('/home')"
+          >
             ololotravel
           </div>
           <div class="profile-header-custom">
-            <custom-profile @open-auth="showLoginForm = true" @logout="userLogout" />
+            <custom-profile
+              @open-auth="showLoginForm = true"
+              @logout="userLogout"
+            />
           </div>
         </div>
       </div>
@@ -41,23 +53,41 @@
       </div>
     </div>
     <div class="search-container">
-      <div class="sub-header-container" :class="{ 'sub-header-fixed': isScrolled }">
-        <smart-input @transport-selected="handleTransportSelect" @search-results="handleResults"
-          @search-start="showLoading" />
+      <div
+        class="sub-header-container"
+        :class="{ 'sub-header-fixed': isScrolled }"
+      >
+        <smart-input
+          @transport-selected="handleTransportSelect"
+          @search-results="handleResults"
+          @search-start="showLoading"
+        />
       </div>
     </div>
   </div>
 
   <!-- main content -->
-  <div class="content" :class="{ 'content-padded': isScrolled }">
+  <div
+    class="content"
+    :class="{ 'content-padded': isScrolled }"
+  >
     <div class="custom-container">
-      <route-container :search-results="searchResults" @update-seats="handleSeatsUpdate"
-        @require-auth="handleAuthRequired" />
+      <route-container
+        :search-results="searchResults"
+        @update-seats="handleSeatsUpdate"
+        @require-auth="handleAuthRequired"
+      />
     </div>
     <div class="footer">
       <div>l1rn</div>
       <div>
-        <a href="https://github.com/l1rn" target="_blank"><img :src="github" alt="Логотип"></a>
+        <a
+          href="https://github.com/l1rn"
+          target="_blank"
+        ><img
+          :src="github"
+          alt="Логотип"
+        ></a>
       </div>
       <div>2025</div>
     </div>
