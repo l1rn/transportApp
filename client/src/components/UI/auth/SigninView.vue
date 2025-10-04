@@ -1,32 +1,28 @@
 <template>
   <div class="sign-in-container">
     <div class="main-container">
-      <h2>
-        Авторизация
-      </h2>
-      <form @submit.prevent="signIn">
-        <div class="text-area">
-          <label for="user">Имя пользователя</label>
-          <input 
-          id="user" 
-          type="text" 
-          placeholder="имя пользователя"
-          v-model="user.username"
-          />
+      <div class="main-wrapper">
+        <div class="close">
+          <img @click="modalStore.close('login')" src="../../../assets/icons/close.png" alt="">
         </div>
-        <div class="text-area">
-          <label for="pwd">Пароль</label>
-          <input 
-          id="pwd" 
-          type="password" 
-          placeholder="пароль"
-          v-model="user.password">
+        <h2>
+          Авторизация
+        </h2>
+        <form @submit.prevent="signIn">
+          <div class="text-area">
+            <label for="user">Имя пользователя</label>
+            <input id="user" type="text" placeholder="имя пользователя" v-model="user.username" />
+          </div>
+          <div class="text-area">
+            <label for="pwd">Пароль</label>
+            <input id="pwd" type="password" placeholder="пароль" v-model="user.password">
+          </div>
+          <button type="submit">Авторизоваться</button>
+        </form>
+        <div class="unauthorized-user-container">
+          <label for="button-registe">Еще не авторизовались? </label>
+          <button v-on:click="modalStore.toggle('register')">Регистрация</button>
         </div>
-        <button type="submit">Авторизоваться</button>
-      </form>
-      <div class="unauthorized-user-container">
-        <label for="button-registe">Еще не авторизовались? </label>
-        <button v-on:click="modalStore.toggle('register')">Регистрация</button>
       </div>
     </div>
   </div>

@@ -1,9 +1,9 @@
 <template>
-  <div class="modal-auth-form" v-if="modalStore.isOpen('auth-forms')">
-    <div class="close">X</div>
+  <div class="modal-auth-form" 
+  v-if="modalStore.isOpen('register') || modalStore.isOpen('login')">
     <div class="auth-form">
       <Signup v-if="modalStore.isOpen('register')" />
-      <Signin v-else />
+      <Signin v-else-if="modalStore.isOpen('login')" />
     </div>
   </div>
 
