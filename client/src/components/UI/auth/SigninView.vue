@@ -1,6 +1,6 @@
 <template>
   <div
-    ref="sign-container"
+    ref="containerRef"
     class="sign-in-container"
   >
     <div class="main-container">
@@ -8,7 +8,7 @@
         <div class="close">
           <img
             src="../../../assets/icons/close.png"
-            alt=""
+            alt="close"
             @click="modalStore.close('login')"
           >
         </div>
@@ -49,18 +49,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SigninUsersService from "@/services/SigninUsersService";
 import { ref } from 'vue';
 import { useLoginStore } from '@/stores/authStore';
 import { scheduleTokenRefresh } from '@/services/api';
 import { useModalStore } from "@/stores/modalStore";
+import { UserData } from "@/types/userdata";
+import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
 
 const loginStore = useLoginStore();
 
 const modalStore = useModalStore();
 
-const user = ref({
+const user = ref<UserData>({
   username: '',
   password: ''
 });
@@ -68,7 +70,7 @@ const user = ref({
 const signIn = async () => {
   console.log(user.value);
   try {
-    await SigninUsersService.signinUser(user.value.username, user.value.password);
+    await SigninUsersService.signInUser(user.value);
 
     scheduleTokenRefresh();
     loginStore.auth();
@@ -76,10 +78,16 @@ const signIn = async () => {
     user.value.username = '';
     user.value.password = ''
   }
-  catch (error) {
+  catch (error: any) {
     console.log(error.message);
   }
 }
+const containerRef = ref<HTMLElement | null>(null);
+useConditionalClickOutside(
+  containerRef, 
+  () => modalStore.isOpen('login'), 
+  () => modalStore.close('login')
+);
 </script>
 
 <style scoped lang="sass">

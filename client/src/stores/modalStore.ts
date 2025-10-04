@@ -1,18 +1,22 @@
 import { defineStore } from "pinia";
 import { ref } from 'vue';
 
-export const useModalStore = defineStore('modal-store', () => {
-    const modals = ref({});
+interface Modals {
+    [key: string]: boolean;
+}
 
-    const toggle = (key) => {
+export const useModalStore = defineStore('modal-store', () => {
+    const modals = ref<Modals>({});
+
+    const toggle = (key: string) => {
         modals.value[key] = !modals.value[key];
     }
 
-    const close = (key) => {
+    const close = (key: string) => {
         modals.value[key] = false;
     }
 
-    const isOpen = (key) => {
+    const isOpen = (key: string): boolean => {
         return !!modals.value[key];
     }
 

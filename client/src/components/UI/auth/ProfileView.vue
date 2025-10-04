@@ -106,7 +106,7 @@ onMounted(() => {
           <div
             v-else
             class="menu-item"
-            @click="modalStore.toggle('auth-forms'); modalStore.toggle('login')"
+            @click.stop="modalStore.toggle('auth-forms'); modalStore.toggle('login')"
           >
             🔑 Авторизация
           </div>

@@ -1,0 +1,9 @@
+
+
+@mixin button-clear($back: #ccc, $color){
+    outline: 0;
+    border: 0;
+    background: $back;
+    color: $color;
+    cursor: pointer;
+}

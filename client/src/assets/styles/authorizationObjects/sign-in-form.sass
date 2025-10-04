@@ -1,4 +1,5 @@
 @import "../static/color.d"
+@import "../static/mixin.d";
 
 .sign-in-container
     
@@ -18,13 +19,12 @@
                 right: 20px
                 top: 20px
                 width: 15px
-                height: 15px
                 img
                     width: 15px
                     cursor: pointer
                     transition: 0.3s all ease
                     &:hover
-                        translate: scale(-1)
+                        transform: rotate(90deg)
         .text-area
             display: flex
             flex-direction: column
@@ -36,14 +36,14 @@
 
         form
             button
-                outline: 0
-                border: 0
-                margin-top: 10px
+                @include button-clear($primary-blue, $light-gray)
                 width: 100%
-                background: $primary-blue
-                color: $light-gray
+                margin-top: 10px
                 border-radius: 8px
                 padding: 10px
                 font-size: 18px
+                transition: 0.2s all ease-in
+                &:hover
+                    background: $darken-blue
         .unauthorized-user-container
             margin-top: 0.5rem
