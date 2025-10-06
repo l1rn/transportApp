@@ -1,20 +1,6 @@
 <script setup>
-import BookingService from '@/services/BookingService'
-import {defineProps, watch, ref, defineEmits} from 'vue'
+import { ref} from 'vue'
 import Notifications from '@/components/UI/NotificationsView.vue';
-import { useLoginStore } from '@/stores/authStore';
-import { storeToRefs } from 'pinia';
-const props = defineProps({
-  currentPage: Number,
-  itemsPerPage: Number,
-  searchResults:{
-    type:Array,
-    required: true,
-    validator: value => value.every(item =>
-      'id' in item && 'transport' in item
-    )
-  }
-})
 const checkRoutesEmoji = (transport) =>{
   switch(transport){
     case 'Поезд': return '🚂'
@@ -24,37 +10,8 @@ const checkRoutesEmoji = (transport) =>{
   }
 }
 
-const emit = defineEmits(['require-auth','update-seats']);
-
-const routes = ref([...props.searchResults])
-watch(() => props.searchResults, (newResults) => {
-  routes.value = [...newResults]
-})
-const loginStore = useLoginStore();
-const {logined} = storeToRefs(loginStore);
-
-const bookingRoute = async (routeId, event) => { 
-  event.preventDefault();
-  if (!logined.value) {
-    emit('require-auth');
-    return;
-  }
-  try {
-    const route = routes.value.find(r => r.id === routeId);
-    if (!route || route.availableSeats <= 0) return;
-    await BookingService.addBooking(routeId);
-    emit('update-seats', routeId);
-    showMessage('success',"Успошное бронирование!");
-  } catch (error) {
-    showMessage('error', error.response?.data?.message || 'Ошибка бронирования');
-  }
-};
-
 const notifications = ref(null);
 
-const showMessage = (type, message) => {
-  notifications.value?.showNotification(type, message);
-};
 const getStatus = (seats) => {
   return seats > 0 ? 'ОТКРЫТО' : 'ЗАКРЫТО';
 };
@@ -63,7 +20,7 @@ const getStatus = (seats) => {
 
 <template>
   <Notifications ref="notifications" />
-  <div class="space" />
+  <div class="space"></div>
   <div
     v-for="route in searchResults"
     :key="route.id"

@@ -1,18 +1,15 @@
-@import "@/assets/styles/objects/smart-datepicker.sass"
-@import "@/assets/styles/objects/transport-menu.sass"
-@import "@/assets/styles/objects/search-button.sass"
+@import "../../styles/static/color.d.scss"
+@import "../../styles/static/mixin.d.scss"
 
-$secondary: #f59e0b
-$border-radius: 0.75rem
-$primary: #2563eb
-$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
-$accent: #447cdc
-$input-bg: #f8fafc
-$input-border: #94a3b8
-$placeholder-color: #64748b
-$border-color: #94a3b8
-$bg-color: #f8fafc
-$transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
-*
-  font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-
+.main-search-container
+  background: #ccc
+  .search-wrapper
+    display: flex
+    justify-content: center
+    padding: 1rem
+    gap: 3rem
+    .input-wrapper
+      @include display-column()
+      gap: 0.5rem
+    .search-wrapper
+      @include display-center()

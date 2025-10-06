@@ -1,23 +1,16 @@
+@import "../../assets/styles/static/color.d.scss"
+@import "../../assets/styles/static/mixin.d.scss"
 @import "@/assets/styles/homeObjects/main-container"
 @import "@/assets/styles/homeObjects/footer"
+
 $primary: #ffffff
-$secondary: #f59e0b
-$accent: #447cdc
-$background: #f8fafc
-$text: #ffffff
-$success: #10b981
-$error: #ef4444
-$transition: all 0.3 cubic-bezier(0.4, 0, 0.2, 1)
-$font-family-base: 'Montserrat', sans-serif, 'Segui UI'
-$box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1)
-$radius: 12px
-$shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
 
 *
     box-sizing: border-box
     transition: $transition
     font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-    
+
+// auth modal form  
 .modal-auth-form
     position: absolute
     z-index: 10000
@@ -31,158 +24,97 @@ $shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff
         align-items: center
         height: 100%
 
-.header-container-custom
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
-    position: relative
-    
-    z-index: 1000
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3)
-
-    &.header-scrolled
-        height: 12vh
-
-.header-title-container
-    font-family: $font-family-base
-    margin-top: .75rem
-    font-size: 1.8rem
-    color: $text
-    display: flex
-    justify-content: center
-    text-align:center
-    font-weight: 600
-    position: relative
-
-.navbar-custom-header
-    .brand
-        font-family: 'Montserrat', sans-serif
-        font-weight: 700
-        font-size: 1.2rem
-        color: $primary
-        position: relative
-        &::after
-            content: '🚀'
-            top: -1.2rem
-            position: absolute
-    .navbar-subheader
-        display: flex
-        justify-content: space-around
-        align-items: center
-        width: 70%
-
-.sub-header-items
-    margin-top: 1rem
-    display: flex
-    align-items: center
-    justify-content: center
-    gap: 5rem
-    button
-        padding: 0.6rem 1.5rem 
-        background: linear-gradient(35deg, darken($secondary, 5%), darken($secondary, 5%))
-        border: 0
-        border-radius: 16px
-        font-size: 17px
-        font-weight: 600
-        box-shadow: 0 0 8px rgba(0,0,0, 0.15)  
-        transition: all 0.3s ease
-        color: #ffffff
-        &:hover
-            transform: translateY(1px)
-            box-shadow: 0 0 16px rgba(0,0,0, 0.21) 
-
-.custom-container
-    min-height: 120vh
-    display: flex
-    flex-direction: column
-
-.success-message, .error-message
-    padding: 1rem 1rem
-    border-radius: 16px
-    font-weight: 500
-    color: black
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
-
-    &::before
-        content: ''
-        width: 1rem
-        height: 1rem
-        display: inline-block
-        background-size: contain
-
-.success-message
-    background: rgba($success, 0.1)
-    border: 2px solid $success
-    position: absolute
-    color: white
-    margin-left: 52rem
-    &::before
-        background-image: url('data:image/svg+xml;utf8,<svg ...>✓</svg>')
-
-.error-message
-    position: absolute
-    background: rgba($error, 0.1)
-    border: 2px solid $error
-    &::before
-        background-image: url('data:image/svg+xml;utf8,<svg ...>⚠</svg>')
-
+// header 
 .main-header
     position: relative
     z-index: 1000
     background: linear-gradient(135deg, lighten(#007bff, 15%), darken(#007bff, 5%))
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
     padding: 1.75rem
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3)
+    display: flex
+    flex-direction: column
+    gap: 2rem
+    .navbar-custom-header
+        .brand
+            font-family: $font-family-base
+            font-weight: 700
+            font-size: 1.2rem
+            color: $primary
+            position: relative
+            &::after
+                content: '🚀'
+                top: -1.2rem
+                position: absolute
+        .navbar-subheader
+            display: flex
+            justify-content: space-around
+            align-items: center
+            width: 70%
+    // title of header
+    .title-subheader-container
+        display: flex
+        flex-direction: column
+        gap: 1.2rem
+        .title-container
+            @include display-center()
+            font-family: $font-family-base
+            font-size: 1.8rem
+            color: $text
+            font-weight: 600    
+        .button-container
+            width: 100%
+            display: flex
+            justify-content: space-evenly
+            
+            button
+                @include button-clear($back: linear-gradient(35deg, darken($secondary, 5%), darken($secondary, 5%)), $color: $white)
+                padding: 0.6rem 1.5rem
+                border-radius: 16px
+                font-size: 17px
+                font-weight: 600
+                box-shadow: 0 0 8px rgba(0,0,0, 0.15)
+                transition: all 0.3s ease
+                &:hover
+                    transform: translateY(1px)
+                    box-shadow: 0 0 16px rgba(0,0,0, 0.21)
+
     &.header-hidden
         transform: translateY(-100%)
         opacity: 0
-    
+
+// search container inside header
+.header-container-custom
+    .search-container
+        transition: all 0.3s ease
+        z-index: 999
+
+    .sticky-search
+        position: fixed
+        top: 0
+        left: 0
+        right: 0
+        z-index: 1000
+        animation: slideDown 0.3s ease
+
+// animation for search container
+@keyframes slideDown
+    from
+        transform: translateY(-100%)
+    to
+        transform: translateY(0)
+
+.custom-container
+    min-height: 100vh
+    display: flex
+    flex-direction: column
+
 .navbar-custom-header
     display: flex
     place-content: center
     flex-direction: column
     justify-content: space-evenly
     align-items: center
-
-.search-container
-    max-width: 1200px
-    position: relative
-    margin: 0 auto
-    top: -200px
-    display: flex
-    justify-content: center
-    align-items: center
-
-.sub-header-container
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1)
-    position: absolute
-    top: 200px
-    transition: all 0.4s ease
-    padding: 0.3rem
-    z-index: 999
-    width: 80%
-    max-width: 1200px
-    border-radius: 24px
-
-    &.sub-header-fixed
-        position: fixed
-        top: 10px
-        animation: slideDown 1.5s ease
-        box-shadow: 0 2px 15px rgba(0,0,0,0.1)
-        background: #F7F9FB
-
-
-@keyframes slideUp
-    from
-        transform: translateY(0)
-    to
-        transform: translateY(-100%)
-
-@keyframes slideDown
-    from
-        transform: translateY(-100%)
-        opacity: 0
-    to
-        transform: translateY(0)
-        opacity: 1
-
 
 @media (max-width: 768px)
     .header-title-container

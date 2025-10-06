@@ -1,6 +1,6 @@
 
 
-@mixin button-clear($back: #ccc, $color){
+@mixin button-clear($back: #ccc, $color: #000){
     outline: 0;
     border: 0;
     background: $back;
@@ -9,9 +9,9 @@
 }
 
 @mixin display-center(){
-    display: $df;
+    display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
 }
 
 @mixin display-column($js: none, $ai: none){

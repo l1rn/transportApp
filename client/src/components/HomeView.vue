@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="isAuthFormOpen" 
-    class="modal-auth-form"
-  >
+  <div v-if="isAuthFormOpen" class="modal-auth-form">
     <div class="auth-form">
       <Signup v-if="currentForm === 'register'" />
       <Signin v-else-if="currentForm === 'login'" />
@@ -12,91 +9,64 @@
   <!-- header  -->
   <Notifications ref="notifications" />
   <div class="header-container-custom">
-    <div
-      class="main-header"
-      :class="{ 'header-scrolled': isScrolled }"
-    >
+    <div class="main-header">
       <div class="navbar-custom-header">
         <div class="navbar-subheader">
-          <div
-            style="cursor: pointer;"
-            class="brand"
-            @click="$router.replace('/home')"
-          >
+          <div style="cursor: pointer;" class="brand" @click="$router.replace('/home')">
             ololotravel
           </div>
           <div class="profile-header-custom">
-            <custom-profile
-              @open-auth="showLoginForm = true"
-              @logout="userLogout"
-            />
+            <custom-profile @open-auth="showLoginForm = true" @logout="userLogout" />
           </div>
         </div>
       </div>
-      <div class="header-title-container">
-        OloloTravel — с комфортом в любую точку мира.
-        <span>🚌</span>
-        <span>✈️</span>
-        <span>🚂</span>
-      </div>
-      <div class="sub-header-items">
-        <div class="header-item">
+      <div class="title-subheader-container">
+        <div class="title-container">
+          <span class="text">
+            OloloTravel — с комфортом в любую точку мира.
+            <span>🚌</span>
+            <span>✈️</span>
+            <span>🚂</span>
+          </span>
+        </div>
+        <div class="button-container">
           <button @click="$router.push('/routes')">
             Все маршруты
           </button>
-        </div>
-        <div class="header-item">
           <button @click="$router.push('/routes/search')">
             Поиск маршрутов
           </button>
         </div>
       </div>
     </div>
-    <div class="search-container">
-      <div
-        class="sub-header-container"
-        :class="{ 'sub-header-fixed': isScrolled }"
-      >
-        <smart-input
-          @transport-selected="handleTransportSelect"
-          @search-results="handleResults"
-          @search-start="showLoading"
-        />
+    <div 
+    class="search-container" 
+    :class="{ 'sticky-search': isSticky }" 
+    ref="searchContainer">
+      <div class="sub-header-container">
+        <smart-input />
       </div>
     </div>
   </div>
 
   <!-- main content -->
-  <div
-    class="content"
-    :class="{ 'content-padded': isScrolled }"
-  >
+  <div class="content">
     <div class="custom-container">
-      <route-container
-        :search-results="searchResults"
-        @update-seats="handleSeatsUpdate"
-        @require-auth="handleAuthRequired"
-      />
+      <route-container />
     </div>
     <div class="footer">
       <div>l1rn</div>
       <div>
-        <a
-          href="https://github.com/l1rn"
-          target="_blank"
-        ><img
-          :src="github"
-          alt="Логотип"
-        ></a>
+        <a href="https://github.com/l1rn" target="_blank"><img :src="github" alt="Логотип"></a>
       </div>
       <div>2025</div>
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import Notifications from './UI/NotificationsView.vue';
 import github from '@/assets/github-mark.svg';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import SmartInput from "@/components/UI/routecomponents/SmartInputView.vue";
 import RouteContainer from './UI/routecomponents/RouteContainerView.vue';
@@ -104,46 +74,38 @@ import Signup from '@/components/UI/auth/SignupView.vue';
 import Signin from "@/components/UI/auth/SigninView.vue";
 import CustomProfile from "@/components/UI/auth/ProfileView.vue";
 import LogoutService from "@/services/LogoutService";
-import { cancelTokenRefresh, scheduleTokenRefresh } from "@/services/api";
+import { cancelTokenRefresh } from "@/services/api";
 import { useLoginStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 import { useAuthForms } from '@/composable/useAuthForms';
 
 const router = useRouter();
 const showLoginForm = ref(false);
-const scrollY = ref(0);
-const isScrolled = ref(false);
+
+const isSticky = ref<boolean>(false);
+const isScrolled = ref<boolean>(false);
+const searchContainer = ref<HTMLElement | null>(null);
 
 const { currentForm, isAuthFormOpen } = useAuthForms();
 
-const handleSeatsUpdate = (routeId) => {
-  searchResults.value = searchResults.value.map(route => {
-    if (route.id === routeId && route.availableSeats > 0) {
-      return {
-        ...route,
-        availableSeats: route.availableSeats - 1
-      };
-    }
-    return route;
-  })
-}
 const loginStore = useLoginStore()
 
 const { logined } = storeToRefs(loginStore);
 
-const handleAuthRequired = () => {
-  showLoginForm.value = true;
-  showMessage('error', 'Для бронирования необходимо авторизоваться');
-};
-
 const handleScroll = () => {
-  scrollY.value = window.scrollY || document.documentElement.scrollTop;
-  isScrolled.value = scrollY.value > 100;
+  isScrolled.value = window.scrollY > 50;
+  if (searchContainer.value) {
+    const header = document.querySelector('.main-header');
+    if (header) {
+      const headerRect = header.getBoundingClientRect();
+      isSticky.value = headerRect.bottom <= 0;
+    }
+  }
 };
 
 const notifications = ref(null);
 
-const showMessage = (type, message) => {
+const showMessage = (type: string, message: string) => {
   notifications.value.showNotification(type.split(':')[0], message);
 };
 
@@ -157,26 +119,17 @@ const userLogout = async () => {
       console.log(logined.value)
       router.push('/');
     }
-  } catch (error) {
+  } catch (error: any) {
     const message = error.response?.data?.message || 'Ошибка выхода';
     showMessage('error', `${message}`);
   }
 };
 
-
-const searchResults = ref([]);
-const handleResults = (results) => {
-  searchResults.value = results;
-}
-
-const isLoading = ref(false);
-const showLoading = (state) => {
-  isLoading.value = state;
-};
-
 onMounted(async () => {
   window.addEventListener('scroll', handleScroll);
-  scheduleTokenRefresh();
+  nextTick(() => {
+    handleScroll();
+  })
 });
 
 onBeforeUnmount(() => {
