@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class SuggestionDTO {
     private List<?> data;
-    private int count;
+    private int limit;
     private String query;
 }

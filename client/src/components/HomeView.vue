@@ -44,7 +44,7 @@
     :class="{ 'sticky-search': isSticky }" 
     ref="searchContainer">
       <div class="sub-header-container">
-        <smart-input />
+        <SearchContainerView />
       </div>
     </div>
   </div>
@@ -68,7 +68,7 @@ import Notifications from './UI/NotificationsView.vue';
 import github from '@/assets/github-mark.svg';
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
-import SmartInput from "@/components/UI/routecomponents/SmartInputView.vue";
+import SearchContainerView from './UI/routecomponents/SearchContainerView.vue';
 import RouteContainer from './UI/routecomponents/RouteContainerView.vue';
 import Signup from '@/components/UI/auth/SignupView.vue';
 import Signin from "@/components/UI/auth/SigninView.vue";

@@ -33,7 +33,7 @@ public class SuggestionController {
             SuggestionDTO dto = SuggestionDTO
                     .builder()
                     .data(cities)
-                    .count(cities.size())
+                    .limit(cities.size())
                     .query(q)
                     .build();
 
@@ -43,6 +43,26 @@ public class SuggestionController {
             errorResponse.put("error", "Failed to fetch cities");
             errorResponse.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
+
+    @GetMapping("/transports")
+    public ResponseEntity<?> getTransportUnitsSuggestions(
+            @RequestParam String q,
+            @RequestParam(defaultValue = "10") int limit){
+
+        try {
+            List<String> transportUnits = suggestionService.findTransportUnitsByQuery(q, limit);
+
+            SuggestionDTO dto = SuggestionDTO.builder()
+                    .data(transportUnits)
+                    .limit(transportUnits.size())
+                    .query(q)
+                    .build();
+
+            return ResponseEntity.ok(dto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }

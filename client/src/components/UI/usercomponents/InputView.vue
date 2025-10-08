@@ -3,24 +3,27 @@
         <div>
             <input 
                 v-model="localValue"
+                :type="props.type"
             >
         </div>
         <div class="suggestions-list">
-            
+
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
+import { defineProps } from 'vue';
 
 const props = defineProps<{
     type: string;
-    suggestionType: 'from' | 'to' | 'transport';
+    suggestionType?: 'from' | 'to' | 'transport';
 }>();
 
-const localValue = ref<string | null>(null);
+const localValue = defineModel<string | null>({
+    default: ''
+})
 
-console.log(props);
+
 </script>
 <style lang="sass">
     
