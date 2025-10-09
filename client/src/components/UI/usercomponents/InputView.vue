@@ -15,7 +15,7 @@
                     :key="idx"
                     >
                         <li 
-                        @click="chooseInput(el)">
+                        @click="selectSuggestion(el)">
                             {{ el }}
                         </li>
                     </template>
@@ -36,10 +36,11 @@ const { onTypeStart, onTypeEnd, cancelTypeDetection } = useTypeDetection();
 
 const suggestionList = ref(false);
 const isLoading = ref(false);
+const isProcessingSelection = ref(false);
 
 const props = defineProps<{
     type: string;
-    suggestionType?: 'from' | 'to' | 'transport';
+    suggestionType?: 'from' | 'to';
 }>();
 
 const localValue = defineModel<string | null>({
@@ -67,12 +68,7 @@ const fetchSuggestions = async (q: string | null) => {
     isLoading.value = false;
     try {
         let response = null;
-        if(props.suggestionType === 'from' || props.suggestionType === 'to'){
-            response = await suggestionService.findAllCities(q);
-        }
-        if(props.suggestionType === 'transport'){
-            response = await suggestionService.findAllTransportUnits(q);
-        }
+        response = await suggestionService.findAllCities(q);
 
         apiResults.value = response?.data.data || [];
     }
@@ -84,11 +80,23 @@ const fetchSuggestions = async (q: string | null) => {
     }
 }
 
-const chooseInput = (parameter: string) => {
-    localValue.value = parameter;
+const selectSuggestion = (item: any) => {
+    isProcessingSelection.value = true;
+    setTimeout(() => {
+        localValue.value = item;
+        apiResults.value = [];
+        hideSuggestions();
+        setTimeout(() => {
+            isProcessingSelection.value = false;
+        }, 100);
+    }, 0);
 }
 
 watch(localValue, (newValue) => {
+    if(isProcessingSelection.value){
+        return;
+    }
+
     if(!newValue?.trim()){
         cancelTypeDetection();
         apiResults.value = [];

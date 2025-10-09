@@ -19,7 +19,6 @@
         type="text"/>
         <input-view 
         v-model="filter.transport" 
-        suggestion-type="transport"
         type="text"/>
       </div>
       <div class="search-wrapper">
