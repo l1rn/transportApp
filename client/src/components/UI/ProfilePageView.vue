@@ -102,7 +102,7 @@ onUnmounted(() => {
 </script>
 <script>
 import BookingCard from "@/components/bookings/BookingCard.vue";
-import BookingService from "@/services/BookingService";
+import BookingService from "@/services/bookingService";
 import { storeToRefs } from "pinia";
 import { useDataSource } from '@/stores/userDataStore';
 export default {

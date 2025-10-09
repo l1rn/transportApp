@@ -45,24 +45,4 @@ public class SuggestionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
-
-    @GetMapping("/transports")
-    public ResponseEntity<?> getTransportUnitsSuggestions(
-            @RequestParam String q,
-            @RequestParam(defaultValue = "10") int limit){
-
-        try {
-            List<String> transportUnits = suggestionService.findTransportUnitsByQuery(q, limit);
-
-            SuggestionDTO dto = SuggestionDTO.builder()
-                    .data(transportUnits)
-                    .limit(transportUnits.size())
-                    .query(q)
-                    .build();
-
-            return ResponseEntity.ok(dto);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-    }
 }

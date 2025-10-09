@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import BookingContainer from './BookingContainer.vue';
-import BookingService from '@/services/BookingService';
+import BookingService from '@/services/bookingService';
 
 const bookings = ref([]);
 const isLoading = ref(false);

@@ -93,8 +93,8 @@
 </template>
 <script setup>
 import Notifications from '@/components/UI/NotificationsView.vue'
-import LogoutService from '@/services/LogoutService';
-import UserService from '@/services/UserService';
+import LogoutService from '@/services/logoutService';
+import UserService from '@/services/userService';
 import { useDataSource } from '@/stores/userDataStore';
 import { storeToRefs } from 'pinia';
 import { ref, onMounted, computed } from 'vue';

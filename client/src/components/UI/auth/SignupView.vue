@@ -63,7 +63,7 @@
 <script setup lang="ts">
 import { useAuthForms } from "@/composable/useAuthForms";
 import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
-import SignupUsersService from "@/services/SignupUsersService";
+import SignupUsersService from "@/services/signupUsersService";
 import { useModalStore } from "@/stores/modalStore";
 import { ref, watch } from 'vue';
 const user = ref({

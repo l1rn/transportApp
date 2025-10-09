@@ -54,7 +54,7 @@
   </div>
 </template>
 <script setup>
-import AdminService from '@/services/AdminService';
+import AdminService from '@/services/adminService';
 import { onMounted, ref,computed } from 'vue';
 import Notifications from '@/components/UI/NotificationsView.vue'
 const users = ref([]); 

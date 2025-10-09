@@ -73,7 +73,7 @@ import RouteContainer from './UI/routecomponents/RouteContainerView.vue';
 import Signup from '@/components/UI/auth/SignupView.vue';
 import Signin from "@/components/UI/auth/SigninView.vue";
 import CustomProfile from "@/components/UI/auth/ProfileView.vue";
-import LogoutService from "@/services/LogoutService";
+import LogoutService from "@/services/logoutService";
 import { cancelTokenRefresh } from "@/services/api";
 import { useLoginStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';

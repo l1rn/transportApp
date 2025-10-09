@@ -129,7 +129,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import AdminService from '@/services/AdminService'
+import AdminService from '@/services/adminService'
 import { formatToDatabase } from '@/services/dateFormat/formatTime';
 
 const routeID = ref(1);

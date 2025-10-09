@@ -31,19 +31,4 @@ public class SuggestionService {
                  )
                  .collect(Collectors.toList());
      }
-
-    public List<String> findTransportUnitsByQuery(String q, int limit){
-         String lQuery = q.toLowerCase();
-         return routeRepository.findAll()
-                 .stream()
-                 .filter(r -> r.getTransport().toLowerCase().contains(lQuery))
-                 .limit(limit)
-                 .map(Route::getTransport)
-                 .distinct()
-                 .sorted(Comparator
-                         .comparing((String t) -> !t.toLowerCase().startsWith(lQuery))
-                         .thenComparing(String::compareToIgnoreCase)
-                 )
-                 .collect(Collectors.toList());
-     }
 }

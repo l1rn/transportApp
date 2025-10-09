@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import SigninUsersService from "@/services/SigninUsersService";
+import SigninUsersService from "@/services/signinUsersService";
 import { ref } from 'vue';
 import { useLoginStore } from '@/stores/authStore';
 import { scheduleTokenRefresh } from '@/services/api';

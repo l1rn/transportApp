@@ -61,7 +61,7 @@
   </div>
 </template>
 <script setup>
-import AdminService from '@/services/AdminService';
+import AdminService from '@/services/adminService';
 import { onMounted, ref } from 'vue';
 import { formatDate, formatTime, getDateSource } from '@/services/dateFormat/formatTime';
 const bookings = ref([]);

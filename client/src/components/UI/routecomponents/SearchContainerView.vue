@@ -1,22 +1,3 @@
-<script setup lang="ts">
-import { ref } from "vue";
-import InputView from "../usercomponents/InputView.vue";
-interface RouteFilter {
-  routeFrom: string | null;
-  routeTo: string | null;
-  date: string | null;
-  transport: string | null;
-}
-
-const filter = ref<RouteFilter>({
-  routeFrom: "",
-  routeTo: "",
-  date: "",
-  transport: ""
-});
-
-
-</script>
 <template>
   <div class="main-search-container">
     <div class="search-wrapper">
@@ -48,7 +29,24 @@ const filter = ref<RouteFilter>({
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { ref } from "vue";
+import InputView from "../usercomponents/InputView.vue";
+interface RouteFilter {
+  routeFrom: string | null;
+  routeTo: string | null;
+  date: string | null;
+  transport: string | null;
+}
 
+const filter = ref<RouteFilter>({
+  routeFrom: "",
+  routeTo: "",
+  date: "",
+  transport: ""
+});
+
+</script>
 <style scoped lang="sass">
-@import "@/assets/styles/objects/smart-input"
+@import "@/assets/styles/objects/search-container"
 </style>

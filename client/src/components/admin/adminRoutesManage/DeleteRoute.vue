@@ -84,8 +84,8 @@
 </template>
 <script setup>
 import Notifications from '@/components/UI/NotificationsView.vue'
-import AdminService from '@/services/AdminService';
-import RoutesService from '@/services/RoutesService';
+import AdminService from '@/services/adminService';
+import RoutesService from '@/services/routesService';
 
 import { ref, computed, onMounted } from 'vue';
 
