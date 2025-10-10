@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,17 +19,18 @@ public class SuggestionService {
     private final RouteRepository routeRepository;
 
      public List<String> findCitiesByQuery(String query, int limit){
-         String lowerQuery = query.toLowerCase();
+         String lowerQuery = query.toLowerCase(Locale.ROOT);
          return routeRepository.findAll()
                  .stream()
-                 .filter(r -> r.getRouteFrom().toLowerCase().contains(lowerQuery))
-                 .limit(limit)
                  .map(Route::getRouteFrom)
                  .distinct()
+                 .filter(c -> c.toLowerCase(Locale.ROOT).contains(lowerQuery))
                  .sorted(Comparator
-                         .comparing((String city) -> !city.toLowerCase().startsWith(lowerQuery))
+                            .comparing((String city) ->
+                                    !city.toLowerCase(Locale.ROOT).startsWith(lowerQuery))
                          .thenComparing(String::compareToIgnoreCase)
                  )
+                 .limit(limit)
                  .collect(Collectors.toList());
      }
 }

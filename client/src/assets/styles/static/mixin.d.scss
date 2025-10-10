@@ -1,4 +1,10 @@
+@import "./color.d.scss";
 
+@mixin input-clear($back: $white){
+    outline: 0;
+    border: 0;
+    background: $back;
+}
 
 @mixin button-clear($back: #ccc, $color: #000){
     outline: 0;
