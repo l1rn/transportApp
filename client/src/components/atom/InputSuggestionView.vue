@@ -117,8 +117,8 @@ watch(localValue, (newValue) => {
 
 </script>
 <style lang="scss">
-@import "../../../assets/styles/static/color.d.scss";
-@import "../../../assets/styles/static/mixin.d.scss";
+@import "../../assets/styles/static/color.d.scss";
+@import "../../assets/styles/static/mixin.d.scss";
 
 .smart-input-wrapper {
     .input-container {

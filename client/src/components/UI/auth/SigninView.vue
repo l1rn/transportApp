@@ -50,12 +50,12 @@
 </template>
 
 <script setup lang="ts">
-import SigninUsersService from "@/services/signinUsersService";
-import { ref } from 'vue';
+import signinUsersService from '@/services/signinUsersService';
 import { useLoginStore } from '@/stores/authStore';
 import { scheduleTokenRefresh } from '@/services/api';
 import { useModalStore } from "@/stores/modalStore";
 import { UserData } from "@/types/userdata";
+import { ref } from 'vue';
 import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
 import { useAuthForms } from "@/composable/useAuthForms";
 
@@ -73,10 +73,10 @@ const { switchForms } = useAuthForms();
 const signIn = async () => {
   console.log(user.value);
   try {
-    await SigninUsersService.signInUser(user.value);
+    await signinUsersService.signInUser(user.value);
 
-    scheduleTokenRefresh();
     loginStore.auth();
+    scheduleTokenRefresh();
 
     user.value.username = '';
     user.value.password = ''

@@ -1,15 +1,28 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import router from "@/routers/router";
 
 import { useLoginStore } from "@/stores/authStore";
 import { createPinia, setActivePinia } from "pinia";
+
 setActivePinia(createPinia());
-const loginStore = useLoginStore();
 
-axios.defaults.withCredentials = true;
+const CONFIG = {
+  MAX_RETRY_ATTEMPTS: 3,
+  REFRESH_BUFFER_MS: 5 * 60 * 1000,
+  BASE_URL: process.env.VUE_APP_BACKEND_APP_API,
+  TIMEOUT: 10000
+};
 
-let retryAttempts = 0;
-let tokenExpiration;
+interface AuthResponse extends AxiosResponse {
+  header: {
+    'x-token-expires'?: string;
+  };
+}
+
+interface RefreshTokenResponse {
+  accessToken?: string;
+  expiresIn?: number;
+}
 
 axios.interceptors.response.use(
   (response) => {
