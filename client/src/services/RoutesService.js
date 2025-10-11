@@ -1,9 +1,8 @@
-import axios from "axios";
-
+import { api } from "./api";
 
 class RoutesService{
     getRoutes(){
-        return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/routes`);
+        return api.get(`${process.env.VUE_APP_BACKEND_APP_API}/routes`);
     }
     searchRoutes(routeFrom, routeTo, date, transport, page = 0, size = 10){
         const params = {
@@ -19,7 +18,7 @@ class RoutesService{
                 delete params[key];
             }
         });
-        return axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/routes/search`, {params});
+        return api.get(`${process.env.VUE_APP_BACKEND_APP_API}/routes/search`, {params});
     }
 }
 

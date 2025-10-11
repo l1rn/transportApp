@@ -93,7 +93,7 @@
 </template>
 <script setup>
 import Notifications from '@/components/UI/NotificationsView.vue'
-import LogoutService from "@/services/logoutService";
+import { authorizationService } from '@/services/authorizationService';
 import UserService from '@/services/userService';
 import { useDataSource } from '@/stores/userDataStore';
 import { storeToRefs } from 'pinia';
@@ -146,7 +146,7 @@ const checkSession = async() => {
                 await UserService.refreshIfCheckAuth()
             }
             catch{
-                await LogoutService.logoutUser();
+                await authorizationService.logoutUser();
             }
         }
     }
@@ -156,7 +156,7 @@ const deleteSession = async(id) => {
     try{
         if(deviceId.value === id) {
             await UserService.deleteSession(id);
-            await LogoutService.logoutUser();
+            await authorizationService.logoutUser();
             showMessage("success", "Сессия успешна удалена!")
         }
         else {

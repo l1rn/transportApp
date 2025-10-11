@@ -39,7 +39,7 @@
         <BookingCard />
       </div>
       <div v-if="nav.chooseSettings">
-        <UserSettings />
+        <UserSettingsView />
       </div>
       <div v-if="nav.chooseModeration">
         <AdminPanel />
@@ -48,7 +48,7 @@
   </div>
 </template>
 <script setup>
-import UserSettings from '@/components/UI/usercomponents/UserSettingsView.vue'
+import UserSettingsView from "../molecule/UserSettingsView.vue"; 
 import BackbuttonToHome from "./BackButtonView.vue";
 import { onMounted, onUnmounted, ref, watch  } from "vue";
 import AdminPanel from "../admin/AdminPanel.vue";

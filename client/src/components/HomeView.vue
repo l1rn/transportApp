@@ -1,8 +1,8 @@
 <template>
   <div v-if="isAuthFormOpen" class="modal-auth-form">
     <div class="auth-form">
-      <Signup v-if="currentForm === 'register'" />
-      <Signin v-else-if="currentForm === 'login'" />
+      <SignUpView v-if="currentForm === 'register'" />
+      <SignInView v-else-if="currentForm === 'login'" />
     </div>
   </div>
 
@@ -16,7 +16,7 @@
             ololotravel
           </div>
           <div class="profile-header-custom">
-            <custom-profile @open-auth="showLoginForm = true" @logout="userLogout" />
+            <ProfileView @open-auth="showLoginForm = true" @logout="userLogout" />
           </div>
         </div>
       </div>
@@ -67,19 +67,14 @@
 import Notifications from './UI/NotificationsView.vue';
 import github from '@/assets/github-mark.svg';
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
-import { useRouter } from 'vue-router';
 import SearchContainerView from './molecule/SearchContainerView.vue';
 import RouteContainer from './UI/routecomponents/RouteContainerView.vue';
-import Signup from '@/components/UI/auth/SignupView.vue';
-import Signin from "@/components/UI/auth/SignInView.vue";
-import CustomProfile from "@/components/UI/auth/ProfileView.vue";
-import LogoutService from "@/services/logoutService";
-import { cancelTokenRefresh } from "@/services/api";
-import { useLoginStore } from '@/stores/authStore';
-import { storeToRefs } from 'pinia';
+import SignInView from './molecule/auth/SignInView.vue';
+import SignUpView from './molecule/auth/SignUpView.vue';
+import ProfileView from './molecule/ProfileView.vue';
 import { useAuthForms } from '@/composable/useAuthForms';
+import { authorizationService } from '@/services/authorizationService';
 
-const router = useRouter();
 const showLoginForm = ref(false);
 
 const isSticky = ref<boolean>(false);
@@ -87,10 +82,6 @@ const isScrolled = ref<boolean>(false);
 const searchContainer = ref<HTMLElement | null>(null);
 
 const { currentForm, isAuthFormOpen } = useAuthForms();
-
-const loginStore = useLoginStore()
-
-const { logined } = storeToRefs(loginStore);
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
@@ -111,14 +102,8 @@ const showMessage = (type: string, message: string) => {
 
 const userLogout = async () => {
   try {
-    const success = await LogoutService.logoutUser();
-    if (success) {
-      cancelTokenRefresh();
-      showMessage('success:logout', '✅ Успешный выход!');
-      loginStore.logout();
-      console.log(logined.value)
-      router.push('/');
-    }
+    await authorizationService.logoutUser();
+
   } catch (error: any) {
     const message = error.response?.data?.message || 'Ошибка выхода';
     showMessage('error', `${message}`);
