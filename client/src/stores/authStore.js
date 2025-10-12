@@ -6,7 +6,7 @@ export const useLoginStore = defineStore('auth', () => {
     const initLoginState = () => {
         logined.value = localStorage.getItem("logined") === 'true'
     }
-    function auth(){
+    function auth() {
         logined.value = true
         localStorage.setItem('logined', 'true');
     }

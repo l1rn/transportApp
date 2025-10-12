@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import UserService from "@/services/userService";
+import userService from "@/services/userService";
 
 export const useDataSource = defineStore('userData', () => {
     const userData = ref([])
 
     async function getUserData() {
         try{
-            const response = await UserService.getUserAgent();
+            const response = await userService.getUserInfo();
             userData.value = response.data;
             console.log(userData.value)
         }

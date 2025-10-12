@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory} from 'vue-router';
-import ProfilePage from '@/components/UI/ProfilePageView.vue';
+import PageProfileView from '@/components/UI/PageProfileView.vue';
 import AllRoutesByFilter from '@/components/AllRoutesFilterView.vue';
 import SearchRoutes from '@/components/SearchRoutesView.vue'
 import AdminPanel from '@/components/admin/AdminPanel.vue';
@@ -8,12 +8,12 @@ import HomeView from '@/components/HomeView.vue';
 
 const routes = [
     {path: '/', redirect: '/home'},
-    { path: '/profile', component: ProfilePage, meta:{requiresAuth: true} },
+    { path: '/profile', component: PageProfileView, meta:{requiresAuth: true} },
     { path: '/routes', component: AllRoutesByFilter},
     { path: '/routes/search', component: SearchRoutes},
     { path: '/routes/price', component: PriceRangeRoutesContainer},
     { path:'/panel/admin', component: AdminPanel},
-    { path: '/home', component: HomeView},
+    { path: '/home', component: HomeView },
 
     { 
         path: '/:catchAll(.*)',

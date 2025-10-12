@@ -16,7 +16,7 @@
             ololotravel
           </div>
           <div class="profile-header-custom">
-            <ProfileView @open-auth="showLoginForm = true" @logout="userLogout" />
+            <ProfileButtonView />
           </div>
         </div>
       </div>
@@ -71,11 +71,8 @@ import SearchContainerView from './molecule/SearchContainerView.vue';
 import RouteContainer from './UI/routecomponents/RouteContainerView.vue';
 import SignInView from './molecule/auth/SignInView.vue';
 import SignUpView from './molecule/auth/SignUpView.vue';
-import ProfileView from './molecule/ProfileView.vue';
+import ProfileButtonView from './molecule/ProfileButtonView.vue';
 import { useAuthForms } from '@/composable/useAuthForms';
-import { authorizationService } from '@/services/authorizationService';
-
-const showLoginForm = ref(false);
 
 const isSticky = ref<boolean>(false);
 const isScrolled = ref<boolean>(false);
@@ -95,20 +92,6 @@ const handleScroll = () => {
 };
 
 const notifications = ref(null);
-
-const showMessage = (type: string, message: string) => {
-  notifications.value.showNotification(type.split(':')[0], message);
-};
-
-const userLogout = async () => {
-  try {
-    await authorizationService.logoutUser();
-
-  } catch (error: any) {
-    const message = error.response?.data?.message || 'Ошибка выхода';
-    showMessage('error', `${message}`);
-  }
-};
 
 onMounted(async () => {
   window.addEventListener('scroll', handleScroll);

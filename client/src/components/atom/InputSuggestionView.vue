@@ -32,8 +32,8 @@
                             </li>
                         </template>
                         <template 
-                        v-for="transport in transportList"
                         v-if="props.type === 'select'"
+                        v-for="transport in transportList"
                         :key="transport">
                             <li
                             @click="selectSuggestion(transport)">{{ transport }}</li>
@@ -78,7 +78,7 @@ const hideSuggestions = () => {
 const apiResults = ref<string[]>([]);
 const transportList = ref<Record<number, string>>({
     1: "🚌 Автобус",
-    2: "✈️ Самолет",
+    2: "✈️ Авиа",
     3: "🚆 Поезд",
     4: "🏍️ Любой"
 })

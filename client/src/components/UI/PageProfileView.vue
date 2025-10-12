@@ -1,6 +1,6 @@
 <template>
   <div class="profile-page">
-    <BackbuttonToHome />
+    <BackButtonView />
     <div class="header-profile">
       <div class="header-profile__title">
         <h1>Профиль - {{ userData.username }}</h1>
@@ -49,7 +49,7 @@
 </template>
 <script setup>
 import UserSettingsView from "../molecule/UserSettingsView.vue"; 
-import BackbuttonToHome from "./BackButtonView.vue";
+import BackButtonView from "./BackButtonView.vue";
 import { onMounted, onUnmounted, ref, watch  } from "vue";
 import AdminPanel from "../admin/AdminPanel.vue";
 import { useRoleStore } from "@/stores/roleStore";
@@ -93,8 +93,6 @@ onMounted(() =>{
     checkAdminRole();
     getDevices()
   }, 500)
-  
-  
 })
 onUnmounted(() => {
   hasRoleAdmin.value = false

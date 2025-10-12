@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import axios from "axios";
+import { api } from "@/services/api";
 
 export const useRoleStore = defineStore('role', () => {
     const roleEnum = ref({
@@ -12,7 +12,7 @@ export const useRoleStore = defineStore('role', () => {
     const currentRole = ref(""); 
 
     async function getRole() {
-        const response = await axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/users/me/role`)
+        const response = await api.get(`/users/me/role`)
         if(response.data.role === "ROLE_ADMIN") {
             currentRole.value = roleEnum.value.ADMIN_ROLE;
         } else if(response.data.role === "ROLE_USER"){
