@@ -6,7 +6,7 @@ import router from "@/routers/router";
 
 class AuthorizationService{
     public async signInUser(data: UserData): Promise<AxiosResponse> {
-        return await api.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/sign-in`, {
+        return await api.post(`/auth/sign-in`, {
             username: data.username,
             password: data.password
         })
@@ -14,7 +14,7 @@ class AuthorizationService{
 
     public async logoutUser(): Promise<boolean> {
         try{
-            await api.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/logout`,);
+            await api.post(`/auth/logout`,);
             const loginStore = useLoginStore();
             router.replace('/')
             loginStore.logout()
@@ -27,14 +27,14 @@ class AuthorizationService{
     }
 
     public async signupUser(data: UserData): Promise<AxiosResponse> {
-        return api.post(`${process.env.VUE_APP_BACKEND_APP_API}/auth/sign-up`, {
+        return api.post(`/auth/sign-up`, {
             username: data.username,
             password: data.password
         });
     }
 
     getRoleUser(){
-        return api.get(`${process.env.VUE_APP_BACKEND_APP_API}/users/me/role`)
+        return api.get(`/users/me/role`)
     }
 }
 

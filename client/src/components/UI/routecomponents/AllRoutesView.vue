@@ -62,7 +62,7 @@
   </div>
 </template>
 <script setup>
-import RoutesService from '@/services/routesService';
+import { routesService } from '@/services/routeService';
 import { ref, computed, onMounted } from 'vue';
 
 const routes = ref([]);
@@ -73,7 +73,7 @@ const paginatedRoutes = computed(() => {
 })
 
 const fetchRoutes = async () => {
-  const response = await RoutesService.searchRoutes(null, null, null, null, currentPage.value, 10);
+  const response = await routesService.searchRoutes(null, null, null, null, currentPage.value, 10);
   routes.value = response.data;
 }
 onMounted(async () => {

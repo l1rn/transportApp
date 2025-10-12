@@ -2,31 +2,51 @@
     <div class="smart-input-wrapper">
         <div class="input-container">
             <input 
-            v-model="localValue" 
-            :type="props.type" 
-            :placeholder="props.placeholder"
-            @focus="focusSuggestions" 
-            @blur="hideSuggestions">
-            <div 
-            v-if="suggestionList" 
-            class="suggestions-list">
-                <ul>
-                    <template 
-                    v-for="(el, idx) in apiResults" 
-                    :key="idx"
-                    >
-                        <li 
-                        @click="selectSuggestion(el)">
-                            {{ el }}
-                        </li>
-                    </template>
-                </ul>
-            </div>
-            <div v-else-if="isLoading" class="loading-indicator">
-                <div class="text-container">
-                    Загрузка...
+                v-model="localValue" 
+                :type="props.type" 
+                :placeholder="props.placeholder"
+                :readonly="props.type === 'select'"
+                @click="focusSuggestions"
+                @blur="hideSuggestions"
+            />
+            <span 
+                @click="focusSuggestions"
+                class="select-icon" 
+                :class="{ 'isActive': suggestionList}"
+                v-if="props.type === 'select'">
+                <img src="../../assets/icons/dropdown.svg" alt="select">
+            </span>
+            
+            <template v-if="props.type !== 'date'">
+                <div v-if="isLoading" class="loading-indicator">
+                    <div class="text-container">
+                        Загрузка...
+                    </div>
                 </div>
-            </div>
+                <div 
+                v-if="suggestionList" 
+                class="suggestions-list">
+                    <ul>
+                        <template 
+                        v-if="suggestionType"
+                        v-for="(el, idx) in apiResults" 
+                        :key="idx"
+                        >
+                            <li 
+                            @click="selectSuggestion(el)">
+                                {{ el }}
+                            </li>
+                        </template>
+                        <template 
+                        v-for="transport in transportList"
+                        v-if="props.type === 'select'"
+                        :key="transport">
+                            <li
+                            @click="selectSuggestion(transport)">{{ transport }}</li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -52,16 +72,22 @@ const localValue = defineModel<string | null>({
 });
 
 const focusSuggestions = () => {
-    suggestionList.value = true;
+    suggestionList.value = !suggestionList.value;
 }
 
 const hideSuggestions = () => {
     setTimeout(() => {
         suggestionList.value = false;
-    }, 100)
+    }, 250)
 }
 
-const apiResults = ref([]);
+const apiResults = ref<string[]>([]);
+const transportList = ref<Record<number, string>>({
+    1: "🚌 Автобус",
+    2: "✈️ Самолет",
+    3: "🚆 Поезд",
+    4: "🏍️ Любой"
+})
 
 const fetchSuggestions = async (q: string | null) => {
     if (!q) {
@@ -114,7 +140,6 @@ watch(localValue, (newValue) => {
     })
     console.log(apiResults.value);
 })
-
 </script>
 <style lang="scss">
 @import "../../assets/styles/static/color.d.scss";
@@ -137,6 +162,27 @@ watch(localValue, (newValue) => {
                 box-shadow: 0 0 8px rgba($color: $primary-blue, $alpha: 0.3);
             }
         }
+        input[type="select"]{
+            cursor: pointer;
+            caret-color: transparent;
+        }
+        input[type="date"]{
+            width: 92%;
+        }
+        .select-icon {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: 15px;
+            top: 45%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            transition: all 0.3s;
+            &.isActive {
+                transform: scaleY(-1);
+            }
+        }
+
     }
 }
 

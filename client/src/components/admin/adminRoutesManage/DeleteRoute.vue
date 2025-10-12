@@ -85,8 +85,7 @@
 <script setup>
 import Notifications from '@/components/UI/NotificationsView.vue'
 import AdminService from '@/services/adminService';
-import RoutesService from '@/services/routesService';
-
+import { routesService } from '@/services/routeService';
 import { ref, computed, onMounted } from 'vue';
 
 const headers = ref([
@@ -107,7 +106,7 @@ return routes.value.slice(start,end);
 const totalPages = computed(() => Math.ceil(routes.value.length / itemsPerPage.value))
 
 const fetchRoutes = async() =>{
-const response = await RoutesService.getRoutes();
+const response = await routesService.getRoutes();
 routes.value = response.data;
 }
 onMounted(async() =>{

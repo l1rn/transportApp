@@ -218,7 +218,7 @@
 </template>
 <script setup>
 import BackbuttonToHome from './UI/BackButtonView.vue';
-import RoutesService from '@/services/routesService';
+import { routesService } from '@/services/routeService';
 import { onBeforeMount, onMounted, reactive, ref, computed, nextTick, watch } from 'vue';
 
 let inputRouteFrom = ref('');
@@ -333,7 +333,7 @@ onMounted(async () => {
 const fetchRoutes = async () => {
   try {
     isLoading.value = true;
-    const response = await RoutesService.getRoutes();
+    const response = await routesService.getRoutes();
     routes.value = response.data;
   } catch (err) {
     error.value = 'Не удалось загрузить маршруты';

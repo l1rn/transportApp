@@ -1,5 +1,6 @@
 
 export interface Route { 
+    id?: number;
     routeFrom: string;
     routeTo: string;
     date: string;
@@ -8,4 +9,11 @@ export interface Route {
     arrivalTime: string;
     availableSeats: number;
     price: number;
+}
+
+export interface PaginatedRoute {
+    totalPages: number;
+    contentPage: number;
+    content: Array<Route>;
+    totalElements: number;
 }

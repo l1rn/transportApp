@@ -19,10 +19,11 @@
       <div class="input-wrapper">
         <input-suggestion-view 
         v-model="filter.date" 
-        type="text"/>
+        type="date"/>
         <input-suggestion-view 
         v-model="filter.transport" 
-        type="text"/>
+        type="select"
+        placeholder="Транспорт"/>
       </div>
       <div class="search-container">
         <button class="search-button-custom">
