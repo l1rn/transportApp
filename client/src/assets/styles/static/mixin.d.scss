@@ -26,3 +26,18 @@
     justify-content: $js;
     align-items: $ai;
 }
+
+@mixin custom-input(){
+    @include input-clear();
+    padding: 0.4rem 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 0 8px rgba($color: $primary-blue, $alpha: 0.1);
+    border: 2px solid $light-gray;
+    transition: 0.3s all;
+    &:focus {
+        border: 2px solid $primary-blue;
+        box-shadow: 0 0 8px rgba($color: $primary-blue, $alpha: 0.3);
+    }
+}

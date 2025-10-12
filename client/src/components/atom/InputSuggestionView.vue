@@ -10,19 +10,13 @@
                 @blur="hideSuggestions"
             />
             <span 
-                @click="focusSuggestions"
                 class="select-icon" 
                 :class="{ 'isActive': suggestionList}"
                 v-if="props.type === 'select'">
                 <img src="../../assets/icons/dropdown.svg" alt="select">
             </span>
-            
+
             <template v-if="props.type !== 'date'">
-                <div v-if="isLoading" class="loading-indicator">
-                    <div class="text-container">
-                        Загрузка...
-                    </div>
-                </div>
                 <div 
                 v-if="suggestionList" 
                 class="suggestions-list">
@@ -72,7 +66,7 @@ const localValue = defineModel<string | null>({
 });
 
 const focusSuggestions = () => {
-    suggestionList.value = !suggestionList.value;
+    suggestionList.value = true;
 }
 
 const hideSuggestions = () => {
@@ -138,7 +132,6 @@ watch(localValue, (newValue) => {
         isLoading.value = true;
         fetchSuggestions(newValue);
     })
-    console.log(apiResults.value);
 })
 </script>
 <style lang="scss">
@@ -149,18 +142,7 @@ watch(localValue, (newValue) => {
     .input-container {
         position: relative;
         input {
-            @include input-clear();
-            padding: 0.4rem 0.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            box-shadow: 0 0 8px rgba($color: $primary-blue, $alpha: 0.1);
-            border: 2px solid $light-gray;
-            transition: 0.3s all;
-            &:focus {
-                border: 2px solid $primary-blue;
-                box-shadow: 0 0 8px rgba($color: $primary-blue, $alpha: 0.3);
-            }
+            @include custom-input();
         }
         input[type="select"]{
             cursor: pointer;

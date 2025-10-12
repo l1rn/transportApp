@@ -26,7 +26,9 @@
         placeholder="Транспорт"/>
       </div>
       <div class="search-container">
-        <button class="search-button-custom">
+        <button 
+        @click="searchRoutesByFilter"
+        class="search-button-custom">
           Поиск
           <span class="search-icon">
             🔍
@@ -47,13 +49,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import InputSuggestionView from "../atom/InputSuggestionView.vue";
-
-interface RouteFilter {
-  routeFrom: string | null;
-  routeTo: string | null;
-  date: string | null;
-  transport: string | null;
-}
+import { RouteFilter } from "@/types/route";
+import { routesService } from "@/services/routeService";
 
 const filter = ref<RouteFilter>({
   routeFrom: "",
@@ -61,6 +58,26 @@ const filter = ref<RouteFilter>({
   date: "",
   transport: ""
 });
+
+const transportTransform = (f: RouteFilter): RouteFilter => {
+  const removeEmoji = (s?: string) => s?.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+
+  return {
+    ...f,
+    transport: removeEmoji(f?.transport) === "Любой" ? "" : removeEmoji(f?.transport)
+  }
+}
+
+const searchRoutesByFilter = async() => {
+  try{
+    const routeFilter = transportTransform(filter.value)
+    const response = await routesService.searchRoutes(routeFilter);
+    console.log(response.data.content);
+  }
+  catch(error){
+    console.error(error);
+  }
+}
 
 const clearSearchContainer = () => {
   filter.value = {
@@ -70,7 +87,6 @@ const clearSearchContainer = () => {
     transport: ""
   };
 }
-
 </script>
 <style scoped lang="sass">
 @import "@/assets/styles/objects/search-container"

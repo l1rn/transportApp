@@ -92,5 +92,5 @@ useConditionalClickOutside(
 </script>
 
 <style scoped lang="sass">
-@import '@/assets/styles/authorizationObjects/sign-form.sass'
+@import '@/assets/styles/auth/sign-form.sass'
 </style>

@@ -11,6 +11,13 @@ export interface Route {
     price: number;
 }
 
+export interface RouteFilter {
+  routeFrom?: string;
+  routeTo?: string;
+  date?: string;
+  transport?: string;
+}
+
 export interface PaginatedRoute {
     totalPages: number;
     contentPage: number;

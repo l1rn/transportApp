@@ -73,7 +73,7 @@ const paginatedRoutes = computed(() => {
 })
 
 const fetchRoutes = async () => {
-  const response = await routesService.searchRoutes(null, null, null, null, currentPage.value, 10);
+  const response = await routesService.searchRoutes({ }, currentPage.value, 10);
   routes.value = response.data;
 }
 onMounted(async () => {

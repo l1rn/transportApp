@@ -30,8 +30,7 @@
             label
                 font-size: 20px
             input
-                padding: 0.2rem 0.4rem
-                font-size: 20px
+                @include custom-input()
 
         form
             @include display-column()
@@ -43,6 +42,7 @@
                 border-radius: 8px
                 padding: 10px
                 font-size: 18px
-                transition: 0.2s all ease-in
+                transition: all 0.3s ease
                 &:hover
                     background: $darken-blue
+                    box-shadow: 0 5px 15px rgba($primary-blue, 0.25)

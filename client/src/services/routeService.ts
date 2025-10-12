@@ -1,21 +1,26 @@
 import { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { api } from "./api";
-import { PaginatedRoute } from "@/types/route";
+import { PaginatedRoute, RouteFilter } from "@/types/route";
 
 class RouteService {
     public async searchRoutes(
-        routeFrom?: string, 
-        routeTo?: string, 
-        transport?: string, 
-        date?: string, 
+        routeFilter: RouteFilter,
         page: number = 0, 
         size: number = 10
     ): Promise<AxiosResponse<PaginatedRoute>> {
+        const searchParams = new URLSearchParams();
+        
+        Object.entries(routeFilter).forEach(([key, value]) => {
+            if(value != null && value !== ''){
+                searchParams.append(key, value.toString());
+            }
+        });
+
+        searchParams.append('page', page.toString());
+        searchParams.append('size', size.toString());
+
         return await api.get('/routes/search', { 
-            params: Object.fromEntries(
-                Object.entries({ routeFrom, routeTo, transport, date, page, size })
-                    .filter(([_, value]) => value != null)
-            ),
+            params: searchParams,
             headers: {}
         } as InternalAxiosRequestConfig);
     }
