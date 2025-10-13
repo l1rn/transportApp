@@ -51,6 +51,9 @@ import { ref } from "vue";
 import InputSuggestionView from "@/components/atom/InputSuggestionView.vue";
 import { RouteFilter } from "@/types/route";
 import { routesService } from "@/services/routeService";
+import { useRouteStore } from "@/stores/useRouteStore";
+
+const routeStore = useRouteStore();
 
 const filter = ref<RouteFilter>({
   routeFrom: "",
@@ -72,7 +75,7 @@ const searchRoutesByFilter = async() => {
   try{
     const routeFilter = transportTransform(filter.value)
     const response = await routesService.searchRoutes(routeFilter);
-    console.log(response.data.content);
+    routeStore.setRouteData(response.data);
   }
   catch(error){
     console.error(error);

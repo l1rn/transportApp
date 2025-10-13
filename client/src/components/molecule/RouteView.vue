@@ -1,28 +1,8 @@
-<script setup>
-import { ref} from 'vue'
-import Notifications from '@/components/UI/NotificationsView.vue';
-const checkRoutesEmoji = (transport) =>{
-  switch(transport){
-    case 'Поезд': return '🚂'
-    case 'Авиа': return '✈️'
-    case 'Автобус': return '🚌'
-    default: return ''
-  }
-}
-
-const notifications = ref(null);
-
-const getStatus = (seats) => {
-  return seats > 0 ? 'ОТКРЫТО' : 'ЗАКРЫТО';
-};
-
-</script>
-
 <template>
   <Notifications ref="notifications" />
   <div class="space"></div>
   <div
-    v-for="route in searchResults"
+    v-for="route in searchResults?.content"
     :key="route.id"
     class="flight-card"
   >
@@ -99,7 +79,40 @@ const getStatus = (seats) => {
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { Ref, ref, watch} from 'vue'
+import Notifications from '@/components/UI/NotificationsView.vue';
+import { useRouteStore } from '@/stores/useRouteStore';
+import { PaginatedRoute } from '@/types/route';
+import { storeToRefs } from 'pinia';
 
+const checkRoutesEmoji = (transport: string) =>{
+  switch(transport){
+    case 'Поезд': return '🚂'
+    case 'Авиа': return '✈️'
+    case 'Автобус': return '🚌'
+    default: return ''
+  }
+}
+
+const searchResults: Ref<PaginatedRoute | null> = ref(null);
+
+const routeStore = useRouteStore();
+const { routeData } = storeToRefs(routeStore);
+
+const notifications = ref(null);
+
+const getStatus = (seats: number) => {
+  return seats > 0 ? 'ОТКРЫТО' : 'ЗАКРЫТО';
+};
+
+watch(routeData, (newVal) => {
+  if(newVal){
+    searchResults.value = newVal;
+    console.log(searchResults.value);
+  }
+})
+</script>
 <style scoped lang="sass">
-@import "@/assets/styles/routeObjects/route-container.sass"
+@import "@/assets/styles/molecule/route-view"
 </style>

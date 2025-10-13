@@ -50,9 +50,9 @@
   </div>
 
   <!-- main content -->
-  <div class="content">
+  <div class="content-container">
     <div class="custom-container">
-      <route-container />
+      <RouteView />
     </div>
     <div class="footer">
       <div>l1rn</div>
@@ -68,7 +68,7 @@ import Notifications from './UI/NotificationsView.vue';
 import github from '@/assets/github-mark.svg';
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import SearchContainerView from './molecule/home/SearchContainerView.vue';
-import RouteContainer from './UI/routecomponents/RouteContainerView.vue';
+import RouteView from './molecule/RouteView.vue';
 import SignInView from './molecule/auth/SignInView.vue';
 import SignUpView from './molecule/auth/SignUpView.vue';
 import ProfileButtonView from './atom/ProfileButtonView.vue';

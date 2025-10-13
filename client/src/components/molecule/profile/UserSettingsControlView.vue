@@ -95,12 +95,7 @@
 import Notifications from '@/components/UI/NotificationsView.vue'
 import { authorizationService } from '@/services/authorizationService';
 import UserService from '@/services/userService';
-import { useDataSource } from '@/stores/userDataStore';
-import { storeToRefs } from 'pinia';
 import { ref, computed } from 'vue';
-
-const userStore = useDataSource();
-const { userData } = storeToRefs(userStore)
 
 const passwordRequest = ref({
     oldPassword: '',

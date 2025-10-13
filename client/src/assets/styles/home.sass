@@ -1,6 +1,5 @@
 @import "../../assets/styles/static/color.d.scss"
 @import "../../assets/styles/static/mixin.d.scss"
-@import "@/assets/styles/homeObjects/main-container"
 @import "@/assets/styles/homeObjects/footer"
 
 $primary: #ffffff
@@ -95,18 +94,16 @@ $primary: #ffffff
         right: 0
         z-index: 1000
         animation: slideDown 0.3s ease
-
-// animation for search container
-@keyframes slideDown
-    from
-        transform: translateY(-100%)
-    to
-        transform: translateY(0)
-
-.custom-container
-    min-height: 100vh
+.content-container
     display: flex
+    align-items: center
+    
     flex-direction: column
+    .custom-container
+        min-height: 100vh
+        display: flex
+        flex-direction: column
+
 
 .navbar-custom-header
     display: flex
@@ -114,6 +111,12 @@ $primary: #ffffff
     flex-direction: column
     justify-content: space-evenly
     align-items: center
+// animation for search container
+@keyframes slideDown
+    from
+        transform: translateY(-100%)
+    to
+        transform: translateY(0)
 
 @media (max-width: 768px)
     .header-title-container
