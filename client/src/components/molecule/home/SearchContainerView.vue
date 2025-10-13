@@ -48,7 +48,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import InputSuggestionView from "../atom/InputSuggestionView.vue";
+import InputSuggestionView from "@/components/atom/InputSuggestionView.vue";
 import { RouteFilter } from "@/types/route";
 import { routesService } from "@/services/routeService";
 

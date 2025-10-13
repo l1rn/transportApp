@@ -101,11 +101,14 @@ public class UserService {
     public UserSettingsResponse getSettingsByUsername(String username){
         User user = repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-        UserSettingsResponse response = new UserSettingsResponse();
-        List<Device> devices = deviceRepository.findByUser(user);
-        response.setId(user.getId());
-        response.setUsername(user.getUsername());
-        response.setDevices(devices);
+        List<Device> devices = deviceRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Не найдено ни одно устройсто для: " + username));
+
+        UserSettingsResponse response = UserSettingsResponse.builder()
+                .username(username)
+                .role(user.getRole())
+                .devices(devices)
+                .build();
         return response;
     }
 

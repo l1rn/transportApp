@@ -97,7 +97,7 @@ import { authorizationService } from '@/services/authorizationService';
 import UserService from '@/services/userService';
 import { useDataSource } from '@/stores/userDataStore';
 import { storeToRefs } from 'pinia';
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 const userStore = useDataSource();
 const { userData } = storeToRefs(userStore)
@@ -130,29 +130,7 @@ const changePassword = async() => {
 
 const deviceId = ref();
 
-const checkSession = async() => {
-    try{
-        const response = await UserService.checkSession();  
-        deviceId.value = response.data.deviceId
-        console.log(deviceId.value);
-    }catch(e){
-        console.log(e)
-        showMessage("error", "Не получилось получить сессию")
-        try{
-            await UserService.checkAuth();
-        }
-        catch{
-            try{
-                await UserService.refreshIfCheckAuth()
-            }
-            catch{
-                await authorizationService.logoutUser();
-            }
-        }
-    }
-}
 const deleteSession = async(id) => {
-    checkSession();
     try{
         if(deviceId.value === id) {
             await UserService.deleteSession(id);
@@ -169,10 +147,6 @@ const deleteSession = async(id) => {
         showMessage("error", "Ошибка! Не удалось завершить сессию")
     }
 }
-
-onMounted(() => {
-    checkSession();
-})
 const notifications = ref(null);
 
 const showMessage = (type, message) => {

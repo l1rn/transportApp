@@ -54,7 +54,8 @@ public class DeviceRepositoryTest {
     @Test
     void testFindAllDevicesByUser(){
         user.setDevices(List.of(device1, device2));
-        List<Device> findDevices = deviceRepository.findByUser(user);
+        List<Device> findDevices = deviceRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Не удалось найти устройства данного пользователя!"));
         assertIterableEquals(user.getDevices(), findDevices);
     }
 

@@ -62,12 +62,6 @@ const chooseNav = (type) => {
 
 </script>
 
-<script>
-
-export default {
-    name: "AdminPanel"
-}
-</script>
 <style scoped lang="sass">
 @import "@/assets/styles/adminObjects/admin-panel";
 </style>

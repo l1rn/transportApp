@@ -1,7 +1,20 @@
+<template>
+  <div class="d-flex flex-column align-items-center">
+    <BookingContainer
+      v-for="booking in bookings"
+      :key="booking.id"
+      class="mb-3"
+      :booking="booking"
+      :is-canceling="cancelingIds.has(booking.id)"
+      @cancel-booking-event="cancelBooking"
+    />
+  </div>
+</template> 
+
 <script setup>
 import { ref, onMounted } from 'vue';
 import BookingContainer from './BookingContainer.vue';
-import BookingService from '@/services/bookingService';
+import BookingService, { bookingService } from '@/services/bookingService';
 
 const bookings = ref([]);
 const isLoading = ref(false);
@@ -10,7 +23,7 @@ const cancelingIds = ref(new Set());
 const getBookings = async () => {
   isLoading.value = true;
   try {
-    const response = await BookingService.getMyBooking();
+    const response = await bookingService.getMyBooking();
     bookings.value = response.data;
   } catch (error) {
     console.error(error);
@@ -42,18 +55,6 @@ onMounted(() => {
   }, 500) 
 })
 </script>
-<template>
-  <div class="d-flex flex-column align-items-center">
-    <BookingContainer
-      v-for="booking in bookings"
-      :key="booking.id"
-      class="mb-3"
-      :booking="booking"
-      :is-canceling="cancelingIds.has(booking.id)"
-      @cancel-booking-event="cancelBooking"
-    />
-  </div>
-</template>
 
 <style scoped lang="sass">
 </style>

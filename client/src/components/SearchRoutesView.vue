@@ -1,7 +1,7 @@
 <template>
   <div class="all-items">
     <div class="header">
-      <BackbuttonToHome />
+      <BackButtonView />
       <h1>Поиск всех маршрутов</h1>
     </div>
     <div class="search-container">
@@ -217,7 +217,7 @@
   </div>
 </template>
 <script setup>
-import BackbuttonToHome from './UI/BackButtonView.vue';
+import BackButtonView from './atom/BackButtonView.vue';
 import { routesService } from '@/services/routeService';
 import { onBeforeMount, onMounted, reactive, ref, computed, nextTick, watch } from 'vue';
 

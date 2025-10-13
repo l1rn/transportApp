@@ -7,7 +7,7 @@ export const useDataSource = defineStore('userData', () => {
 
     async function getUserData() {
         try{
-            const response = await userService.getUserInfo();
+            
             userData.value = response.data;
             console.log(userData.value)
         }

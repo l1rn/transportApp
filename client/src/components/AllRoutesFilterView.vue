@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <BackbuttonToHome />
+      <BackButtonView />
     </div>
     <div>
       <AllRoutesContainer />
@@ -10,7 +10,7 @@
 </template>
 <script setup>
 import AllRoutesContainer from './UI/routecomponents/AllRoutesView.vue';
-import BackbuttonToHome from './UI/BackButtonView.vue';
+import BackButtonView from './atom/BackButtonView.vue';
 </script>
 <style scoped lang="sass">
 @import "@/assets/styles/routeObjects/route-filter-page"

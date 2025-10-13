@@ -99,7 +99,8 @@ npm run serve
 
 # Быстрый старт
 
-## Установка через Docker🐳
+## Установка через Docker🐳 (WIP)
+# !!! ❌ DOCKER COMPOSE DIDN'T WORK TILL WIP ❌ !!!
 - Клонируйте репозеторий:
 ```
 git clone https://github.com/ваш-логин/transport-marketplace.git

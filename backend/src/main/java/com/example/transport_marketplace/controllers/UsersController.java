@@ -44,24 +44,6 @@ public class UsersController {
     }
 
     @Operation(
-            summary = "Получение роли текущего пользователя",
-            description = "Возвращает роль аутентифицированного пользователя (например, ROLE_USER или ROLE_ADMIN)."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Роль пользователя",
-            content = @Content(mediaType = "application/json",
-            schema = @Schema(implementation = CurrentRoleResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован")
-    })
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/me/role")
-    public ResponseEntity<CurrentRoleResponse> getCurrentUserRole() {
-        User currentUser = userService.getCurrentUser();
-        CurrentRoleResponse response = new CurrentRoleResponse(currentUser.getRole().name());
-        return ResponseEntity.ok(response);
-    }
-
-    @Operation(
             summary = "Назначение роли администратора",
             description = "Делает пользователя администратором. Доступно только текущим администраторам."
     )

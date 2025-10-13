@@ -67,11 +67,11 @@
 import Notifications from './UI/NotificationsView.vue';
 import github from '@/assets/github-mark.svg';
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
-import SearchContainerView from './molecule/SearchContainerView.vue';
+import SearchContainerView from './molecule/home/SearchContainerView.vue';
 import RouteContainer from './UI/routecomponents/RouteContainerView.vue';
 import SignInView from './molecule/auth/SignInView.vue';
 import SignUpView from './molecule/auth/SignUpView.vue';
-import ProfileButtonView from './molecule/ProfileButtonView.vue';
+import ProfileButtonView from './atom/ProfileButtonView.vue';
 import { useAuthForms } from '@/composable/useAuthForms';
 
 const isSticky = ref<boolean>(false);
