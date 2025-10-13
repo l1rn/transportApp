@@ -1,4 +1,4 @@
-import { UserData } from "@/types/userdata";
+import { UserData } from "@/types/userData";
 import { AxiosResponse } from "axios";
 import { api } from "./api";
 import { useLoginStore } from "@/stores/authStore";

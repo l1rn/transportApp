@@ -38,7 +38,7 @@ import { useConditionalClickOutside } from '@/composable/useConditionalClickOuts
 import router from '@/routers/router';
 import { authorizationService } from '@/services/authorizationService';
 import { useLoginStore } from '@/stores/authStore';
-import { useModalStore } from '@/stores/modalStore';
+import { useModalStore } from '@/stores/useModalStore';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref } from 'vue';
 

@@ -55,7 +55,7 @@ import AdminPanelView from "@/components/admin/AdminPanelView.vue";
 import BookingCard from "@/components/bookings/BookingCard.vue";
 import { userService } from "@/services/userService";
 import { AxiosResponse } from "axios";
-import { UserInfo } from "@/types/userdata";
+import { UserInfo } from "@/types/userData";
 
 const username = ref<string>("");
 const userInfo = ref<UserInfo | null>(null);

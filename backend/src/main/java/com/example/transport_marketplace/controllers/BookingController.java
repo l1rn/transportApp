@@ -100,13 +100,12 @@ public class BookingController {
         User user = userService.getByUsername(username);
         try {
             Booking newBooking = bookingService.createBooking(request.getRouteId(), user.getId());
-            return ResponseEntity.status(HttpStatus.CREATED).body(newBooking);
-        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("The booking was created");
+        }
+        catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
-
 
     @Operation(
             summary = "Отмена бронирования администратором",

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,8 @@ public class Booking implements Serializable {
     private User user;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Payment> payments;
+    @Builder.Default
+    private List<Payment> payments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;

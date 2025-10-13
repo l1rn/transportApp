@@ -64,7 +64,7 @@
 import { useAuthForms } from "@/composable/useAuthForms";
 import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
 import { authorizationService } from "@/services/authorizationService";
-import { useModalStore } from "@/stores/modalStore";
+import { useModalStore } from "@/stores/useModalStore";
 import { ref, watch } from 'vue';
 const user = ref({
   username: '',
@@ -123,5 +123,5 @@ useConditionalClickOutside(
 </script>
 
 <style scoped lang="sass">
-@import '@/assets/styles/auth/sign-form.sass'
+@import '@/assets/styles/molecule/auth/sign-form.sass'
 </style>

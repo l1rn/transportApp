@@ -76,6 +76,7 @@ const searchRoutesByFilter = async() => {
     const routeFilter = transportTransform(filter.value)
     const response = await routesService.searchRoutes(routeFilter);
     routeStore.setRouteData(response.data);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   catch(error){
     console.error(error);

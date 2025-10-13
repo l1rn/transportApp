@@ -2,15 +2,7 @@ import axios from "axios";
 import { scheduleTokenRefresh } from "./api";
 
 class BookingService {
-  addBooking(routeId) {
-    const bookingData = {
-      routeId: routeId,
-    };
-    return axios.post(
-      `${process.env.VUE_APP_BACKEND_APP_API}/profile/bookings`,
-      bookingData
-    );
-  }
+  
   checkRefreshToken() {
     scheduleTokenRefresh();
     localStorage.setItem('logined', 'true')

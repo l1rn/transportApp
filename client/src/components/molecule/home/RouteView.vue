@@ -72,7 +72,7 @@
       <button
         :disabled="route.availableSeats <= 0"
         class="book-button"
-        @click="bookingRoute(route.id, $event)"
+        @click="bookTheRoute(route.id)"
       >
         Забронировать сейчас
       </button>
@@ -85,6 +85,9 @@ import Notifications from '@/components/UI/NotificationsView.vue';
 import { useRouteStore } from '@/stores/useRouteStore';
 import { PaginatedRoute } from '@/types/route';
 import { storeToRefs } from 'pinia';
+import { bookingService } from '@/services/bookingService';
+import { useModalStore } from '@/stores/useModalStore';
+import { AxiosError } from 'axios';
 
 const checkRoutesEmoji = (transport: string) =>{
   switch(transport){
@@ -92,6 +95,22 @@ const checkRoutesEmoji = (transport: string) =>{
     case 'Авиа': return '✈️'
     case 'Автобус': return '🚌'
     default: return ''
+  }
+}
+
+const modalStore = useModalStore();
+
+const bookTheRoute = async (routeId: number) => {
+  try{
+    const response = await bookingService.createBooking(routeId);
+    
+    console.log("status:", response.status);
+  }
+  catch(error){
+    const axiosError = error as AxiosError;
+    if(axiosError.status === 401 || axiosError.status === 403) {
+      modalStore.open('login');
+    }
   }
 }
 

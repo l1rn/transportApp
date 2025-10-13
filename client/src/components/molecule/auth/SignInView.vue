@@ -50,8 +50,8 @@
 </template>
 
 <script setup lang="ts">
-import { useModalStore } from "@/stores/modalStore";
-import { UserData } from "@/types/userdata";
+import { useModalStore } from "@/stores/useModalStore";
+import { UserData } from "@/types/userData";
 import { ref } from 'vue';
 import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
 import { useAuthForms } from "@/composable/useAuthForms";
@@ -92,5 +92,5 @@ useConditionalClickOutside(
 </script>
 
 <style scoped lang="sass">
-@import '@/assets/styles/auth/sign-form.sass'
+@import '@/assets/styles/molecule/auth/sign-form.sass'
 </style>

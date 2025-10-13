@@ -1,4 +1,4 @@
-import { useModalStore } from "@/stores/modalStore"
+import { useModalStore } from "@/stores/useModalStore"
 import { computed } from "vue";
 
 export const useAuthForms = () => {

@@ -53,6 +53,11 @@
   <div class="content-container">
     <div class="custom-container">
       <RouteView />
+      <!-- todo -->
+      <!-- <div class="button-container">
+        <button>Назад</button>
+        <button>Вперед</button>
+      </div> -->
     </div>
     <div class="footer">
       <div>l1rn</div>
@@ -68,7 +73,7 @@ import Notifications from './UI/NotificationsView.vue';
 import github from '@/assets/github-mark.svg';
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import SearchContainerView from './molecule/home/SearchContainerView.vue';
-import RouteView from './molecule/RouteView.vue';
+import RouteView from './molecule/home/RouteView.vue';
 import SignInView from './molecule/auth/SignInView.vue';
 import SignUpView from './molecule/auth/SignUpView.vue';
 import ProfileButtonView from './atom/ProfileButtonView.vue';
@@ -103,7 +108,6 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
 });
-
 </script>
 <style scoped lang="sass">
 @import '@/assets/styles/home.sass'
