@@ -57,6 +57,7 @@ import { useConditionalClickOutside } from "@/composable/useConditionalClickOuts
 import { useAuthForms } from "@/composable/useAuthForms";
 import { authorizationService } from "@/services/authorizationService";
 import { useLoginStore } from "@/stores/authStore";
+import notification from "@/plugins/notifications";
 
 const modalStore = useModalStore();
 const loginStore = useLoginStore();
@@ -77,10 +78,12 @@ const signIn = async () => {
     if(response.status === 200){
       loginStore.auth();
       modalStore.close('login');
+      notification.success('Успешно: Вход выполнен!');
     }
   }
   catch (error: any) {
     console.log(error.message);
+    notification.error('Ошибка: возможно вы ввели данные неправильно!');
   }
 }
 const containerRef = ref<HTMLElement | null>(null);

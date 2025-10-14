@@ -190,7 +190,7 @@ public class AuthController {
             @RequestBody ChangePasswordRequest changePasswordRequest){
         try {
             String username = userDetails.getUsername();
-            return ResponseEntity.ok(authenticationService.changePasswordByUsername(username, changePasswordRequest));
+            return ResponseEntity.ok("Password was successfully changed");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }

@@ -7,7 +7,6 @@
   </div>
 
   <!-- header  -->
-  <Notifications ref="notifications" />
   <div class="header-container-custom">
     <div class="main-header">
       <div class="navbar-custom-header">
@@ -69,8 +68,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import Notifications from './UI/NotificationsView.vue';
-import github from '@/assets/github-mark.svg';
+import github from '@/assets/icons/github-mark.svg';
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import SearchContainerView from './molecule/home/SearchContainerView.vue';
 import RouteView from './molecule/home/RouteView.vue';
@@ -95,8 +93,6 @@ const handleScroll = () => {
     }
   }
 };
-
-const notifications = ref(null);
 
 onMounted(async () => {
   window.addEventListener('scroll', handleScroll);

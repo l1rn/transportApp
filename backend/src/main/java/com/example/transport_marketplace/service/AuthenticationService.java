@@ -133,7 +133,7 @@ public class AuthenticationService {
         return new JwtAuthenticationResponse(newAccessToken, newRefreshToken);
     }
 
-    public User changePasswordByUsername(String username, ChangePasswordRequest request){
+    public void changePasswordByUsername(String username, ChangePasswordRequest request){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + username));
 
@@ -145,7 +145,6 @@ public class AuthenticationService {
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
-        return userRepository.save(user);
     }
 
     public UserDeviceNowResponse checkSession(String username, HttpServletRequest request){

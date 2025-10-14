@@ -1,19 +1,4 @@
-
-$secondary-color: #6c757d
-$hover-bg: rgba(0,123,255,0.05)
-$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
-$primary-color: #007bff
-$secondary: #f59e0b
-$border-radius: 0.75rem
-$primary: #2563eb
-$transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
-$accent: #447cdc
-$input-bg: #f8fafc
-$input-border: #94a3b8
-$placeholder-color: #64748b
-$border-color: #94a3b8
-$bg-color: #f8fafc
-$transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
+@import "../../styles/static/color.d.scss";
 
 *
   font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
@@ -80,8 +65,8 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
   padding: 0.5rem 1.25rem
   font-size: 1rem
   border-radius: $border-radius
-  background-color: $input-bg
-  border: 2px solid $input-border
+  background: $white
+  border: 2px solid $light-gray
   outline: none
   font-weight: 600
   color: #1e293b
@@ -191,7 +176,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
     position: relative
     
     thead
-        background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 8%) 100%)
+        background: linear-gradient(135deg, $primary-blue 0%, darken($primary-blue, 8%) 100%)
         color: white
         font-weight: 600
         text-transform: uppercase
@@ -219,7 +204,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
                 background: #f8f9fa
             
             &:hover
-                background: $hover-bg
+                background: $hover-white
                 transform: scale(1.005)
                 box-shadow: 0 4px 12px rgba(0,0,0,0.08)
             
@@ -231,7 +216,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
                 
                 &:first-child
                     font-weight: 600
-                    color: $primary-color
+                    color: $primary-blue
 
 .time-cell
     position: relative
@@ -249,7 +234,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
         background: rgba(0,0,0,0.05)
         border-radius: 6px
         font-size: 0.75em
-        color: $secondary-color
+        color: $secondary
         margin-left: 8px
         transform: translateY(-2px)
 .pagination
@@ -261,7 +246,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
     
     .page-button
         padding: 0.8rem 2rem
-        background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 5%) 100%)
+        background: linear-gradient(135deg, $primary-blue 0%, darken($primary-blue, 5%) 100%)
         color: white
         border: none
         border-radius: 12px
@@ -281,7 +266,7 @@ $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
     
     &-info
         font-size: 0.9em
-        color: $secondary-color
+        color: $secondary
         font-weight: 500
 
 @media (max-width: 1200px)

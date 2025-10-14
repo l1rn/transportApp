@@ -16,3 +16,8 @@ export interface UserInfo {
     role: string;
     devices: Array<Device>;
 }
+
+export interface ChangePasswordRequest {
+    oldPassword: string;
+    newPassword: string;
+}

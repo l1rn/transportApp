@@ -1,5 +1,4 @@
 <template>
-  <Notifications ref="notifications" />  
   <div class="routes-container">
     <div class="header">
       <h1>Все маршруты</h1>
@@ -83,7 +82,6 @@
   </div>
 </template>
 <script setup>
-import Notifications from '@/components/UI/NotificationsView.vue'
 import AdminService from '@/services/adminService';
 import { routesService } from '@/services/routeService';
 import { ref, computed, onMounted } from 'vue';

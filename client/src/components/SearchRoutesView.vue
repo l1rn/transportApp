@@ -365,7 +365,7 @@ watch(currentPage, (newVal) => {
 const paginatedRoutes = async () => {
   try {
     isLoading.value = true;
-    const response = await RoutesService.searchRoutes(
+    const response = await routesService.searchRoutes(
       inputRouteFrom.value,
       inputRouteTo.value,
       selectedDate.value,

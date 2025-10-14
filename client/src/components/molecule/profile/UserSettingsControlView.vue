@@ -1,5 +1,4 @@
 <template>
-  <Notifications ref="notifications" />
   <div class="main-container">
     <div class="info-container">
       <form
@@ -92,7 +91,6 @@
   </div>
 </template>
 <script setup>
-import Notifications from '@/components/UI/NotificationsView.vue'
 import { authorizationService } from '@/services/authorizationService';
 import UserService from '@/services/userService';
 import { ref, computed } from 'vue';
@@ -114,12 +112,10 @@ const changePassword = async() => {
         await UserService.changeUserPassword(passwordRequest.value);
         passwordRequest.value = ''
         confirmPassword.value = ''
-        showMessage("success", "Пароль успешно изменен")
     } catch(e){
         console.log(e)
         passwordRequest.value = ''
         confirmPassword.value = ''
-        showMessage("error", "Ошибка! Вы не смогли сменить пароль")
     }
 }
 
@@ -130,23 +126,15 @@ const deleteSession = async(id) => {
         if(deviceId.value === id) {
             await UserService.deleteSession(id);
             await authorizationService.logoutUser();
-            showMessage("success", "Сессия успешна удалена!")
         }
         else {
             await UserService.deleteSession(id);
-            showMessage("success", "Сессия успешна удалена!")
         }
     }
     catch(e){
         console.log(e)
-        showMessage("error", "Ошибка! Не удалось завершить сессию")
     }
 }
-const notifications = ref(null);
-
-const showMessage = (type, message) => {
-  notifications.value.showNotification(type.split(':')[0], message);
-};
 </script>
 <style scoped lang="sass">
 @import '@/assets/styles/usersObjects/userSetting.sass'

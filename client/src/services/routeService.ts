@@ -26,7 +26,7 @@ class RouteService {
     }
 
     public getRoutes(): Promise<AxiosResponse> {
-        return api.get(`${process.env.VUE_APP_BACKEND_APP_API}/routes`);
+        return api.get(`/routes`);
     }
 }
 

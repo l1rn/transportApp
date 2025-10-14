@@ -1,5 +1,4 @@
 <template>
-  <Notifications ref="notifications" />
   <div class="space"></div>
   <div
     v-for="route in searchResults?.content"
@@ -81,7 +80,6 @@
 </template>
 <script setup lang="ts">
 import { Ref, ref, watch} from 'vue'
-import Notifications from '@/components/UI/NotificationsView.vue';
 import { useRouteStore } from '@/stores/useRouteStore';
 import { PaginatedRoute } from '@/types/route';
 import { storeToRefs } from 'pinia';

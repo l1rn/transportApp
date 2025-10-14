@@ -2,7 +2,7 @@ import axios from "axios";
 
 class suggestionService {
     async findAllCities(q: string) {
-        return await axios.get(`${process.env.VUE_APP_BACKEND_APP_API}/suggestions/cities?q=${q}`)
+        return await axios.get(`/suggestions/cities?q=${q}`)
     }
 }
 

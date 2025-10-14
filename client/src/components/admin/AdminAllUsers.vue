@@ -1,5 +1,4 @@
 <template>
-  <Notifications ref="notifications" />
   <div>
     <div
       v-if="loading"
@@ -56,7 +55,6 @@
 <script setup>
 import AdminService from '@/services/adminService';
 import { onMounted, ref,computed } from 'vue';
-import Notifications from '@/components/UI/NotificationsView.vue'
 const users = ref([]); 
 const loading = ref(false);
 const allUsers = async() =>{
