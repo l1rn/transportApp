@@ -70,6 +70,10 @@ const user = ref<UserData>({
 const { switchForms } = useAuthForms();
 
 const signIn = async () => {
+  if (!user.value.username || !user.value.password){
+    notification.error("Заполните все поля!");
+    return;
+  }
   try {
     const response = await authorizationService.signInUser(user.value);
 

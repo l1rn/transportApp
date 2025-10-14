@@ -62,9 +62,9 @@ public class AuthController {
             examples = @ExampleObject(value = "\"Имя уже используется\"")))
     })
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) {
+    public ResponseEntity<String> signUp(@RequestBody @Valid SignUpRequest request) {
         authenticationService.signUp(request);
-        return ResponseEntity.ok("Registered");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Success registration");
     }
 
     @Operation(

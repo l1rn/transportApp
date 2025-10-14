@@ -50,7 +50,7 @@ public class AuthenticationService {
     public void signUp(SignUpRequest request){
 
         if(userRepository.existsByUsername(request.getUsername())){
-            throw new RuntimeException("Такой пользователь уже есть");
+            throw new RuntimeException("Used");
         }
 
         User user = new User();

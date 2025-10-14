@@ -29,7 +29,7 @@ const notifications = inject<Ref<Notification[]>>('notifications')!;
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 2000;
+  z-index: 10000;
   max-width: 300px;
 }
 

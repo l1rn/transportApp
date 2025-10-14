@@ -73,7 +73,7 @@
         class="book-button"
         @click="bookTheRoute(route.id)"
       >
-        Забронировать сейчас
+        Добавить в корзину
       </button>
     </div>
   </div>
@@ -85,7 +85,8 @@ import { PaginatedRoute } from '@/types/route';
 import { storeToRefs } from 'pinia';
 import { bookingService } from '@/services/bookingService';
 import { useModalStore } from '@/stores/useModalStore';
-import { AxiosError } from 'axios';
+import { AxiosError, HttpStatusCode } from 'axios';
+import notification from '@/plugins/notifications';
 
 const checkRoutesEmoji = (transport: string) =>{
   switch(transport){
@@ -101,13 +102,16 @@ const modalStore = useModalStore();
 const bookTheRoute = async (routeId: number) => {
   try{
     const response = await bookingService.createBooking(routeId);
-    
+    if (response.status === HttpStatusCode.Created){
+      notification.success("Ваш маршрут у вас в профиле!");
+    }
     console.log("status:", response.status);
   }
   catch(error){
     const axiosError = error as AxiosError;
     if(axiosError.status === 401 || axiosError.status === 403) {
       modalStore.open('login');
+      notification.error("Зарегистрируйтесь!")
     }
   }
 }

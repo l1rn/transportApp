@@ -63,8 +63,10 @@
 <script setup lang="ts">
 import { useAuthForms } from "@/composable/useAuthForms";
 import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
+import notification from "@/plugins/notifications";
 import { authorizationService } from "@/services/authorizationService";
 import { useModalStore } from "@/stores/useModalStore";
+import { AxiosError } from "axios";
 import { ref, watch } from 'vue';
 const user = ref({
   username: '',
@@ -91,7 +93,12 @@ watch(
 })
 
 const signUp = async () => {
+  if (!user.value.username || !user.value.password || !user.value.confirmPassword) {
+    notification.error("Заполните все поля!");
+    return;
+  }
   if (passwordError.value) return;
+  
   try {
     isLoading.value = true;
 
@@ -99,15 +106,27 @@ const signUp = async () => {
       username: user.value.username,
       password: user.value.password
     };
+    
     const response = await authorizationService.signupUser(userData);
-    console.log(response);
 
     user.value.username = '';
     user.value.password = '';
     user.value.confirmPassword = '';
+    
+    if(response.status === 201){
+      notification.success("Вы успешно");
+    }
   }
-  catch (error: any) {
-    console.log(error.message);
+  catch (error) {
+    const axiosError = error as AxiosError;
+    console.log("Error: failed to create an account: ", axiosError.status);
+    
+    if(axiosError.response?.data === 'Used'){
+      notification.error("Пользователь с таким именем уже существует!");
+      return;
+    }
+    
+    notification.error("Не удалось создать аккаунт");
   }
   finally {
     isLoading.value = false;
