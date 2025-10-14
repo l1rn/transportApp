@@ -14,9 +14,8 @@ const notifications = ref<Notification[]>([]);
 let isMounted = false;
 
 const createNotificationApp = () => {
-    const app = createApp(NotificationsSystemView, {
-        notifications
-    });
+    const app = createApp(NotificationsSystemView);
+    app.provide('notifications', notifications);
 
     const container = document.createElement('div');
     document.body.appendChild(container);
@@ -38,7 +37,7 @@ const showNotification = (
 
     const id = Date.now();
     notifications.value.push({ id, type, message});
-    
+    console.log("notification created");
     setTimeout(() => {
         notifications.value = notifications.value.filter(n => n.id !== id);
     }, duration);

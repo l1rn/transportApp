@@ -5,7 +5,7 @@
     class="notifications-wrapper"
   >
     <div
-      v-for="(notification, index) in props.notifications"
+      v-for="(notification, index) in notifications"
       :key="index"
       :class="['notification', notification.type]"
     >
@@ -16,18 +16,16 @@
 
 <script setup lang="ts">
 import type { Notification } from '@/plugins/notifications';
+import { inject, Ref } from 'vue';
 
-interface Props {
-  notifications: Notification[];
-}
-
-const props = defineProps<Props>();
+const notifications = inject<Ref<Notification[]>>('notifications')!;
 </script>
 <style scoped>
 * {
   font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 .notifications-wrapper {
+  z-index: 100;
   position: fixed;
   top: 20px;
   right: 20px;
