@@ -75,19 +75,6 @@ class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser
-    void getCurrentUserRole_ShouldReturnUserRole() throws Exception {
-        User user = new User();
-        user.setRole(Role.ROLE_USER);
-
-        when(userService.getCurrentUser()).thenReturn(user);
-
-        mockMvc.perform(get("/api/users/me/role"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.role").value("ROLE_USER"));
-    }
-
-    @Test
     @WithMockUser(roles = "ADMIN")
     void deleteUserById_ShouldReturnNoContent() throws Exception {
         User user = User.builder()

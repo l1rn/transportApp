@@ -219,15 +219,14 @@ class AuthenticationServiceTest {
         request.setNewPassword("111");
 
         String oldPassword = request.getOldPassword();
-        String newPassword = request.getNewPassword();
 
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(oldPassword, user.getPassword())).thenReturn(true);
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Optional<User> findUser = userRepository.findByUsername(user.getUsername());
-        User updateUser = authenticationService.changePasswordByUsername(findUser.get().getUsername(), request);
-        log.info(updateUser.getPassword());
+        authenticationService.changePasswordByUsername(findUser.get().getUsername(), request);
+        log.info(findUser.get().getPassword());
         log.info(findUser.get().getUsername());
 
 //        boolean checkPasswords = passwordEncoder.matches(oldPassword, user.getPassword());
