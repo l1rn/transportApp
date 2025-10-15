@@ -106,5 +106,5 @@ onBeforeUnmount(() => {
 });
 </script>
 <style scoped lang="sass">
-@import '@/assets/styles/home.sass'
+@import '@/assets/styles/home/home.sass'
 </style>

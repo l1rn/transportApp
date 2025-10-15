@@ -1,6 +1,7 @@
 package com.example.transport_marketplace.controllers;
 
 import com.example.transport_marketplace.dto.booking.BookingRequest;
+import com.example.transport_marketplace.dto.booking.BookingsResponse;
 import com.example.transport_marketplace.dto.booking.CancelBookingRequest;
 import com.example.transport_marketplace.exceptions.booking.AccessDeniedException;
 import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
@@ -55,7 +56,7 @@ public class BookingController {
     public ResponseEntity<?> getMyBooking(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
         try {
-            List<Booking> bookings = bookingService.getBookingByUser(username);
+            List<BookingsResponse> bookings = bookingService.getBookingByUser(username);
             return ResponseEntity.ok(bookings);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

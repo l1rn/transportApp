@@ -36,7 +36,7 @@
 
     <div class="tab-content">
       <div v-if="nav.chooseOrders">
-        <BookingCard />
+        <BookingsWrapperView />
       </div>
       <div v-if="nav.chooseSettings">
         <UserSettingsControlView />
@@ -52,7 +52,7 @@ import UserSettingsControlView from "../molecule/profile/UserSettingsControlView
 import BackButtonView from "@/components/atom/BackButtonView.vue";
 import { onMounted, onUnmounted, ref, watch  } from "vue";
 import AdminPanelView from "@/components/admin/AdminPanelView.vue";
-import BookingCard from "@/components/bookings/BookingCard.vue";
+import BookingsWrapperView from "@/components/molecule/profile/BookingsWrapperView.vue";
 import { userService } from "@/services/userService";
 import { AxiosResponse } from "axios";
 import { UserInfo } from "@/types/userData";
@@ -94,5 +94,4 @@ watch(userInfo, (newValue) => {
 })
 </script>
 <style scoped lang="sass">
-@import '@/assets/styles/profilepage.sass'
 </style>

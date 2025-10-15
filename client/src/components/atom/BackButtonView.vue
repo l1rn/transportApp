@@ -11,32 +11,21 @@
   </div>
 </template>
 <style lang="scss">
-*{
-  font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+@import "../../assets/styles/static/mixin.d.scss";
 
-}
 .button-container{
-    display: flex;
-    justify-content: center;
-    align-self: flex-start;
-    margin: 1rem 0.5rem;
     .button-back-header{
+    @include button-clear($back: $primary-blue, $color: $white);
     padding: 0.8rem 3rem;
-    background: #007bff;
-    color: white;
-    border: none;
+    font-size: 16px;
     border-radius: 0.5rem;
-    cursor: pointer;
     transition: all 0.3s ease;
-    margin-bottom: 2rem;
-    font-weight: 500;
+    font-weight: 600;
     &:hover{
         transform: translateY(-2px);
         box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        background: darken(#007bff, 5%);
+        background: darken($primary-blue, 5%);
     }         
+  }
 }
-}
-
-
 </style>

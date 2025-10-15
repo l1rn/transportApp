@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.service;
 
+import com.example.transport_marketplace.dto.booking.BookingsResponse;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.model.Account;
 import com.example.transport_marketplace.model.Booking;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,10 +43,22 @@ public class BookingService {
         return bookingRepository.findByUserId(userId);
     }
 
-    public List<Booking> getBookingByUser(String username){
+    public List<BookingsResponse> getBookingByUser(String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
-        return bookingRepository.findByUser(user);
+        List<Booking> bookings = bookingRepository.findByUser(user);
+
+        return bookings.stream()
+                .map(booking -> BookingsResponse.builder()
+                        .id(booking.getId())
+                        .userId(booking.getUser().getId())
+                        .route(booking.getRoute())
+                        .payments(booking.getPayments())
+                        .status(booking.getStatus())
+                        .successfulPayment(booking.getSuccessfulPayment().orElse(null))
+                        .build()
+                )
+                .toList();
     }
 
     public List<Booking> getAllBookings() {
