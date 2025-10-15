@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.service;
 
+import com.example.transport_marketplace.dto.booking.BookingsResponse;
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.model.Booking;
@@ -71,7 +72,7 @@ class BookingServiceTest {
         when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userCaller));
         when(bookingRepository.findByUser(userCaller)).thenReturn(List.of(booking));
 
-        List<Booking> result = bookingService.getBookingByUser("user1");
+        List<BookingsResponse> result = bookingService.getBookingByUser("user1");
         assertNotNull(result);
         verify(userRepository, times(1)).findByUsername("user1");
         verify(bookingRepository, times(1)).findByUser(userCaller);

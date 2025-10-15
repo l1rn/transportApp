@@ -7,7 +7,6 @@ import com.example.transport_marketplace.exceptions.booking.AccessDeniedExceptio
 import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.User;
-import com.example.transport_marketplace.repo.UserRepository;
 import com.example.transport_marketplace.service.BookingService;
 import com.example.transport_marketplace.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;

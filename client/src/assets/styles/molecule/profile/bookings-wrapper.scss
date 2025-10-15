@@ -1,0 +1,51 @@
+@import "../../static/color.d.scss";
+@import "../../static/mixin.d.scss";
+
+.booking-wrapper{
+    @include display-center();
+    flex-direction: column;
+    gap: 1.25rem;
+    .booking-container{
+        background: $white;
+        width: 70%;
+        border-radius: 16px;
+        max-width: 1000px;
+        padding: 1.25rem 2rem;
+        box-shadow: 0 0 8px rgba($color: #000000, $alpha: 0.25);
+        .header-container{
+            display: flex;
+            justify-content: space-between;
+            .first-section{
+
+            }   
+            .second-section{
+
+            }
+        }
+        .place-container{
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            font-size: 20px;
+            cursor: default;
+            .route{
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+        }
+        .time-container{
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            text-transform: uppercase;
+            .text{
+                color: #797c82;
+                letter-spacing: 0.05rem;
+            }
+        }
+        .date-container{
+            
+        }
+    }
+}
