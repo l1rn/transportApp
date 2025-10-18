@@ -39,17 +39,22 @@
             </div>
           </span>
         </div>
-        <div class="date-container">
-          {{ booking.route.date }}
-        </div>
-        <div class="price-container">
-          {{ booking.route.price }}
+        <div class="last-section">
+          <div class="date-container">
+            <div class="text">Дата</div>
+            {{ booking.route.date }}
+          </div>
+          <div class="price-container">
+            <div class="text">Цена</div>
+            {{ booking.route.price }}
+            Р.
+          </div>
         </div>
 
         <div class="button-container">
-          <button>1</button>
-          <button>1</button>
-          <button>1</button>
+          <button>Оплатить</button>
+          <button>Отменить</button>
+          <button>История</button>
         </div>
       </div>
     </template>

@@ -44,8 +44,25 @@
                 letter-spacing: 0.05rem;
             }
         }
-        .date-container{
-            
+        .last-section{
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            text-transform: uppercase;
+            .text{
+                color: #797c82;
+                letter-spacing: 0.05rem;
+            }
+            .date-container{
+                
+            }
+        }
+        .button-container{
+            display: flex;
+            gap: 0.25rem;
+            button{
+                width: 100%;
+            }
         }
     }
 }
