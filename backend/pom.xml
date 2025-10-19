@@ -49,6 +49,12 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>10.20.1</version>
+        </dependency>
+
 		<!-- data -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -203,6 +209,16 @@
 			</resource>
 		</resources>
 		<plugins>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>10.20.1</version>
+                <configuration>
+                    <user>postgres</user>
+                    <password>123</password>
+
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>

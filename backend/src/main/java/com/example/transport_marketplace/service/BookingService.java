@@ -81,7 +81,7 @@ public class BookingService {
         }
 
         User user = userRepository.findById(userId).orElseThrow(() ->new RuntimeException("Такого пользователя нет"));
-        route.setAvailableSeats(route.getAvailableSeats());
+        route.setAvailableSeats(route.getAvailableSeats() - 1);
         routeRepository.save(route);
 
         Booking booking = Booking.builder()
@@ -132,7 +132,9 @@ public class BookingService {
         if (booking.getStatus() == BookingStatus.CANCELED) {
             return false;
         }
+
         Route route = booking.getRoute();
+
         if (route != null) {
             route.setAvailableSeats(route.getAvailableSeats() + 1);
             routeRepository.save(route);
