@@ -84,7 +84,7 @@ public class AuthControllerTest {
         ResultActions signInResult = mockMvc.perform(post("/api/auth/sign-in")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().string("Authorized"));
 
         accessCookie = signInResult.andReturn().getResponse().getCookie("accessToken");

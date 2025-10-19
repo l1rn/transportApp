@@ -31,6 +31,9 @@ public class Payment implements Serializable {
 
     private String description;
 
+    private String confirmationCode;
+    private LocalDateTime codeExpiresAt;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

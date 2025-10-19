@@ -130,7 +130,7 @@
 <script setup>
 import { ref } from 'vue'
 import AdminService from '@/services/adminService'
-import { formatToDatabase } from '@/services/dateFormat/formatTime';
+import { formatToDatabase } from '@/utils/formatTime';
 
 const routeID = ref(1);
 const formData = ref({

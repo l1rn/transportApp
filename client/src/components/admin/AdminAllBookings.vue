@@ -63,7 +63,7 @@
 <script setup>
 import AdminService from '@/services/adminService';
 import { onMounted, ref } from 'vue';
-import { formatDate, formatTime, getDateSource } from '@/services/dateFormat/formatTime';
+import { formatDate, formatTime, getDateSource } from '@/utils/formatTime';
 const bookings = ref([]);
 
 const allBookings = async() =>{
