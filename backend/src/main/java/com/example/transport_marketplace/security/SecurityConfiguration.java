@@ -70,6 +70,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/routes/**").permitAll()
                         .requestMatchers("/api/suggestions/**").permitAll()
+                        .requestMatchers("/api/rabbitmq/**").permitAll()
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/bookings/**").authenticated()
                         .anyRequest().authenticated()

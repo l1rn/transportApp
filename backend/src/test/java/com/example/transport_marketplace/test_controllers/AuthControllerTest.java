@@ -84,7 +84,7 @@ public class AuthControllerTest {
         ResultActions signInResult = mockMvc.perform(post("/api/auth/sign-in")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(content().string("Authorized"));
 
         accessCookie = signInResult.andReturn().getResponse().getCookie("accessToken");
@@ -104,8 +104,8 @@ public class AuthControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Registered"));
+                .andExpect(status().isCreated())
+                .andExpect(content().string("Success registration"));
     }
 
 

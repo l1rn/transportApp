@@ -83,7 +83,7 @@ class AuthenticationServiceTest {
         when(userRepository.existsByUsername("existingUser")).thenReturn(true);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> authenticationService.signUp(request));
-        assertEquals("Такой пользователь уже есть", exception.getMessage());
+        assertEquals("Used", exception.getMessage());
         verify(userRepository, never()).save(any(User.class));
     }
 
