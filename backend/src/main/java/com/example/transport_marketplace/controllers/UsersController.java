@@ -90,6 +90,25 @@ public class UsersController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/set-email")
+    public ResponseEntity<?> setUserEmail(
+            HttpServletRequest request,
+            @RequestBody String email){
+        try{
+            Cookie[] cookies = request.getCookies();
+            String accessToken = Arrays.stream(cookies)
+                    .filter(c -> "accessToken".equals(c.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElseThrow(() -> new RuntimeException("Не удалось получить токен"));
+            userService.setUserEmail(accessToken, email);
+            return ResponseEntity.ok("Новый email успешно изменен");
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @PostMapping("/account/top-up")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> withdraw(

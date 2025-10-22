@@ -43,17 +43,12 @@ public class UserService {
     private final Map<String, String> confirmationCodes = new ConcurrentHashMap<>();
     private final Map<String, Double> pendingAmounts = new ConcurrentHashMap<>();
 
-    /// CRUD FOR USERS ///
-    @CachePut(value = "users", key = "#id")
-    public User save(User user){
-        return userRepository.save(user);
-    }
 
     public User create(User user){
         if(userRepository.existsByUsername(user.getUsername())){
             throw new RuntimeException("Имя пользователя занято!");
         }
-        return save(user);
+        return userRepository.save(user);
     }
 
     @CacheEvict(value = "users")
@@ -114,10 +109,18 @@ public class UserService {
 
     public void setAdmin(User user){
         user.setRole(Role.ROLE_ADMIN);
-        save(user);
+        userRepository.save(user);
     }
 
     /// ACCOUNT FUNCTIONS ///
+
+    public void setUserEmail(String accessToken, String newEmail){
+        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+                .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));
+
+        user.setEmail(newEmail);
+        userRepository.save(user);
+    }
 
     public String requestTopUp(String accessToken, double amount){
         User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))

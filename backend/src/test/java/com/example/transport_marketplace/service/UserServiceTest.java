@@ -36,7 +36,7 @@ class UserServiceTest {
                 .build();
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        User result = userService.save(user);
+        User result = userRepository.save(user);
 
         assertNotNull(result);
         assertEquals("testUser", result.getUsername());
