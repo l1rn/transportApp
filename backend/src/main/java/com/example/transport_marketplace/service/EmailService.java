@@ -1,10 +1,12 @@
 package com.example.transport_marketplace.service;
 
+import com.example.transport_marketplace.config.CodeGenerator;
 import com.example.transport_marketplace.events.PaymentSuccessEvent;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,24 @@ public class EmailService {
             log.info("Email отправлен через MailHog для бронирования: {}", event.getBookingId());
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public String sendConfirmationCode(String userEmail, String code, double amount){
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("noreply@ololotravel.com");
+            message.setTo(userEmail);
+            message.setSubject("Top up Confirmation Code");
+            message.setText("Your confirmation code is: " + code);
+            message.setText("Your amount is: " + amount);
+
+            mailSender.send(message);
+
+            return code;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Не удалось отправить email: " + e.getMessage());
         }
     }
 

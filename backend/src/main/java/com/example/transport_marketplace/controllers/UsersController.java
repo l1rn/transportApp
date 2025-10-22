@@ -1,6 +1,5 @@
 package com.example.transport_marketplace.controllers;
 
-import com.example.transport_marketplace.dto.auth.CurrentRoleResponse;
 import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.service.UserService;
@@ -10,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -88,4 +90,23 @@ public class UsersController {
         }
     }
 
+    @PostMapping("/account/top-up")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> withdraw(
+            HttpServletRequest request,
+            @RequestBody String amount
+    ){
+        try{
+            Cookie[] cookies = request.getCookies();
+            String accessToken = Arrays.stream(cookies)
+                    .filter(c -> "accessToken".equals(c.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElseThrow(() -> new RuntimeException("Нету куков"));
+            double amountD = Double.parseDouble(amount);
+            return ResponseEntity.ok(userService.requestTopUp(accessToken, amountD));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось пополнить");
+        }
+    }
 }

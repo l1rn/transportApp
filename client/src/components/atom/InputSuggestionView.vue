@@ -46,7 +46,7 @@
 </template>
 <script setup lang="ts">
 import { useTypeDetection } from '@/composable/useTypeDetection';
-import suggestionService from '@/services/suggestionService';
+import { routesService } from '@/services/routeService';
 import { defineProps, ref, watch } from 'vue';
 
 const { onTypeStart, onTypeEnd, cancelTypeDetection } = useTypeDetection();
@@ -92,7 +92,7 @@ const fetchSuggestions = async (q: string | null) => {
     isLoading.value = true;
     try {
         let response = null;
-        response = await suggestionService.findAllCities(q);
+        response = await routesService.findAllCities(q);
         apiResults.value = response?.data.data || [];
     }
     catch (error: any) {

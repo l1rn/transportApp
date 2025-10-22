@@ -1,10 +1,9 @@
 package com.example.transport_marketplace.service;
+import com.example.transport_marketplace.config.CodeGenerator;
 import com.example.transport_marketplace.dto.users.UserSettingsResponse;
 import com.example.transport_marketplace.enums.Role;
-import com.example.transport_marketplace.model.Booking;
-import com.example.transport_marketplace.model.Device;
-import com.example.transport_marketplace.model.Route;
-import com.example.transport_marketplace.model.User;
+import com.example.transport_marketplace.jwt.JwtService;
+import com.example.transport_marketplace.model.*;
 import com.example.transport_marketplace.repo.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -12,18 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     @Autowired
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     @Autowired
     private final BookingService bookingService;
     @Autowired
@@ -34,16 +35,31 @@ public class UserService {
     private final RouteRepository routeRepository;
     @Autowired
     private final DeviceRepository deviceRepository;
+    @Autowired
+    private final JwtService jwtService;
+    @Autowired
+    private final EmailService emailService;
 
+    private final Map<String, String> confirmationCodes = new ConcurrentHashMap<>();
+    private final Map<String, Double> pendingAmounts = new ConcurrentHashMap<>();
+
+    /// CRUD FOR USERS ///
     @CachePut(value = "users", key = "#id")
     public User save(User user){
-        return repository.save(user);
+        return userRepository.save(user);
+    }
+
+    public User create(User user){
+        if(userRepository.existsByUsername(user.getUsername())){
+            throw new RuntimeException("Имя пользователя занято!");
+        }
+        return save(user);
     }
 
     @CacheEvict(value = "users")
     @Transactional
     public void delete(int id){
-        User user = repository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь c ID " + id + " не найден"));
         refreshTokenRepository.deleteByUser(user);
         bookingRepository.deleteByUserId(id);
@@ -54,18 +70,20 @@ public class UserService {
             route.setAvailableSeats(route.getAvailableSeats() + 1);
             routeRepository.save(route);
         });
-        repository.delete(user);
+        userRepository.delete(user);
+    }
+    @Cacheable(value = "users", key = "#username")
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
-    public User create(User user){
-        if(repository.existsByUsername(user.getUsername())){
-            throw new RuntimeException("Имя пользователя занято!");
-        }
-        return save(user);
+    public UserDetailsService userDetailsService(){
+        return this::getByUsername;
     }
 
     public List<User> getAllUsers(){
-        return repository.findAll();
+        return userRepository.findAll();
     }
 
     @Transactional
@@ -75,45 +93,63 @@ public class UserService {
 
     @Cacheable(value = "users", key = "#id")
     public User getById(int id){
-        return repository.findById(id)
+        return userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь c ID" + id + " не найден"));
     }
 
-    @Cacheable(value = "users", key = "#username")
-    public User getByUsername(String username) {
-        return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-    }
-
-    public UserDetailsService userDetailsService(){
-        return this::getByUsername;
-    }
-
-    public User getCurrentUser(){
-        String username = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
-
-        return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-    }
-
     public UserSettingsResponse getSettingsByUsername(String username){
-        User user = repository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         List<Device> devices = deviceRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Не найдено ни одно устройсто для: " + username));
 
-        UserSettingsResponse response = UserSettingsResponse.builder()
+        return UserSettingsResponse.builder()
                 .username(username)
+                .email(user.getEmail())
                 .role(user.getRole())
+                .balance(user.getBalance())
                 .devices(devices)
                 .build();
-        return response;
     }
 
     public void setAdmin(User user){
         user.setRole(Role.ROLE_ADMIN);
         save(user);
+    }
+
+    /// ACCOUNT FUNCTIONS ///
+
+    public String requestTopUp(String accessToken, double amount){
+        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+                .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));
+
+        String code = CodeGenerator.generateCode();
+        confirmationCodes.put(user.getEmail(), code);
+        pendingAmounts.put(user.getEmail(), amount);
+
+        return "Код подтверждения отправлен на " + user.getEmail();
+    }
+
+    public double confirmTopUp(String accessToken, String code){
+        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+                .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));
+
+        String savedCode = confirmationCodes.get(user.getEmail());
+        Double amount = pendingAmounts.get(user.getEmail());
+
+        if(savedCode == null || amount == null){
+            throw new RuntimeException("Сначала запросите пополнение");
+        }
+
+        if(!savedCode.equals(code)){
+            throw new RuntimeException("Неверный код подтверждения!");
+        }
+
+        user.setBalance(user.getBalance() + amount);
+        userRepository.save(user);
+
+        confirmationCodes.remove(user.getEmail());
+        pendingAmounts.remove(user.getEmail());
+        return amount;
     }
 }

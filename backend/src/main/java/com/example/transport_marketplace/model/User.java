@@ -36,6 +36,9 @@ public class User implements UserDetails, Serializable {
     @Column(name = "email", nullable = true)
     private String email;
 
+    @Column(name = "balance")
+    private double balance;
+
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;

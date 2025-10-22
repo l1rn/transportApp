@@ -25,8 +25,12 @@ class RouteService {
         } as InternalAxiosRequestConfig);
     }
 
-    public getRoutes(): Promise<AxiosResponse> {
-        return api.get(`/routes`);
+    public async getRoutes(): Promise<AxiosResponse> {
+        return await api.get(`/routes`);
+    }
+
+    public async findAllCities(q: string): Promise<AxiosResponse> {
+        return await api.get(`/routes/s/cities?q=${q}`)
     }
 }
 

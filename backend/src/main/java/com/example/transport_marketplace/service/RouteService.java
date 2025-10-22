@@ -9,8 +9,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RouteService {
@@ -81,5 +84,21 @@ public class RouteService {
             return getRoutes();
         }
         return routeRepository.searchRoutes(routeFrom, routeTo, date, transport, minPrice, maxPrice);
+    }
+
+    public List<String> findCitiesByQuery(String query, int limit){
+        String lowerQuery = query.toLowerCase(Locale.ROOT);
+        return routeRepository.findAll()
+                .stream()
+                .map(Route::getRouteFrom)
+                .distinct()
+                .filter(c -> c.toLowerCase(Locale.ROOT).contains(lowerQuery))
+                .sorted(Comparator
+                        .comparing((String city) ->
+                                !city.toLowerCase(Locale.ROOT).startsWith(lowerQuery))
+                        .thenComparing(String::compareToIgnoreCase)
+                )
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 }

@@ -16,6 +16,8 @@ import java.util.List;
 public class UserSettingsResponse {
     private int id;
     private String username;
+    private String email;
     private Role role;
+    private double balance;
     private List<Device> devices;
 }
