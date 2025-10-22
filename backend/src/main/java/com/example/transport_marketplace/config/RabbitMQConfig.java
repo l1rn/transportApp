@@ -1,9 +1,6 @@
 package com.example.transport_marketplace.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,17 +11,20 @@ public class RabbitMQConfig {
     public static final String ROUTING_KEY = "payment.success";
 
     @Bean
-    public TopicExchange exchange(){
+    public TopicExchange paymentExchange(){
         return new TopicExchange(EXCHANGE_NAME);
     }
 
     @Bean
-    public Queue queue(){
+    public Queue emailQueue(){
         return new Queue(QUEUE_NAME);
     }
 
     @Bean
-    public Binding binding(Queue queue, TopicExchange exchange){
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+    public Binding emailBinding(Queue queue, TopicExchange exchange){
+        return BindingBuilder.bind(queue)
+                .to(exchange)
+                .with(ROUTING_KEY);
     }
+
 }

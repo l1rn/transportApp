@@ -6,9 +6,14 @@ spring:
 
   rabbitmq:
     host: localhost
-    port: 15672
+    port: 5672
     username: guest
     password: guest
+    listener:
+      simple:
+        missing-queues-fatal: false
+    template:
+      default-receive-queue: ""
 
   mail:
     host: localhost
