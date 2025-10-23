@@ -26,6 +26,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,7 +44,8 @@ import java.util.Arrays;
 public class AuthController {
     private final TokenBlacklist tokenBlacklist;
     private final AuthenticationService authenticationService;
-    private final JwtService jwtService;
+
+    private final JavaMailSender mailSender;
     @Value("${jwt.refresh-token-expiration}")
     private long refreshExpirationMs;
     @Value("${jwt.access-token-expiration}")

@@ -7,6 +7,7 @@ import com.example.transport_marketplace.model.*;
 import com.example.transport_marketplace.repo.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -42,6 +44,7 @@ public class UserService {
 
     private final Map<String, String> confirmationCodes = new ConcurrentHashMap<>();
     private final Map<String, Double> pendingAmounts = new ConcurrentHashMap<>();
+    private final Map<String, String> pendingEmails = new ConcurrentHashMap<>();
 
 
     public User create(User user){
@@ -114,12 +117,37 @@ public class UserService {
 
     /// ACCOUNT FUNCTIONS ///
 
-    public void setUserEmail(String accessToken, String newEmail){
+    public String setUserEmail(String accessToken, String newEmail){
         User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
                 .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));
 
+        String code = CodeGenerator.generateCode();
+        confirmationCodes.put(user.getUsername(), code);
+        pendingEmails.put(user.getUsername(), user.getEmail());
+
+        emailService.sendConfirmationCodeNewEmail(newEmail, code);
+
+        return "Код подтверждения отправлен на: " + newEmail;
+    }
+
+    public String confirmEmail(String accessToken, String code){
+        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+                .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));
+
+        String savedCode = confirmationCodes.get(user.getUsername());
+        String newEmail = pendingEmails.get(user.getUsername());
+
+        if(!code.equals(savedCode)){
+            throw new RuntimeException("Неверный код подтверждения!");
+        }
+
         user.setEmail(newEmail);
         userRepository.save(user);
+
+        confirmationCodes.remove(user.getUsername());
+        pendingEmails.remove(user.getUsername());
+
+        return user.getEmail();
     }
 
     public String requestTopUp(String accessToken, double amount){
@@ -130,21 +158,22 @@ public class UserService {
         confirmationCodes.put(user.getEmail(), code);
         pendingAmounts.put(user.getEmail(), amount);
 
+        emailService.sendConfirmationCodeTopUp(user.getEmail(), code, amount);
         return "Код подтверждения отправлен на " + user.getEmail();
     }
 
-    public double confirmTopUp(String accessToken, String code){
+    public double confirmTopUp(String accessToken, String code) {
         User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
                 .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));
 
         String savedCode = confirmationCodes.get(user.getEmail());
         Double amount = pendingAmounts.get(user.getEmail());
 
-        if(savedCode == null || amount == null){
+        if(savedCode == null || amount == null) {
             throw new RuntimeException("Сначала запросите пополнение");
         }
 
-        if(!savedCode.equals(code)){
+        if(!savedCode.equals(code)) {
             throw new RuntimeException("Неверный код подтверждения!");
         }
 

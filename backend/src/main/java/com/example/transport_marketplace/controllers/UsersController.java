@@ -1,5 +1,7 @@
 package com.example.transport_marketplace.controllers;
 
+import com.example.transport_marketplace.dto.users.ChangeEmailRequest;
+import com.example.transport_marketplace.dto.users.ConfirmCodeResponse;
 import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.service.UserService;
@@ -94,16 +96,27 @@ public class UsersController {
     @PostMapping("/set-email")
     public ResponseEntity<?> setUserEmail(
             HttpServletRequest request,
-            @RequestBody String email){
+            @RequestBody ChangeEmailRequest emailDTO){
         try{
-            Cookie[] cookies = request.getCookies();
-            String accessToken = Arrays.stream(cookies)
-                    .filter(c -> "accessToken".equals(c.getName()))
-                    .findFirst()
-                    .map(Cookie::getValue)
-                    .orElseThrow(() -> new RuntimeException("Не удалось получить токен"));
-            userService.setUserEmail(accessToken, email);
-            return ResponseEntity.ok("Новый email успешно изменен");
+            return ResponseEntity.ok(userService.setUserEmail(getAccessCookie(request), emailDTO.getEmail()));
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Null pointer error: " + e.getMessage());
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/confirm-email")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> confirmUserEmail(
+            HttpServletRequest request,
+            @RequestBody ConfirmCodeResponse codeResponse){
+        try{
+            return ResponseEntity.ok(userService.confirmEmail(getAccessCookie(request), codeResponse.getCode()));
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
@@ -116,16 +129,19 @@ public class UsersController {
             @RequestBody String amount
     ){
         try{
-            Cookie[] cookies = request.getCookies();
-            String accessToken = Arrays.stream(cookies)
-                    .filter(c -> "accessToken".equals(c.getName()))
-                    .findFirst()
-                    .map(Cookie::getValue)
-                    .orElseThrow(() -> new RuntimeException("Нету куков"));
             double amountD = Double.parseDouble(amount);
-            return ResponseEntity.ok(userService.requestTopUp(accessToken, amountD));
+            return ResponseEntity.ok(userService.requestTopUp(getAccessCookie(request), amountD));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось пополнить");
         }
+    }
+
+    private String getAccessCookie(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        return Arrays.stream(cookies)
+                .filter(c -> "accessToken".equals(c.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElseThrow(() -> new RuntimeException("Не удалось получить токен"));
     }
 }

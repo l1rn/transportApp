@@ -144,7 +144,9 @@ public class AuthControllerTest {
         Cookie clearAccessCookie = logoutResult.getResponse().getCookie("accessToken");
         Cookie clearRefreshCookie = logoutResult.getResponse().getCookie("refreshToken");
 
+        assert clearAccessCookie != null;
         assertEquals(0, clearAccessCookie.getMaxAge());
+        assert clearRefreshCookie != null;
         assertEquals(0, clearRefreshCookie.getMaxAge());
     }
 }

@@ -22,8 +22,6 @@ import java.time.format.DateTimeFormatter;
 public class EmailService {
     @Autowired
     private final JavaMailSender mailSender;
-    @Autowired
-    private final TemplateEngine templateEngine;
 
     public void sendBookingConfirmation(String toEmail, PaymentSuccessEvent event){
         try {
@@ -44,7 +42,22 @@ public class EmailService {
         }
     }
 
-    public String sendConfirmationCode(String userEmail, String code, double amount){
+    public void sendConfirmationCodeNewEmail(String userEmail, String code){
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("noreply@ololotravel.com");
+            message.setTo(userEmail);
+            message.setSubject("Email Confirmation Code");
+            message.setText("Your confirmation code is: " + code);
+
+            log.info("Letter was successfully sent");
+            mailSender.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException("Не удалось отправить email: " + e.getMessage());
+        }
+    }
+
+    public String sendConfirmationCodeTopUp(String userEmail, String code, double amount){
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("noreply@ololotravel.com");
