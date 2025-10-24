@@ -3,6 +3,7 @@ package com.example.transport_marketplace.config;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
+
 public class CodeGenerator {
     private static final SecureRandom random = new SecureRandom();
 

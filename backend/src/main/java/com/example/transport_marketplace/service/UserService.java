@@ -123,7 +123,7 @@ public class UserService {
 
         String code = CodeGenerator.generateCode();
         confirmationCodes.put(user.getUsername(), code);
-        pendingEmails.put(user.getUsername(), user.getEmail());
+        pendingEmails.put(user.getUsername(), newEmail);
 
         emailService.sendConfirmationCodeNewEmail(newEmail, code);
 

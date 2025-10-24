@@ -36,7 +36,6 @@ public class EmailService {
             helper.setText(emailContent);
 
             mailSender.send(message);
-            log.info("Email отправлен через MailHog для бронирования: {}", event.getBookingId());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -49,8 +48,6 @@ public class EmailService {
             message.setTo(userEmail);
             message.setSubject("Email Confirmation Code");
             message.setText("Your confirmation code is: " + code);
-
-            log.info("Letter was successfully sent");
             mailSender.send(message);
         } catch (Exception e) {
             throw new RuntimeException("Не удалось отправить email: " + e.getMessage());

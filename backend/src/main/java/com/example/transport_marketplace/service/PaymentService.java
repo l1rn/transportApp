@@ -1,7 +1,6 @@
 package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.config.CodeGenerator;
-import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.PaymentMethod;
 import com.example.transport_marketplace.enums.PaymentStatus;
 import com.example.transport_marketplace.events.ConfirmationCodeEvent;
