@@ -1,5 +1,7 @@
 <template>
-  <div v-if="isAuthFormOpen" class="modal-auth-form">
+  <div 
+  v-if="isAuthFormOpen" 
+  class="modal-auth-form">
     <div class="auth-form">
       <SignUpView v-if="currentForm === 'register'" />
       <SignInView v-else-if="currentForm === 'login'" />
@@ -11,7 +13,10 @@
     <div class="main-header">
       <div class="navbar-custom-header">
         <div class="navbar-subheader">
-          <div style="cursor: pointer;" class="brand" @click="$router.replace('/home')">
+          <div 
+          style="cursor: pointer;" 
+          class="brand" 
+          @click="$router.replace('/home')">
             ololotravel
           </div>
           <div class="profile-header-custom">

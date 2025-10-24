@@ -16,15 +16,14 @@ module.exports = {
 
   extends: [
     'eslint:recommended',
-    'plugin:vue/vue3-recommended'  
+    'plugin:vue/vue3-recommended',
+    '@vue/typescript'
+
   ],
 
   rules: {
+    'vue/html-indent': 'off',
+    'vue/html-closing-bracket-newline': 'off',
+    'vue/first-attribute-linebreak': 'off'
   },
-
-  'extends': [
-    'eslint:recommended',
-    'plugin:vue/vue3-recommended',
-    '@vue/typescript'
-  ]
 };

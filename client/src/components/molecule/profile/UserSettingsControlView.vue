@@ -1,7 +1,40 @@
 <template>
+  <div 
+  v-if="modalStore.isOpen('change-password-form')"
+  class="change-password-container">
+    <ChangePasswordFormView />
+  </div>
   <div class="main-container">
-    <div class="change-password-container">
-      <ChangePasswordFormView />
+    <div class="user-info-container">
+      <div class="info-block">
+        ID: {{ userInfo?.id }}
+      </div>
+      <div class="info-block">
+        Имя пользователя: {{ userInfo?.username }}
+      </div>
+      <template v-if="userInfo?.email !== null">
+        <div class="info-block">
+          Email: {{ userInfo?.email }}
+        </div>
+      </template>
+      <template v-else>
+        <div class="info-block">
+          Email: Отсутствует
+        </div>
+      </template>
+      <div class="button-block">
+        <button>
+          Изменить email
+        </button>
+      </div>
+      <div class="info-block">
+        Пароль: <input type="password" value="12345678">
+      </div>
+      <div class="button-block">
+        <button @click.stop="modalStore.open('change-password-form')">
+          Изменить пароль
+        </button>
+      </div>
     </div>
     <div class="info-container">
       <div>
@@ -10,7 +43,7 @@
         </h2>
       </div>
       <div
-        v-for="device in props.userInfo.devices"
+        v-for="device in props.userInfo?.devices"
         :key="device.id"
       >
         <div
@@ -26,7 +59,7 @@
         </h2>
       </div>
       <div 
-        v-for="device in props.userInfo.devices"
+        v-for="device in props.userInfo?.devices"
         :key="device.id" 
         class="useragent-container"
       >
@@ -50,12 +83,15 @@
 import ChangePasswordFormView from '@/components/atom/ChangePasswordFormView.vue';
 import { authorizationService } from '@/services/authorizationService';
 import { userService } from '@/services/userService';
+import { useModalStore } from '@/stores/useModalStore';
 import { UserInfo } from '@/types/userData';
 import { ref} from 'vue';
 
 const props = defineProps<{
-  userInfo: UserInfo;
+  userInfo: UserInfo | null;
 }>();
+
+const modalStore = useModalStore();
 
 const deviceId = ref();
 

@@ -1,28 +1,54 @@
 <template>
-    <div class="change-password-form">
+    <div 
+    class="change-password-form">
         <form @submit.prevent="changePassword">
-            <div class="form-wrapper">
+            <div 
+            class="form-wrapper"  
+            ref="formRef">
                 <label class="form-title">СМЕНА ПАРОЛЯ</label>
                 <div class="input-block">
-                    <label for="old">Старый пароль</label>
-                    <input id="old" v-model="passwordRequest.oldPassword" type="password" placeholder="старый пароль"
-                        required>
+                    <label for="old">
+                        Старый пароль
+                    </label>
+                    <input 
+                    id="old" 
+                    v-model="passwordRequest.oldPassword" 
+                    type="password" 
+                    placeholder="старый пароль"
+                    required>
                 </div>
                 <div class="input-block">
-                    <label for="new">Новый пароль</label>
-                    <input id="new" v-model="passwordRequest.newPassword" type="password" placeholder="новый пароль"
-                        required>
+                    <label for="new">
+                        Новый пароль
+                    </label>
+                    <input 
+                    id="new" 
+                    v-model="passwordRequest.newPassword" 
+                    type="password"
+                    placeholder="новый пароль"
+                    required>
                 </div>
                 <div class="input-block">
-                    <label for="passwordConfirm">Подтвердите пароль</label>
-                    <input id="passwordConfirm" v-model="confirmPassword" type="password"
-                        placeholder="подтвердите пароль" required>
-                    <div v-if="!doPasswordMatch" class="password-do-not-match">
+                    <label for="passwordConfirm">
+                        Подтвердите пароль
+                    </label>
+                    <input 
+                    id="passwordConfirm" 
+                    v-model="confirmPassword" 
+                    type="password"
+                    placeholder="подтвердите пароль" 
+                    required>
+                    <div 
+                    v-if="!doPasswordMatch" 
+                    class="password-do-not-match">
                         Пароли не совпадают
                     </div>
                 </div>
                 <div class="button-block">
-                    <button type="submit" class="submit-button" :disabled="!doPasswordMatch"
+                    <button 
+                    type="submit" 
+                    class="submit-button" 
+                    :disabled="!doPasswordMatch"
                         :class="{ 'disabled': !doPasswordMatch }">
                         Подтвердить
                     </button>
@@ -32,9 +58,13 @@
     </div>
 </template>
 <script setup lang="ts">
+import { useConditionalClickOutside } from '@/composable/useConditionalClickOutside';
 import { userService } from '@/services/userService';
+import { useModalStore } from '@/stores/useModalStore';
 import { computed, ref } from 'vue';
 
+const formRef = ref<HTMLElement | null>(null);
+const modalStore = useModalStore();
 
 const passwordRequest = ref({
     oldPassword: '',
@@ -61,6 +91,12 @@ const changePassword = async () => {
         confirmPassword.value = ''
     }
 }
+
+useConditionalClickOutside(
+    formRef,
+    () => modalStore.isOpen('change-password-form'),
+    () => modalStore.close('change-password-form')
+)
 </script>
 <style scoped lang="scss">
 @import "../../assets/styles/static/mixin.d.scss";
@@ -68,19 +104,25 @@ const changePassword = async () => {
 
 
 .change-password-form {
-    position: absolute;
-    width: 100%;    
-    height: 100%;
-    background: #000000;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 95%;
+    
+    form {
+        width: 80%;
+    }
+
     .form-wrapper {
         background: $white;
-        position: relative;
         display: flex;
         flex-direction: column;
         gap: 1rem;
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
         border-radius: 16px;
         padding: 1.5rem 1rem;
+
         .form-title {
             display: flex;
             color: #1d1d1d;

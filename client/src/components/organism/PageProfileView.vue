@@ -1,9 +1,8 @@
 <template>
   <div class="profile-page">
-    <BackButtonView />
     <div class="header-profile">
-      <div class="header-profile__title">
-        <h1>Профиль - {{ username }}</h1>
+      <div class="header-profile-title">
+        <span>Профиль - {{ username }}</span>
       </div>
     </div>
 
@@ -22,7 +21,7 @@
           @click="chooseNav('settings')"
         >
           Настройки
-        </button>
+        </button>  
         <button
           v-if="!!hasRoleAdmin"
           class="nav-link"
@@ -32,18 +31,15 @@
           Модерирование
         </button>
       </div>
-    </div>
-
-    <div class="tab-content">
-      <div v-if="nav.chooseOrders">
-        <BookingsWrapperView />
-      </div>
-      <div v-if="nav.chooseSettings">
-        <UserSettingsControlView :userInfo="userInfo" />
-      </div>
-      <div v-if="nav.chooseModeration">
+      <template v-if="nav.chooseOrders">
+        <BookingsWrapperView />  
+      </template>
+      <template v-if="nav.chooseSettings">
+          <UserSettingsControlView :user-info="userInfo" />
+        </template>
+      <template v-if="nav.chooseModeration">
         <AdminPanelView />
-      </div>
+      </template>
     </div>
   </div>
 </template>
