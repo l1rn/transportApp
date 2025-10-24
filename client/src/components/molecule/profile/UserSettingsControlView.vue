@@ -1,53 +1,9 @@
 <template>
   <div class="main-container">
+    <div class="change-password-container">
+      <ChangePasswordFormView />
+    </div>
     <div class="info-container">
-      <form
-        class="change-password"
-        @submit.prevent="changePassword"
-      >
-        <label
-          class="form-title"
-          for=""
-        >СМЕНА ПАРОЛЯ</label>
-        <label for="old">Старый пароль</label>
-        <input 
-          id="old"
-          v-model="passwordRequest.oldPassword" 
-          type="password"
-          placeholder="старый пароль"
-          required
-        >
-        <label for="new">Новый пароль</label>
-        <input 
-          id="new"
-          v-model="passwordRequest.newPassword"
-          type="password"
-          placeholder="новый пароль"
-          required
-        >
-        <label for="passwordConfirm">Подтвердите пароль</label>
-        <input 
-          id="passwordConfirm"
-          v-model="confirmPassword"
-          type="password"
-          placeholder="подтвердите пароль"
-          required
-        >
-        <div
-          v-if="!doPasswordMatch"
-          class="password-do-not-match"
-        >
-          Пароли не совпадают
-        </div>
-        <button 
-          type="submit"
-          class="submit-button"
-          :disabled="!doPasswordMatch"
-          :class="{'disabled': !doPasswordMatch}"
-        >
-          Подтвердить
-        </button>
-      </form>
       <div>
         <h2 class="subtitle-position1">
           Текущая сессия
@@ -91,58 +47,30 @@
   </div>
 </template>
 <script setup lang="ts">
+import ChangePasswordFormView from '@/components/atom/ChangePasswordFormView.vue';
 import { authorizationService } from '@/services/authorizationService';
 import { userService } from '@/services/userService';
 import { UserInfo } from '@/types/userData';
-import { ref, computed } from 'vue';
+import { ref} from 'vue';
 
 const props = defineProps<{
   userInfo: UserInfo;
 }>();
 
-const passwordRequest = ref({
-  oldPassword: '',
-  newPassword: ''
-})
-
-const confirmPassword = ref('')
-
-const doPasswordMatch = computed(() => {
-    return passwordRequest.value.newPassword === confirmPassword.value
-})
-
-const changePassword = async() => {
-    if(!doPasswordMatch.value) return;
-    try{
-        await userService.changeUserPassword(passwordRequest.value);
-        passwordRequest.value.oldPassword = ''
-        passwordRequest.value.newPassword = ''
-        confirmPassword.value = ''
-    } catch(e){
-        console.log(e)
-        passwordRequest.value.oldPassword = ''
-        passwordRequest.value.newPassword = ''
-        confirmPassword.value = ''
-    }
-}
-
 const deviceId = ref();
 
-const deleteSession = async(id) => {
-    try{
-        if(deviceId.value === id) {
-            await UserService.deleteSession(id);
-            await authorizationService.logoutUser();
-        }
-        else {
-            await UserService.deleteSession(id);
-        }
+const deleteSession = async(id: number) => {
+  try{
+    if(deviceId.value === id) {
+      await userService.deleteSession(id);
+      await authorizationService.logoutUser();
     }
-    catch(e){
-        console.log(e)
-    }
+  }
+  catch(e){
+    console.error(e)
+  }
 }
 </script>
 <style scoped lang="sass">
-@import '@/assets/styles/usersObjects/userSetting.sass'
+@import '@/assets/styles/molecule/profile/user-setting.sass'
 </style>

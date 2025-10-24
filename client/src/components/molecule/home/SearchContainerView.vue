@@ -93,5 +93,5 @@ const clearSearchContainer = () => {
 }
 </script>
 <style scoped lang="sass">
-@import "@/assets/styles/molecule/search-container"
+@import "@/assets/styles/molecule/home/search-container"
 </style>

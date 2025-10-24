@@ -135,5 +135,5 @@ watch(routeData, (newVal) => {
 })
 </script>
 <style scoped lang="sass">
-@import "@/assets/styles/molecule/route-view"
+@import "@/assets/styles/molecule/home/route-view"
 </style>
