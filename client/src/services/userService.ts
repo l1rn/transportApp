@@ -1,9 +1,10 @@
 import { AxiosResponse } from "axios";
 import { api } from "./api";
-import { ChangePasswordRequest } from "@/types/userData";
+import { ChangePasswordRequest, UserInfo } from "@/types/userData";
 
 class UserService {
-    public async getUserInfo(): Promise<AxiosResponse> {
+    // user basic
+    public async getUserInfo(): Promise<AxiosResponse<UserInfo>> {
         return await api.get(`/users/me`);
     }
     
@@ -16,6 +17,15 @@ class UserService {
 
     public async deleteSession(id: number): Promise<AxiosResponse>{
         return await api.delete(`/auth/session/delete/${id}`);
+    }
+
+    // user account
+    public async requestUserEmail(newEmail: string): Promise<AxiosResponse> {
+        return await api.post(`/users/set-email`, { email: newEmail });
+    }
+    
+    public async confirmUserEmail(code: string): Promise<AxiosResponse> {
+        return await api.post(`/users/confirm-email`, { code: code });
     }
 }
 

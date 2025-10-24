@@ -39,7 +39,7 @@
         <BookingsWrapperView />
       </div>
       <div v-if="nav.chooseSettings">
-        <UserSettingsControlView />
+        <UserSettingsControlView :userInfo="userInfo" />
       </div>
       <div v-if="nav.chooseModeration">
         <AdminPanelView />
@@ -84,7 +84,7 @@ onUnmounted(() => {
   hasRoleAdmin.value = false
 })
 
-watch(userInfo, (newValue) => {
+watch(userInfo, (newValue: UserInfo) => {
   if(newValue?.role === "ROLE_ADMIN"){
     hasRoleAdmin.value = true;
   }

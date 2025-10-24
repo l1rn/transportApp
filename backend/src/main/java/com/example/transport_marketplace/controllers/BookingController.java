@@ -99,8 +99,8 @@ public class BookingController {
         String username = userDetails.getUsername();
         User user = userService.getByUsername(username);
         try {
-            Booking newBooking = bookingService.createBooking(request.getRouteId(), user.getId());
-            return ResponseEntity.status(HttpStatus.CREATED).body("The booking was created");
+            bookingService.createBooking(request.getRouteId(), user.getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body("The booking with ID#{} was created");
         }
         catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

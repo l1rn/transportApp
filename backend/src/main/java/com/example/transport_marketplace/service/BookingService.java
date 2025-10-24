@@ -72,7 +72,7 @@ public class BookingService {
 
     @CachePut(value = "booking", key = "#result.id")
     @Transactional
-    public Booking createBooking(int routeId, int userId){
+    public void createBooking(int routeId, int userId){
 
         Route route = routeRepository.findById(routeId)
                 .orElseThrow(() -> new RuntimeException("Маршрут не найден"));
@@ -90,7 +90,7 @@ public class BookingService {
                 .status(BookingStatus.PENDING)
                 .build();
 
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
     }
 
     @CacheEvict(value = "booking", key = "#bookingId")

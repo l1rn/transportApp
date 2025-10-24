@@ -54,7 +54,7 @@
         </h2>
       </div>
       <div
-        v-for="device in userData.devices"
+        v-for="device in props.userInfo.devices"
         :key="device.id"
       >
         <div
@@ -70,8 +70,8 @@
         </h2>
       </div>
       <div 
-        v-for="device in userData.devices"
-        :key="device" 
+        v-for="device in props.userInfo.devices"
+        :key="device.id" 
         class="useragent-container"
       >
         <div 
@@ -90,14 +90,19 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { authorizationService } from '@/services/authorizationService';
-import UserService from '@/services/userService';
+import { userService } from '@/services/userService';
+import { UserInfo } from '@/types/userData';
 import { ref, computed } from 'vue';
 
+const props = defineProps<{
+  userInfo: UserInfo;
+}>();
+
 const passwordRequest = ref({
-    oldPassword: '',
-    newPassword: ''
+  oldPassword: '',
+  newPassword: ''
 })
 
 const confirmPassword = ref('')
@@ -109,12 +114,14 @@ const doPasswordMatch = computed(() => {
 const changePassword = async() => {
     if(!doPasswordMatch.value) return;
     try{
-        await UserService.changeUserPassword(passwordRequest.value);
-        passwordRequest.value = ''
+        await userService.changeUserPassword(passwordRequest.value);
+        passwordRequest.value.oldPassword = ''
+        passwordRequest.value.newPassword = ''
         confirmPassword.value = ''
     } catch(e){
         console.log(e)
-        passwordRequest.value = ''
+        passwordRequest.value.oldPassword = ''
+        passwordRequest.value.newPassword = ''
         confirmPassword.value = ''
     }
 }

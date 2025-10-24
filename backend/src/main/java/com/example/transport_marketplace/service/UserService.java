@@ -95,14 +95,14 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь c ID" + id + " не найден"));
     }
 
-    public UserSettingsResponse getSettingsByUsername(String username){
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    public UserSettingsResponse getInfoByUsername(String accessToken){
+        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         List<Device> devices = deviceRepository.findByUser(user)
-                .orElseThrow(() -> new RuntimeException("Не найдено ни одно устройсто для: " + username));
+                .orElseThrow(() -> new RuntimeException("Не найдено ни одно устройсто"));
 
         return UserSettingsResponse.builder()
-                .username(username)
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .role(user.getRole())
                 .balance(user.getBalance())
