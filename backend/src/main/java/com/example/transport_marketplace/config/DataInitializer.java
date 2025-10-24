@@ -7,6 +7,7 @@ import com.example.transport_marketplace.repo.AccountRepository;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.repo.RouteRepository;
 import com.example.transport_marketplace.repo.UserRepository;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -30,12 +31,13 @@ public class DataInitializer {
     private final BookingRepository bookingRepository;
     @Autowired
     private final AccountRepository accountRepository;
-    private void createUserIfNotExists(String username, String password, Role role, List<Device> devices) {
+    private void createUserIfNotExists(String username, String password, Role role, @Nullable String email, List<Device> devices) {
         if (!userRepository.existsByUsername(username)) {
             User user = User.builder()
                     .username(username)
                     .password(passwordEncoder.encode(password))
                     .role(role)
+                    .email(email)
                     .devices(devices)
                     .build();
             userRepository.save(user);
@@ -74,13 +76,13 @@ public class DataInitializer {
     @EventListener(ApplicationReadyEvent.class)
     @Order(1)
     public void initTestUsers() {
-        createUserIfNotExists("manager", "managerPass123!", Role.ROLE_ADMIN, null);
-        createUserIfNotExists("test_user", "testPassword456", Role.ROLE_USER, null);
-        createUserIfNotExists("demo_admin", "DemoAdminSecure789", Role.ROLE_ADMIN, null);
-        createUserIfNotExists("integration_test", "IntegrationTestPass!", Role.ROLE_USER, null);
-        createUserIfNotExists("traveler1", "Travel123!", Role.ROLE_USER, null);
-        createUserIfNotExists("traveler2", "SecurePass#2024", Role.ROLE_USER, null);
-        createUserIfNotExists("business_user", "BusinessTravel99", Role.ROLE_USER, null);
+        createUserIfNotExists("manager", "managerPass123!", Role.ROLE_ADMIN, null, null);
+        createUserIfNotExists("test_user", "testPassword456", Role.ROLE_USER, "email@example.com", null);
+        createUserIfNotExists("demo_admin", "DemoAdminSecure789", Role.ROLE_ADMIN, null, null);
+        createUserIfNotExists("integration_test", "IntegrationTestPass!", Role.ROLE_USER, null, null);
+        createUserIfNotExists("traveler1", "Travel123!", Role.ROLE_USER, null, null);
+        createUserIfNotExists("traveler2", "SecurePass#2024", Role.ROLE_USER, null, null);
+        createUserIfNotExists("business_user", "BusinessTravel99", Role.ROLE_USER, null, null);
     }
 
     @EventListener(ApplicationReadyEvent.class)

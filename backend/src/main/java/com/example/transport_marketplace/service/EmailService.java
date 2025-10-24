@@ -54,19 +54,15 @@ public class EmailService {
         }
     }
 
-    public String sendConfirmationCodeTopUp(String userEmail, String code, double amount){
+    public void sendConfirmationCodeTopUp(String userEmail, String code, double amount){
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("noreply@ololotravel.com");
             message.setTo(userEmail);
             message.setSubject("Top up Confirmation Code");
-            message.setText("Your confirmation code is: " + code);
-            message.setText("Your amount is: " + amount);
+            message.setText("Your confirmation code is: " + code + "\nYour amount is: " + amount);
 
             mailSender.send(message);
-
-            return code;
-
         } catch (Exception e) {
             throw new RuntimeException("Не удалось отправить email: " + e.getMessage());
         }

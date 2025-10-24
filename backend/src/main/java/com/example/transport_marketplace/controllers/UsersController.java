@@ -96,7 +96,7 @@ public class UsersController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/set-email")
-    public ResponseEntity<?> setUserEmail(
+    public ResponseEntity<?> requestUserEmail(
             HttpServletRequest request,
             @RequestBody ChangeEmailRequest emailDTO){
         try{
@@ -126,15 +126,27 @@ public class UsersController {
 
     @PostMapping("/account/top-up")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> withdraw(
+    public ResponseEntity<?> requestWithdraw (
             HttpServletRequest request,
-            @RequestBody String amount
-    ){
+            @RequestParam double amount
+    ) {
         try{
-            double amountD = Double.parseDouble(amount);
-            return ResponseEntity.ok(userService.requestTopUp(getAccessCookie(request), amountD));
+            return ResponseEntity.ok(userService.requestTopUp(getAccessCookie(request), amount));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось пополнить");
+        }
+    }
+
+    @PostMapping("/account/confirm-top-up")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> confirmWithdraw(
+            HttpServletRequest request,
+            @RequestBody ConfirmCodeResponse codeResponse
+    ) {
+        try{
+            return ResponseEntity.ok(userService.confirmTopUp(getAccessCookie(request), codeResponse.getCode()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
