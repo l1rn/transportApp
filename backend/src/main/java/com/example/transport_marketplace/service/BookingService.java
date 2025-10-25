@@ -72,7 +72,7 @@ public class BookingService {
 
     @CachePut(value = "booking", key = "#result.id")
     @Transactional
-    public void createBooking(int routeId, int userId){
+    public Booking createBooking(int routeId, int userId){
 
         Route route = routeRepository.findById(routeId)
                 .orElseThrow(() -> new RuntimeException("Маршрут не найден"));
@@ -80,9 +80,10 @@ public class BookingService {
             throw new RuntimeException("Нет свободных мест");
         }
 
-        User user = userRepository.findById(userId).orElseThrow(() ->new RuntimeException("Такого пользователя нет"));
         route.setAvailableSeats(route.getAvailableSeats() - 1);
-        routeRepository.save(route);
+        routeRepository.saveAndFlush(route);
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Такого пользователя нет"));
 
         Booking booking = Booking.builder()
                 .route(route)
@@ -90,7 +91,7 @@ public class BookingService {
                 .status(BookingStatus.PENDING)
                 .build();
 
-        bookingRepository.save(booking);
+        return bookingRepository.save(booking);
     }
 
     @CacheEvict(value = "booking", key = "#bookingId")

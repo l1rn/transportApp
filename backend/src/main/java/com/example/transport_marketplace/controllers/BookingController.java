@@ -5,6 +5,7 @@ import com.example.transport_marketplace.dto.booking.BookingsResponse;
 import com.example.transport_marketplace.dto.booking.CancelBookingRequest;
 import com.example.transport_marketplace.exceptions.booking.AccessDeniedException;
 import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
+import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.service.BookingService;
@@ -23,8 +24,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
 @RestController
@@ -99,11 +102,19 @@ public class BookingController {
         String username = userDetails.getUsername();
         User user = userService.getByUsername(username);
         try {
-            bookingService.createBooking(request.getRouteId(), user.getId());
-            return ResponseEntity.status(HttpStatus.CREATED).body("The booking with ID#{} was created");
+            Booking booking = bookingService.createBooking(request.getRouteId(), user.getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body("The booking with ID#" + booking.getId() + " was created");
         }
-        catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        catch(RouteNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Route not found!");
+        }
+        catch (UsernameNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User not found!");
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error: " + e.getMessage());
         }
     }
 

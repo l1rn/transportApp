@@ -1,3 +1,6 @@
+@import "../../static/mixin.d.scss"
+@import "../../static/color.d.scss"
+
 .change-password-container
     position: absolute
     top: 0
@@ -34,9 +37,7 @@
     color: #c92626
 
 .subtitle-position1
-    display: flex
-    justify-content: center
-    align-items: center
+    @include display-center()                                                                                    
     background: #D5A6BD
     padding: 0 2rem
     width: fit-content
@@ -47,9 +48,7 @@
     h2
         white-space: nowrap
 .subtitle-position2
-    display: flex
-    justify-content: center
-    align-items: center
+    @include display-center()
     background: #A4C2F4
     padding: 0 2rem
     color: #161616

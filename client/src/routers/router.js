@@ -11,7 +11,7 @@ const routes = [
     { path: '/routes', component: AllRoutesView },
     { path: '/routes/search', component: SearchRoutes },
     { path:'/panel/admin', component: AdminPanelView },
-    { path: '/home', component: HomeView },
+    { path: '/home', component: HomeView, meta: { showHeaders: false }},
 
     { 
         path: '/:catchAll(.*)',

@@ -121,13 +121,14 @@ useConditionalClickOutside(
         gap: 1rem;
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
         border-radius: 16px;
-        padding: 1.5rem 1rem;
+        padding: 1.5rem 2rem;
 
         .form-title {
             display: flex;
             color: #1d1d1d;
             font-size: 26px;
             justify-content: center;
+            letter-spacing: 0.1rem
         }
 
         input {

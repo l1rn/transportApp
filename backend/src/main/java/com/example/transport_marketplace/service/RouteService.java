@@ -68,7 +68,6 @@ public class RouteService {
         return null;
     }
 
-    @Cacheable(value = "routes")
     public List<Route> searchRoutes(String routeFrom,
                                     String routeTo,
                                     String date,

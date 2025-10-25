@@ -68,10 +68,10 @@
           {{ route.price }} р.
         </div>
       </div>
-      <button
+        <button
         :disabled="route.availableSeats <= 0"
         class="book-button"
-        @click="bookTheRoute(route.id)"
+        @click="bookTheRoute(route.id!)"
       >
         Добавить в корзину
       </button>
@@ -109,6 +109,9 @@ const bookTheRoute = async (routeId: number) => {
   }
   catch(error){
     const axiosError = error as AxiosError;
+    if(axiosError.status === 500){
+      notification.error("Не удалось добавить в корзину!");
+    }
     if(axiosError.status === 401 || axiosError.status === 403) {
       modalStore.open('login');
       notification.error("Зарегистрируйтесь!")
@@ -120,8 +123,6 @@ const searchResults: Ref<PaginatedRoute | null> = ref(null);
 
 const routeStore = useRouteStore();
 const { routeData } = storeToRefs(routeStore);
-
-const notifications = ref(null);
 
 const getStatus = (seats: number) => {
   return seats > 0 ? 'ОТКРЫТО' : 'ЗАКРЫТО';

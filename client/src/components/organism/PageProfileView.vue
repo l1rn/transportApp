@@ -1,36 +1,39 @@
 <template>
   <div class="profile-page">
-    <div class="header-profile">
-      <div class="header-profile-title">
-        <span>Профиль - {{ username }}</span>
+    <div class="header-wrapper">
+      <div class="header-container">
+        <div class="title-container">
+          <span>👤 Профиль: {{ username }}</span>
+        </div>
+        <div class="space"></div>
+        <div class="nav-tabs">
+          <button
+            class="nav-link"
+            :class="{ active: nav.chooseOrders}"
+            @click="chooseNav('orders')"
+          >
+            Мои заказы
+          </button>
+          <button
+            class="nav-link"
+            :class="{ active: nav.chooseSettings}"
+            @click="chooseNav('settings')"
+          >
+            Настройки
+          </button>  
+          <button
+            v-if="!!hasRoleAdmin"
+            class="nav-link"
+            :class="{ active: nav.chooseModeration}"
+            @click="chooseNav('moderation')"
+          >
+            Модерирование
+          </button>
+        </div>
       </div>
     </div>
 
     <div class="main-container-profile">
-      <div class="nav-tabs">
-        <button
-          class="nav-link"
-          :class="{ active: nav.chooseOrders}"
-          @click="chooseNav('orders')"
-        >
-          Мои заказы
-        </button>
-        <button
-          class="nav-link"
-          :class="{ active: nav.chooseSettings}"
-          @click="chooseNav('settings')"
-        >
-          Настройки
-        </button>  
-        <button
-          v-if="!!hasRoleAdmin"
-          class="nav-link"
-          :class="{ active: nav.chooseModeration}"
-          @click="chooseNav('moderation')"
-        >
-          Модерирование
-        </button>
-      </div>
       <template v-if="nav.chooseOrders">
         <BookingsWrapperView />  
       </template>
@@ -80,7 +83,7 @@ onUnmounted(() => {
   hasRoleAdmin.value = false
 })
 
-watch(userInfo, (newValue: UserInfo) => {
+watch(userInfo, (newValue: UserInfo | null) => {
   if(newValue?.role === "ROLE_ADMIN"){
     hasRoleAdmin.value = true;
   }
@@ -89,5 +92,46 @@ watch(userInfo, (newValue: UserInfo) => {
   }
 })
 </script>
-<style scoped lang="sass">
+<style scoped lang="scss">
+@import "../../assets/styles/static/mixin.d.scss";
+@import "../../assets/styles/static/color.d.scss";
+
+.profile-page {
+  .header-wrapper{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    .header-container {
+      width: 80%;
+      padding: 1rem 1.5rem;
+      margin: 1rem 0;
+      border-radius: 16px;
+      box-shadow: $input-shadow;
+      background: $white;
+      .title-container{
+        span {
+          text-transform: uppercase;
+          letter-spacing: 0.05rem;
+          font-size: 1.5rem;
+        }
+      }
+      .space {
+        width: 100%;
+        background: $light-gray;
+        height: 2px;
+        margin: 2rem 0 0 0;
+      }
+      .nav-tabs {
+        button {
+          @include button-clear($main-white);
+          font-size: 1.25rem;
+          padding: 0.5rem 1rem;
+        }
+        .active {
+          border-bottom: 2px solid $primary-blue;
+        }
+      }
+    } 
+  }
+}
 </style>
