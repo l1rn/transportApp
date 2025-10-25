@@ -9,6 +9,34 @@
     background: #00000040
     z-index: 100
 
+.main-container
+    .user-info-wrapper
+        width: 100%
+        display: flex
+        justify-content: center
+        .user-info-container
+            width: 80%
+            padding: 1rem 1.5rem
+            margin: 1rem 0
+            background: #f2f5fd
+            border-radius: 16px
+            display: flex
+            flex-direction: column
+            gap: 0.5rem
+            .title 
+                font-size: 1.75rem
+                text-align: center
+                letter-spacing: 0.1rem
+            .info-block
+                font-size: 1.2rem   
+                input
+                    @include custom-input()
+            .button-block 
+                button 
+                    @include button-clear($secondary, $white)
+                    font-size: 1.25rem
+                    border-radius: 8px
+                    padding: 0.25rem 0.75rem
 .useragent-container
     padding: 1.5rem 2rem
     border-radius: 8px
