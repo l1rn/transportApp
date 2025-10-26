@@ -4,6 +4,11 @@
   class="change-password-container">
     <ChangePasswordFormView />
   </div>
+  <div
+  v-if="modalStore.isOpen('change-email-form')"
+  class="change-email-container">
+    <ChangeEmailFormView />
+  </div>
   <div class="main-container">
     <div class="user-info-wrapper">
       <div class="user-info-container">
@@ -27,7 +32,7 @@
           </div>
         </template>
         <div class="button-block">
-          <button>
+          <button @click.stop="modalStore.open('change-email-form')">
             Изменить email
           </button>
         </div>
@@ -85,12 +90,13 @@
   </div>
 </template>
 <script setup lang="ts">
+import ChangeEmailFormView from '@/components/atom/ChangeEmailFormView.vue';
 import ChangePasswordFormView from '@/components/atom/ChangePasswordFormView.vue';
 import { authorizationService } from '@/services/authorizationService';
 import { userService } from '@/services/userService';
 import { useModalStore } from '@/stores/useModalStore';
 import { UserInfo } from '@/types/userData';
-import { ref} from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
   userInfo: UserInfo | null;
