@@ -4,6 +4,7 @@
       <div class="header-container">
         <div class="title-container">
           <span>👤 Профиль: {{ username }}</span>
+          <span>💵 Баланс: {{ balance }} ₽</span>
         </div>
         <div class="space"></div>
         <div class="nav-tabs">
@@ -57,6 +58,7 @@ import { AxiosResponse } from "axios";
 import { UserInfo } from "@/types/userData";
 
 const username = ref<string>("");
+const balance = ref<number | null>(null);
 const userInfo = ref<UserInfo | null>(null);
 
 const nav = ref({
@@ -77,6 +79,7 @@ onMounted(async () =>{
   const response: AxiosResponse<UserInfo> = await userService.getUserInfo();
   userInfo.value = response.data;
   username.value = userInfo.value.username;
+  balance.value = userInfo.value.balance;
 })
 
 onUnmounted(() => {
@@ -109,6 +112,8 @@ watch(userInfo, (newValue: UserInfo | null) => {
       box-shadow: $input-shadow;
       background: $white;
       .title-container{
+        @include display-column();
+        gap: 0.75rem;
         span {
           text-transform: uppercase;
           letter-spacing: 0.05rem;
@@ -119,7 +124,7 @@ watch(userInfo, (newValue: UserInfo | null) => {
         width: 100%;
         background: $light-gray;
         height: 2px;
-        margin: 2rem 0 0 0;
+        margin: 1.5rem 0 0 0;
       }
       .nav-tabs {
         button {

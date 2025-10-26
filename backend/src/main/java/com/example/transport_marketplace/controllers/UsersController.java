@@ -134,7 +134,7 @@ public class UsersController {
         try{
             return ResponseEntity.ok(userService.requestTopUp(getAccessCookie(request), amount));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось пополнить");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось отправить запрос: " + e.getMessage());
         }
     }
 

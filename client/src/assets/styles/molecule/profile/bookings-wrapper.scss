@@ -5,6 +5,9 @@
     @include display-center();
     flex-direction: column;
     gap: 1.25rem;
+    .confirm-payment-container{
+        @include display-modal();
+    }
     .booking-container{
         background: $white;
         width: 70%;

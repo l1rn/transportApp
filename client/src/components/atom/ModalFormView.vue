@@ -42,9 +42,10 @@ const props = defineProps<{
     buttonName: string;
     inputType: string;
     submitFunc: () => void | Promise<void>;
+    storeKey: string;
 }>();
 
-const localValue = defineModel<string>({
+const localValue = defineModel<string | number | null>({
     default: ''
 });
 
@@ -53,8 +54,8 @@ const modalStore = useModalStore();
 
 useConditionalClickOutside(
     formRef,
-    () => modalStore.isOpen('change-email-form'),
-    () => modalStore.close('change-email-form')
+    () => modalStore.isOpen(props.storeKey),
+    () => modalStore.close(props.storeKey)
 )
 </script>
 <style scoped lang="scss">

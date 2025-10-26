@@ -27,6 +27,10 @@ class UserService {
     public async confirmUserEmail(code: string): Promise<AxiosResponse> {
         return await api.post(`/users/confirm-email`, { code: code });
     }
+
+    public async requestTopUp(amount: number): Promise<AxiosResponse> {
+        return await api.post(`/account/top-up?amount=${amount}`)
+    }
 }
 
 export const userService = new UserService(); 

@@ -10,6 +10,9 @@
 .confirm-code-container
     @include display-modal()
 
+.top-up-container
+    @include display-modal
+
 .main-container
     .user-info-wrapper
         width: 100%
@@ -23,30 +26,50 @@
             border-radius: 16px
             display: flex
             flex-direction: column
-            gap: 0.5rem
+            gap: 2rem
             .title 
                 font-size: 1.75rem
                 text-align: center
-                letter-spacing: 0.1rem
-            .info-block
-                font-size: 1.2rem
+                letter-spacing: 0.05rem
+                font-weight: 600
+            .main-container
                 display: flex
-                gap: 0.5rem   
-                input
-                    @include custom-input()
-                span
-                    @include display-center
-                    img
-                        
-            .password-block
-                display: flex
-                align-items: center
-            .button-block 
-                button 
-                    @include button-clear($secondary, $white)
-                    font-size: 1.25rem
-                    border-radius: 8px
-                    padding: 0.25rem 0.75rem
+                justify-content: space-evenly
+                .info-block
+                    font-size: 1.2rem
+                    display: flex
+                    gap: 0.5rem 
+                    .withdraw-button
+                        @include button-clear(green, $white)  
+                        @include display-center()
+                        gap: 5px
+                        font-size: 17px
+                        border-radius: 8px
+                        padding: 0.5rem
+                    input
+                        @include custom-input()
+                    span
+                        @include display-center
+                            
+                .password-block
+                    display: flex
+                    align-items: center
+                .button-block 
+                    button 
+                        @include button-clear($secondary, $white)
+                        font-size: 1.25rem
+                        border-radius: 8px
+                        padding: 0.25rem 0.75rem
+                .user-info-subcontainer
+                    display: flex
+                    flex-direction: column
+                    justify-content: space-between
+                    height: 100%
+                    gap: 1rem
+                    .secondary-container
+                        @include display-column()
+                        gap: 0.5rem
+
 .useragent-container
     padding: 1.5rem 2rem
     border-radius: 8px
