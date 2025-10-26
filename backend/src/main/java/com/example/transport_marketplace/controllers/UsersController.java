@@ -104,7 +104,6 @@ public class UsersController {
             return ResponseEntity.ok(userService.setUserEmail(getAccessCookie(request), emailDTO.getEmail()));
         }
         catch (NullPointerException e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Null pointer error: " + e.getMessage());
         }
@@ -146,8 +145,14 @@ public class UsersController {
     ) {
         try{
             return ResponseEntity.ok(userService.confirmTopUp(getAccessCookie(request), codeResponse.getCode()));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        catch(NullPointerException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Null pointer error: " + e.getMessage());
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
         }
     }
 

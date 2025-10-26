@@ -29,7 +29,7 @@ class UserService {
     }
 
     public async requestTopUp(amount: number): Promise<AxiosResponse> {
-        return await api.post(`/account/top-up?amount=${amount}`)
+        return await api.post(`/users/account/top-up?amount=${amount}`)
     }
 }
 
