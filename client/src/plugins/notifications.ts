@@ -31,7 +31,7 @@ const showNotification = (
         message: string, 
         duration: number = 3000
     ): void => {
-    if(!notificationInstance.value){
+    if(!notificationInstance.value || !isMounted){
         createNotificationApp();
     }
 
@@ -45,10 +45,10 @@ const showNotification = (
 
 const notification = {
     success: (message: string, duration?: number) =>
-        showNotification('success', message, duration),
+        showNotification('success', `✅ Успех: ${message}`, duration),
 
     error: (message: string, duration?: number) =>
-        showNotification('error', message, duration),
+        showNotification('error', `❌ Ошибка: ${message}`, duration),
 
     show: showNotification
 }

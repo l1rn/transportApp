@@ -82,7 +82,7 @@ const signIn = async () => {
     if(response.status === 200){
       loginStore.auth();
       modalStore.close('login');
-      notification.success('Успешно: Вход выполнен!');
+      notification.success('Вход выполнен!');
     }
   }
   catch (error: any) {

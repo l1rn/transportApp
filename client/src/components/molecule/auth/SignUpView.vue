@@ -114,7 +114,7 @@ const signUp = async () => {
     user.value.confirmPassword = '';
     
     if(response.status === 201){
-      notification.success("Вы успешно");
+      notification.success("Вы успешно зарегистрировались");
     }
   }
   catch (error) {
