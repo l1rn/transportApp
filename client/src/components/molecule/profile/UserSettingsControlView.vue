@@ -7,7 +7,32 @@
   <div
   v-if="modalStore.isOpen('change-email-form')"
   class="change-email-container">
-    <ChangeEmailFormView />
+    <ChangeFormView
+      :icon="codeIcon"
+      title="Введите email"
+      desc="Введите адрес электронной почты, чтобы иметь возможность восстановить доступ к аккаунту. 
+      Для подтверждения, вам будет отправлен код на вашу почту"
+      button-name="Отправить код"
+      v-model="newEmail"
+      input-placeholder="example@example.com"
+      input-type="email"
+      :submit-func="submitEmailRequest"
+    />
+  </div>
+  <div
+  v-if="modalStore.isOpen('confirm-code-form')"
+  class="confirm-code-container">
+    <ChangeFormView
+      :icon="emailIcon"
+      title="Введите код подтверждения"
+      desc="Введите код, чтобы привязать новый адрес электронной почты к вашему аккаунту. 
+      Для подтверждения, введите этот код снизу. Код был отправлен на указанный вами email"
+      button-name="Подтвердить"
+      v-model="codeValue"
+      input-placeholder="123456"
+      input-type="text"
+      :submit-func="submitCodeConfirm"
+    />
   </div>
   <div class="main-container">
     <div class="user-info-wrapper">
@@ -90,7 +115,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import ChangeEmailFormView from '@/components/atom/ChangeEmailFormView.vue';
+import emailIcon from "../../../assets/icons/mail.svg";
+import codeIcon from "../../../assets/icons/lock.svg";
+import ChangeFormView from '@/components/atom/ChangeFormView.vue';
 import ChangePasswordFormView from '@/components/atom/ChangePasswordFormView.vue';
 import { authorizationService } from '@/services/authorizationService';
 import { userService } from '@/services/userService';
@@ -98,13 +125,53 @@ import { useModalStore } from '@/stores/useModalStore';
 import { UserInfo } from '@/types/userData';
 import { ref } from 'vue';
 
+import { AxiosError } from 'axios';
+import notification from '@/plugins/notifications';
+
 const props = defineProps<{
   userInfo: UserInfo | null;
 }>();
 
 const modalStore = useModalStore();
-
 const deviceId = ref();
+
+const newEmail = ref<string>("");
+const codeValue = ref<string>("");
+
+const submitEmailRequest = async(): Promise<void> => {
+  if(!newEmail.value || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(newEmail.value)) {
+    notification.error("Введите email!");
+    return;
+  }
+  try{
+    await userService.requestUserEmail(newEmail.value);
+    notification.success("Код с подтверждением отправлен вам на почту!");
+    newEmail.value = "";
+    modalStore.close('change-email-form');
+    modalStore.open('confirm-code-form')
+  }
+  catch(e){
+    const axiosError = e as AxiosError;
+    console.log(axiosError.status);
+  }
+}
+
+const submitCodeConfirm = async(): Promise<void> => {
+  if(!codeValue.value || codeValue.value.length < 5){
+    notification.error("Введите действительный код!");
+    return;
+  }
+  try{
+    await userService.confirmUserEmail(codeValue.value);
+    notification.success("Новая почта была успешно привязана к вашему аккаунту!");
+    codeValue.value = '';
+    modalStore.close('confirm-code-form');
+  }
+  catch(e){
+    const axiosError = e as AxiosError;
+    console.log(axiosError);
+  }
+}
 
 const deleteSession = async(id: number) => {
   try{

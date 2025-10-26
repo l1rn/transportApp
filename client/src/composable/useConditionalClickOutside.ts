@@ -1,4 +1,4 @@
-import { inject, onBeforeUnmount, onMounted, Ref } from "vue";
+import { onBeforeUnmount, onMounted, Ref } from "vue";
 
 export const useConditionalClickOutside = 
     (
@@ -6,28 +6,30 @@ export const useConditionalClickOutside =
         isActive: () => boolean,
         callback: () => void
     ) => {
-        const handleClickOutside = (event: MouseEvent | KeyboardEvent) => {
+        
+        const handleClickOutside = (event: MouseEvent) => {
             if(!isActive()) return;
-            
-            if(event instanceof KeyboardEvent){
-                if(event.key === 'Escape' || event.key === 'Esc'){
-                    callback();
-                    return;
-                }
-            }
 
-            if(event instanceof MouseEvent){
-                const target = event.target as HTMLElement;
-                if(elementRef.value && !elementRef.value.contains(target)){
-                    callback();
-                }
+            const target = event.target as HTMLElement;
+            if(elementRef.value && !elementRef.value.contains(target)){
+                callback();
+            }
+        }
+        
+        const handleEscClick = (event: KeyboardEvent) => {
+            if(!isActive()) return;
+
+            if(event.key === 'Escape' || event.key === 'Esc'){
+                callback();
             }
         }
 
         onMounted(() => {
             document.addEventListener('click', handleClickOutside);
+            document.addEventListener('keydown', handleEscClick);
         })
         onBeforeUnmount(() => {
             document.removeEventListener('click', handleClickOutside);
+            document.removeEventListener('keydown', handleEscClick);
         })
     }

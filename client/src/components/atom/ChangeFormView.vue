@@ -6,25 +6,24 @@
             <div class="text-container">
                 <div class="icon">
                     <img 
-                    src="../../assets/icons/mail.svg" 
+                    :src="props.icon"
                     alt="email">
                 </div>
                 <div class="title">
-                    Укажите email
+                    {{ props.title }}
                 </div>
                 <div class="desc">
-                    Введите адрес электронной почты, чтобы иметь возможность восстановить доступ к аккаунту.
-                    Для подтверждения, вам будет отправлен код на вашу почту
+                    {{ props.desc }}
                 </div>
             </div>
             <div class="input-container">
                 <input 
-                type="email"
-                v-model="newEmail"
-                placeholder="example@exaple.com"
+                :type="props.inputType"
+                v-model="localValue"
+                :placeholder="props.inputPlaceholder"
                 >
-                <button @click="submitEmailRequest">
-                    Отправить код
+                <button @click="props.submitFunc">
+                    {{ props.buttonName }}
                 </button>
             </div>
         </div>
@@ -32,26 +31,25 @@
 </template>
 <script setup lang="ts">
 import { useConditionalClickOutside } from '@/composable/useConditionalClickOutside';
-import { userService } from '@/services/userService';
 import { useModalStore } from '@/stores/useModalStore';
-import { AxiosError } from 'axios';
 import { ref } from 'vue';
 
-const newEmail = ref<string>("");
+const props = defineProps<{
+    icon: string;
+    title: string;
+    desc: string;
+    inputPlaceholder: string;
+    buttonName: string;
+    inputType: string;
+    submitFunc: () => void | Promise<void>;
+}>();
+
+const localValue = defineModel<string>({
+    default: ''
+});
 
 const formRef = ref<HTMLElement | null>(null);
 const modalStore = useModalStore();
-
-const submitEmailRequest = async() => {
-    try{
-        const response = await userService.requestUserEmail(newEmail.value);
-        console.log(response.data)
-    }
-    catch(e){
-        const axiosError = e as AxiosError;
-        console.log(axiosError.status);
-    }
-}
 
 useConditionalClickOutside(
     formRef,
@@ -100,10 +98,14 @@ useConditionalClickOutside(
                 @include custom-input();
             }  
             button {
-                @include button-clear($primary-blue, $white);
+                @include button-clear($accent, $white);
                 padding: 0.75rem 1.25rem;
                 border-radius: 8px;
                 font-size: 1.15rem;
+                transition: all 0.3s ease;
+                &:hover {
+                    background: $primary-blue;
+                }
             }
         }
     }
