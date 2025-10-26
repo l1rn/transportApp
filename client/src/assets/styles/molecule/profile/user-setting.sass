@@ -29,9 +29,18 @@
                 text-align: center
                 letter-spacing: 0.1rem
             .info-block
-                font-size: 1.2rem   
+                font-size: 1.2rem
+                display: flex
+                gap: 0.5rem   
                 input
                     @include custom-input()
+                span
+                    @include display-center
+                    img
+                        
+            .password-block
+                display: flex
+                align-items: center
             .button-block 
                 button 
                     @include button-clear($secondary, $white)

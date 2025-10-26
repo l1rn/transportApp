@@ -41,18 +41,30 @@
           ИНФОРМАЦИЯ
         </div>
         <div class="info-block">
+          <span>
+            <img src="../../../assets/icons/user/id.svg" alt="id-img">
+          </span>
           ID: {{ userInfo?.id }}
         </div>
         <div class="info-block">
+          <span>
+            <img src="../../../assets/icons/user/name.svg" alt="">
+          </span>
           Имя пользователя: {{ userInfo?.username }}
         </div>
         <template v-if="userInfo?.email !== null">
           <div class="info-block">
+          <span>
+            <img src="../../../assets/icons/user/email.svg" alt="id-img">
+          </span>
             Email: {{ userInfo?.email }}
           </div>
         </template>
         <template v-else>
           <div class="info-block">
+            <span>
+              <img src="../../../assets/icons/user/email.svg" alt="id-img">
+            </span>
             Email: Отсутствует
           </div>
         </template>
@@ -61,7 +73,10 @@
             Изменить email
           </button>
         </div>
-        <div class="info-block">
+        <div class="info-block password-block">
+          <span>
+            <img src="../../../assets/icons/user/passkey.svg" alt="id-img">
+          </span>
           Пароль: <input disabled type="password" value="12345678">
         </div>
         <div class="button-block">
