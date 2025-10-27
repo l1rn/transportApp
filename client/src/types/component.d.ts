@@ -11,3 +11,10 @@ export interface ModalPropsView {
     model: Ref<string | number | null>;
     storeKey: string;
 }
+
+export interface PaymentPageProps {
+    title: string;
+    price: number;
+    paymentMethods: Array<string>;
+    hasEmail: boolean;
+} 

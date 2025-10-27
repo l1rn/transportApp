@@ -18,7 +18,9 @@ const routes = [
     },
     { 
         path: '/route/payment', 
-        component: PaymentPageView, 
+        name: 'payment',
+        component: PaymentPageView,
+        props: true
     },
     { 
         path: '/routes', 

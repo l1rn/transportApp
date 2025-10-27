@@ -46,10 +46,18 @@
         </div>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import router from '@/routers/router';
+import { PaymentPageProps } from '@/types/component';
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
+const paymentData = ref<PaymentPageProps>(); 
+
+paymentData.value = route.query.data ? JSON.parse(route.query.data as string) : null;
+console.log(paymentData.value);
 </script>
 <style scoped lang="scss">
-    
+
 </style>

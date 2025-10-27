@@ -36,7 +36,9 @@
 
     <div class="main-container-profile">
       <template v-if="nav.chooseOrders">
-        <BookingsWrapperView />  
+        <BookingsWrapperView
+          :has-email="userInfo?.email !== null" 
+        />  
       </template>
       <template v-if="nav.chooseSettings">
           <UserSettingsControlView :user-info="userInfo" />
@@ -49,7 +51,6 @@
 </template>
 <script setup lang="ts">
 import UserSettingsControlView from "../molecule/profile/UserSettingsControlView.vue";
-import BackButtonView from "@/components/atom/BackButtonView.vue";
 import { onMounted, onUnmounted, ref, watch  } from "vue";
 import AdminPanelView from "@/components/admin/AdminPanelView.vue";
 import BookingsWrapperView from "@/components/molecule/profile/BookingsWrapperView.vue";

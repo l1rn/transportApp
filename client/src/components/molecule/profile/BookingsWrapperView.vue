@@ -58,7 +58,7 @@
         </div>
 
         <div class="button-container">
-          <button>
+          <button @click="handlePayment(booking)">
             Оплатить
           </button>
           <button>Отменить</button>
@@ -72,11 +72,19 @@
 <script setup lang="ts">
 import { bookingService } from '@/services/bookingService';
 import { BookingResponse } from '@/types/booking';
+import { PaymentPageProps } from '@/types/component';
 import { Ref } from 'vue';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const props = defineProps<{
+  hasEmail: boolean;
+}>();
 
 const bookings: Ref<BookingResponse[]> = ref([]);
 const isLoading = ref(false);
+
+const router = useRouter();
 
 const getBookings = async () => {
   isLoading.value = true;
@@ -89,6 +97,25 @@ const getBookings = async () => {
     isLoading.value = false;
   }
 };
+
+const handlePayment = (booking: BookingResponse) => {
+  const paymentData: PaymentPageProps = {
+    title: `ID#${booking.id}; 
+    ${booking.route.routeFrom} - ${booking.route.routeTo}; 
+    ${booking.route.date}; 
+    ${booking.route.transport}`,
+    price: booking.route.price,
+    paymentMethods: ["Баланс профиля"],
+    hasEmail: props.hasEmail
+  };
+
+  router.push({
+    name: 'payment',
+    query: {
+      data: JSON.stringify(paymentData)
+    }
+  })
+}
 
 onMounted(async () => {
   await getBookings();
