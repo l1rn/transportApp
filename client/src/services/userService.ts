@@ -21,15 +21,25 @@ class UserService {
 
     // user account
     public async requestUserEmail(newEmail: string): Promise<AxiosResponse> {
-        return await api.post(`/users/set-email`, { email: newEmail });
+        return await api.post(`/users/set-email`, { 
+            email: newEmail 
+        });
     }
     
     public async confirmUserEmail(code: string): Promise<AxiosResponse> {
-        return await api.post(`/users/confirm-email`, { code: code });
+        return await api.post(`/users/confirm-email`, { 
+            code: code 
+        });
     }
 
     public async requestTopUp(amount: number): Promise<AxiosResponse> {
         return await api.post(`/users/account/top-up?amount=${amount}`)
+    }
+    
+    public async confirmTopUp(code: string): Promise<AxiosResponse> {
+        return await api.post(`/users/account/confirm-top-up`, { 
+            code: code
+        })
     }
 }
 

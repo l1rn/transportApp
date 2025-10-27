@@ -18,8 +18,8 @@
             </div>
             <div class="input-container">
                 <input 
-                :type="props.inputType"
                 v-model="localValue"
+                :type="props.inputType"
                 :placeholder="props.inputPlaceholder"
                 >
                 <button @click="props.submitFunc">
@@ -32,18 +32,10 @@
 <script setup lang="ts">
 import { useConditionalClickOutside } from '@/composable/useConditionalClickOutside';
 import { useModalStore } from '@/stores/useModalStore';
+import { ModalPropsView } from '@/types/component';
 import { ref } from 'vue';
 
-const props = defineProps<{
-    icon: string;
-    title: string;
-    desc: string;
-    inputPlaceholder: string;
-    buttonName: string;
-    inputType: string;
-    submitFunc: () => void | Promise<void>;
-    storeKey: string;
-}>();
+const props = defineProps<ModalPropsView>();
 
 const localValue = defineModel<string | number | null>({
     default: ''
@@ -54,8 +46,8 @@ const modalStore = useModalStore();
 
 useConditionalClickOutside(
     formRef,
-    () => modalStore.isOpen(props.storeKey),
-    () => modalStore.close(props.storeKey)
+    () => modalStore.isOpen(props.storeKey!),
+    () => modalStore.close(props.storeKey!)
 )
 </script>
 <style scoped lang="scss">

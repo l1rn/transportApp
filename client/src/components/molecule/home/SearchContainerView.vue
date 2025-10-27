@@ -19,7 +19,7 @@
       <div class="input-wrapper">
         <input-suggestion-view 
         v-model="filter.date" 
-        type="date"/>
+        type="date" />
         <input-suggestion-view 
         v-model="filter.transport" 
         type="select"
