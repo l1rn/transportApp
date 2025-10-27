@@ -1,22 +1,5 @@
 <template>
   <div class="booking-wrapper">
-    <div 
-    v-if="modalStore.isOpen('confirm-payment-form')"
-    class="confirm-payment-container">
-      <modal-form-view 
-        :icon="keyIcon"
-        title="Введите код подтверждения"
-        desc="Введите код, чтобы подтвердить заказ. 
-        Для подтверждения, введите этот код снизу. 
-        Код был отправлен на ваш привязаный email"
-        button-name="Подтвердить"
-        v-model="codeValue"
-        input-placeholder="123456"
-        input-type="text"
-        store-key="confirm-payment-form"
-        :submit-func="confirmPayment"
-      />
-    </div>
     <template 
     v-for="booking in bookings" 
     :key="booking.id">
@@ -75,7 +58,7 @@
         </div>
 
         <div class="button-container">
-          <button @click.stop="modalStore.open('confirm-payment-form')">
+          <button>
             Оплатить
           </button>
           <button>Отменить</button>
@@ -87,21 +70,13 @@
 </template>
 
 <script setup lang="ts">
-import keyIcon from "../../../assets/icons/key.svg";
 import { bookingService } from '@/services/bookingService';
 import { BookingResponse } from '@/types/booking';
 import { Ref } from 'vue';
 import { onMounted, ref } from 'vue';
-import ModalFormView from '@/components/atom/ModalFormView.vue';
-import notification from "@/plugins/notifications";
-import { AxiosError } from "axios";
-import { useModalStore } from "@/stores/useModalStore";
 
 const bookings: Ref<BookingResponse[]> = ref([]);
 const isLoading = ref(false);
-const codeValue = ref<string>("");
-
-const modalStore = useModalStore();
 
 const getBookings = async () => {
   isLoading.value = true;
@@ -114,20 +89,6 @@ const getBookings = async () => {
     isLoading.value = false;
   }
 };
-
-const confirmPayment = async(): Promise<void> => {
-  if(!codeValue.value || codeValue.value.length < 6){
-    notification.error("Введите достоверный код!");
-    return
-  }
-  try{
-    
-  }
-  catch(e){
-    const axiosError = e as AxiosError;
-    console.log(axiosError);
-  }
-}
 
 onMounted(async () => {
   await getBookings();
