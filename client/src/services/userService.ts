@@ -32,7 +32,7 @@ class UserService {
         });
     }
 
-    public async requestTopUp(amount: number): Promise<AxiosResponse> {
+    public async requestTopUp(amount: number | null): Promise<AxiosResponse> {
         return await api.post(`/users/account/top-up?amount=${amount}`)
     }
     

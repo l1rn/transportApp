@@ -158,8 +158,6 @@ import { useModalStore } from '@/stores/useModalStore';
 import { UserInfo } from '@/types/userData';
 import { computed, ref } from 'vue';
 
-import { AxiosError } from 'axios';
-import notification from '@/plugins/notifications';
 import { ModalPropsView } from "@/types/component";
 import { useRequestHandler } from "@/composable/useRequestHandler";
 
@@ -168,55 +166,43 @@ const props = defineProps<{
 }>();
 
 const submitEmailRequest = async(): Promise<void> => {
-  if(!newEmail.value || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(newEmail.value)) {
-    console.log('asdasd')
-    notification.error("Введите email!");
-    return;
-  }
-  try{
-    await userService.requestUserEmail(newEmail.value);
-    notification.success("Код с подтверждением отправлен вам на почту!");
-    newEmail.value = "";
-    modalStore.close('change-email-form');
-    modalStore.open('confirm-code-form')
-  }
-  catch(e){
-    const axiosError = e as AxiosError;
-    console.log(axiosError.status);
-  }
+  useRequestHandler().handleRequest(
+    () => userService.requestUserEmail(newEmail.value),
+    "Код с подтверждением отправлен вам на почту!",
+    "Введите email!",
+    'confirm-code-form',
+    'change-email-form',
+    newEmail,
+    !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(newEmail.value),
+  )
 }
 
 const submitTopUpRequest = async(): Promise<void> => {
-  if(!amountValue.value){
-    notification.error('Введите сумму!');
-    return;
-  }
-
-  try{
-    await userService.requestTopUp(amountValue.value);
-    notification.success("Код для подтверждения был отправлен на почту!");
-    amountValue.value = null;
-    modalStore.close('top-up-form');
-  }
-  catch(e){
-    const axiosError = e as AxiosError;
-    console.log(axiosError)
-  }
+  useRequestHandler().handleRequest(
+    () => userService.requestTopUp(amountValue.value),
+    "Код с подтверждением отправлен вам на почту!",
+    "Введите сумму!",
+    'confirm-withdraw-code-form',
+    'top-up-form',
+    amountValue,
+  )
 }
 
 const submitEmailCodeConfirm = async(): Promise<void> => {
-  useRequestHandler(codeValue).handleConfirm(
+  useRequestHandler().handleConfirm(
     () => userService.confirmUserEmail(codeValue.value),
     "Почта была успешно изменена!",
-    'confirm-code-form'
+    'confirm-code-form',
+    codeValue
   )
 }
 
 const submitTopUpCodeConfirm = async(): Promise<void> => {
   useRequestHandler().handleConfirm(
-    () => userService.confirmTopUp(codeValue.value),
+    () => userService.confirmTopUp(withdrawCodeValue.value),
     "Баланс был успешно пополнен!",
-    'confirm-code-form'
+    'confirm-withdraw-code-form',
+    withdrawCodeValue
   )
 }
 
@@ -225,21 +211,10 @@ const deviceId = ref();
 
 const newEmail = ref<string>("");
 const codeValue = ref<string>("");
+const withdrawCodeValue = ref<string>("");
 const amountValue = ref<number | null>(null);
 
 const modalsConfig: Record<string, ModalPropsView> = {
-  'top-up-form': {
-    icon: withdrawIcon,
-    title: "Введите сумму для пополнения",
-    desc: `Введите сумму на которую хотите попольнить ваш аккаунт. 
-          После нажатия на кнопку, код будет отправлен на вашу почту.`,
-    buttonName: "Подтвердить",
-    model: amountValue,
-    inputPlaceholder: "5000.00",
-    inputType: "text",
-    storeKey: "top-up-form",
-    submitFunc: submitTopUpRequest
-  },
   'change-email-form': {
     icon: emailIcon,
     title: "Введите email",
@@ -264,13 +239,25 @@ const modalsConfig: Record<string, ModalPropsView> = {
     storeKey: "confirm-code-form",
     submitFunc: submitEmailCodeConfirm
   },
+  'top-up-form': {
+    icon: withdrawIcon,
+    title: "Введите сумму для пополнения",
+    desc: `Введите сумму на которую хотите попольнить ваш аккаунт. 
+          После нажатия на кнопку, код будет отправлен на вашу почту.`,
+    buttonName: "Отправить код",
+    model: amountValue,
+    inputPlaceholder: "5000.00",
+    inputType: "text",
+    storeKey: "top-up-form",
+    submitFunc: submitTopUpRequest
+  },
   'confirm-withdraw-code-form': {
     icon: keyIcon,
     title: "Введите код подтверждения",
     desc: `Введите код, чтобы подтвердить операцию. 
     Для подтверждения, введите этот код снизу. После нажатия на кнопку, деньги будут на вашем валансе`,
     buttonName: "Подтвердить",
-    model: codeValue,
+    model: withdrawCodeValue,
     inputPlaceholder: "123456",
     inputType:"text",
     storeKey: "confirm-withdraw-code-form",

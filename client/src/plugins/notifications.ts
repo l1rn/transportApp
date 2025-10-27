@@ -37,7 +37,6 @@ const showNotification = (
 
     const id = Date.now();
     notifications.value.push({ id, type, message});
-    console.log("notification created");
     setTimeout(() => {
         notifications.value = notifications.value.filter(n => n.id !== id);
     }, duration);

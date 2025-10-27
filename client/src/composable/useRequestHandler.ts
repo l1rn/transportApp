@@ -2,36 +2,35 @@ import notification from "@/plugins/notifications";
 import { userService } from "@/services/userService";
 import { useModalStore } from "@/stores/useModalStore";
 import { AxiosError, AxiosResponse } from "axios";
-import { ref } from "vue";
+import { Ref } from "vue";
 
 export const useRequestHandler = () => {
-    const vModelValue = ref('');
     const modalStore = useModalStore();
 
     const handleRequest = async(
-        confirmFunc: (data: number | string) => Promise<AxiosResponse>,
+        confirmFunc: (data: number | string | null) => Promise<AxiosResponse>,
         successMsg: string,
         errorMessage: string = 'Произошла ошибка',
         modalKey: string,
         modalKeyClose: string, 
-        extraCheck?: boolean
+        vmodel: Ref<number | string | null>,
+        extraCheck?: boolean,
     ): Promise<void> => {
-        if(!vModelValue.value || !extraCheck) {
+        if(extraCheck){
+            notification.error(errorMessage);
+            return;
+        }
+        if(!vmodel.value) {
             notification.error(errorMessage);
             return;
         }
 
         try{
-            await confirmFunc(vModelValue.value);
+            await confirmFunc(vmodel.value);
             notification.success(successMsg);
-            vModelValue.value = "";
-            if(modalKeyClose){
-                modalStore.close(modalKeyClose);
-                modalStore.open(modalKey)
-            }
-            else {
-                modalStore.open(modalKey);
-            }
+            vmodel.value = "";
+            modalStore.close(modalKeyClose);
+            modalStore.open(modalKey);
         }
         catch(e){
             const axiosError = e as AxiosError;
@@ -42,17 +41,18 @@ export const useRequestHandler = () => {
     const handleConfirm = async(
         confirmFunc: (code: string) => Promise<AxiosResponse>,
         successMsg: string,
-        modalKey: string
+        modalKey: string,
+        vmodel: Ref<string | null>
     ): Promise<void> => {
-        if(!vModelValue.value || vModelValue.value.length < 6){
+        if(!vmodel.value){
             notification.error("Введите действительный код!");
             return;
         }
 
         try{
-            await confirmFunc(vModelValue.value);
+            await confirmFunc(vmodel.value);
             notification.success(successMsg);
-            vModelValue.value = '';
+            vmodel.value = '';
             modalStore.close(modalKey);
         }
         catch(e){
@@ -62,7 +62,6 @@ export const useRequestHandler = () => {
     }
 
     return {
-        vModelValue,
         handleConfirm,
         handleRequest
     }
