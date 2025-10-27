@@ -54,14 +54,14 @@
           <div class="user-info-subcontainer">
             <div class="secondary-container">
               <template v-if="userInfo?.email !== null">
-              <div class="info-block">
-              <span>
-                <img 
-                src="../../../assets/icons/user/email.svg" 
-                alt="id-img">
-              </span>
-                Email: {{ userInfo?.email }}
-              </div>
+                <div class="info-block">
+                <span>
+                  <img 
+                  src="../../../assets/icons/user/email.svg" 
+                  alt="id-img">
+                </span>
+                  Email: {{ userInfo?.email }}
+                </div>
               </template>
               <template v-else>
                 <div class="info-block">
@@ -80,13 +80,14 @@
               </div>
             </div>
             <div class="secondary-container">
-              <div class="info-block">
-              <span>
-                <img 
-                src="../../../assets/icons/user/passkey.svg" 
-                alt="id-img">
-              </span>
-                Пароль: <input 
+              <div class="info-block password-block">
+                <span>
+                  <img 
+                  src="../../../assets/icons/user/passkey.svg" 
+                  alt="id-img">
+                </span>
+                Пароль: 
+                <input 
                 disabled 
                 type="password" 
                 value="12345678">
