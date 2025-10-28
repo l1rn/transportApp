@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -61,9 +62,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding confirmationBinding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue)
-                .to(exchange)
+    public Binding confirmationBinding(
+            @Qualifier("confirmationQueue") Queue confirmationQueue,
+            @Qualifier("confirmationExchange") TopicExchange confirmationExchange) {
+        return BindingBuilder.bind(confirmationQueue)
+                .to(confirmationExchange)
                 .with(CONFIRMATION_ROUTING_KEY);
     }
 
@@ -78,9 +81,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding paymentSuccessBinding(Queue queue, TopicExchange exchange){
-        return BindingBuilder.bind(queue)
-                .to(exchange)
+    public Binding paymentSuccessBinding(
+            @Qualifier("paymentSuccessQueue") Queue paymentQueue,
+            @Qualifier("paymentExchange") TopicExchange paymentExchange){
+        return BindingBuilder.bind(paymentQueue)
+                .to(paymentExchange)
                 .with(PAYMENT_ROUTING_KEY);
     }
 

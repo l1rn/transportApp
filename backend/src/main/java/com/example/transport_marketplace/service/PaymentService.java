@@ -40,6 +40,10 @@ public class PaymentService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User was not found by this token"));
 
+        if(user.getEmail() == null){
+            throw new RuntimeException("Email не был привязан!");
+        }
+
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking was not found by this id"));
 
@@ -79,8 +83,8 @@ public class PaymentService {
                     .build();
 
             rabbitTemplate.convertAndSend(
-                    "notification.exchange",
-                    "notification.code",
+                    "confirmation.exchange",
+                    "confirmation.code",
                     event
             );
 
