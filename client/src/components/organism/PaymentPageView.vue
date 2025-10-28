@@ -2,40 +2,52 @@
     <div class="payment-wrapper">
         <div class="payment-container">
             <div class="header-container">
-                <div class="title">
-                    title
+                <div class="info-container">
+                    <div class="title">
+                    Заказ: {{ paymentData?.title }}
+                    </div>
+                    <div class="price">
+                        {{ paymentData?.price}} Р
+                    </div>
                 </div>
-                <div class="price">
-                    222 Р
+                <div class="line-container"></div>
+                <div class="payment-method-container">
+                    <div class="label">
+                        выбор способа оплаты:
+                    </div>
+                    <input type="text">
+                    <template 
+                    v-if="paymentData?.paymentMethods">
+                        <div 
+                        v-for="method in paymentData.paymentMethods"
+                        :key="method">
+                            {{ method }}
+                        </div>       
+                    </template>
                 </div>
             </div>
-            <div class="payment-method-container">
-                <div class="label">
-                    выбор способа оплаты:
+            
+            <div class="email-container">
+                <div class="input-block">
+                    <label for="email-input">Email</label>
+                    <input 
+                    id="email-input" 
+                    type="email"
+                    :disabled="paymentData?.hasEmail">
                 </div>
-                <input type="text">
+                <div class="input-block">
+                    <label for="email-input">Email повторно (только ручной ввод):</label>
+                    <input 
+                    id="email-input" 
+                    type="email"
+                    :disabled="paymentData?.hasEmail">
+                </div>
             </div>
             <template>
-                <div class="email-container">
-                    <div class="input-block">
-                        <label for="email-input">Email</label>
-                        <input 
-                        id="email-input" 
-                        type="email">
-                    </div>
-                    <div class="input-block">
-                        <label for="email-input">Email повторно (только ручной ввод):</label>
-                        <input 
-                        id="email-input" 
-                        type="email">
-                    </div>
+                <div class="code-confirmation-container">
+                    <input type="text">
+                    <button>Подтвердить</button>
                 </div>
-                <template>
-                    <div class="code-confirmation-container">
-                        <input type="text">
-                        <button>Подтвердить</button>
-                    </div>
-                </template>
             </template>
             <div class="button-container">
                 <button>Оплатить</button>
@@ -59,5 +71,56 @@ paymentData.value = route.query.data ? JSON.parse(route.query.data as string) : 
 console.log(paymentData.value);
 </script>
 <style scoped lang="scss">
+@import "../../assets/styles/static/mixin.d.scss";
+@import "../../assets/styles/static/color.d.scss";
 
+.payment-wrapper{
+    @include display-center();
+    width: 100%;
+    overflow-y: hidden;
+
+    .payment-container{
+        width: 80%;
+        background: #ccc;
+        max-width: 1024px;
+        padding: 1rem 2rem;
+        margin-top: 2rem;
+
+        .header-container{
+            @include display-column();
+            gap: 1rem;
+            .info-container{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .title{
+                    font-size: 1.5rem;
+                }
+                .price {
+                    font-size: 1.25rem;
+                }
+            }
+            .line-container{
+                height: 1px;
+                background: #000;
+            }
+        }
+        
+        .payment-method-container{
+            .label{
+                text-transform: uppercase;
+                font-size: 1.15rem;
+            }
+        }   
+        .email-container{
+            @include display-column();
+            .input-block{
+                @include display-column();
+            }
+        }
+        .code-confirmation-container{
+
+        }
+    }
+}
 </style>
