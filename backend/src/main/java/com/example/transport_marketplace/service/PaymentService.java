@@ -1,6 +1,7 @@
 package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.config.CodeGenerator;
+import com.example.transport_marketplace.dto.payment.ConfirmPaymentRequest;
 import com.example.transport_marketplace.enums.PaymentMethod;
 import com.example.transport_marketplace.enums.PaymentStatus;
 import com.example.transport_marketplace.events.ConfirmationCodeEvent;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +36,7 @@ public class PaymentService {
     @Autowired
     private final BookingRepository bookingRepository;
 
-    public void createPayment(String username, Integer bookingId, PaymentMethod method) {
+    public String createPayment(String username, Integer bookingId, PaymentMethod method) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User was not found by this token"));
 
@@ -43,10 +46,13 @@ public class PaymentService {
         String storedCode = CodeGenerator.generateCode();
         LocalDateTime codeExpiration = CodeGenerator.generateExpiryTime();
 
+        UUID uuid = UUID.randomUUID();
+
         Payment payment = Payment.builder()
                 .amount(booking.getRoute().getPrice())
                 .paymentStatus(PaymentStatus.PENDING)
                 .paymentMethod(method)
+                .externalId(uuid)
                 .description("Оплата бронирования #" + booking.getId()
                         + " ("  + booking.getRoute().getRouteFrom() + " - " + booking.getRoute().getRouteTo() + ")")
                 .confirmationCode(storedCode)
@@ -55,7 +61,10 @@ public class PaymentService {
                 .user(user)
                 .build();
 
+        paymentRepository.save(payment);
+
         sendConfirmationCode(user, storedCode, payment);
+        return uuid.toString();
     }
 
     public void sendConfirmationCode(User user, String code, Payment payment){
@@ -70,8 +79,8 @@ public class PaymentService {
                     .build();
 
             rabbitTemplate.convertAndSend(
-                    "payment.exchange",
-                    "payment.success",
+                    "notification.exchange",
+                    "notification.code",
                     event
             );
 
@@ -79,6 +88,20 @@ public class PaymentService {
         } catch (Exception e) {
             log.error("Failed to send confirmation code to user {}", user.getEmail(), e);
         }
+    }
+
+    public void confirmPayment(String username, ConfirmPaymentRequest request){
+        Payment payment = paymentRepository.findByExternalId(UUID.fromString(request.getExternalId()))
+                .orElseThrow(() -> new RuntimeException("Не удалось найти платеж по id"));
+
+        if(!Objects.equals(payment.getConfirmationCode(), request.getCode())){
+            throw new RuntimeException("Коды не совпадают!");
+        }
+
+        payment.setPaymentStatus(PaymentStatus.SUCCEEDED);
+        paymentRepository.save(payment);
+
+        sendPaymentSuccessEvent(payment);
     }
 
     private void sendPaymentSuccessEvent(Payment payment){

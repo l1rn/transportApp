@@ -86,10 +86,10 @@ public class UsersController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public ResponseEntity<?> getMyDevices(
-            HttpServletRequest request
+            @AuthenticationPrincipal UserDetails userDetails
     ){
         try {
-            return ResponseEntity.ok(userService.getInfoByUsername(getAccessCookie(request)));
+            return ResponseEntity.ok(userService.getInfoByUsername(userDetails.getUsername()));
         } catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Не удалось получать информацию о вас");
         }
@@ -98,10 +98,10 @@ public class UsersController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/set-email")
     public ResponseEntity<?> requestUserEmail(
-            HttpServletRequest request,
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ChangeEmailRequest emailDTO){
         try{
-            return ResponseEntity.ok(userService.setUserEmail(getAccessCookie(request), emailDTO.getEmail()));
+            return ResponseEntity.ok(userService.setUserEmail(userDetails.getUsername(), emailDTO.getEmail()));
         }
         catch (NullPointerException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -115,10 +115,10 @@ public class UsersController {
     @PostMapping("/confirm-email")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> confirmUserEmail(
-            HttpServletRequest request,
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ConfirmCodeResponse codeResponse){
         try{
-            return ResponseEntity.ok(userService.confirmEmail(getAccessCookie(request), codeResponse.getCode()));
+            return ResponseEntity.ok(userService.confirmEmail(userDetails.getUsername(), codeResponse.getCode()));
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
@@ -127,11 +127,11 @@ public class UsersController {
     @PostMapping("/account/top-up")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> requestWithdraw (
-            HttpServletRequest request,
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam double amount
     ) {
         try{
-            return ResponseEntity.ok(userService.requestTopUp(getAccessCookie(request), amount));
+            return ResponseEntity.ok(userService.requestTopUp(userDetails.getUsername(), amount));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось отправить запрос: " + e.getMessage());
         }
@@ -140,11 +140,11 @@ public class UsersController {
     @PostMapping("/account/confirm-top-up")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> confirmWithdraw(
-            HttpServletRequest request,
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ConfirmCodeResponse codeResponse
     ) {
         try{
-            return ResponseEntity.ok(userService.confirmTopUp(getAccessCookie(request), codeResponse.getCode()));
+            return ResponseEntity.ok(userService.confirmTopUp(userDetails.getUsername(), codeResponse.getCode()));
         }
         catch(NullPointerException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -154,14 +154,5 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }
-    }
-
-    private String getAccessCookie(HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
-        return Arrays.stream(cookies)
-                .filter(c -> "accessToken".equals(c.getName()))
-                .findFirst()
-                .map(Cookie::getValue)
-                .orElseThrow(() -> new RuntimeException("Не удалось получить токен"));
     }
 }

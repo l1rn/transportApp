@@ -1,4 +1,4 @@
-package com.example.transport_marketplace.config;
+package com.example.transport_marketplace.listeners;
 
 import com.example.transport_marketplace.events.ConfirmationCodeEvent;
 import com.example.transport_marketplace.events.PaymentSuccessEvent;
@@ -16,15 +16,24 @@ public class EmailNotificationListener {
     @Autowired
     private final EmailService emailService;
 
-    @RabbitListener(queues = "payment.success.queue")
+    @RabbitListener(queues = "confirmation.code.queue")
     public void handlePaymentNotification(ConfirmationCodeEvent event){
         log.info("Получено событие для отправки email: {}", event.getPaymentId());
 
         try{
-            emailService.sendBookingConfirmation(event.getUserEmail(), event);
+            emailService.sendPaymentCode(event.getUserEmail(), event);
             log.info("Email успешно отправлен в MailHog для платежа {}", event.getPaymentId());
         } catch (Exception e) {
             log.error("Ошибка отправки email через MailHog для платежа {}", event.getPaymentId(), e);
+        }
+    }
+
+    @RabbitListener(queues = "payment.success.queue")
+    public void handlePaymentSuccessEvent(PaymentSuccessEvent event){
+        try {
+            emailService.sendPaymentConfirmation(event.getUserEmail(), event);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -23,17 +23,31 @@ import java.time.format.DateTimeFormatter;
 public class EmailService {
     @Autowired
     private final JavaMailSender mailSender;
+    private static final String MAIN_EMAIL = "noreply@transport-marketplace.com";
 
-    public void sendBookingConfirmation(String toEmail, ConfirmationCodeEvent event){
+    public void sendPaymentCode(String toEmail, ConfirmationCodeEvent event){
+        try{
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(MAIN_EMAIL);
+            message.setTo(toEmail);
+            message.setSubject("Пришел код подтверждения!");
+            message.setText("Ваш код подтверждения: " + event.getConfirmationCode());
+
+            mailSender.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendPaymentConfirmation(String toEmail, PaymentSuccessEvent event){
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-            helper.setFrom("noreply@transport-marketplace.com");
+            helper.setFrom(MAIN_EMAIL);
             helper.setTo(toEmail);
-            helper.setSubject("✅ Подтверждение бронирования #" + event.getUserEmail());
+            helper.setSubject("✅ Подтверждение бронирования #" + event.getBookingId());
             String emailContent = buildEmailContent(event);
-            helper.setText(emailContent, true);
+            helper.setText(emailContent);
 
             mailSender.send(message);
         } catch (Exception e) {
@@ -44,7 +58,7 @@ public class EmailService {
     public void sendConfirmationCodeNewEmail(String userEmail, String code){
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("noreply@ololotravel.com");
+            message.setFrom(MAIN_EMAIL);
             message.setTo(userEmail);
             message.setSubject("Email Confirmation Code");
             message.setText("Your confirmation code is: " + code);
@@ -57,7 +71,7 @@ public class EmailService {
     public void sendConfirmationCodeTopUp(String userEmail, String code, double amount){
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("noreply@ololotravel.com");
+            message.setFrom(MAIN_EMAIL);
             message.setTo(userEmail);
             message.setSubject("Top up Confirmation Code");
             message.setText("Your confirmation code is: " + code + "\nYour amount is: " + amount);
@@ -68,7 +82,7 @@ public class EmailService {
         }
     }
 
-    public String buildEmailContent(ConfirmationCodeEvent event){
+    public String buildEmailContent(PaymentSuccessEvent event){
         return """
                 <!DOCTYPE html>
                     <html>
@@ -82,16 +96,18 @@ public class EmailService {
                     </head>
                     <body>
                         <div class="header">
-                            <h1>Код для подтвержденя!</h1>
+                            <h1>✅ Бронирование подтверждено!</h1>
                         </div>
                         <div class="content">
                             <p>Здравствуйте, <strong>%s</strong>!</p>
-                            <p>Ваше бронирование на этапе оплаты.</p>
+                            <p>Ваше бронирование успешно оплачено.</p>
                             <h3>Детали бронирования:</h3>
                             <ul>
+                                <li><strong>Номер брони:</strong> %s</li>
+                                <li><strong>Маршрут:</strong> %s</li>
                                 <li><strong>Сумма:</strong> %s руб.</li>
-                                <li><strong>Код подтверждения:</strong> %s</li>
-                                <li>Время создания: %s</li>
+                                <li><strong>Способ оплаты:</strong> %s</li>
+                                <li><strong>Дата оплаты:</strong> %s</li>
                             </ul>
                             <p>Спасибо, что выбрали наш сервис!</p>
                         </div>
@@ -102,8 +118,10 @@ public class EmailService {
                     </html>
                 """.formatted(
                         event.getUserName(),
+                        event.getBookingId(),
+                        event.getRouteNumber(),
                         event.getAmount(),
-                        event.getConfirmationCode(),
+                        event.getPaymentMethod(),
                         LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
         );
     }

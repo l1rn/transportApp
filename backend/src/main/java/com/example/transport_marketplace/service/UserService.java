@@ -95,8 +95,8 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь c ID" + id + " не найден"));
     }
 
-    public UserSettingsResponse getInfoByUsername(String accessToken){
-        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+    public UserSettingsResponse getInfoByUsername(String username){
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         List<Device> devices = deviceRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Не найдено ни одно устройсто"));
@@ -117,8 +117,8 @@ public class UserService {
 
     /// ACCOUNT FUNCTIONS ///
 
-    public String setUserEmail(String accessToken, String newEmail){
-        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+    public String setUserEmail(String username, String newEmail){
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));
 
         String code = CodeGenerator.generateCode();
@@ -130,8 +130,8 @@ public class UserService {
         return "Код подтверждения отправлен на: " + newEmail;
     }
 
-    public String confirmEmail(String accessToken, String code){
-        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+    public String confirmEmail(String username, String code){
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));
 
         String savedCode = confirmationCodes.get(user.getUsername());
@@ -150,8 +150,8 @@ public class UserService {
         return user.getEmail();
     }
 
-    public String requestTopUp(String accessToken, double amount){
-        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+    public String requestTopUp(String username, double amount){
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));
 
         String code = CodeGenerator.generateCode();
@@ -162,8 +162,8 @@ public class UserService {
         return "Код подтверждения отправлен на " + user.getEmail();
     }
 
-    public double confirmTopUp(String accessToken, String code) {
-        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+    public double confirmTopUp(String username, String code) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));
 
         String savedCode = confirmationCodes.get(user.getEmail());

@@ -15,8 +15,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
+    // confirmation code events
+    public static final String CONFIRMATION_EXCHANGE = "confirmation.exchange";
+    public static final String CONFIRMATION_SUCCESS_QUEUE = "confirmation.code.queue";
+    public static final String CONFIRMATION_ROUTING_KEY = "confirmation.code";
+
+    // payment success events
     public static final String PAYMENT_EXCHANGE = "payment.exchange";
-    public static final String SUCCESS_QUEUE = "payment.success.queue";
+    public static final String PAYMENT_SUCCESS_QUEUE = "payment.success.queue";
     public static final String PAYMENT_ROUTING_KEY = "payment.success";
 
     @Bean
@@ -45,17 +51,34 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public TopicExchange confirmationExchange(){
+        return new TopicExchange(CONFIRMATION_EXCHANGE);
+    }
+
+    @Bean
+    public Queue confirmationQueue(){
+        return new Queue(CONFIRMATION_SUCCESS_QUEUE, true);
+    }
+
+    @Bean
+    public Binding confirmationBinding(Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue)
+                .to(exchange)
+                .with(CONFIRMATION_ROUTING_KEY);
+    }
+
+    @Bean
     public TopicExchange paymentExchange(){
         return new TopicExchange(PAYMENT_EXCHANGE);
     }
 
     @Bean
-    public Queue emailQueue(){
-        return new Queue(SUCCESS_QUEUE, true);
+    public Queue paymentSuccessQueue(){
+        return new Queue(PAYMENT_SUCCESS_QUEUE, true);
     }
 
     @Bean
-    public Binding emailBinding(Queue queue, TopicExchange exchange){
+    public Binding paymentSuccessBinding(Queue queue, TopicExchange exchange){
         return BindingBuilder.bind(queue)
                 .to(exchange)
                 .with(PAYMENT_ROUTING_KEY);
