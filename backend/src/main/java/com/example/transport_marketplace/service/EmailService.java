@@ -1,6 +1,7 @@
 package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.config.CodeGenerator;
+import com.example.transport_marketplace.events.ConfirmationCodeEvent;
 import com.example.transport_marketplace.events.PaymentSuccessEvent;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -23,17 +24,16 @@ public class EmailService {
     @Autowired
     private final JavaMailSender mailSender;
 
-    public void sendBookingConfirmation(String toEmail, PaymentSuccessEvent event){
+    public void sendBookingConfirmation(String toEmail, ConfirmationCodeEvent event){
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            helper.setTo(toEmail);
-            helper.setSubject("✅ Подтверждение бронирования #" + event.getBookingId());
-
             helper.setFrom("noreply@transport-marketplace.com");
+            helper.setTo(toEmail);
+            helper.setSubject("✅ Подтверждение бронирования #" + event.getUserEmail());
             String emailContent = buildEmailContent(event);
-            helper.setText(emailContent);
+            helper.setText(emailContent, true);
 
             mailSender.send(message);
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class EmailService {
         }
     }
 
-    public String buildEmailContent(PaymentSuccessEvent event){
+    public String buildEmailContent(ConfirmationCodeEvent event){
         return """
                 <!DOCTYPE html>
                     <html>
@@ -82,18 +82,16 @@ public class EmailService {
                     </head>
                     <body>
                         <div class="header">
-                            <h1>✅ Бронирование подтверждено!</h1>
+                            <h1>Код для подтвержденя!</h1>
                         </div>
                         <div class="content">
                             <p>Здравствуйте, <strong>%s</strong>!</p>
-                            <p>Ваше бронирование успешно оплачено.</p>
+                            <p>Ваше бронирование на этапе оплаты.</p>
                             <h3>Детали бронирования:</h3>
                             <ul>
-                                <li><strong>Номер брони:</strong> %s</li>
-                                <li><strong>Маршрут:</strong> %s</li>
                                 <li><strong>Сумма:</strong> %s руб.</li>
-                                <li><strong>Способ оплаты:</strong> %s</li>
-                                <li><strong>Дата оплаты:</strong> %s</li>
+                                <li><strong>Код подтверждения:</strong> %s</li>
+                                <li>Время создания: %s</li>
                             </ul>
                             <p>Спасибо, что выбрали наш сервис!</p>
                         </div>
@@ -104,10 +102,8 @@ public class EmailService {
                     </html>
                 """.formatted(
                         event.getUserName(),
-                        event.getBookingId(),
-                        event.getRouteNumber(),
                         event.getAmount(),
-                        event.getPaymentMethod(),
+                        event.getConfirmationCode(),
                         LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
         );
     }

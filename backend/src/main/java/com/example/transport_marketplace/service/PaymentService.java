@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -26,18 +27,14 @@ public class PaymentService {
     @Autowired
     private final RabbitTemplate rabbitTemplate;
     @Autowired
-    private final RouteRepository routeRepository;
-    @Autowired
     private final PaymentRepository paymentRepository;
-    @Autowired
-    private final JwtService jwtService;
     @Autowired
     private final UserRepository userRepository;
     @Autowired
     private final BookingRepository bookingRepository;
 
-    public Payment createPayment(String accessToken, Integer bookingId, PaymentMethod method) {
-        User user = userRepository.findByUsername(jwtService.getUsernameFromToken(accessToken))
+    public void createPayment(String username, Integer bookingId, PaymentMethod method) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User was not found by this token"));
 
         Booking booking = bookingRepository.findById(bookingId)
@@ -59,8 +56,6 @@ public class PaymentService {
                 .build();
 
         sendConfirmationCode(user, storedCode, payment);
-
-        return paymentRepository.save(payment);
     }
 
     public void sendConfirmationCode(User user, String code, Payment payment){
@@ -75,8 +70,8 @@ public class PaymentService {
                     .build();
 
             rabbitTemplate.convertAndSend(
-                    "notification.exchange",
-                    "confirmation.code",
+                    "payment.exchange",
+                    "payment.success",
                     event
             );
 

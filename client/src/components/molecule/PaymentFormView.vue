@@ -4,10 +4,10 @@
             <div class="header-container">
                 <div class="info-container">
                     <div class="title">
-                    Заказ: {{ paymentData?.title }}
+                    Товар: {{ props?.title }}
                     </div>
                     <div class="price">
-                        {{ paymentData?.price}} Р
+                        {{ props?.price}} Р
                     </div>
                 </div>
                 <div class="line-container"></div>
@@ -17,9 +17,9 @@
                     </div>
                     <input type="text">
                     <template 
-                    v-if="paymentData?.paymentMethods">
+                    v-if="props?.paymentMethods">
                         <div 
-                        v-for="method in paymentData.paymentMethods"
+                        v-for="method in props.paymentMethods"
                         :key="method">
                             {{ method }}
                         </div>       
@@ -33,14 +33,14 @@
                     <input 
                     id="email-input" 
                     type="email"
-                    :disabled="paymentData?.hasEmail">
+                    :disabled="props?.hasEmail">
                 </div>
                 <div class="input-block">
                     <label for="email-input">Email повторно (только ручной ввод):</label>
                     <input 
                     id="email-input" 
                     type="email"
-                    :disabled="paymentData?.hasEmail">
+                    :disabled="props?.hasEmail">
                 </div>
             </div>
             <template>
@@ -61,14 +61,9 @@
 <script setup lang="ts">
 import router from '@/routers/router';
 import { PaymentPageProps } from '@/types/component';
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
 
-const route = useRoute();
-const paymentData = ref<PaymentPageProps>(); 
+const props = defineProps<PaymentPageProps>();
 
-paymentData.value = route.query.data ? JSON.parse(route.query.data as string) : null;
-console.log(paymentData.value);
 </script>
 <style scoped lang="scss">
 @import "../../assets/styles/static/mixin.d.scss";

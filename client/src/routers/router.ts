@@ -4,7 +4,6 @@ import AllRoutesView from '@/components/organism/AllRoutesView.vue';
 import SearchRoutes from '@/components/SearchRoutesView.vue'
 import AdminPanelView from '@/components/admin/AdminPanelView.vue';
 import HomeView from '@/components/HomeView.vue';
-import PaymentPageView from '@/components/organism/PaymentPageView.vue';
 
 const routes = [
     {
@@ -15,12 +14,6 @@ const routes = [
         path: '/profile', 
         component: PageProfileView, 
         meta:{requiresAuth: true} 
-    },
-    { 
-        path: '/route/payment', 
-        name: 'payment',
-        component: PaymentPageView,
-        props: true
     },
     { 
         path: '/routes', 

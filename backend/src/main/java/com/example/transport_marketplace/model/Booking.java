@@ -2,6 +2,7 @@ package com.example.transport_marketplace.model;
 
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,6 +33,7 @@ public class Booking implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<Payment> payments = new ArrayList<>();

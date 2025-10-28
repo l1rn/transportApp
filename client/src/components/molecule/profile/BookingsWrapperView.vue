@@ -58,7 +58,7 @@
         </div>
 
         <div class="button-container">
-          <button @click="handlePayment(booking)">
+          <button @click="handlePayment(booking.id)">
             Оплатить
           </button>
           <button>Отменить</button>
@@ -77,10 +77,6 @@ import { Ref } from 'vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const props = defineProps<{
-  hasEmail: boolean;
-}>();
-
 const bookings: Ref<BookingResponse[]> = ref([]);
 const isLoading = ref(false);
 
@@ -98,21 +94,11 @@ const getBookings = async () => {
   }
 };
 
-const handlePayment = (booking: BookingResponse) => {
-  const paymentData: PaymentPageProps = {
-    title: `ID#${booking.id}; 
-    ${booking.route.routeFrom} - ${booking.route.routeTo}; 
-    ${booking.route.date}; 
-    ${booking.route.transport}`,
-    price: booking.route.price,
-    paymentMethods: ["Баланс профиля"],
-    hasEmail: props.hasEmail
-  };
-
+const handlePayment = (id: number) => {
   router.push({
     name: 'payment',
     query: {
-      data: JSON.stringify(paymentData)
+      bookingId: JSON.stringify(id)
     }
   })
 }

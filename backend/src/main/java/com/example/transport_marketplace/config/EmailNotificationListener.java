@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.config;
 
+import com.example.transport_marketplace.events.ConfirmationCodeEvent;
 import com.example.transport_marketplace.events.PaymentSuccessEvent;
 import com.example.transport_marketplace.service.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,8 @@ public class EmailNotificationListener {
     @Autowired
     private final EmailService emailService;
 
-    @RabbitListener(queues = "payment.email.queue")
-    public void handlePaymentNotification(PaymentSuccessEvent event){
+    @RabbitListener(queues = "payment.success.queue")
+    public void handlePaymentNotification(ConfirmationCodeEvent event){
         log.info("Получено событие для отправки email: {}", event.getPaymentId());
 
         try{
