@@ -2,18 +2,20 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "dev": "vite",
+    "serve": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "prepare": "husky"
   },
   "dependencies": {
     "@vuepic/vue-datepicker": "^11.0.2",
     "@vueuse/motion": "^3.0.3",
     "axios": "^1.12.2",
-    "core-js": "^3.46.0",
     "date-fns": "^4.1.0",
     "defu": "^6.1.4",
     "jwt-decode": "^4.0.0",
@@ -23,17 +25,12 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.4",
-    "@babel/eslint-parser": "^7.28.4",
-    "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@eslint/js": "^9.37.0",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.46.0",
     "@typescript-eslint/parser": "^8.46.0",
-    "@vue/cli-plugin-babel": "~5.0.9",
-    "@vue/cli-plugin-typescript": "~5.0.9",
-    "@vue/cli-service": "~5.0.9",
+    "@vitejs/plugin-vue": "^5.2.4",
     "@vue/compiler-sfc": "^3.5.22",
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/test-utils": "^2.4.6",
@@ -45,8 +42,9 @@
     "husky": "^9.1.7",
     "prettier": "3.6.2",
     "sass": "^1.93.2",
-    "sass-loader": "^16.0.5",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "vite": "^6.4.1",
+    "vue-template-compiler": "^2.6.11"
   },
   "overrides": {
     "eslint-webpack-plugin": "^4.2.0"

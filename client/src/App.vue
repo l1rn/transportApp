@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <!-- todo -->
+  <div id="app">
     <template v-if="showHeader" class="header">
       <HeaderView />
     </template>
