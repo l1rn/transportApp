@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory} from 'vue-router';
-import PageProfileView from '@/components/organism/PageProfileView.vue';
 import AllRoutesView from '@/components/organism/AllRoutesView.vue';
 import SearchRoutes from '@/components/SearchRoutesView.vue'
 import AdminPanelView from '@/components/admin/AdminPanelView.vue';
 import HomeView from '@/components/HomeView.vue';
+import ProfilePageView from '@/components/organism/ProfilePageView.vue';
+import PaymentPageView from '@/components/organism/PaymentPageView.vue';
 
 const routes = [
     {
@@ -12,7 +13,7 @@ const routes = [
     },
     { 
         path: '/profile', 
-        component: PageProfileView, 
+        component: ProfilePageView, 
         meta:{requiresAuth: true} 
     },
     { 
@@ -30,6 +31,12 @@ const routes = [
     { 
         path: '/home', 
         component: HomeView, 
+        meta: { showHeaders: false }
+    },
+    {
+        name: 'payment',
+        path: '/payment',
+        component: PaymentPageView,
         meta: { showHeaders: false }
     },
     { 

@@ -2,6 +2,7 @@ package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.config.CodeGenerator;
 import com.example.transport_marketplace.dto.payment.ConfirmPaymentRequest;
+import com.example.transport_marketplace.dto.payment.PreparationOrderResponse;
 import com.example.transport_marketplace.enums.PaymentMethod;
 import com.example.transport_marketplace.enums.PaymentStatus;
 import com.example.transport_marketplace.events.ConfirmationCodeEvent;
@@ -35,6 +36,26 @@ public class PaymentService {
     private final UserRepository userRepository;
     @Autowired
     private final BookingRepository bookingRepository;
+
+    public PreparationOrderResponse prepareOrder(String username, Integer bookingId){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User was not found by this token"));
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Не удалось найти заказ по данному id#" + bookingId));
+
+        return PreparationOrderResponse.builder()
+                .orderFullName(
+                        booking.getRoute().getRouteFrom() + " -> " +
+                        booking.getRoute().getRouteTo() + "; " +
+                        booking.getRoute().getTransport() + "; Дата: " +
+                        booking.getRoute().getDate()
+                )
+                .paymentMethods(Arrays.stream(PaymentMethod.values()).toList())
+                .price(booking.getRoute().getPrice())
+                .hasEmail(!user.getEmail().isEmpty())
+                .build();
+    }
 
     public String createPayment(String username, Integer bookingId, PaymentMethod method) {
         User user = userRepository.findByUsername(username)
@@ -102,6 +123,18 @@ public class PaymentService {
             throw new RuntimeException("Коды не совпадают!");
         }
 
+        if(!Objects.equals(payment.getUser().getUsername(), username)){
+            throw new RuntimeException("Вы не можете подтвердить этот платеж");
+        }
+
+        if (payment.getPaymentStatus() == PaymentStatus.CANCELLED){
+            throw new RuntimeException("Платеж отменен, создайте новый!");
+        }
+
+        if (payment.getPaymentStatus() == PaymentStatus.SUCCEEDED){
+            throw new RuntimeException("Платеж уже подтвержден!");
+        }
+
         payment.setPaymentStatus(PaymentStatus.SUCCEEDED);
         paymentRepository.save(payment);
 
@@ -123,5 +156,16 @@ public class PaymentService {
                 "payment.success",
                 event
         );
+    }
+
+    private void cancelPayment(String externalId){
+        Payment payment = paymentRepository.findByExternalId(UUID.fromString(externalId))
+                .orElseThrow(() -> new RuntimeException("Платеж не найден"));
+
+        if(payment.getPaymentStatus() == PaymentStatus.CANCELLED) {
+            throw new RuntimeException("Платеж был уже отменен!");
+        }
+
+        payment.setPaymentStatus(PaymentStatus.CANCELLED);
     }
 }

@@ -87,7 +87,7 @@ const signIn = async () => {
   }
   catch (error: any) {
     console.log(error.message);
-    notification.error('Ошибка: возможно вы ввели данные неправильно!');
+    notification.error('Возможно вы ввели данные неправильно!');
   }
 }
 const containerRef = ref<HTMLElement | null>(null);

@@ -22,7 +22,9 @@
                   </li>
                 </template>
                 <template v-else>
-                  <li @click.stop="openForm('login')" :class="{'auth': !isAuthenticated}">
+                  <li 
+                  @click.stop="openForm('login')" 
+                  :class="{'auth': !isAuthenticated}">
                     <span>🔑</span> Авторизация
                   </li>
                 </template>

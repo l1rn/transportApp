@@ -60,10 +60,10 @@
 </template>
 <script setup lang="ts">
 import router from '@/routers/router';
-import { PaymentPageProps } from '@/types/component';
 
-const props = defineProps<PaymentPageProps>();
-
+onMounted(async() => {
+  cost  
+})
 </script>
 <style scoped lang="scss">
 @import "../../assets/styles/static/mixin.d.scss";

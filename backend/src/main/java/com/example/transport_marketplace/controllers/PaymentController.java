@@ -24,6 +24,20 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PreAuthorize("isAuthenticated()")
+    @GetMapping("/get-info")
+    public ResponseEntity<?> preparePayment(
+        @AuthenticationPrincipal UserDetails userDetails,
+        @RequestParam int bookingId
+    ){
+        try{
+            return ResponseEntity.ok(paymentService.prepareOrder(userDetails.getUsername(), bookingId));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal server error: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public ResponseEntity<?> createPayment(
             @AuthenticationPrincipal UserDetails userDetails,
