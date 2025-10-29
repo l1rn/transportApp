@@ -430,5 +430,5 @@ const formatTime = (timeString) => {
 };
 </script>
 <style scoped lang="sass">
-@import "@/assets/styles/searchObjects/search-box"
+@use "../assets/styles/searchObjects/search-box"
 </style>

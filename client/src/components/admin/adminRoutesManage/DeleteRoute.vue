@@ -203,5 +203,5 @@ name: "AppRoutesFilter"
 }
 </script>
 <style scoped lang="sass">
-@import "@/assets/styles/adminObjects/delete-page"
+@use "../../../assets/styles/adminObjects/delete-page"
 </style>

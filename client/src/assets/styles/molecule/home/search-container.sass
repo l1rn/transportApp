@@ -1,5 +1,5 @@
-@import "../../static/color.d.scss"
-@import "../../static/mixin.d.scss"
+@use "../../static/color" as colors
+@use "../../static/mixin" as mixins
 
 .main-search-container
   position: relative
@@ -10,23 +10,23 @@
   .search-wrapper
     display: flex
     gap: 2rem
-    background: $white
+    background: colors.$white
     border-radius: 16px
     padding: 1.5rem 1rem
-    box-shadow: $input-shadow
+    box-shadow: colors.$input-shadow
     .input-wrapper
-      @include display-column()
+      @include mixins.display-column()
       gap: 0.5rem
     .search-container
-      @include display-center()
+      @include mixins.display-center()
 
 .search-container
   display: flex
   gap: 1.25rem
   .trash-button-custom
-    @include button-clear()
+    @include mixins.button-clear()
     background: #a83636
-    color: $white
+    color: colors.$white
     font-weight: 600
     text-transform: uppercase
     padding: 1rem 2rem
@@ -53,9 +53,9 @@
       filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1))
     
   .search-button-custom
-    @include button-clear()
-    background: linear-gradient(145deg, $secondary, darken($secondary, 10%))
-    color: $white
+    @include mixins.button-clear()
+    background: linear-gradient(145deg, colors.$secondary, darken(colors.$secondary, 10%))
+    color: colors.$white
     border-radius: 0.75rem
     padding: 1rem 2rem
     font-weight: 600
@@ -67,7 +67,7 @@
     gap: 0.2rem
     &:hover
       transform: translateY(-2px)
-      box-shadow: 0 5px 15px rgba($secondary, 0.3)
+      box-shadow: 0 5px 15px rgba(colors.$secondary, 0.3)
 
     &:active
       transform: translateY(1px)

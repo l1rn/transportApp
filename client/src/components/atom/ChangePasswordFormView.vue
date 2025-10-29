@@ -99,8 +99,8 @@ useConditionalClickOutside(
 )
 </script>
 <style scoped lang="scss">
-@import "../../assets/styles/static/mixin.d.scss";
-@import "../../assets/styles/static/color.d.scss";
+@use "../../assets/styles/static/mixin" as mixins;
+@use "../../assets/styles/static/color" as colors;
 
 
 .change-password-form {
@@ -115,7 +115,7 @@ useConditionalClickOutside(
     }
 
     .form-wrapper {
-        background: $white;
+        background: colors.$white;
         display: flex;
         flex-direction: column;
         gap: 1rem;
@@ -132,7 +132,7 @@ useConditionalClickOutside(
         }
 
         input {
-            @include custom-input();
+            @include mixins.custom-input();
         }
 
         .input-block {
@@ -141,7 +141,7 @@ useConditionalClickOutside(
         }
 
         .submit-button {
-            @include button-clear(#163570, #ffffff);
+            @include mixins.button-clear(#163570, #ffffff);
             font-size: 20px;
             padding: 0.7rem 1rem;
             border-radius: 8px;

@@ -142,5 +142,5 @@ useConditionalClickOutside(
 </script>
 
 <style scoped lang="sass">
-@import '@/assets/styles/molecule/auth/sign-form.sass'
+@use '../../../assets/styles/molecule/auth/sign-form'
 </style>

@@ -135,14 +135,14 @@ watch(localValue, (newValue) => {
 })
 </script>
 <style lang="scss">
-@import "../../assets/styles/static/color.d.scss";
-@import "../../assets/styles/static/mixin.d.scss";
+@use "../../assets/styles/static/color" as colors;
+@use "../../assets/styles/static/mixin" as mixins;
 
 .smart-input-wrapper {
     .input-container {
         position: relative;
         input {
-            @include custom-input();
+            @include mixins.custom-input();
         }
         input[type="select"]{
             cursor: pointer;
@@ -170,7 +170,7 @@ watch(localValue, (newValue) => {
 
 .suggestions-list {
     position: absolute;
-    background: $white;
+    background: colors.$white;
     width: 100%;
     top: 100%;
     left: 0;
@@ -190,9 +190,9 @@ watch(localValue, (newValue) => {
             cursor: pointer;
             padding: 0.3rem 1rem;
             font-weight: 600;
-            border-bottom: 1px solid $light-gray;
+            border-bottom: 1px solid colors.$light-gray;
             &:hover {
-                background: $hover-white;
+                background: colors.$hover-white;
             }
             &:first-child {
                 border-radius: 8px 8px 0 0;

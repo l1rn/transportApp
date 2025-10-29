@@ -11,11 +11,15 @@
   </div>
 </template>
 <style lang="scss">
-@import "../../assets/styles/static/mixin.d.scss";
+@use "../../assets/styles/static/mixin" as mixins;
+@use "../../assets/styles/static/color" as colors;
 
 .button-container{
     .button-back-header{
-    @include button-clear($back: $primary-blue, $color: $white);
+    @include mixins.button-clear(
+      $back: colors.$primary-blue, 
+      $color: colors.$white
+    );
     padding: 0.8rem 3rem;
     font-size: 16px;
     border-radius: 0.5rem;
@@ -24,7 +28,7 @@
     &:hover{
         transform: translateY(-2px);
         box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        background: darken($primary-blue, 5%);
+        background: darken(colors.$primary-blue, 5%);
     }         
   }
 }

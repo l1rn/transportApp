@@ -1,5 +1,5 @@
-@import "../../assets/styles/static/color.d.scss";
-@import "../../assets/styles/static/mixin.d.scss";
+@use "../styles/static/mixin";
+@use "../styles/static/color" as colors;
 
 @font-face {
   font-family: 'Montserrat';
@@ -14,7 +14,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: $main-white;
+  background: colors.$main-white;
 }
 
 .clr-black {

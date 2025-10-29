@@ -1,4 +1,4 @@
-@import "../../styles/static/color.d.scss";
+@use "../../styles/static/color" as colors;
 
 *
   font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
@@ -64,9 +64,9 @@
 .b-form-input
   padding: 0.5rem 1.25rem
   font-size: 1rem
-  border-radius: $border-radius
-  background: $white
-  border: 2px solid $light-gray
+  border-radius: 8px
+  background: colors.$white
+  border: 2px solid colors.$light-gray
   outline: none
   font-weight: 600
   color: #1e293b
@@ -176,7 +176,7 @@
     position: relative
     
     thead
-        background: linear-gradient(135deg, $primary-blue 0%, darken($primary-blue, 8%) 100%)
+        background: linear-gradient(135deg, colors.$primary-blue 0%, darken(colors.$primary-blue, 8%) 100%)
         color: white
         font-weight: 600
         text-transform: uppercase
@@ -198,13 +198,13 @@
     
     tbody
         tr
-            transition: $transition
+            transition: colors.$transition
             
             &:nth-child(even)
                 background: #f8f9fa
             
             &:hover
-                background: $hover-white
+                background: colors.$hover-white
                 transform: scale(1.005)
                 box-shadow: 0 4px 12px rgba(0,0,0,0.08)
             
@@ -216,7 +216,7 @@
                 
                 &:first-child
                     font-weight: 600
-                    color: $primary-blue
+                    color: colors.$primary-blue
 
 .time-cell
     position: relative
@@ -234,7 +234,7 @@
         background: rgba(0,0,0,0.05)
         border-radius: 6px
         font-size: 0.75em
-        color: $secondary
+        color: colors.$secondary
         margin-left: 8px
         transform: translateY(-2px)
 .pagination
@@ -246,12 +246,12 @@
     
     .page-button
         padding: 0.8rem 2rem
-        background: linear-gradient(135deg, $primary-blue 0%, darken($primary-blue, 5%) 100%)
+        background: linear-gradient(135deg, colors.$primary-blue 0%, darken(colors.$primary-blue, 5%) 100%)
         color: white
         border: none
         border-radius: 12px
         cursor: pointer
-        transition: $transition
+        transition: colors.$transition
         box-shadow: 0 4px 6px rgba(0,0,0,0.1)
         font-weight: 600
         
@@ -266,7 +266,7 @@
     
     &-info
         font-size: 0.9em
-        color: $secondary
+        color: colors.$secondary
         font-weight: 500
 
 @media (max-width: 1200px)

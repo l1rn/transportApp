@@ -73,20 +73,20 @@ useConditionalClickOutside(
 )
 </script>
 <style scoped lang="scss">
-@import "../../assets/styles/static/color.d.scss";
-@import "../../assets/styles/static/mixin.d.scss";
+@use "../../assets/styles/static/color" as colors;
+@use "../../assets/styles/static/mixin" as mixins;
 
 *{
   font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .custom-profile-btn {
-  @include button-clear($back: #e7eff3);
+  @include mixins.button-clear($back: #e7eff3);
   font-weight: 600;
   font-size: 18px;
   padding: 0.75rem 1.5rem;
   border-radius: 20px;
-  color: $primary-blue;
+  color: colors.$primary-blue;
   transition: all 0.3s ease;
 }
 

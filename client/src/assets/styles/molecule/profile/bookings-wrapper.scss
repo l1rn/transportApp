@@ -1,15 +1,15 @@
-@import "../../static/color.d.scss";
-@import "../../static/mixin.d.scss";
+@use "../../static/color" as colors;
+@use "../../static/mixin" as mixins;
 
 .booking-wrapper{
-    @include display-center();
+    @include mixins.display-center();
     flex-direction: column;
     gap: 1.25rem;
     .confirm-payment-container{
-        @include display-modal();
+        @include mixins.display-modal();
     }
     .booking-container{
-        background: $white;
+        background: colors.$white;
         width: 70%;
         border-radius: 16px;
         max-width: 1000px;

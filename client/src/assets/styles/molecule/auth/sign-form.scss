@@ -1,0 +1,168 @@
+@use "../../static/color" as colors;
+@use "../../static/mixin" as mixins;
+@use "@/assets/styles/home/footer";
+
+* {
+  box-sizing: border-box;
+  transition: colors.$transition;
+  font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+// auth modal form
+.modal-auth-form {
+  position: absolute;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  background: #00000040;
+  .auth-form {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+// header
+}
+.main-header {
+  position: relative;
+  z-index: 1000;
+  background: linear-gradient(135deg, color-mix(in srgb, #007bff 95%, white), color-mix(in srgb, #007bff 95%, black));
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  .navbar-custom-header {
+    .brand {
+      font-family: colors.$font-family-base;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: colors.$white;
+      position: relative;
+      &::after {
+        content: '🚀';
+        top: -1.2rem;
+        position: absolute;
+      }
+    }
+    .navbar-subheader {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 70%;
+    }    // title of header
+  }
+  .title-subheader-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    .title-container {
+      @include mixins.display-center();
+      font-family: colors.$font-family-base;
+      font-size: 1.8rem;
+      color: colors.$text;
+      font-weight: 600;
+    }
+    .button-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+
+      button {
+        @include mixins.button-clear(
+          $back: 
+          linear-gradient(35deg, color-mix(in srgb, colors.$secondary 95%, black), 
+          color-mix(in srgb, colors.$secondary 95%, black)));
+        padding: 0.6rem 1.5rem;
+        border-radius: 16px;
+        font-size: 17px;
+        font-weight: 600;
+        box-shadow: 0 0 8px rgba(0,0,0, 0.15);
+        transition: all 0.3s ease;
+        &:hover {
+          transform: translateY(1px);
+          box-shadow: 0 0 16px rgba(0,0,0, 0.21);
+        }
+      }
+    }
+  }
+  &.header-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+// search container inside header
+}
+.header-container-custom {
+  .search-container {
+    transition: all 0.3s ease;
+    z-index: 999;
+  }
+  .sticky-search {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    animation: slideDown 0.3s ease;
+  }
+// main content if click on search
+}
+.content-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .custom-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+.navbar-custom-header {
+  display: flex;
+  place-content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+// animation for search container
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .header-title-container {
+    font-size: 1rem;
+  }
+  .navbar-custom {
+    padding: 1rem;
+    height: auto;
+  }
+  .search-section {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  .search-button-custom {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .sub-header-container {
+    top: 210px;
+  }
+  .navbar-custom-header {
+    flex-direction: column;
+    gap: 1rem;
+    .sub-header-items {
+      gap: 3rem;
+    }
+  }
+  .main-header {
+    button {
+      font-size: 16px;
+    }
+  }
+};

@@ -20,8 +20,9 @@ import ProfileButtonView from '../atom/ProfileButtonView.vue';
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/static/color.d.scss";
-@import "../../assets/styles/static/mixin.d.scss";
+@use "../../assets/styles/static/color" as colors;
+@use "../../assets/styles/static/mixin" as mixins;
+
 .main-header-wrapper {
     .main-header-container{
         display: flex;
@@ -33,7 +34,7 @@ import ProfileButtonView from '../atom/ProfileButtonView.vue';
         .brand{
             font-weight: 700;
             font-size: 1.2rem;
-            color: $white;
+            color: colors.$white;
             position: relative;
             &::after {
                 content: '🚀';

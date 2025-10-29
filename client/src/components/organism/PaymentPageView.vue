@@ -77,11 +77,11 @@ onMounted(async() => {
 })
 </script>
 <style scoped lang="scss">
-@import "../../assets/styles/static/mixin.d.scss";
-@import "../../assets/styles/static/color.d.scss";
+@use "../../assets/styles/static/mixin" as mixins;
+@use "../../assets/styles/static/color";
 
 .payment-wrapper{
-    @include display-center();
+    @include mixins.display-center();
     width: 100%;
     overflow-y: hidden;
 
@@ -93,7 +93,7 @@ onMounted(async() => {
         margin-top: 2rem;
 
         .header-container{
-            @include display-column();
+            @include mixins.display-column();
             gap: 1rem;
             .info-container{
                 display: flex;
@@ -119,9 +119,9 @@ onMounted(async() => {
             }
         }   
         .email-container{
-            @include display-column();
+            @include mixins.display-column();
             .input-block{
-                @include display-column();
+                @include mixins.display-column();
             }
         }
         .code-confirmation-container{

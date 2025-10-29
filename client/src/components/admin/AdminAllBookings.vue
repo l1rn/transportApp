@@ -111,5 +111,5 @@ export default {
 }
 </script>
 <style scoped lang="sass">
-@import "@/assets/styles/adminObjects/all-booking-table"
+@use "../../assets/styles/adminObjects/all-booking-table"
 </style>

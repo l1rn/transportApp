@@ -48,8 +48,8 @@ const modalStore = useModalStore();
 const { openForm } = useProfilePage();
 </script>
 <style lang="scss">
-@import "../../../assets/styles/static/mixin.d.scss";
-@import "../../../assets/styles/static/color.d.scss";
+@use "../../../assets/styles/static/mixin" as mixins;
+@use "../../../assets/styles/static/color" as colors;
 
 .header-wrapper{
     display: flex;
@@ -60,10 +60,10 @@ const { openForm } = useProfilePage();
       padding: 1rem 1.5rem;
       margin: 1rem 0;
       border-radius: 16px;
-      box-shadow: $input-shadow;
-      background: $white;
+      box-shadow: colors.$input-shadow;
+      background: colors.$white;
       .title-container{
-        @include display-column();
+        @include mixins.display-column();
         gap: 0.75rem;
         span {
           text-transform: uppercase;
@@ -73,18 +73,18 @@ const { openForm } = useProfilePage();
       }
       .space {
         width: 100%;
-        background: $light-gray;
+        background: colors.$light-gray;
         height: 2px;
         margin: 1.5rem 0 0 0;
       }
       .nav-tabs {
         button {
-          @include button-clear($main-white);
+          @include mixins.button-clear(colors.$main-white);
           font-size: 1.25rem;
           padding: 0.5rem 1rem;
         }
         .active {
-          border-bottom: 2px solid $primary-blue;
+          border-bottom: 2px solid colors.$primary-blue;
         }
       }
     } 

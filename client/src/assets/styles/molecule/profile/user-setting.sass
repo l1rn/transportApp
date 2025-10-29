@@ -1,11 +1,11 @@
-@import "../../static/mixin.d.scss"
-@import "../../static/color.d.scss"
+@use "../../static/mixin" as mixins
+@use "../../static/color" as colors
 
 .change-password-container
-    @include display-modal()
+    @include mixins.display-modal()
 
 .change-modal-container
-    @include display-modal()
+    @include mixins.display-modal()
 
 .main-container
     .user-info-wrapper
@@ -34,23 +34,23 @@
                     display: flex
                     gap: 0.5rem 
                     .withdraw-button
-                        @include button-clear(green, $white)  
-                        @include display-center()
+                        @include mixins.button-clear(green, colors.$white)  
+                        @include mixins.display-center()
                         gap: 5px
                         font-size: 17px
                         border-radius: 8px
                         padding: 0.5rem
                     input
-                        @include custom-input()
+                        @include mixins.custom-input()
                     span
-                        @include display-center
+                        @include mixins.display-center()
                             
                 .password-block
                     display: flex
                     align-items: center
                 .button-block 
                     button 
-                        @include button-clear($secondary, $white)
+                        @include mixins.button-clear(colors.$secondary, colors.$white)
                         font-size: 1.25rem
                         border-radius: 8px
                         padding: 0.25rem 0.75rem
@@ -61,9 +61,9 @@
                     height: 100%
                     gap: 1rem
                     .secondary-container
-                        @include display-column()
+                        @include mixins.display-column()
                         gap: 0.5rem
-                        .password-block
+                        // .password-block
 
 .useragent-container
     padding: 1.5rem 2rem
@@ -93,7 +93,7 @@
     color: #c92626
 
 .subtitle-position1
-    @include display-center()                                                                                    
+    @include mixins.display-center()                                                                                    
     background: #D5A6BD
     padding: 0 2rem
     width: fit-content
@@ -104,7 +104,7 @@
     h2
         white-space: nowrap
 .subtitle-position2
-    @include display-center()
+    @include mixins.display-center()
     background: #A4C2F4
     padding: 0 2rem
     color: #161616

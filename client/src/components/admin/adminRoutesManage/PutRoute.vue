@@ -210,5 +210,5 @@ const handleSubmit = async () => {
 }
 </script>
 <style scoped lang="sass">
-@import "@/assets/styles/adminObjects/add-route-form.sass"
+@use "../../../assets/styles/adminObjects/add-route-form.sass"
 </style>

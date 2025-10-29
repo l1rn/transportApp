@@ -287,5 +287,5 @@ const deleteSession = async(id: number) => {
 }
 </script>
 <style scoped lang="sass">
-@import '@/assets/styles/molecule/profile/user-setting.sass'
+@use '../../../assets/styles/molecule/profile/user-setting.sass'
 </style>

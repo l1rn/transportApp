@@ -62,8 +62,8 @@ watch(userInfo, (newValue: UserInfo | null) => {
 })
 </script>
 <style scoped lang="scss">
-@import "../../assets/styles/static/mixin.d.scss";
-@import "../../assets/styles/static/color.d.scss";
+@use "../../assets/styles/static/mixin";
+@use "../../assets/styles/static/color";
 
 .profile-page {
   

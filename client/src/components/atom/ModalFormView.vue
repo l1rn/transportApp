@@ -51,24 +51,24 @@ useConditionalClickOutside(
 )
 </script>
 <style scoped lang="scss">
-@import "../../assets/styles/static/color.d.scss";
-@import "../../assets/styles/static/mixin.d.scss";
+@use "../../assets/styles/static/color" as colors;
+@use "../../assets/styles/static/mixin" as mixins;
 
 .email-form {
     position: relative;
-    @include display-center();
+    @include mixins.display-center();
     height: 100%;
     .email-form-container{
-        background: $white;
+        background: colors.$white;
         width: 80%;
         max-width: 700px;
         max-height: 500px;
         height: 100%;
-        @include display-column(center, center);
+        @include mixins.display-column(center, center);
         border-radius: 24px;
         gap: 2rem;
         .text-container{
-            @include display-column(center, center);
+            @include mixins.display-column(center, center);
             text-align: center;
             gap: 0.75rem;
             .icon{
@@ -85,19 +85,22 @@ useConditionalClickOutside(
             }
         }
         .input-container {
-            @include display-column();
+            @include mixins.display-column();
             gap: 1.25rem;
             input {
-                @include custom-input();
+                @include mixins.custom-input();
             }  
             button {
-                @include button-clear($accent, $white);
+                @include mixins.button-clear(
+                    colors.$accent, 
+                    colors.$white
+                );
                 padding: 0.75rem 1.25rem;
                 border-radius: 8px;
                 font-size: 1.15rem;
                 transition: all 0.3s ease;
                 &:hover {
-                    background: $primary-blue;
+                    background: colors.$primary-blue;
                 }
             }
         }

@@ -63,5 +63,5 @@ const chooseNav = (type) => {
 </script>
 
 <style scoped lang="sass">
-@import "@/assets/styles/adminObjects/admin-panel";
+@use "../../assets/styles/adminObjects/admin-panel";
 </style>

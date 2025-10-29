@@ -1,6 +1,6 @@
-@import "./color.d.scss";
+@use "./color" as colors;
 
-@mixin input-clear($back: $white){
+@mixin input-clear($back: colors.$white){
     outline: 0;
     border: 0;
     background: $back;
@@ -43,12 +43,12 @@
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
-    box-shadow: 0 0 8px rgba($color: $primary-blue, $alpha: 0.1);
-    border: 2px solid $light-gray;
+    box-shadow: 0 0 8px rgba($color: colors.$primary-blue, $alpha: 0.1);
+    border: 2px solid colors.$light-gray;
     transition: 0.3s all;
-    color: $light-black;
+    color: colors.$light-black;
     &:focus {
-        border: 2px solid $primary-blue;
-        box-shadow: 0 0 8px rgba($color: $primary-blue, $alpha: 0.3);
+        border: 2px solid colors.$primary-blue;
+        box-shadow: 0 0 8px rgba($color: colors.$primary-blue, $alpha: 0.3);
     }
 }

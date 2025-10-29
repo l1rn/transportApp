@@ -108,5 +108,5 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-@import "../../../assets/styles/molecule/profile/bookings-wrapper.scss";
+@use "../../../assets/styles/molecule/profile/bookings-wrapper.scss";
 </style>

@@ -139,5 +139,5 @@ export default {
 }
 </script>
 <style scoped lang="sass">
-@import "@/assets/styles/adminObjects/all-users-table"
+@use "../../assets/styles/adminObjects/all-users-table"
 </style>

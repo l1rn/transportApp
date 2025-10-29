@@ -43,5 +43,5 @@ export default {
 }
 </script>
 <style scoped lang="sass">
-@import "@/assets/styles/adminObjects/allroutes";
+@use "../../assets/styles/adminObjects/allroutes";
 </style>
