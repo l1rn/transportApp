@@ -1,0 +1,47 @@
+@use "../../static/color" as colors
+@use "../../static/mixin" as mixins
+
+.sign-in-container
+    .main-container
+        .main-wrapper
+            @include mixins.display-column()
+            background: colors.$white
+            padding: 2rem 5rem
+            border-radius: 16px
+            position: relative
+            min-width: 600px
+            gap: 20px
+            .close 
+                position: absolute
+                right: 20px
+                top: 20px
+                width: 15px
+                img
+                    width: 15px
+                    cursor: pointer
+                    transition: 0.3s all ease
+                    &:hover
+                        transform: rotate(90deg)
+            h1
+                text-align: center
+        .text-area
+            @include mixins.display-column()
+            gap: 10px
+            label
+                font-size: 20px
+            input
+                @include mixins.custom-input()
+        form
+            @include mixins.display-column()
+            gap: 15px
+            button
+                @include mixins.button-clear(colors.$primary-blue, colors.$light-gray)
+                width: 100%
+                margin-top: 10px
+                border-radius: 8px
+                padding: 10px
+                font-size: 18px
+                transition: all 0.3s ease
+                &:hover
+                    background: colors.$darken-blue
+                    box-shadow: 0 5px 15px rgba(colors.$primary-blue, 0.25)

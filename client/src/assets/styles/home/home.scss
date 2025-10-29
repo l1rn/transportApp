@@ -1,6 +1,6 @@
 @use "../static/color" as colors;
 @use "../static/mixin" as mixins;
-@use "../home/footer";
+@use "../home/footer.scss";
 
 * {
   box-sizing: border-box;

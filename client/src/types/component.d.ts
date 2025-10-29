@@ -10,6 +10,7 @@ export interface ModalPropsView {
     submitFunc: () => void | Promise<void>;
     model: Ref<string | number | null>;
     storeKey: string;
+    externalId?: string;
 }
 
 export interface PaymentPageProps {

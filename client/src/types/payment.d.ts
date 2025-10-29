@@ -1,9 +1,9 @@
 
 export enum PaymentMethod {
-    CARD,
-    BANK_TRANSFER,
-    ELECTRONIC,
-    SIMULATION
+    CARD = "CARD",
+    BANK_TRANSFER = "BANK_TRANSFER",
+    ELECTRONIC = "ELECTRONIC",
+    SIMULATION = "SIMULATION"
 }
 
 export interface OrderInfoResponse {

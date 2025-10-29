@@ -7,14 +7,14 @@ class PaymentService{
         return await api.get(`/payments/get-info?bookingId=${bookingId}`);
     }
 
-    public async createPayment(bookingId: number, paymentMethod: PaymentMethod)    
+    public async createPayment(bookingId: number, paymentMethod: string)    
         : Promise<AxiosResponse> {
             return await api.post(`/payments/create?bookingId=${bookingId}&paymentMethod=${paymentMethod}`)
         }
 
-    public async confirmPayment(externalId: string, code: string)
+    public async confirmPayment(externalId: string | undefined, code: string)
         :Promise<AxiosResponse> {
-            return await api.post(`/payment/confirm`, {
+            return await api.post(`/payments/confirm`, {
                 externalId: externalId,
                 code: code
             })
