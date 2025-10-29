@@ -53,7 +53,7 @@ public class PaymentService {
                 )
                 .paymentMethods(Arrays.stream(PaymentMethod.values()).toList())
                 .price(booking.getRoute().getPrice())
-                .hasEmail(!user.getEmail().isEmpty())
+                .hasEmail(user.getEmail() != null)
                 .build();
     }
 

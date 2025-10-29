@@ -4,10 +4,10 @@
             <div class="header-container">
                 <div class="info-container">
                     <div class="title">
-                    Товар: {{ props?.title }}
+                    Товар: {{ orderData?.orderFullName }}
                     </div>
                     <div class="price">
-                        {{ props?.price}} Р
+                        {{ orderData?.price}} Р
                     </div>
                 </div>
                 <div class="line-container"></div>
@@ -17,9 +17,9 @@
                     </div>
                     <input type="text">
                     <template 
-                    v-if="props?.paymentMethods">
+                    v-if="orderData?.paymentMethods">
                         <div 
-                        v-for="method in props.paymentMethods"
+                        v-for="method in orderData.paymentMethods"
                         :key="method">
                             {{ method }}
                         </div>       
@@ -33,14 +33,14 @@
                     <input 
                     id="email-input" 
                     type="email"
-                    :disabled="props?.hasEmail">
+                    :disabled="orderData?.hasEmail">
                 </div>
                 <div class="input-block">
                     <label for="email-input">Email повторно (только ручной ввод):</label>
                     <input 
                     id="email-input" 
                     type="email"
-                    :disabled="props?.hasEmail">
+                    :disabled="orderData?.hasEmail">
                 </div>
             </div>
             <template>
@@ -60,9 +60,20 @@
 </template>
 <script setup lang="ts">
 import router from '@/routers/router';
+import { paymentService } from '@/services/paymentService';
+import { OrderInfoResponse } from '@/types/payment';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+const bookingId = route.query.bookingId;
+const orderData = ref<OrderInfoResponse>();
 
 onMounted(async() => {
-  cost  
+    if(bookingId === null) return;
+    const response = await paymentService.getOrderInfo(Number(bookingId));
+    orderData.value = response.data;
 })
 </script>
 <style scoped lang="scss">
