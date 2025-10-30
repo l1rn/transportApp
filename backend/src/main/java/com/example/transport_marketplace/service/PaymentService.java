@@ -2,6 +2,7 @@ package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.config.CodeGenerator;
 import com.example.transport_marketplace.dto.payment.ConfirmPaymentRequest;
+import com.example.transport_marketplace.dto.payment.PaymentResponse;
 import com.example.transport_marketplace.dto.payment.PreparationOrderResponse;
 import com.example.transport_marketplace.enums.PaymentMethod;
 import com.example.transport_marketplace.enums.PaymentStatus;
@@ -21,8 +22,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +62,7 @@ public class PaymentService {
 
     public String createPayment(String username, Integer bookingId, PaymentMethod method) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User was not found by this token"));
+                .orElseThrow(() -> new RuntimeException("Данный пользователь не был найден"));
 
         if(user.getEmail() == null){
             throw new RuntimeException("Email не был привязан!");
@@ -165,7 +168,7 @@ public class PaymentService {
         );
     }
 
-    private void cancelPayment(String externalId){
+    public void cancelPayment(String externalId){
         Payment payment = paymentRepository.findByExternalId(UUID.fromString(externalId))
                 .orElseThrow(() -> new RuntimeException("Платеж не найден"));
 
@@ -174,5 +177,17 @@ public class PaymentService {
         }
 
         payment.setPaymentStatus(PaymentStatus.CANCELLED);
+    }
+
+    public List<PaymentResponse> getMyPayments(String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Данный пользователь не был найден!"));
+
+        List<Payment> payments = paymentRepository.findAllByUserId(user.getId())
+                .orElseThrow(() -> new RuntimeException("По адйи пользователя не найдено ни одного платежа!"));
+
+        return payments.stream()
+                .map(PaymentResponse::from)
+                .collect(Collectors.toList());
     }
 }

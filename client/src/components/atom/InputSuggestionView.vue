@@ -72,9 +72,16 @@ const focusSuggestions = () => {
 }
 
 const hideSuggestions = () => {
-    setTimeout(() => {
-        suggestionList.value = false;
-    }, 250)
+    if(props.suggestionType){
+        setTimeout(() => {
+            suggestionList.value = false;
+        }, 250)
+    }
+    else{
+        setTimeout(() => {
+            suggestionList.value = false;
+        }, 100)
+    }
 }
 
 const apiResults = ref<string[]>([]);

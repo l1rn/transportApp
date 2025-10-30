@@ -35,7 +35,9 @@
             >
           </div>
           <div class="text-area">
-            <label for="confirm-pwd">Подтвердите пароль</label>
+            <label for="confirm-pwd">
+              Подтвердите пароль
+            </label>
             <input
               id="confirm-pwd"
               v-model="user.confirmPassword"

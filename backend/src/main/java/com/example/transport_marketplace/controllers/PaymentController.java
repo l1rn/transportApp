@@ -67,4 +67,32 @@ public class PaymentController {
                     .body("Internal server error: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/cancel")
+    public ResponseEntity<?> cancelPayment(
+        @AuthenticationPrincipal UserDetails userDetails,
+        @RequestParam String externalId
+    ) {
+        try{
+            paymentService.cancelPayment(externalId);
+            return ResponseEntity.ok("Payment was successfully canceled!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal server error: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/get-my")
+    public ResponseEntity<?> getMyPayments(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        try {
+            return ResponseEntity.ok(paymentService.getMyPayments(userDetails.getUsername()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal server error: " + e.getMessage());
+        }
+    }
 }

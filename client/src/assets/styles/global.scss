@@ -1,14 +1,6 @@
 @use "../styles/static/mixin";
 @use "../styles/static/color" as colors;
 
-@font-face {
-  font-family: 'Montserrat';
-  src: url('../fonts/Montserrat-Regular.ttf') format('truetype');
-  font-display: swap;
-  font-weight: normal;
-  font-style: normal;
-}
-
 * {
   font-family: 'Montserrat';
 }

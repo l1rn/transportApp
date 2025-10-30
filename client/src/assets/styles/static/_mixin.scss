@@ -53,4 +53,17 @@
         border: 2px solid colors.$primary-blue;
         box-shadow: 0 0 8px rgba($color: colors.$primary-blue, $alpha: 0.3);
     }
+    &:disabled {
+        background: #eeeeee;
+        cursor: not-allowed;
+    }
+}
+
+@mixin link-underline($color: colors.$darken-blue){
+    color: $color;
+    cursor: pointer;
+    font-weight: 400;
+    &:hover{
+        text-decoration: underline;
+    }
 }

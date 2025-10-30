@@ -25,7 +25,6 @@ public interface RouteRepository extends JpaRepository<Route, Integer> {
             @Param("minPrice") Double minPrice,
             @Param("maxPrice") Double maxPrice);
 
-
     Route findByRouteFromAndRouteToAndDate(String routeFrom, String routeTo, String date);
     boolean existsByRouteFromAndRouteToAndDate(String routeFrom, String routeTo, String date);
 }

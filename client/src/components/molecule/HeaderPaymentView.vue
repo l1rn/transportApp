@@ -18,7 +18,6 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
 
 
 </script>
@@ -28,10 +27,10 @@ import { ref } from 'vue';
 
 .payment-header-container{
     @include mixins.display-center();
-    background: colors.$darken-blue;
+    background: colors.$green;
     width: 100%;
-    padding: 2rem 0;
-    justify-content: space-around;
+    padding: 2.5rem 0;
+    justify-content: space-evenly;
 
     .text{
         font-weight: 700;

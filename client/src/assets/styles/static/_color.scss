@@ -14,12 +14,24 @@ $light-gray: #d8dee9;
 $secondary: #f59e0b;
 $accent: #447cdc;
 $background: #f8fafc;
-$text: #ffffff;
-$success: #10b981;
-$error: #ef4444;
 $transition: all 0.3 cubic-bezier(0.4, 0, 0.2, 1);
-$font-family-base: 'Montserrat', sans-serif, 'Segui UI';
-$box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
 $radius: 12px;
-$shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff;
-$border-radius: 8px
+$border-radius: 8px;
+
+// green
+$green: #0D652D;
+$medium-green: #34A853;
+
+// yellow
+$dark-yellow: #ebac02;
+$yellow: #FBBC04;
+$light-yellow: #FEEFC3;
+
+// orange
+$light-orange: #FF8A00;
+
+// blue
+$dark-blue: #174EA6;
+
+// grey
+$dark-grey: #434343;
