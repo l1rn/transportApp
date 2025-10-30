@@ -47,7 +47,7 @@ public class EmailService {
             helper.setTo(toEmail);
             helper.setSubject("✅ Подтверждение бронирования #" + event.getBookingId());
             String emailContent = buildEmailContent(event);
-            helper.setText(emailContent);
+            helper.setText(emailContent, true);
 
             mailSender.send(message);
         } catch (Exception e) {

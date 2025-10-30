@@ -24,12 +24,15 @@
                     <div class="label">
                         выбор способа оплаты:
                     </div>
-                    <input v-model="paymentMethod" type="text">
-                    <template v-if="orderData?.paymentMethods">
-                        <div v-for="method in orderData.paymentMethods" :key="method">
-                            {{ method }}
-                        </div>
-                    </template>
+                    <div class="input">
+                        <InputSuggestionView 
+                        v-model="paymentMethod"
+                        type="select"
+                        placeholder="Способ оплаты"
+                        array-type="self"
+                        :suggestion-list="paymentMethods"
+                    />
+                    </div>
                 </div>
             </div>
 
@@ -74,9 +77,15 @@ import { useRequestHandler } from "@/composable/useRequestHandler";
 import { useModalStore } from "@/stores/useModalStore";
 import { ModalPropsView } from "@/types/component";
 import ModalFormView from "../atom/ModalFormView.vue";
+import InputSuggestionView from "../atom/InputSuggestionView.vue";
 
 const route = useRoute();
-
+const transportList = ref<Record<number, string>>([
+  "🚌 Автобус",
+  "✈️ Авиа",
+  "🚆 Поезд",
+  "🏍️ Любой"
+])
 const codeValue = ref<string>("");
 const externalId = ref<string>("");
 const modalStore = useModalStore();
@@ -113,10 +122,18 @@ const bookingId = route.query.bookingId;
 const orderData = ref<OrderInfoResponse>();
 const paymentMethod = ref<string>("SIMULATION");
 
+const paymentMethods = ref<Array<string>>();
+
 onMounted(async () => {
     if (bookingId === null) return;
     const response = await paymentService.getOrderInfo(Number(bookingId));
     orderData.value = response.data;
+    paymentMethods.value = orderData.value?.paymentMethods;
+
+    const routeTitle = router.currentRoute.value.meta.title as string;
+    if(routeTitle){
+        document.title = routeTitle;
+    }
 })
 
 const createPayment = async () => {
@@ -186,6 +203,12 @@ const createPayment = async () => {
             .label {
                 text-transform: uppercase;
                 font-size: 1.15rem;
+            }
+            .input{ 
+                max-width: 100%;
+                input{
+                    width: 100%;
+                }
             }
         }
 

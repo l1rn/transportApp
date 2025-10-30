@@ -32,8 +32,8 @@
                             </li>
                         </template>
                         <template 
-                        v-if="props.type === 'select'"
-                        v-for="transport in transportList"
+                        v-if="props.arrayType"
+                        v-for="transport in props.suggestionList"
                         :key="transport">
                             <li
                             @click="selectSuggestion(transport)">{{ transport }}</li>
@@ -57,6 +57,8 @@ const isProcessingSelection = ref(false);
 
 const props = defineProps<{
     type: string;
+    arrayType?: 'transport' | 'self';
+    suggestionList?: Array<string>;
     suggestionType?: 'from' | 'to';
     placeholder?: string;
 }>();
@@ -76,12 +78,6 @@ const hideSuggestions = () => {
 }
 
 const apiResults = ref<string[]>([]);
-const transportList = ref<Record<number, string>>({
-    1: "🚌 Автобус",
-    2: "✈️ Авиа",
-    3: "🚆 Поезд",
-    4: "🏍️ Любой"
-})
 
 const fetchSuggestions = async (q: string | null) => {
     if (!q) {
@@ -139,29 +135,30 @@ watch(localValue, (newValue) => {
 @use "../../assets/styles/static/mixin" as mixins;
 
 .smart-input-wrapper {
+    position: relative;
+
     .input-container {
         position: relative;
         input {
             @include mixins.custom-input();
+            width: 100%;
         }
         input[type="select"]{
             cursor: pointer;
             caret-color: transparent;
         }
-        input[type="date"]{
-            width: 92%;
-        }
         .select-icon {
             position: absolute;
             width: 16px;
             height: 16px;
-            right: 15px;
+            right: 16px;
             top: 45%;
             transform: translateY(-50%);
             cursor: pointer;
             transition: all 0.3s;
             &.isActive {
                 transform: scaleY(-1);
+                top: 42.5%;
             }
         }
 

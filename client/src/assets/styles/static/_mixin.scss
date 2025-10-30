@@ -39,10 +39,12 @@
 
 @mixin custom-input(){
     @include input-clear();
-    padding: 0.4rem 0.5rem;
     border-radius: 8px;
+    text-indent: 0.5rem;
+    padding: 0.5rem;
     font-size: 1rem;
     font-weight: 600;
+    box-sizing: border-box;
     box-shadow: 0 0 8px rgba($color: colors.$primary-blue, $alpha: 0.1);
     border: 2px solid colors.$light-gray;
     transition: 0.3s all;

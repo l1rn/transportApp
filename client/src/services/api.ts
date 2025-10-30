@@ -233,27 +233,27 @@ class ApiInterceptor {
         }
     }
 
-    public post<T = any>(url: string, data?: any, config?: InternalAxiosRequestConfig): 
+    public post<T>(url: string, data?: unknown, config?: InternalAxiosRequestConfig): 
     Promise<AxiosResponse<T>> {
             return this.api.post(url, data, config);
         }
 
-    public get<T = any>(url: string , config?: InternalAxiosRequestConfig):
+    public get<T>(url: string , config?: InternalAxiosRequestConfig):
         Promise<AxiosResponse<T>> {
             return this.api.get(url, config);
         }
 
-    public put<T = any>(url: string, data?: any, config?: InternalAxiosRequestConfig): 
+    public put<T>(url: string, data?: unknown, config?: InternalAxiosRequestConfig): 
     Promise<AxiosResponse<T>> {
             return this.api.put(url, data, config);
         }
 
-    public patch<T = any>(url: string, data?: any, config?: InternalAxiosRequestConfig): 
+    public patch<T>(url: string, data?: unknown, config?: InternalAxiosRequestConfig): 
     Promise<AxiosResponse<T>> {
             return this.api.patch(url, data, config);
         }
 
-    public delete<T = any>(url: string, data?: any, config?: InternalAxiosRequestConfig): 
+    public delete<T>(url: string, data?: unknown, config?: InternalAxiosRequestConfig): 
     Promise<AxiosResponse<T>> {
             return this.api.delete(url, config);
         }

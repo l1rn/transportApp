@@ -53,18 +53,18 @@
   </div>
 </template>
 <script setup>
-import AdminService from '@/services/adminService';
+import { adminService } from '@/services/adminService.ts';
 import { onMounted, ref,computed } from 'vue';
+
 const users = ref([]); 
 const loading = ref(false);
 const allUsers = async() =>{
     try{
         loading.value = true;
-        const response = await AdminService.getAllUsers();
+        const response = await adminService.getAllUsers();
         users.value = response.data;
         console.log(users.value);
     }catch(error){
-      notifications.value?.showNotification('error', 'Ошибка загрузки пользователей');
     }
     finally{
       loading.value = false
@@ -73,8 +73,8 @@ const allUsers = async() =>{
 
 const getPermissionAdmin = async(userId) => {
   try{
-    await AdminService.postSetRoleAdmin(userId);
-    const response = await AdminService.getAllUsers();
+    await adminService.postSetRoleAdmin(userId);
+    const response = await adminService.getAllUsers();
     users.value = response.data;
   }catch(error){
     console.log(error);
@@ -101,16 +101,11 @@ const deleteUser = async(userId) => {
     deletedUser.value = users.value[userIndex];
     users.value.splice(userIndex, 1);
 
-    await AdminService.deleteUser(userId);
-    notifications.value.showNotification('success', "Пользователь удален!")
+    await adminService.deleteUser(userId);
   }catch(error){
     if (deletedUser.value && userIndex !== -1) {
       users.value.splice(userIndex, 0, deletedUser.value);
     }
-    notifications.value.showNotification(
-      'error', 
-      error.response?.data?.message || 'Ошибка при удалении пользователя'
-    );
   }
   finally {
         deletingId.value = null;
@@ -133,11 +128,7 @@ onMounted(() =>{
     allUsers();
 })
 </script>
-<script>
-export default {
-    name:"AdminAllUsers"
-}
-</script>
+
 <style scoped lang="sass">
 @use "../../assets/styles/adminObjects/all-users-table"
 </style>

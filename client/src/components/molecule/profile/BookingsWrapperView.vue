@@ -94,12 +94,14 @@ const getBookings = async () => {
 };
 
 const handlePayment = (id: number) => {
-  router.push({
+  const routeData = router.resolve({
     name: 'payment',
     query: {
       bookingId: JSON.stringify(id)
-    }
-  })
+    },
+    
+  });
+  window.open(routeData.href, '_blank');
 }
 
 onMounted(async () => {

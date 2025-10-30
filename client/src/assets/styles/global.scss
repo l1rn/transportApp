@@ -3,7 +3,8 @@
 
 @font-face {
   font-family: 'Montserrat';
-  src: url('../fonts/Montserrat-Regular.ttf') format('ttf');
+  src: url('../fonts/Montserrat-Regular.ttf') format('truetype');
+  font-display: swap;
   font-weight: normal;
   font-style: normal;
 }

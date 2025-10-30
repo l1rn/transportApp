@@ -61,7 +61,7 @@
   </div>
 </template>
 <script setup>
-import AdminService from '@/services/adminService';
+import { adminService } from '@/services/adminService';
 import { onMounted, ref } from 'vue';
 import { formatDate, formatTime, getDateSource } from '@/utils/formatTime';
 const bookings = ref([]);
@@ -94,7 +94,7 @@ const formatStatus = (type) => {
 
 const cancelBooking = async(bookingId) => {
   try{
-    await AdminService.patchBooking(bookingId);
+    await adminService.patchBooking(bookingId);
     await allBookings();
   }catch(error){
     console.error(error);

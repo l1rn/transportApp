@@ -3,16 +3,16 @@
     <div class="search-wrapper">
       <div class="input-wrapper">
         <input-suggestion-view 
-        v-model="filter.routeFrom" 
-        type="text"
-        suggestion-type="from"
-        placeholder="Откуда"
+          v-model="filter.routeFrom" 
+          type="text"
+          suggestion-type="from"
+          placeholder="Откуда"
         />
         <input-suggestion-view 
-        v-model="filter.routeTo" 
-        suggestion-type="to"
-        type="text"
-        placeholder="Куда"
+          v-model="filter.routeTo" 
+          suggestion-type="to"
+          type="text"
+          placeholder="Куда"
         />
       </div>
 
@@ -23,7 +23,9 @@
         <input-suggestion-view 
         v-model="filter.transport" 
         type="select"
-        placeholder="Транспорт"/>
+        :suggestion-list="transportList"
+        array-type="transport"
+        placeholder="Транспорт" />
       </div>
       <div class="search-container">
         <button 
@@ -54,6 +56,13 @@ import { routesService } from "@/services/routeService";
 import { useRouteStore } from "@/stores/useRouteStore";
 
 const routeStore = useRouteStore();
+
+const transportList = ref<Array<string>>([
+  "🚌 Автобус",
+  "✈️ Авиа",
+  "🚆 Поезд",
+  "🏍️ Любой"
+])
 
 const filter = ref<RouteFilter>({
   routeFrom: "",

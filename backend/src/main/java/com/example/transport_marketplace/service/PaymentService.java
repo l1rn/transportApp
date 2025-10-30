@@ -142,10 +142,17 @@ public class PaymentService {
     }
 
     private void sendPaymentSuccessEvent(Payment payment){
+        Route route = payment.getBooking().getRoute();
+        String routeInfo = route.getRouteFrom() + " - " +
+                route.getRouteTo() + "; " +
+                route.getDate() + "; " +
+                route.getTransport();
+
         PaymentSuccessEvent event = PaymentSuccessEvent.builder()
                 .paymentId(payment.getId())
                 .bookingId(payment.getBooking().getId())
                 .amount(payment.getAmount())
+                .routeNumber(routeInfo)
                 .userEmail(payment.getUser().getEmail())
                 .userName(payment.getUser().getUsername())
                 .paymentMethod(payment.getPaymentMethod())

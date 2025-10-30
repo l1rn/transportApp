@@ -82,7 +82,7 @@
   </div>
 </template>
 <script setup>
-import AdminService from '@/services/adminService';
+import {adminService} from '@/services/adminService';
 import { routesService } from '@/services/routeService';
 import { ref, computed, onMounted } from 'vue';
 
@@ -169,7 +169,7 @@ const deleteRoute = async(routeId) => {
         deletedRoute.value = routes.value[fullIndex];
         routes.value.splice(fullIndex, 1);
 
-        await AdminService.deleteRoute(routeId);
+        await adminService.deleteRoute(routeId);
         notifications.value.showNotification('success', 'Маршрут успешно удален');
 
     } catch (error) {
@@ -188,7 +188,7 @@ const deleteRoute = async(routeId) => {
 
 const checkRouteForBooking = async (routeId) => {
   try {
-    const response = await AdminService.getAllBookings()
+    const response = await adminService.getAllBookings()
     return response.data.some(booking => booking.route.id === routeId)
   } catch (error) {
     notifications.value.showNotification('error', 'Ошибка при проверке бронирований')

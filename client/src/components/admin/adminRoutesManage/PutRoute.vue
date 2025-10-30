@@ -129,7 +129,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import AdminService from '@/services/adminService'
+import {adminService} from '@/services/adminService'
 import { formatToDatabase } from '@/utils/formatTime';
 
 const routeID = ref(1);
@@ -197,7 +197,7 @@ const handleSubmit = async () => {
             time: formatDateTime(formData.value.time),
             arrivalTime: formatDateTime(formData.value.arrivalTime)
         }
-        await AdminService.putRoute(routeID.value, payload)
+        await adminService.putRoute(routeID.value, payload)
         
         successMessage.value = 'Маршрут успешно изменен!'
         setTimeout(() => successMessage.value = '', 3000)

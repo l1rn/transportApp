@@ -37,7 +37,10 @@ const routes = [
         name: 'payment',
         path: '/payment',
         component: PaymentPageView,
-        meta: { showHeaders: false }
+        meta: { 
+            title: 'ololoseller',    
+            showHeaders: false 
+        }
     },
     { 
         path: '/:catchAll(.*)',
