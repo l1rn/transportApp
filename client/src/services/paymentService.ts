@@ -1,6 +1,5 @@
 import { AxiosResponse } from "axios";
 import { api } from "./api";
-import { PaymentMethod } from "@/types/payment";
 
 class PaymentService{
     public async getOrderInfo(bookingId: number): Promise<AxiosResponse> {

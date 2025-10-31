@@ -3,8 +3,8 @@ import AllRoutesView from '@/components/organism/AllRoutesView.vue';
 import SearchRoutes from '@/components/SearchRoutesView.vue'
 import AdminPanelView from '@/components/admin/AdminPanelView.vue';
 import HomeView from '@/components/HomeView.vue';
-import ProfilePageView from '@/components/organism/ProfilePageView.vue';
-import PaymentPageView from '@/components/organism/PaymentPageView.vue';
+import ProfilePageView from '@/components/page/ProfilePageView.vue';
+import PaymentPageView from '@/components/page/PaymentPageView.vue';
 
 const routes = [
     {
