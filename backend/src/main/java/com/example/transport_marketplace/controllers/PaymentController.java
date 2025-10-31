@@ -7,6 +7,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -86,10 +87,14 @@ public class PaymentController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/get-my")
     public ResponseEntity<?> getMyPayments(
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal UserDetails userDetails,
+            Pageable pageable
     ) {
         try {
-            return ResponseEntity.ok(paymentService.getMyPayments(userDetails.getUsername()));
+            return ResponseEntity.ok(paymentService.getMyPayments(
+                    userDetails.getUsername(),
+                    pageable
+            ));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Internal server error: " + e.getMessage());

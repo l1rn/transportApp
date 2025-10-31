@@ -1,6 +1,7 @@
 package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.config.CodeGenerator;
+import com.example.transport_marketplace.dto.PaginatedResponse;
 import com.example.transport_marketplace.dto.payment.ConfirmPaymentRequest;
 import com.example.transport_marketplace.dto.payment.PaymentResponse;
 import com.example.transport_marketplace.dto.payment.PreparationOrderResponse;
@@ -18,13 +19,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -179,15 +179,25 @@ public class PaymentService {
         payment.setPaymentStatus(PaymentStatus.CANCELLED);
     }
 
-    public List<PaymentResponse> getMyPayments(String username){
+    public PaginatedResponse<PaymentResponse> getMyPayments(
+            String username,
+            Pageable pageable
+    ){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Данный пользователь не был найден!"));
 
-        List<Payment> payments = paymentRepository.findAllByUserId(user.getId())
-                .orElseThrow(() -> new RuntimeException("По адйи пользователя не найдено ни одного платежа!"));
+        Page<Payment> payments = paymentRepository.findAllByUserId(user.getId(), pageable);
 
-        return payments.stream()
+        List<PaymentResponse> content = payments.stream()
                 .map(PaymentResponse::from)
-                .collect(Collectors.toList());
+                .toList();
+
+        return new PaginatedResponse<>(
+                content,
+                payments.getNumber(),
+                payments.getSize(),
+                payments.getTotalElements(),
+                payments.getTotalPages()
+        );
     }
 }
