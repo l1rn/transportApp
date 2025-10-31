@@ -53,7 +53,7 @@
   </div>
 </template>
 <script setup>
-import { adminService } from '@/services/adminService.ts';
+import { adminService } from '@/services/adminService';
 import { onMounted, ref,computed } from 'vue';
 
 const users = ref([]); 

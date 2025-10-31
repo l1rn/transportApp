@@ -1,7 +1,9 @@
 <template>
   <div class="email-container">
     <div class="email-change-container">
-        <a @click="activateEmail">
+        <a 
+        v-if="hasEmail"
+        @click="activateEmail">
             Хотите изменить email?
         </a>
         </div>
@@ -16,7 +18,7 @@
                 id="email-input" 
                 type="email" 
                 v-model="emailSubmit.newEmail"
-                :disabled="hasEmail">
+                :disabled="hasEmail === true">
             </div>
             <div class="input-block">
                 <label for="email-input">
@@ -31,7 +33,7 @@
             <div v-if="emailError">
                 {{ emailError }}
             </div>
-                <template v-if="hasEmail">
+                <template v-if="!hasEmail">
                     <div class="button-block">
                         <button @click="setNewEmailRequest">
                             Подтвердить
@@ -74,16 +76,18 @@ const activateEmail = () => {
     hasEmail.value = true;
 }
 
-onMounted(() => hasEmail.value = props.hasEmail);
-
 const emailError = ref<string | null>(null);
 
 const setNewEmailRequest = async() => {
-    console.log('as')
+    if(emailError) {
+        notification.error("Email не совпадают!");
+        return;
+    }
     try {
         await userService.requestUserEmail(emailSubmit.value.newEmail);
         codeSent.value = true;
         notification.success("Код с подтверждением отправлен на указанный вами адрес!");
+        
     }
     catch(e){
         const axiosError = e as AxiosError;
@@ -115,6 +119,12 @@ watch(
             emailError.value = null;
     }
 )
+
+watch(props.hasEmail, (value) => {
+    if(value) {
+        hasEmail.value = true;
+    }
+})
 </script>
 
 <style scoped lang="scss">

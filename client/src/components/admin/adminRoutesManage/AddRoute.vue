@@ -118,7 +118,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { adminService } from '@/services/adminService.ts';
+import { adminService } from '@/services/adminService';
 import { formatToDatabase } from '@/utils/formatTime';
 
 const formData = ref({

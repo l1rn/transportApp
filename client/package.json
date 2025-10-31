@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "lint": "eslint . --fix",
     "prepare": "husky"
   },
   "dependencies": {
@@ -26,8 +26,6 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^20.0.0",
-    "@eslint/css": "^0.14.0",
-    "@eslint/js": "^9.38.0",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.46.0",
     "@typescript-eslint/parser": "^8.46.0",
@@ -46,9 +44,7 @@
     "sass": "^1.93.2",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.2",
-    "vite": "^6.4.1",
-    "vite-plugin-eslint": "^1.8.1",
-    "vue-template-compiler": "^2.6.11"
+    "vite": "^6.4.1"
   },
   "overrides": {
     "eslint-webpack-plugin": "^4.2.0"

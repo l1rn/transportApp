@@ -16,6 +16,7 @@ const route = useRoute();
 const showHeader = computed(() => {
   return route.meta.showHeaders !== false;
 });
+
 </script>
 
 <style lang="scss">

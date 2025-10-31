@@ -3,7 +3,6 @@
         <HeaderPaymentView />
         <div class="page-content">
             <PaymentCardView />
-
         </div>
     </div>
 </template>
