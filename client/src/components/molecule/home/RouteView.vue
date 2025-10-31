@@ -80,13 +80,13 @@
 </template>
 <script setup lang="ts">
 import { Ref, ref, watch} from 'vue'
-import { useRouteStore } from '@/stores/useRouteStore';
-import { PaginatedRoute } from '@/types/route';
+import { useRouteStore } from '@/shared/stores/useRouteStore';
+import { PaginatedRoute } from '@/shared/types/route';
 import { storeToRefs } from 'pinia';
-import { bookingService } from '@/services/bookingService';
-import { useModalStore } from '@/stores/useModalStore';
+import { bookingService } from '@/shared/services/bookingService';
+import { useModalStore } from '@/shared/stores/useModalStore';
 import { AxiosError, HttpStatusCode } from 'axios';
-import notification from '@/plugins/notifications';
+import notification from '@/shared/plugins/notifications';
 
 const checkRoutesEmoji = (transport: string) =>{
   switch(transport){

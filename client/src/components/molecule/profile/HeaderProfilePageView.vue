@@ -35,7 +35,7 @@
 </template>
 <script setup lang="ts">
 import { useProfilePage } from '@/composable/useProfilePage';
-import { useModalStore } from '@/stores/useModalStore';
+import { useModalStore } from '@/shared/stores/useModalStore';
 
 const props = defineProps<{
     username: string;

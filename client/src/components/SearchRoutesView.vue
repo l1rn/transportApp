@@ -218,7 +218,7 @@
 </template>
 <script setup>
 import BackButtonView from './atom/BackButtonView.vue';
-import { routesService } from '@/services/routeService';
+import { routesService } from '@/shared/services/routeService';
 import { onBeforeMount, onMounted, reactive, ref, computed, nextTick, watch } from 'vue';
 
 let inputRouteFrom = ref('');

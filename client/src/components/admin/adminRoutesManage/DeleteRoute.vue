@@ -82,8 +82,8 @@
   </div>
 </template>
 <script setup>
-import {adminService} from '@/services/adminService';
-import { routesService } from '@/services/routeService';
+import {adminService} from '@/shared/services/adminService';
+import { routesService } from '@/shared/services/routeService';
 import { ref, computed, onMounted } from 'vue';
 
 const headers = ref([

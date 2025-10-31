@@ -153,13 +153,13 @@ import codeIcon from "../../../assets/icons/lock.svg";
 import withdrawIcon from "../../../assets/icons/user/withdraw-dark.svg"
 import ModalFormView from "@/components/atom/ModalFormView.vue";
 import ChangePasswordFormView from '@/components/atom/ChangePasswordFormView.vue';
-import { authorizationService } from '@/services/authorizationService';
-import { userService } from '@/services/userService';
-import { useModalStore } from '@/stores/useModalStore';
-import { UserInfo } from '@/types/userData';
+import { authorizationService } from '@/shared/services/authorizationService';
+import { userService } from '@/shared/services/userService';
+import { useModalStore } from '@/shared/stores/useModalStore';
+import { UserInfo } from '@/shared/types/userData';
 import { computed, ref } from 'vue';
 
-import { ModalPropsView } from "@/types/component";
+import { ModalPropsView } from "@/shared/types/component";
 import { useRequestHandler } from "@/composable/useRequestHandler";
 
 const props = defineProps<{

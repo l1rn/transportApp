@@ -27,11 +27,11 @@ import UserSettingsControlView from "../molecule/profile/UserSettingsControlView
 import { onMounted, onUnmounted, ref, watch  } from "vue";
 import AdminPanelView from "@/components/admin/AdminPanelView.vue";
 import BookingsWrapperView from "@/components/molecule/profile/BookingsWrapperView.vue";
-import { userService } from "@/services/userService";
+import { userService } from "@/shared/services/userService";
 import { AxiosResponse } from "axios";
-import { UserInfo } from "@/types/userData";
+import { UserInfo } from "@/shared/types/userData";
 import HeaderProfilePageView from "../molecule/profile/HeaderProfilePageView.vue";
-import { useModalStore } from "@/stores/useModalStore";
+import { useModalStore } from "@/shared/stores/useModalStore";
 
 const username = ref<string>("");
 const balance = ref<number | null>(null);

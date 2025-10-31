@@ -38,9 +38,9 @@
 import { useAuthForms } from '@/composable/useAuthForms';
 import { useConditionalClickOutside } from '@/composable/useConditionalClickOutside';
 import router from '@/routers/router';
-import { authorizationService } from '@/services/authorizationService';
-import { useLoginStore } from '@/stores/authStore';
-import { useModalStore } from '@/stores/useModalStore';
+import { authorizationService } from '@/shared/services/authorizationService';
+import { useLoginStore } from '@/shared/stores/authStore';
+import { useModalStore } from '@/shared/stores/useModalStore';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref } from 'vue';
 

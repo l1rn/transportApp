@@ -61,9 +61,9 @@
   </div>
 </template>
 <script setup>
-import { adminService } from '@/services/adminService';
+import { adminService } from '@/shared/services/adminService';
 import { onMounted, ref } from 'vue';
-import { formatDate, formatTime, getDateSource } from '@/utils/formatTime';
+import { formatDate, formatTime, getDateSource } from '@/shared/utils/formatTime';
 const bookings = ref([]);
 
 const allBookings = async() =>{

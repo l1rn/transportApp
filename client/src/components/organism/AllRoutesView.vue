@@ -62,7 +62,7 @@
   </div>
 </template>
 <script setup>
-import { routesService } from '@/services/routeService';
+import { routesService } from '@/shared/services/routeService';
 import { ref, computed, onMounted } from 'vue';
 
 const routes = ref([]);

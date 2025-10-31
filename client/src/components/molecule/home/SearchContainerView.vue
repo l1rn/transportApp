@@ -51,9 +51,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import InputSuggestionView from "@/components/atom/InputSuggestionView.vue";
-import { RouteFilter } from "@/types/route";
-import { routesService } from "@/services/routeService";
-import { useRouteStore } from "@/stores/useRouteStore";
+import { RouteFilter } from "@/shared/types/route";
+import { routesService } from "@/shared/services/routeService";
+import { useRouteStore } from "@/shared/stores/useRouteStore";
 
 const routeStore = useRouteStore();
 

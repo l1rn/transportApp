@@ -65,9 +65,9 @@
 <script setup lang="ts">
 import { useAuthForms } from "@/composable/useAuthForms";
 import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
-import notification from "@/plugins/notifications";
-import { authorizationService } from "@/services/authorizationService";
-import { useModalStore } from "@/stores/useModalStore";
+import notification from "@/shared/plugins/notifications";
+import { authorizationService } from "@/shared/services/authorizationService";
+import { useModalStore } from "@/shared/stores/useModalStore";
 import { AxiosError } from "axios";
 import { ref, watch } from 'vue';
 const user = ref({

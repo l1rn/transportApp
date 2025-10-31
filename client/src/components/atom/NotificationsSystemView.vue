@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Notification } from '@/plugins/notifications';
+import type { Notification } from '@/shared/plugins/notifications';
 import { inject, Ref } from 'vue';
 
 const notifications = inject<Ref<Notification[]>>('notifications')!;

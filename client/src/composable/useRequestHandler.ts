@@ -1,5 +1,11 @@
+<<<<<<< Updated upstream
 import notification from "@/plugins/notifications";
 import { useModalStore } from "@/stores/useModalStore";
+=======
+import notification from "@/shared/plugins/notifications";
+import { userService } from "@/shared/services/userService";
+import { useModalStore } from "@/shared/stores/useModalStore";
+>>>>>>> Stashed changes
 import { AxiosError, AxiosResponse } from "axios";
 import { Ref } from "vue";
 

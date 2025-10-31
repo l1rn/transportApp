@@ -50,14 +50,14 @@
 </template>
 
 <script setup lang="ts">
-import { useModalStore } from "@/stores/useModalStore";
-import { UserData } from "@/types/userData";
+import { useModalStore } from "@/shared/stores/useModalStore";
+import { UserData } from "@/shared/types/userData";
 import { ref } from 'vue';
 import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
 import { useAuthForms } from "@/composable/useAuthForms";
-import { authorizationService } from "@/services/authorizationService";
-import { useLoginStore } from "@/stores/authStore";
-import notification from "@/plugins/notifications";
+import { authorizationService } from "@/shared/services/authorizationService";
+import { useLoginStore } from "@/shared/stores/authStore";
+import notification from "@/shared/plugins/notifications";
 
 const modalStore = useModalStore();
 const loginStore = useLoginStore();

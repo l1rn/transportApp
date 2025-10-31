@@ -59,8 +59,8 @@
 </template>
 <script setup lang="ts">
 import { useConditionalClickOutside } from '@/composable/useConditionalClickOutside';
-import { userService } from '@/services/userService';
-import { useModalStore } from '@/stores/useModalStore';
+import { userService } from '@/shared/services/userService';
+import { useModalStore } from '@/shared/stores/useModalStore';
 import { computed, ref } from 'vue';
 
 const formRef = ref<HTMLElement | null>(null);

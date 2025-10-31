@@ -70,8 +70,8 @@
 </template>
 
 <script setup lang="ts">
-import { bookingService } from '@/services/bookingService';
-import { BookingResponse } from '@/types/booking';
+import { bookingService } from '@/shared/services/bookingService';
+import { BookingResponse } from '@/shared/types/booking';
 import { Ref } from 'vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';

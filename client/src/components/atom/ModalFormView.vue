@@ -31,8 +31,8 @@
 </template>
 <script setup lang="ts">
 import { useConditionalClickOutside } from '@/composable/useConditionalClickOutside';
-import { useModalStore } from '@/stores/useModalStore';
-import { ModalPropsView } from '@/types/component';
+import { useModalStore } from '@/shared/stores/useModalStore';
+import { ModalPropsView } from '@/shared/types/component';
 import { ref } from 'vue';
 
 const props = defineProps<ModalPropsView>();
