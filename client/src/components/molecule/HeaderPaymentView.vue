@@ -4,6 +4,11 @@
             ololoseller
         </div>
         <div class="nav-bar-container">
+            <div class="current-payment-container">
+                <a href="">
+                    Текущий платеж
+                </a>
+            </div>
             <div class="my-payments-container">
                 <a>
                     Мои покупки
