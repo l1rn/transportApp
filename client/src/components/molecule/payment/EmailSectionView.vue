@@ -10,7 +10,7 @@
         <div class="email-change-form">
             <template
             v-if="!codeSent">
-                            <div class="input-block">
+            <div class="input-block">
             <label for="email-input">
                 Email
             </label>
@@ -18,7 +18,7 @@
                 id="email-input" 
                 type="email" 
                 v-model="emailSubmit.newEmail"
-                :disabled="hasEmail === true">
+                :disabled="hasEmail && !isWantToChangeEmail">
             </div>
             <div class="input-block">
                 <label for="email-input">
@@ -28,7 +28,7 @@
                 id="email-input" 
                 type="email" 
                 v-model="emailSubmit.confirmEmail"
-                :disabled="hasEmail">
+                :disabled="hasEmail && !isWantToChangeEmail">
             </div>
             <div v-if="emailError">
                 {{ emailError }}
@@ -46,7 +46,7 @@
                 type="text" 
                 v-model="codeValue">
                 <button @click="confirmNewEmail">
-                    Подтвердит
+                    Подтвердить
                 </button>
             </template>
         </div>
@@ -54,14 +54,13 @@
 </template>
 
 <script setup lang="ts">
-import notification from '@/plugins/notifications';
-import { userService } from '@/services/userService';
-import { OrderInfoResponse } from '@/types/payment';
+import notification from '@/shared/plugins/notifications';
+import { userService } from '@/shared/services/userService';
+import { OrderInfoResponse } from '@/shared/types/payment';
 import { AxiosError } from 'axios';
 import { onMounted, ref, watch } from 'vue';
 
 const props = defineProps<OrderInfoResponse>();
-const hasEmail = ref<boolean>();
 
 const emailSubmit = ref({
     newEmail: '',
@@ -71,15 +70,28 @@ const emailSubmit = ref({
 const codeSent = ref<boolean>(false);
 const codeValue = ref<string>("");
 
+const hasEmail = ref<boolean>(false);
+const isWantToChangeEmail = ref<boolean>(false);
+
 const activateEmail = () => {
     if(!props.hasEmail) return;
-    hasEmail.value = true;
+    isWantToChangeEmail.value = true;
+    hasEmail.value = false;
 }
+
+watch(
+    () => [hasEmail.value = props.hasEmail],
+    () => {
+        if(props.hasEmail){
+            hasEmail.value = props.hasEmail;
+        }
+    }
+)
 
 const emailError = ref<string | null>(null);
 
 const setNewEmailRequest = async() => {
-    if(emailError) {
+    if(emailError.value) {
         notification.error("Email не совпадают!");
         return;
     }
@@ -87,7 +99,10 @@ const setNewEmailRequest = async() => {
         await userService.requestUserEmail(emailSubmit.value.newEmail);
         codeSent.value = true;
         notification.success("Код с подтверждением отправлен на указанный вами адрес!");
-        
+        hasEmail.value = true;
+        isWantToChangeEmail.value = false;
+        emailSubmit.value.newEmail = '';
+        emailSubmit.value.confirmEmail = '';
     }
     catch(e){
         const axiosError = e as AxiosError;
@@ -113,18 +128,16 @@ const confirmNewEmail = async() => {
 watch(
     () => [emailSubmit.value.newEmail, emailSubmit.value.confirmEmail],
     () => {
-        if(emailSubmit.value.newEmail !== emailSubmit.value.confirmEmail)
+        if(emailSubmit.value.newEmail === '' &&
+            emailSubmit.value.confirmEmail === '') 
+            return;
+        if(emailSubmit.value.newEmail !== emailSubmit.value.confirmEmail || 
+            emailSubmit.value.confirmEmail === '')
             emailError.value = "Email не совпадают!";
         else
             emailError.value = null;
     }
 )
-
-watch(props.hasEmail, (value) => {
-    if(value) {
-        hasEmail.value = true;
-    }
-})
 </script>
 
 <style scoped lang="scss">

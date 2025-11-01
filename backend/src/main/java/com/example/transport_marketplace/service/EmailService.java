@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 public class EmailService {
     @Autowired
     private final JavaMailSender mailSender;
-    private static final String MAIN_EMAIL = "noreply@transport-marketplace.com";
+    private static final String MAIN_EMAIL = "noreply@ololotravel.com";
 
     public void sendPaymentCode(String toEmail, ConfirmationCodeEvent event){
         try{

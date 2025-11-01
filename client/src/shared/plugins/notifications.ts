@@ -1,4 +1,4 @@
-import NotificationsSystemView from "@/components/atom/NotificationsSystemView.vue";
+import NotificationsSystemView from "@/components/atom/abstract/NotificationsSystemView.vue";
 import { ComponentPublicInstance, createApp, ref } from "vue";
 
 export type NotificationType = 'success' |  'error';

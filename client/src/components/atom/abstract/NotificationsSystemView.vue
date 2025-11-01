@@ -24,6 +24,7 @@ const notifications = inject<Ref<Notification[]>>('notifications')!;
 * {
   font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
+
 .notifications-wrapper {
   z-index: 100;
   position: fixed;

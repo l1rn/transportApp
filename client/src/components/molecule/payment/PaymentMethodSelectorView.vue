@@ -5,12 +5,12 @@
     </div>
     <div class="input">
         <InputSuggestionView
-        v-model="paymentMethod"
-        type="select"
-        placeholder="Способ оплаты"
-        array-type="self"
-        :suggestion-list="paymentMethods"
-    />
+            v-model="paymentMethod"
+            type="select"
+            placeholder="Способ оплаты"
+            array-type="self"
+            :suggestion-list="paymentMethods"
+        />
     </div>
 </div>
 </template>

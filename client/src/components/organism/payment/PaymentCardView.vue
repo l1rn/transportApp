@@ -1,12 +1,4 @@
 <template>
-    <div 
-        v-if="modalStore.isOpen('payment-confirm-code-form')"
-        class="code-confirmation">
-            <ModalFormView
-                v-bind="modalsConfig['payment-confirm-code-form']"
-                v-model="codeValue"    
-            />
-        </div>
     <div class="payment-container">
         <div class="header-container">
             <div class="info-container">
@@ -43,12 +35,6 @@
             v-bind="orderData!"
         />
         
-        <template>
-            <div class="code-confirmation-container">
-                <input type="text">
-                <button>Подтвердить</button>
-            </div>
-        </template>
         <div class="button-container">
             <button @click.stop="createPayment();">
                 Оплатить
@@ -61,68 +47,23 @@
 </template>
 <script setup lang="ts">
 import EmailSectionView from "@/components/molecule/payment/EmailSectionView.vue";
-import codeIcon from "../../../assets/icons/lock.svg";
 import InputSuggestionView from '@/components/atom/InputSuggestionView.vue';
-import { useRequestHandler } from '@/composable/useRequestHandler';
-import notification from '@/plugins/notifications';
-import { paymentService } from '@/services/paymentService';
-import { useModalStore } from '@/stores/useModalStore';
-import { ModalPropsView } from '@/types/component';
-import { OrderInfoResponse } from '@/types/payment';
+import notification from '@/shared/plugins/notifications';
+import { paymentService } from '@/shared/services/paymentService';
+import { useModalStore } from '@/shared/stores/useModalStore';
 import { AxiosError } from 'axios';
-import { onMounted, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import ModalFormView from "@/components/atom/ModalFormView.vue";
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { OrderInfoResponse } from "@/shared/types/payment";
 
 const modalStore = useModalStore();
 
-const router = useRouter();
-const orderData = ref<OrderInfoResponse>();
-const codeValue = ref<string>("");  
-
-onMounted(async () => {
-    if (bookingId === null) return;
-    const response = await paymentService.getOrderInfo(Number(bookingId));
-    orderData.value = response.data;
-    paymentMethods.value = orderData.value?.paymentMethods;
-
-    const routeTitle = router.currentRoute.value.meta.title as string;
-    if(routeTitle){
-        document.title = routeTitle;
-    }
-})
-
-const submitPaymentCodeConfirmation = async(): Promise<void> => {
-    useRequestHandler().handleConfirm(
-        () => paymentService.confirmPayment(
-            modalsConfig['payment-confirm-code-form'].externalId, 
-            codeValue.value
-        ),
-        "Ваш платеж был подтвержден!",
-        "payment-confirm-code-form",
-        codeValue
-    )
-}
-
-const modalsConfig: Record<string, ModalPropsView> = {
-'payment-confirm-code-form': {
-    icon: codeIcon,
-    title: "Введите код подтверждения",
-    desc: `Введите код, чтобы привязать новый адрес электронной почты к вашему аккаунту. 
-    Для подтверждения, введите этот код снизу. Код был отправлен на указанный вами email`,
-    buttonName: "Подтвердить",
-    model: codeValue,
-    inputPlaceholder: "123456",
-    inputType:"text",
-    storeKey: "payment-confirm-code-form",
-    submitFunc: submitPaymentCodeConfirmation,
-    externalId: ""
-  }
-}
+const props = defineProps<{
+    bookingId: number; 
+    orderData?: OrderInfoResponse | undefined;
+}>();
 
 const route = useRoute();
-
-const bookingId = route.query.bookingId;
 
 const paymentMethod = ref<string>("SIMULATION");
 const paymentMethods = ref<Array<string>>();
@@ -137,7 +78,6 @@ const createPayment = async () => {
             Number(bookingId),
             paymentMethod.value
         );
-        modalsConfig['payment-confirm-code-form'].externalId = response.data;
         modalStore.open('payment-confirm-code-form');
     }
     catch (e) {
