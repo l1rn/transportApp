@@ -1,8 +1,11 @@
 import { AxiosResponse } from "axios";
 import { api } from "./api";
-import { PaymentMethod } from "@/shared/types/payment";
 
 class PaymentService{
+    public async getMyPayments(): Promise<AxiosResponse>{
+        return await api.get(`/payments/get-my`);
+    }
+
     public async getOrderInfo(bookingId: number): Promise<AxiosResponse> {
         return await api.get(`/payments/get-info?bookingId=${bookingId}`);
     }

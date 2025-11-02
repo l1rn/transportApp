@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <template v-if="showHeader" class="header">
-      <HeaderView />
+      <HeaderHomeView />
     </template>
     <router-view />
   </div>
@@ -9,7 +9,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import HeaderView from './components/molecule/HeaderView.vue';
+import HeaderHomeView from './components/molecule/headers/HeaderHomeView.vue';
 
 const route = useRoute();
 

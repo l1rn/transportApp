@@ -70,14 +70,22 @@
 </template>
 
 <script setup lang="ts">
+import { useProfilePage } from '@/composable/useProfilePage';
+import notification from '@/shared/plugins/notifications';
 import { bookingService } from '@/shared/services/bookingService';
+import { useModalStore } from '@/shared/stores/useModalStore';
 import { BookingResponse } from '@/shared/types/booking';
 import { Ref } from 'vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+const props = defineProps<{
+  hasEmail: boolean;
+}>();
+
 const bookings: Ref<BookingResponse[]> = ref([]);
 const isLoading = ref(false);
+const { openForm } = useProfilePage();
 
 const router = useRouter();
 
@@ -94,12 +102,16 @@ const getBookings = async () => {
 };
 
 const handlePayment = (id: number) => {
+  if(props.hasEmail === false){
+    notification.error("Сначало нужно привязать почту!");
+    openForm("profile-page-settings");
+    return;
+  }
   const routeData = router.resolve({
     name: 'payment',
     query: {
       bookingId: JSON.stringify(id)
     },
-    
   });
   window.open(routeData.href, '_blank');
 }

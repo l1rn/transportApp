@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.repo;
 
+import com.example.transport_marketplace.enums.PaymentStatus;
 import com.example.transport_marketplace.model.Payment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PaymentRepository extends JpaRepository<Payment, Integer> {
+    Optional<Payment> findByBookingIdAndPaymentStatus(
+            Integer bookingId,
+            PaymentStatus status
+    );
+
     Optional<Payment> findByExternalId(UUID externalId);
+
     @Query("SELECT p from Payment p WHERE p.user.id = :userId")
-    Page<Payment> findAllByUserId(@Param("userId") int userId, Pageable pageable);
+    Page<Payment> findAllByUserId(
+            @Param("userId") Integer userId,
+            Pageable pageable
+    );
 }

@@ -5,3 +5,27 @@ export interface OrderInfoResponse {
     paymentMethods: Array<string>;
     hasEmail: boolean;
 }
+
+export interface PaymentRouteData { 
+    id: number;
+    name: string;
+    description: string;
+}
+
+export interface PaymentData {
+    id: number;
+    amount: number;
+    method: string;
+    description: string;
+    createdAt: Date;
+    username: string;
+    route: Array<PaymentRouteData>;
+}
+
+export interface PaginatedPayme {
+    content: Array<PaymentData>;
+    currentPage: number;
+    pageSize: number;
+    totalElements: number;
+    totalPages: number;
+}

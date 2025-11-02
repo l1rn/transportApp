@@ -71,6 +71,29 @@ public class PaymentService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking was not found by this id"));
 
+        Optional<Payment> existingPendingPayment = paymentRepository
+                .findByBookingIdAndPaymentStatus(bookingId, PaymentStatus.PENDING);
+
+        if(existingPendingPayment.isPresent()){
+            Payment pendingPayment = existingPendingPayment.get();
+
+            if(pendingPayment.getCodeExpiresAt().isAfter(LocalDateTime.now())){
+                return pendingPayment.getExternalId().toString();
+            }
+
+            else{
+                String storedCode = CodeGenerator.generateCode();
+                LocalDateTime codeExpiration = CodeGenerator.generateExpiryTime();
+
+                pendingPayment.setConfirmationCode(storedCode);
+                pendingPayment.setCodeExpiresAt(codeExpiration);
+                paymentRepository.save(pendingPayment);
+
+                sendConfirmationCode(user, storedCode, pendingPayment);
+                return pendingPayment.getExternalId().toString();
+            }
+        }
+
         String storedCode = CodeGenerator.generateCode();
         LocalDateTime codeExpiration = CodeGenerator.generateExpiryTime();
 

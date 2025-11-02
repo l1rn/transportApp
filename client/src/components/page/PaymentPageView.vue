@@ -2,37 +2,20 @@
     <div class="payment-wrapper">
         <HeaderPaymentView />
         <div class="page-content">
-            <PaymentCardView 
-                :bookind-id="Number(bookingId)"
-                :orderData="orderData"
-            />
+            <PaymentCardView v-if="currentView === 'current-payment'" />
+            <MyPaymentsView v-else-if="currentView === 'my-payments'" />
+            <PromocodesView v-else-if="currentView === 'promocodes'" />
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import HeaderPaymentView from '../molecule/HeaderPaymentView.vue';
+import HeaderPaymentView from '../molecule/headers/HeaderPaymentView.vue';
 import PaymentCardView from '../organism/payment/PaymentCardView.vue';
-import { useRoute, useRouter } from 'vue-router';
-import { paymentService } from '@/shared/services/paymentService';
-import { OrderInfoResponse } from '@/shared/types/payment';
+import MyPaymentsView from '../organism/payment/MyPaymentsView.vue';
+import { usePaymentNavigationProvider } from '@/composable/usePaymentNavigation';
+import PromocodesView from '../organism/payment/PromocodesView.vue';
 
-const route = useRoute();
-const router = useRouter();
-const bookingId = route.query.bookindId;
-
-const orderData = ref<OrderInfoResponse>();
-
-onMounted(async() => {
-    if (bookingId === null) return;
-    const response = await paymentService.getOrderInfo(Number(bookingId));
-    orderData.value = response.data;
-
-    const routeTitle = router.currentRoute.value.meta.title as string;
-    if(routeTitle){
-        document.title = routeTitle;
-    }
-})
+const { currentView, setView } = usePaymentNavigationProvider();
 </script>
 <style scoped lang="scss">
 @use "../../assets/styles/static/mixin" as mixins;

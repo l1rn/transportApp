@@ -14,14 +14,14 @@
   </div>
 </template>
 <script setup>
-import ProfileButtonView from '../atom/ProfileButtonView.vue';
+import ProfileButtonView from '@/components/atom/ProfileButtonView.vue';
 
 
 </script>
 
 <style scoped lang="scss">
-@use "../../assets/styles/static/color" as colors;
-@use "../../assets/styles/static/mixin" as mixins;
+@use "../../../assets/styles/static/color" as colors;
+@use "../../../assets/styles/static/mixin" as mixins;
 
 .main-header-wrapper {
     .main-header-container{

@@ -53,17 +53,16 @@ import { paymentService } from '@/shared/services/paymentService';
 import { useModalStore } from '@/shared/stores/useModalStore';
 import { AxiosError } from 'axios';
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { OrderInfoResponse } from "@/shared/types/payment";
 
 const modalStore = useModalStore();
 
-const props = defineProps<{
-    bookingId: number; 
-    orderData?: OrderInfoResponse | undefined;
-}>();
-
 const route = useRoute();
+const router = useRouter();
+
+const bookingId = route.query.bookingId;
+const orderData = ref<OrderInfoResponse>();
 
 const paymentMethod = ref<string>("SIMULATION");
 const paymentMethods = ref<Array<string>>();
@@ -86,6 +85,21 @@ const createPayment = async () => {
         console.log(axiosError.status);
     }
 }
+
+onMounted(async() => {
+    try{
+        const info = await paymentService.getOrderInfo(Number(bookingId));
+        orderData.value = info.data;
+    }
+    catch(e){
+        const axiosError = e as AxiosError;
+        if(axiosError.status === 403) {
+            notification.error("Для доступа на эту страницу, нужно авторизоваться");
+            router.push("/home");
+            return;
+        }
+    }
+})
 </script>
 <style scoped lang="scss">
 @use "../../../assets/styles/static/mixin" as mixins;

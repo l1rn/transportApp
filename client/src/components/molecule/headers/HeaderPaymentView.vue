@@ -5,17 +5,17 @@
         </div>
         <div class="nav-bar-container">
             <div class="current-payment-container">
-                <a href="">
+                <a @click="setView('current-payment')">
                     Текущий платеж
                 </a>
             </div>
             <div class="my-payments-container">
-                <a>
+                <a @click="setView('my-payments')">
                     Мои покупки
                 </a>
             </div>
             <div class="promocodes-container">
-                <a>
+                <a @click="setView('promocodes')">
                     Мои промокоды
                 </a>
             </div>
@@ -23,11 +23,14 @@
     </div>
 </template>
 <script setup lang="ts">
+import { usePaymentNavigation } from '@/composable/usePaymentNavigation';
 
+
+const { currentView, setView } = usePaymentNavigation();
 </script>
 <style lang="scss">
-@use "../../assets/styles/static/color" as colors;
-@use "../../assets/styles/static/mixin" as mixins;
+@use "../../../assets/styles/static/color" as colors;
+@use "../../../assets/styles/static/mixin" as mixins;
 
 .payment-header-container{
     @include mixins.display-center();
