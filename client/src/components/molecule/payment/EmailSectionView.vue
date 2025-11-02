@@ -154,6 +154,8 @@ watch(
         }
     }
     .email-change-form{
+        @include mixins.display-column();
+        gap: 0.5rem;
         .input-block {
         text-transform: uppercase;
         letter-spacing: 0.03rem;
