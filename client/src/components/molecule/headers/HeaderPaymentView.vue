@@ -4,18 +4,27 @@
             ololoseller
         </div>
         <div class="nav-bar-container">
-            <div class="current-payment-container">
-                <a @click="setView('current-payment')">
+            <div 
+            @click="setView('current-payment')"
+            class="current-payment-container"
+            :class="{ 'active': currentView === 'current-payment' }">
+                <a>
                     Текущий платеж
                 </a>
             </div>
-            <div class="my-payments-container">
-                <a @click="setView('my-payments')">
+            <div 
+            @click="setView('my-payments')"
+            class="my-payments-container"
+            :class="{ 'active': currentView === 'my-payments' }">
+                <a>
                     Мои покупки
                 </a>
             </div>
-            <div class="promocodes-container">
-                <a @click="setView('promocodes')">
+            <div 
+            @click="setView('promocodes')" 
+            class="promocodes-container"
+            :class="{ 'active': currentView === 'promocodes' }">
+                <a>
                     Мои промокоды
                 </a>
             </div>
@@ -24,7 +33,6 @@
 </template>
 <script setup lang="ts">
 import { usePaymentNavigation } from '@/composable/usePaymentNavigation';
-
 
 const { currentView, setView } = usePaymentNavigation();
 </script>
@@ -56,6 +64,13 @@ const { currentView, setView } = usePaymentNavigation();
         gap: 2.5rem;
         color: colors.$background;
         font-weight: 700;
+        a {
+            cursor: pointer;
+            
+        }
+        .active {
+            text-decoration: underline;
+        }
     }
 }
 </style>
