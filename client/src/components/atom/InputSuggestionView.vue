@@ -33,10 +33,10 @@
                         </template>
                         <template 
                         v-if="props.arrayType"
-                        v-for="transport in props.suggestionList"
-                        :key="transport">
+                        v-for="method in props.suggestionList"
+                        :key="method">
                             <li
-                            @click="selectSuggestion(transport)">{{ transport }}</li>
+                            @click="selectSuggestion(method)">{{ method }}</li>
                         </template>
                     </ul>
                 </div>

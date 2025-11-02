@@ -55,6 +55,14 @@ import { AxiosError } from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { OrderInfoResponse } from "@/shared/types/payment";
+const PaymentMethods = {
+    CARD: "Банковская карта",
+    BANK_TRANSFER: "Перевод",
+    ELECTRONIC: "Электронный",
+    SIMULATION: "Симуляция"
+};
+
+type PaymentMethod = keyof typeof PaymentMethods;
 
 const modalStore = useModalStore();
 
@@ -77,6 +85,7 @@ const createPayment = async () => {
             Number(bookingId),
             paymentMethod.value
         );
+    
         modalStore.open('payment-confirm-code-form');
     }
     catch (e) {
@@ -90,8 +99,9 @@ onMounted(async() => {
     try{
         const info = await paymentService.getOrderInfo(Number(bookingId));
         orderData.value = info.data;
+        paymentMethods.value = info.data.paymentMethods;
     }
-    catch(e){
+    catch(e) {
         const axiosError = e as AxiosError;
         if(axiosError.status === 403) {
             notification.error("Для доступа на эту страницу, нужно авторизоваться");

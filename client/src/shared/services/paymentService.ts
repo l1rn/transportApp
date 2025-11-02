@@ -1,12 +1,13 @@
 import { AxiosResponse } from "axios";
 import { api } from "./api";
+import { OrderInfoResponse, PaginatedPayment } from "../types/payment";
 
 class PaymentService{
-    public async getMyPayments(): Promise<AxiosResponse>{
+    public async getMyPayments(): Promise<AxiosResponse<PaginatedPayment>>{
         return await api.get(`/payments/get-my`);
     }
 
-    public async getOrderInfo(bookingId: number): Promise<AxiosResponse> {
+    public async getOrderInfo(bookingId: number): Promise<AxiosResponse<OrderInfoResponse>> {
         return await api.get(`/payments/get-info?bookingId=${bookingId}`);
     }
 

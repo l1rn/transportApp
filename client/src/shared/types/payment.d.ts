@@ -22,7 +22,7 @@ export interface PaymentData {
     route: Array<PaymentRouteData>;
 }
 
-export interface PaginatedPayme {
+export interface PaginatedPayment {
     content: Array<PaymentData>;
     currentPage: number;
     pageSize: number;
