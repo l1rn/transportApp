@@ -1,25 +1,34 @@
 <template>
     <div class="smart-input-wrapper">
-        <div class="input-container">
+        <div
+        ref="containerRef"
+        class="input-container">
             <input 
+                ref="inputRef"
                 v-model="localValue" 
                 :type="props.type" 
                 :placeholder="props.placeholder"
-                :readonly="props.type === 'select'"
-                @click="focusSuggestions"
-                @blur="hideSuggestions"
+                :readonly="props.type === 'select' && !isSelectActive"
+                @click="handleInputClick"
+                @focus="handleInputFocus"
+                @blur="handleInputBlur"
+                @keydown="handleKeydown"
             />
             <span 
                 class="select-icon" 
-                :class="{ 'isActive': suggestionList}"
-                v-if="props.type === 'select'">
+                :class="{ 'isActive': isDropdownOpen }"
+                v-if="props.type === 'select'"
+                @mousedown="handleIconMouseDown"
+                @click="handleInputClick">
                 <img src="../../assets/icons/dropdown.svg" alt="select">
             </span>
 
             <template v-if="props.type !== 'date'">
                 <div 
-                v-if="suggestionList" 
-                class="suggestions-list">
+                v-if="isDropdownOpen" 
+                class="suggestions-list"
+                @mousedown="handleSuggestionsMouseDown"
+                >
                     <ul>
                         <template 
                         v-if="suggestionType"
@@ -47,13 +56,19 @@
 <script setup lang="ts">
 import { useTypeDetection } from '@/composable/useTypeDetection';
 import { routesService } from '@/shared/services/routeService';
-import { defineProps, ref, watch } from 'vue';
+import { defineProps, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 const { onTypeStart, onTypeEnd, cancelTypeDetection } = useTypeDetection();
 
-const suggestionList = ref(false);
+const isDropdownOpen = ref(false);
+const isSelectActive = ref(false);
 const isLoading = ref(false);
 const isProcessingSelection = ref(false);
+const ignoreNextBlur = ref(false);
+const isIconClick = ref(false);
+
+const containerRef = ref<HTMLElement | null>(null);
+const inputRef = ref<HTMLInputElement | null>(null);
 
 const props = defineProps<{
     type: string;
@@ -67,20 +82,94 @@ const localValue = defineModel<string | null>({
     default: ''
 });
 
-const focusSuggestions = () => {
-    suggestionList.value = true;
+const handleClickOutside = (event: Event) => {
+    if(containerRef.value && !containerRef.value.contains(event.target as Node)){
+        closeDropdown();
+    }
 }
 
-const hideSuggestions = () => {
-    if(props.suggestionType){
+const handleKeydown = (event: KeyboardEvent) => {
+    if (props.type === 'select') {
+        if (event.key === 'Escape') {
+            closeDropdown();
+        } else if (event.key === 'Enter' && !isDropdownOpen.value) {
+            openDropdown();
+        }
+    }
+};
+
+onMounted(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+})
+
+onBeforeUnmount(() => {
+    document.removeEventListener('mousedown', handleClickOutside);
+})
+
+const handleInputClick = (event: MouseEvent) => {
+    if(props.type === 'select'){
+        event.preventDefault();
+        event.stopPropagation();
+        
+        if(!isDropdownOpen.value){
+            openDropdown();
+        }
+    }
+}
+
+const handleInputFocus = () => {
+    if(props.type === 'select' && !isIconClick.value){
+        openDropdown();
+    }
+    isIconClick.value = false;
+}
+
+const handleInputBlur = () => {
+    if (!ignoreNextBlur.value && !isIconClick.value) {
         setTimeout(() => {
-            suggestionList.value = false;
-        }, 250)
+            if (!isProcessingSelection.value) {
+                closeDropdown();
+            }
+        }, 150);
+    }
+    ignoreNextBlur.value = false;
+};
+
+const handleSuggestionsMouseDown = () => {
+    ignoreNextBlur.value = true;
+}
+
+const handleIconMouseDown = (event: MouseEvent) => {
+    event.preventDefault();
+    ignoreNextBlur.value = true;
+}
+
+const openDropdown = () => {
+    if (props.type === 'select') {
+        isDropdownOpen.value = true;
+        isSelectActive.value = true;
+        
+        nextTick(() => {
+            inputRef.value?.focus();
+            
+            if (props.suggestionType && !localValue.value) {
+                fetchSuggestions('');
+            }
+        });
+    }
+}
+
+const closeDropdown = () => {
+    isDropdownOpen.value = false;
+    isSelectActive.value = false;
+};
+
+const toggleDropdown = () => {
+    if(isDropdownOpen.value){
+        closeDropdown();
     }
     else{
-        setTimeout(() => {
-            suggestionList.value = false;
-        }, 100)
+        openDropdown();
     }
 }
 
@@ -111,11 +200,11 @@ const selectSuggestion = (item: any) => {
     setTimeout(() => {
         localValue.value = item;
         apiResults.value = [];
-        hideSuggestions();
+        closeDropdown();
         setTimeout(() => {
             isProcessingSelection.value = false;
-        }, 100);
-    }, 0);
+        }, 50);
+    }, 10);
 }
 
 watch(localValue, (newValue) => {
@@ -136,6 +225,12 @@ watch(localValue, (newValue) => {
         fetchSuggestions(newValue);
     })
 })
+
+watch(isDropdownOpen, (newValue) => {
+    if(newValue && props.suggestionType && !localValue.value){
+        fetchSuggestions('');
+    }
+})
 </script>
 <style lang="scss">
 @use "../../assets/styles/static/color" as colors;
@@ -154,21 +249,26 @@ watch(localValue, (newValue) => {
             cursor: pointer;
             caret-color: transparent;
         }
+
         .select-icon {
             position: absolute;
             width: 16px;
             height: 16px;
             right: 16px;
-            top: 45%;
+            top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
             transition: all 0.3s;
+            z-index: 2;
             &.isActive {
-                transform: scaleY(-1);
-                top: 42.5%;
+                transform: translateY(-50%) rotate(180deg);
+            }
+            img {
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
             }
         }
-
     }
 }
 

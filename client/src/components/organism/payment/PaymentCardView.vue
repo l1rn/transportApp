@@ -43,6 +43,19 @@
                 Отказаться от оплаты и вернуться на главную
             </a>
         </div>
+        <template v-if="isCodeSent">
+            <div class="code-confirmation">
+                <div>Введите код</div>
+                <div class="input-block">
+                    <input 
+                    v-model="confirmationCode"
+                    type="text">
+                    <button @click="confirmPayment">
+                        Подтвердить
+                    </button>
+                </div>
+            </div>
+        </template>
     </div>
 </template>
 <script setup lang="ts">
@@ -55,14 +68,7 @@ import { AxiosError } from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { OrderInfoResponse } from "@/shared/types/payment";
-const PaymentMethods = {
-    CARD: "Банковская карта",
-    BANK_TRANSFER: "Перевод",
-    ELECTRONIC: "Электронный",
-    SIMULATION: "Симуляция"
-};
-
-type PaymentMethod = keyof typeof PaymentMethods;
+import { usePaymentNavigation } from "@/composable/usePaymentNavigation";
 
 const modalStore = useModalStore();
 
@@ -75,6 +81,9 @@ const orderData = ref<OrderInfoResponse>();
 const paymentMethod = ref<string>("SIMULATION");
 const paymentMethods = ref<Array<string>>();
 
+const isCodeSent = ref(false);
+const confirmationCode = ref<string | null>(null);
+
 const createPayment = async () => {
     if (!paymentMethod.value) {
         notification.error("Заполните способ оплаты");
@@ -85,8 +94,9 @@ const createPayment = async () => {
             Number(bookingId),
             paymentMethod.value
         );
-    
-        modalStore.open('payment-confirm-code-form');
+        notification.success('Ваша заявка была создана! Код был отправлен вам на почту')
+        localStorage.setItem('externalId', response.data);
+        isCodeSent.value = true;
     }
     catch (e) {
         const axiosError = e as AxiosError;
@@ -95,9 +105,37 @@ const createPayment = async () => {
     }
 }
 
+const confirmPayment = async() => {
+    if (!confirmationCode.value) {
+        notification.error("Заполните поле с кодом");
+        return;
+    }
+    try {
+        await paymentService.confirmPayment(
+            localStorage.getItem('externalId'),
+            confirmationCode.value
+        );
+        notification.success("Ваш заказ успешно подтвержден, проверьте почту!");
+        confirmationCode.value = "";
+        isCodeSent.value = false;
+        setView('my-payments');
+    }
+    catch (e) {
+        const axiosError = e as AxiosError;
+        notification.error("Не удалось отправить запрос на оплату!: " + axiosError.message);
+        console.log(axiosError.status);
+    }
+}
+const { currentView, setView } = usePaymentNavigation();
+
 onMounted(async() => {
     try{
         const info = await paymentService.getOrderInfo(Number(bookingId));
+        if(info.data.paid){
+            notification.success("Вы уже оплатили этот платеж!");
+            setView('my-payments');
+            return;
+        }
         orderData.value = info.data;
         paymentMethods.value = info.data.paymentMethods;
     }
@@ -197,6 +235,21 @@ onMounted(async() => {
         }
         a{
             @include mixins.link-underline();
+        }
+    }
+    .code-confirmation{
+        @include mixins.display-column();
+        gap: 0.25rem;
+        justify-content: center;
+        input{
+            @include mixins.custom-input();
+            margin-right: 0.5rem;
+        }
+        button{
+            @include mixins.button-clear(colors.$medium-green, colors.$white);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 1.05rem;
         }
     }
 }

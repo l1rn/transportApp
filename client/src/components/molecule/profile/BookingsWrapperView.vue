@@ -19,6 +19,9 @@
           <div class="route">
             {{ booking.route.routeFrom }}
           </div>
+          <div class="arrow-container">
+            ➔
+          </div>
           <div class="route">
             {{ booking.route.routeTo }}
           </div>
@@ -58,11 +61,20 @@
         </div>
 
         <div class="button-container">
-          <button @click="handlePayment(booking.id)">
+          <button 
+          class="payment-button"
+          v-if="booking.status !== 'PAID'"
+          @click="handlePayment(booking.id)">
             Оплатить
           </button>
-          <button>Отменить</button>
-          <button>История</button>
+          <button
+          class="cancel-button">
+            Отменить
+          </button>
+          <button
+          class="history-button">
+            История
+          </button>
         </div>
       </div>
     </template>
@@ -73,7 +85,6 @@
 import { useProfilePage } from '@/composable/useProfilePage';
 import notification from '@/shared/plugins/notifications';
 import { bookingService } from '@/shared/services/bookingService';
-import { useModalStore } from '@/shared/stores/useModalStore';
 import { BookingResponse } from '@/shared/types/booking';
 import { Ref } from 'vue';
 import { onMounted, ref } from 'vue';

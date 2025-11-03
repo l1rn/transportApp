@@ -4,10 +4,11 @@ import { OrderInfoResponse, PaginatedPayment } from "../types/payment";
 
 class PaymentService{
     public async getMyPayments(): Promise<AxiosResponse<PaginatedPayment>>{
-        return await api.get(`/payments/get-my`);
+        return await api.get(`/payments/get-my?page=0&size=5`);
     }
 
-    public async getOrderInfo(bookingId: number): Promise<AxiosResponse<OrderInfoResponse>> {
+    public async getOrderInfo(bookingId: number)
+        : Promise<AxiosResponse<OrderInfoResponse>> {
         return await api.get(`/payments/get-info?bookingId=${bookingId}`);
     }
 
@@ -16,7 +17,7 @@ class PaymentService{
             return await api.post(`/payments/create?bookingId=${bookingId}&paymentMethod=${paymentMethod}`)
         }
 
-    public async confirmPayment(externalId: string | undefined, code: string)
+    public async confirmPayment(externalId: string | null, code: string)
         :Promise<AxiosResponse> {
             return await api.post(`/payments/confirm`, {
                 externalId: externalId,

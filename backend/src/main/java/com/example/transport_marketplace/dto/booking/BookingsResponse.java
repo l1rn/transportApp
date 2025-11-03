@@ -18,7 +18,6 @@ public class BookingsResponse {
     private int id;
     private int userId;
     private Route route;
-    private List<Payment> payments;
     private BookingStatus status;
     private Payment successfulPayment;
 }

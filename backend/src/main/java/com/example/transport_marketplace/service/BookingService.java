@@ -53,7 +53,6 @@ public class BookingService {
                         .id(booking.getId())
                         .userId(booking.getUser().getId())
                         .route(booking.getRoute())
-                        .payments(booking.getPayments())
                         .status(booking.getStatus())
                         .successfulPayment(booking.getSuccessfulPayment().orElse(null))
                         .build()

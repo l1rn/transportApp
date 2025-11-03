@@ -42,7 +42,7 @@ const { currentView, setView } = usePaymentNavigation();
 
 .payment-header-container{
     @include mixins.display-center();
-    background: colors.$green;
+    background: colors.$dark-green;
     width: 100%;
     padding: 2.5rem 0;
     justify-content: space-evenly;

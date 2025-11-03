@@ -5,6 +5,7 @@ import com.example.transport_marketplace.dto.PaginatedResponse;
 import com.example.transport_marketplace.dto.payment.ConfirmPaymentRequest;
 import com.example.transport_marketplace.dto.payment.PaymentResponse;
 import com.example.transport_marketplace.dto.payment.PreparationOrderResponse;
+import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.PaymentMethod;
 import com.example.transport_marketplace.enums.PaymentStatus;
 import com.example.transport_marketplace.events.ConfirmationCodeEvent;
@@ -57,6 +58,7 @@ public class PaymentService {
                 .paymentMethods(Arrays.stream(PaymentMethod.values()).toList())
                 .price(booking.getRoute().getPrice())
                 .hasEmail(user.getEmail() != null)
+                .paid(booking.getStatus() == BookingStatus.PAID)
                 .build();
     }
 
@@ -145,6 +147,8 @@ public class PaymentService {
         Payment payment = paymentRepository.findByExternalId(UUID.fromString(request.getExternalId()))
                 .orElseThrow(() -> new RuntimeException("Не удалось найти платеж по id"));
 
+        Booking booking = payment.getBooking();
+
         if(!Objects.equals(payment.getConfirmationCode(), request.getCode())){
             throw new RuntimeException("Коды не совпадают!");
         }
@@ -153,16 +157,18 @@ public class PaymentService {
             throw new RuntimeException("Вы не можете подтвердить этот платеж");
         }
 
-        if (payment.getPaymentStatus() == PaymentStatus.CANCELLED){
+        if(payment.getPaymentStatus() == PaymentStatus.CANCELLED){
             throw new RuntimeException("Платеж отменен, создайте новый!");
         }
 
-        if (payment.getPaymentStatus() == PaymentStatus.SUCCEEDED){
+        if(payment.getPaymentStatus() == PaymentStatus.SUCCEEDED){
             throw new RuntimeException("Платеж уже подтвержден!");
         }
 
+        booking.setStatus(BookingStatus.PAID);
         payment.setPaymentStatus(PaymentStatus.SUCCEEDED);
         paymentRepository.save(payment);
+        bookingRepository.save(booking);
 
         sendPaymentSuccessEvent(payment);
     }

@@ -167,6 +167,14 @@ watch(
                 @include mixins.custom-input();
             }
         }
+        .button-block{
+            button{
+                @include mixins.button-clear(colors.$medium-green, colors.$white);
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                font-size: 1.05rem;
+            }
+        }
     }
 }
 
