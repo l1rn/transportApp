@@ -20,6 +20,7 @@ export interface PaymentData {
     description: string;
     createdAt: Date;
     username: string;
+    status: string;
     route: Array<PaymentRouteData>;
 }
 
