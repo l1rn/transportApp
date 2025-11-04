@@ -21,6 +21,9 @@
           >
             Настройки
           </button>  
+          <button @click="handlePayments">
+            Мои платежи
+          </button>
           <button
             v-if="!!props.hasRoleAdmin"
             class="nav-link"
@@ -36,6 +39,7 @@
 <script setup lang="ts">
 import { useProfilePage } from '@/composable/useProfilePage';
 import { useModalStore } from '@/shared/stores/useModalStore';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
     username: string;
@@ -46,6 +50,12 @@ const props = defineProps<{
 const modalStore = useModalStore();
 
 const { openForm } = useProfilePage();
+const router = useRouter();
+
+const handlePayments = () => {
+  const routeData = router.resolve({name: "payment"})
+  window.open(routeData.href, '_blank')
+}
 </script>
 <style lang="scss">
 @use "../../../assets/styles/static/mixin" as mixins;

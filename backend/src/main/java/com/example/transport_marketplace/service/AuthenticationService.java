@@ -17,21 +17,28 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthenticationService {
     @Autowired
     private final UserRepository userRepository;
@@ -46,6 +53,8 @@ public class AuthenticationService {
     @Autowired
     private final RefreshTokenRepository refreshTokenRepository;
 
+    @Value("${hmac.key}")
+    private String hmacSecretKey;
 
     public void signUp(SignUpRequest request){
 
@@ -75,8 +84,9 @@ public class AuthenticationService {
         String ipAddress = httpServletRequest.getRemoteAddr();
         String deviceFingerprint = "agent:" + userAgent + "!ip:" + ipAddress;
 
+        String mac = hmacSha256Base64(hmacSecretKey, deviceFingerprint);
         Device newDevice = Device.builder()
-                .deviceFingerprint(deviceFingerprint)
+                .deviceFingerprint(mac)
                 .userAgent(userAgent)
                 .user(user)
                 .build();
@@ -207,4 +217,15 @@ public class AuthenticationService {
                 .ifPresent(refreshTokenRepository::delete);
     }
 
+    public static String hmacSha256Base64(String secretKey, String message){
+        try {
+            Mac mac = Mac.getInstance("HmacSHA256");
+            SecretKeySpec keySpec = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+            mac.init(keySpec);
+            byte[] rawHmac = mac.doFinal(message.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(rawHmac);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

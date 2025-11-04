@@ -2,7 +2,9 @@
     <div class="payment-wrapper">
         <HeaderPaymentView />
         <div class="page-content">
-            <PaymentCardView v-if="currentView === 'current-payment'" />
+            <PaymentCardView 
+                v-if="currentView === 'current-payment'" 
+            />
             <MyPaymentsView v-else-if="currentView === 'my-payments'" />
             <PromocodesView v-else-if="currentView === 'promocodes'" />
         </div>

@@ -126,12 +126,18 @@ const confirmPayment = async() => {
         console.log(axiosError.status);
     }
 }
-const { currentView, setView } = usePaymentNavigation();
+const { setView, checkAvailability } = usePaymentNavigation();
 
 onMounted(async() => {
-    try{
+    try {
+        if(!bookingId){
+            checkAvailability(true);
+            setView('my-payments');
+            return;
+        }
         const info = await paymentService.getOrderInfo(Number(bookingId));
-        if(info.data.paid){
+        if(info.data.paid) {
+            checkAvailability(info.data.paid);
             notification.success("Вы уже оплатили этот платеж!");
             setView('my-payments');
             return;

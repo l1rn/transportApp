@@ -55,6 +55,10 @@ springdoc:
 token:
   signing:
     key: ${JWT_SIGNING_KEY}
+
+hmac:
+  key: 5+7r3Kss9Wr1zUy1l1uaWfG6s9Yt2QBXWUrC/Hcjzko=
+
 jwt:
   access-token-expiration: ${ACCESS_TOKEN_EXP}
   refresh-token-expiration: ${REFRESH_TOKEN_EXP}

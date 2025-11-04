@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -143,6 +144,7 @@ public class PaymentService {
         }
     }
 
+    @Transactional
     public void confirmPayment(String username, ConfirmPaymentRequest request){
         Payment payment = paymentRepository.findByExternalId(UUID.fromString(request.getExternalId()))
                 .orElseThrow(() -> new RuntimeException("Не удалось найти платеж по id"));
@@ -197,6 +199,7 @@ public class PaymentService {
         );
     }
 
+    @Transactional
     public void cancelPayment(String externalId){
         Payment payment = paymentRepository.findByExternalId(UUID.fromString(externalId))
                 .orElseThrow(() -> new RuntimeException("Платеж не найден"));
@@ -205,7 +208,11 @@ public class PaymentService {
             throw new RuntimeException("Платеж был уже отменен!");
         }
 
+        Booking booking = payment.getBooking();
+        booking.setStatus(BookingStatus.CANCELED);
         payment.setPaymentStatus(PaymentStatus.CANCELLED);
+        bookingRepository.save(booking);
+        paymentRepository.save(payment);
     }
 
     public PaginatedResponse<PaymentResponse> getMyPayments(

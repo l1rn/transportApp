@@ -5,6 +5,7 @@
         </div>
         <div class="nav-bar-container">
             <div 
+            v-if="isCurrentPaymentAvailable"
             @click="setView('current-payment')"
             class="current-payment-container"
             :class="{ 'active': currentView === 'current-payment' }">
@@ -34,7 +35,12 @@
 <script setup lang="ts">
 import { usePaymentNavigation } from '@/composable/usePaymentNavigation';
 
-const { currentView, setView } = usePaymentNavigation();
+const { 
+    currentView, 
+    setView,
+    isCurrentPaymentAvailable
+} = usePaymentNavigation();
+
 </script>
 <style lang="scss">
 @use "../../../assets/styles/static/color" as colors;

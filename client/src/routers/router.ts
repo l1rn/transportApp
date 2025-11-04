@@ -35,7 +35,7 @@ const routes = [
     },
     {
         name: 'payment',
-        path: '/payment',
+        path: '/payments',
         component: PaymentPageView,
         meta: { 
             title: 'ololoseller',    
