@@ -110,6 +110,10 @@ public class UserService {
                 .build();
     }
 
+    public boolean getUserExistence(String username){
+        return userRepository.existsByUsername(username);
+    }
+
     public void setAdmin(User user){
         user.setRole(Role.ROLE_ADMIN);
         userRepository.save(user);

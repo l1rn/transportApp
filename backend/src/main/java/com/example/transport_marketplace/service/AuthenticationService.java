@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -91,8 +92,22 @@ public class AuthenticationService {
                 .user(user)
                 .build();
 
-        Device device = deviceRepository.findByDeviceFingerprintAndUser(deviceFingerprint, user)
-                        .orElseGet(() -> deviceRepository.save(newDevice));
+        Optional<Device> existingDevice = deviceRepository.findFirstByDeviceFingerprintAndUser(mac, user);
+        Device device;
+
+        if(existingDevice.isPresent()){
+            device = existingDevice.get();
+            List<Device> duplicates = deviceRepository.findByDeviceFingerprintAndUser(mac, user);
+            if(duplicates.size() > 1){
+                List<Device> toDelete = duplicates.stream()
+                        .filter(d -> !d.getId().equals(device.getId()))
+                        .collect(Collectors.toList());
+                deviceRepository.deleteAll(toDelete);
+            }
+        }
+        else{
+            device = deviceRepository.save(newDevice);
+        }
 
         user.getDevices().add(device);
 

@@ -12,11 +12,16 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "devices")
+@Table(
+        name = "devices",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = { "device_fingerprint, user_id"})
+        }
+)
 public class Device implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String deviceFingerprint;
     private String userAgent;
 

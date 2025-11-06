@@ -119,11 +119,6 @@ const checkRoutesEmoji = (transport) => {
 }
 
 </script>
-<script>
-export default {
-  name: "AppRoutesFilter"
-}
-</script>
 <style scoped lang="sass">
 @use "../../assets/styles/organism/all-routes"
 </style>

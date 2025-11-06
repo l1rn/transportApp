@@ -1,16 +1,17 @@
 <template>
   <div id="app">
     <template v-if="showHeader" class="header">
-      <HeaderHomeView />
+      <AsyncHeaderHomeView />
     </template>
     <router-view />
   </div>
 </template>
 <script setup>
-import { computed } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 import { useRoute } from 'vue-router';
-import HeaderHomeView from './components/molecule/headers/HeaderHomeView.vue';
-
+const AsyncHeaderHomeView = defineAsyncComponent(() => 
+  import('./components/molecule/headers/HeaderHomeView.vue')
+)
 const route = useRoute();
 
 const showHeader = computed(() => {

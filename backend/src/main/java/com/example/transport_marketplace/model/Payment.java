@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private UUID externalId;
     private double amount;

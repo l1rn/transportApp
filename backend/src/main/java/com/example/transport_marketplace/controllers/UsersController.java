@@ -96,6 +96,17 @@ public class UsersController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @GetMapping("/my-status")
+    public ResponseEntity<?> getMyStatus(
+            @AuthenticationPrincipal UserDetails userDetails
+    ){
+        try {
+            return ResponseEntity.ok(userService.getUserExistence(userDetails.getUsername()));
+        } catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Не удалось получать информацию о вас");
+        }
+    }
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/set-email")
     public ResponseEntity<?> requestUserEmail(
             @AuthenticationPrincipal UserDetails userDetails,

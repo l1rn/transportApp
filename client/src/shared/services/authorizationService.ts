@@ -1,23 +1,26 @@
 import { UserData } from "@/shared/types/userData";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { api } from "./api";
 import { useLoginStore } from "@/shared/stores/authStore";
 import router from "@/routers/router";
+import { useAuthStore } from "../stores/useLoginStore";
 
 class AuthorizationService{
+    constructor() {
+        this.authStore = useAuthStore();
+    }
     public async signInUser(data: UserData): Promise<AxiosResponse> {
-        return await api.post(`/auth/sign-in`, {
+        const response = await api.post(`/auth/sign-in`, {
             username: data.username,
             password: data.password
-        })
+        });
+        return response;
     }
 
     public async logoutUser(): Promise<boolean> {
         try{
             await api.post(`/auth/logout`,);
-            const loginStore = useLoginStore();
             router.replace('/')
-            loginStore.logout()
             return true;
         }
         catch(err){
@@ -31,10 +34,6 @@ class AuthorizationService{
             username: data.username,
             password: data.password
         });
-    }
-
-    getRoleUser(){
-        return api.get(`/users/me/role`)
     }
 }
 

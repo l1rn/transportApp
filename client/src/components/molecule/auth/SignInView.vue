@@ -56,17 +56,16 @@ import { ref } from 'vue';
 import { useConditionalClickOutside } from "@/composable/useConditionalClickOutside";
 import { useAuthForms } from "@/composable/useAuthForms";
 import { authorizationService } from "@/shared/services/authorizationService";
-import { useLoginStore } from "@/shared/stores/authStore";
 import notification from "@/shared/plugins/notifications";
+import { useAuthStore } from "@/shared/stores/useLoginStore";
 
 const modalStore = useModalStore();
-const loginStore = useLoginStore();
-
 const user = ref<UserData>({
   username: '',
   password: ''
 });
 
+const authStore = useAuthStore();
 const { switchForms } = useAuthForms();
 
 const signIn = async () => {
@@ -80,7 +79,7 @@ const signIn = async () => {
     user.value.username = '';
     user.value.password = '';
     if(response.status === 200){
-      loginStore.auth();
+      authStore.login();
       modalStore.close('login');
       notification.success('Вход выполнен!');
     }

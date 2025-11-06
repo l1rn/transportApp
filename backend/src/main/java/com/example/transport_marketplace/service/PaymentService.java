@@ -93,6 +93,7 @@ public class PaymentService {
                 paymentRepository.save(pendingPayment);
 
                 sendConfirmationCode(user, storedCode, pendingPayment);
+                sendConfirmationCode(user, storedCode, pendingPayment);
                 return pendingPayment.getExternalId().toString();
             }
         }

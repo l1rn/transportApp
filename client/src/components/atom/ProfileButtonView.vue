@@ -14,7 +14,7 @@
             class="profile-menu">
               <ul ref="profileMenuRef"> 
                 <template v-if="isAuthenticated">
-                  <li @click.stop="router.push('/profile')">
+                  <li @click.stop="handleProfileClick">
                     <span>👤</span> Профиль
                   </li>
                   <li @click.stop="logoutProfileMenu">
@@ -37,33 +37,46 @@
 <script setup lang="ts">
 import { useAuthForms } from '@/composable/useAuthForms';
 import { useConditionalClickOutside } from '@/composable/useConditionalClickOutside';
-import router from '@/routers/router';
 import { authorizationService } from '@/shared/services/authorizationService';
-import { useLoginStore } from '@/shared/stores/authStore';
+import { userService } from '@/shared/services/userService';
+import { useAuthStore } from '@/shared/stores/useLoginStore';
 import { useModalStore } from '@/shared/stores/useModalStore';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, ref } from 'vue';
-
-const loginStore = useLoginStore();
-const { logined } = storeToRefs(loginStore)
-const isAuthenticated = computed(() => logined.value);
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const { openForm } = useAuthForms();
+
+const router = useRouter();
 
 const modalStore = useModalStore();
 const profileMenuRef = ref<HTMLElement | null>(null);
 
+const authStore = useAuthStore();
+const { isAuth: isAuthenticated } = storeToRefs(authStore);
+
+const handleProfileClick = () => {
+  router.push('/profile');
+  modalStore.close('profile-menu');
+}
+
 const logoutProfileMenu = async() => {
   try {
+    modalStore.close('profile-menu');
     await authorizationService.logoutUser();
+    authStore.logout();
+    router.push("/home");
   }
   catch(error){
     console.error(error);
   }
 }
 
-onMounted(() => {
-  loginStore.initLoginState()
+onMounted(async() => {
+  const response = await userService.getMyStatus();
+  if(response.data === true && response.status === 200){
+    authStore.login();
+  }
 })
 
 useConditionalClickOutside(

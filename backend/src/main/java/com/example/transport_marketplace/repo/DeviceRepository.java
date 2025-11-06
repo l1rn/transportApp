@@ -11,10 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DeviceRepository extends JpaRepository<Device, Integer> {
-    Optional<Device> findByDeviceFingerprintAndUser(String deviceFingerPrint, User user);
+    List<Device> findByDeviceFingerprintAndUser(String deviceFingerPrint, User user);
+    Optional<Device> findFirstByDeviceFingerprintAndUser(String deviceFingerPrint, User user);
     Optional<List<Device>> findByUser(User user);
     Optional<Device> findByUserAndUserAgent(User user, String userAgent);
     Optional<Object> findByUserAndUserAgent(Optional<User> user, String userAgent);
+
+    void deleteByUser(User user);
     @Modifying
     @Query("DELETE FROM Device d WHERE d.user = :user AND d = :device")
     void deleteDeviceForUser(@Param("user") User user, @Param("device") Device device);

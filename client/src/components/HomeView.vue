@@ -3,8 +3,8 @@
   v-if="isAuthFormOpen" 
   class="modal-auth-form">
     <div class="auth-form">
-      <SignUpView v-if="currentForm === 'register'" />
-      <SignInView v-else-if="currentForm === 'login'" />
+      <AsyncSignUpView v-if="currentForm === 'register'" />
+      <AsyncSignInView v-else-if="currentForm === 'login'" />
     </div>
   </div>
 
@@ -74,13 +74,19 @@
 </template>
 <script setup lang="ts">
 import github from '@/assets/icons/github-mark.svg';
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { ref, onMounted, onBeforeUnmount, nextTick, defineAsyncComponent } from 'vue';
 import SearchContainerView from './molecule/home/SearchContainerView.vue';
 import RouteView from './molecule/home/RouteView.vue';
-import SignInView from './molecule/auth/SignInView.vue';
-import SignUpView from './molecule/auth/SignUpView.vue';
 import ProfileButtonView from './atom/ProfileButtonView.vue';
 import { useAuthForms } from '@/composable/useAuthForms';
+
+const AsyncSignUpView = defineAsyncComponent(() => 
+  import("@/components/molecule/auth/SignUpView.vue")
+)
+
+const AsyncSignInView = defineAsyncComponent(() =>
+  import("@/components/molecule/auth/SignInView.vue")
+)
 
 const isSticky = ref<boolean>(false);
 const isScrolled = ref<boolean>(false);

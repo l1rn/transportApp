@@ -3,6 +3,7 @@ import router from "@/routers/router";
 
 import { useLoginStore } from "@/shared/stores/authStore";
 import { createPinia, setActivePinia } from "pinia";
+import { useAuthStore } from "../stores/useLoginStore";
 
 setActivePinia(createPinia());
 
@@ -34,13 +35,13 @@ class ApiInterceptor {
     private refreshTimeoutId: ReturnType<typeof setTimeout> | null = null;
     private isRefreshing = false;
     private pendingRequests: Array<() => void> = [];
-    private loginStore;
+    private authStore;
     private lastRefreshTime: number = 0;
 
     private readonly MIN_REFRESH_INTERVAL = 30000;
 
     constructor() {
-        this.loginStore = useLoginStore();
+        this.authStore = useAuthStore();
         this.api = axios.create({
             baseURL: CONFIG.BASE_URL,
             timeout: CONFIG.TIMEOUT,
@@ -217,7 +218,7 @@ class ApiInterceptor {
             console.error("Logout request failed: ", logoutError);
         }
 
-        this.loginStore.logout();
+        this.authStore.logout();
         localStorage.setItem('logined', 'false');
 
         if(router.currentRoute.value.path !== '/home'){

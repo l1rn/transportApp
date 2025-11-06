@@ -8,14 +8,13 @@
         ololotravel
         </div>
         <div class="profile-header-custom">
-        <ProfileButtonView />
+            <ProfileButtonView />
         </div>
     </div>
   </div>
 </template>
 <script setup>
 import ProfileButtonView from '@/components/atom/ProfileButtonView.vue';
-
 
 </script>
 

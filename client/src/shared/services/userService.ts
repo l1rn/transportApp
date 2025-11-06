@@ -4,6 +4,10 @@ import { ChangePasswordRequest, UserInfo } from "@/shared/types/userData";
 
 class UserService {
     // user basic
+    public async getMyStatus(): Promise<AxiosResponse>{
+        return await api.get('/users/my-status');
+    }
+
     public async getUserInfo(): Promise<AxiosResponse<UserInfo>> {
         return await api.get(`/users/me`);
     }
