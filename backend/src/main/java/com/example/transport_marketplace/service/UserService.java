@@ -120,7 +120,6 @@ public class UserService {
     }
 
     /// ACCOUNT FUNCTIONS ///
-
     public String setUserEmail(String username, String newEmail){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Не удалось найти юзера по токену"));

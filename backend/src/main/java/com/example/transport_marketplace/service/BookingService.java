@@ -2,9 +2,7 @@ package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.dto.booking.BookingsResponse;
 import com.example.transport_marketplace.jwt.JwtService;
-import com.example.transport_marketplace.model.Account;
 import com.example.transport_marketplace.model.Booking;
-import com.example.transport_marketplace.repo.AccountRepository;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.model.Route;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,9 +33,6 @@ public class BookingService {
     private final UserRepository userRepository;
     @Autowired
     private final JwtService jwtService;
-    @Autowired
-    private final AccountRepository accountRepository;
-
     public List<Booking> getBookingByUserId(int userId){
         return bookingRepository.findByUserId(userId);
     }

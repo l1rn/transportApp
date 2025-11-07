@@ -3,7 +3,6 @@ package com.example.transport_marketplace.config;
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.model.*;
-import com.example.transport_marketplace.repo.AccountRepository;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.repo.RouteRepository;
 import com.example.transport_marketplace.repo.UserRepository;
@@ -29,8 +28,6 @@ public class DataInitializer {
     private final RouteRepository routeRepository;
     @Autowired
     private final BookingRepository bookingRepository;
-    @Autowired
-    private final AccountRepository accountRepository;
     private void createUserIfNotExists(String username, String password, Role role, @Nullable String email, List<Device> devices) {
         if (!userRepository.existsByUsername(username)) {
             User user = User.builder()
@@ -64,12 +61,6 @@ public class DataInitializer {
                     .role(Role.ROLE_USER)
                     .build();
             userRepository.save(user);
-
-            Account account = Account.builder()
-                    .user(user)
-                    .balance(1000)
-                    .build();
-            accountRepository.save(account);
         }
     }
 
