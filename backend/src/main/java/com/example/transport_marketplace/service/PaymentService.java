@@ -237,4 +237,20 @@ public class PaymentService {
                 payments.getTotalPages()
         );
     }
+
+    public PaginatedResponse<PaymentResponse> getHistoryByBookingId(Integer bookingId, Pageable pageable) {
+        Page<Payment> payments = paymentRepository.findAllByBookingId(bookingId, pageable);
+
+        List<PaymentResponse> content = payments.stream()
+                .map(PaymentResponse::from)
+                .toList();
+
+        return new PaginatedResponse<>(
+                content,
+                payments.getNumber(),
+                payments.getSize(),
+                payments.getTotalElements(),
+                payments.getTotalPages()
+        );
+    }
 }

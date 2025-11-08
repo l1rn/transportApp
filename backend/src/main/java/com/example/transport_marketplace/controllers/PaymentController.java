@@ -100,4 +100,22 @@ public class PaymentController {
                     .body("Internal server error: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/history/bookingId")
+    public ResponseEntity<?> getHistoryOfBooking(
+            @RequestParam Integer bookingId,
+            Pageable pageable
+    ) {
+        try{
+            return ResponseEntity.ok(paymentService.getHistoryByBookingId(
+                    bookingId,
+                    pageable
+            ));
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Не удалось просмотреть историю платежей!");
+        }
+    }
 }

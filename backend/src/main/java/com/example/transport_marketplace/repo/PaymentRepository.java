@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +22,12 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
     @Query("SELECT p from Payment p WHERE p.user.id = :userId")
     Page<Payment> findAllByUserId(
             @Param("userId") Integer userId,
+            Pageable pageable
+    );
+
+    @Query("SELECT p from Payment p WHERE p.booking.id = :bookingId")
+    Page<Payment> findAllByBookingId (
+            @Param("bookingId") Integer bookingId,
             Pageable pageable
     );
 }

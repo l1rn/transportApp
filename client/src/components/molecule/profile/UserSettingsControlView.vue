@@ -155,7 +155,7 @@ import ChangePasswordFormView from '@/components/atom/ChangePasswordFormView.vue
 import { authorizationService } from '@/shared/services/authorizationService';
 import { userService } from '@/shared/services/userService';
 import { useModalStore } from '@/shared/stores/useModalStore';
-import { Device, UserInfo } from '@/shared/types/userData';
+import { UserInfo } from '@/shared/types/userData';
 import { computed, ref } from 'vue';
 
 import { ModalPropsView } from "@/shared/types/component";
@@ -196,6 +196,7 @@ const submitEmailCodeConfirm = async(): Promise<void> => {
     'confirm-code-form',
     codeValue
   )
+  window.location.reload();
 }
 
 const submitTopUpCodeConfirm = async(): Promise<void> => {
