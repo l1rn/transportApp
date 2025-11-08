@@ -112,10 +112,9 @@
             :key="device.id"
           >
             <div
-              v-if="device.id === deviceId"
               class="useragent-container"
             >
-              {{ device.userAgent }}
+              {{ props.userInfo?.currentDevice.userAgent }}
             </div>
           </div>
           <div>
@@ -156,11 +155,12 @@ import ChangePasswordFormView from '@/components/atom/ChangePasswordFormView.vue
 import { authorizationService } from '@/shared/services/authorizationService';
 import { userService } from '@/shared/services/userService';
 import { useModalStore } from '@/shared/stores/useModalStore';
-import { UserInfo } from '@/shared/types/userData';
+import { Device, UserInfo } from '@/shared/types/userData';
 import { computed, ref } from 'vue';
 
 import { ModalPropsView } from "@/shared/types/component";
 import { useRequestHandler } from "@/composable/useRequestHandler";
+import notification from "@/shared/plugins/notifications";
 
 const props = defineProps<{
   userInfo: UserInfo | null;
@@ -208,7 +208,6 @@ const submitTopUpCodeConfirm = async(): Promise<void> => {
 }
 
 const modalStore = useModalStore();
-const deviceId = ref();
 
 const newEmail = ref<string>("");
 const codeValue = ref<string>("");
@@ -276,13 +275,14 @@ const activeModal = computed<ModalPropsView | null>(() =>
 
 const deleteSession = async(id: number) => {
   try{
-    if(deviceId.value === id) {
+    if(props.userInfo?.currentDevice.id === id) {
       await userService.deleteSession(id);
       await authorizationService.logoutUser();
     }
   }
   catch(e){
-    console.error(e)
+    console.error(e);
+    notification.error("Не удалось удалить сессию!");
   }
 }
 </script>

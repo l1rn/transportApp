@@ -95,7 +95,8 @@ public class UsersController {
                     request
             ));
         } catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Не удалось получать информацию о вас");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Не удалось получать информацию о вас");
         }
     }
 

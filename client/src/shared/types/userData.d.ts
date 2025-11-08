@@ -16,6 +16,7 @@ export interface UserInfo {
     email: string | null;
     role: string;
     balance: number;
+    currentDevice: Device;
     devices: Array<Device>;
 }
 

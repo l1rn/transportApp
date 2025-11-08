@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -43,6 +44,9 @@ public class UserService {
     private final JwtService jwtService;
     @Autowired
     private final EmailService emailService;
+
+    @Value("${hmac.key}")
+    private String hmacSecretKey;
 
     private final Map<String, String> confirmationCodes = new ConcurrentHashMap<>();
     private final Map<String, Double> pendingAmounts = new ConcurrentHashMap<>();
@@ -107,14 +111,14 @@ public class UserService {
                 request.getHeader("User-Agent"),
                 request.getRemoteAddr()
         );
-        Device currentDevice = devices.stream()
-                .filter(d -> d.getDeviceFingerprint().equals(fingerPrint))
-                .findFirst()
-                .orElse(null);
 
-        if(currentDevice == null){
-            throw new RuntimeException("Не удалось найти current device");
-        }
+        log.info(fingerPrint, user.getUsername());
+
+        Device currentDevice = deviceRepository.findFirstByDeviceFingerprintAndUser(
+                    EncryptionConfig.hmacSha256Base64(hmacSecretKey, fingerPrint),
+                    user
+                )
+                .orElse(null);
 
         return UserSettingsResponse.builder()
                 .username(user.getUsername())
