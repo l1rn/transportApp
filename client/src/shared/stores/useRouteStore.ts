@@ -9,6 +9,17 @@ export const useRouteStore = defineStore('route-store', () => {
         routeData.value = data;
     };
 
+    const minusAvailableSeat = (id: number) => {
+        if(!routeData.value?.content) return;
+
+        const routeIndex = routeData.value.content.findIndex(route => route.id === id);
+        if(routeIndex === -1) return;
+
+        if (routeData.value.content[routeIndex].availableSeats > 0) {
+            routeData.value.content[routeIndex].availableSeats -= 1;
+        }
+    }   
+
     const getRouteData = (): PaginatedRoute | null => {
         return routeData.value ? routeData.value : null;
     };
@@ -16,6 +27,7 @@ export const useRouteStore = defineStore('route-store', () => {
     return {
         routeData,
         setRouteData,
-        getRouteData
+        getRouteData,
+        minusAvailableSeat
     }
 })

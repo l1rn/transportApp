@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory} from 'vue-router';
-import SearchRoutes from '@/components/SearchRoutesView.vue'
 import AdminPanelView from '@/components/admin/AdminPanelView.vue';
 import HomeView from '@/components/HomeView.vue';
 import ProfilePageView from '@/components/page/ProfilePageView.vue';
 import PaymentPageView from '@/components/page/PaymentPageView.vue';
 import AllRoutesView from '@/components/page/AllRoutesView.vue';
+import SearchRoutesView from '@/components/page/SearchRoutesView.vue';
 
 const routes = [
     {
@@ -22,7 +22,7 @@ const routes = [
     },
     { 
         path: '/routes/search', 
-        component: SearchRoutes 
+        component: SearchRoutesView
     },
     { 
         path:'/panel/admin', 

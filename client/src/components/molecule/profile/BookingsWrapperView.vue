@@ -76,11 +76,12 @@
         <div class="button-container">
           <button 
           class="payment-button"
-          v-if="booking.status !== 'PAID'"
+          v-if="booking.status === 'PENDING'"
           @click="handlePayment(booking.id)">
             Оплатить
           </button>
           <button
+          v-if="booking.status === 'PENDING'"
           class="cancel-button">
             Отменить
           </button>

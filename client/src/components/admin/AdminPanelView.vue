@@ -47,7 +47,7 @@ import { ref } from 'vue';
 import AdminAllUsers from './AdminAllUsers.vue';
 import AdminAllBookings from './AdminAllBookings.vue';
 import AdminAllRoutes from './AdminAllRoutes.vue';
-import SearchRoutes from '../SearchRoutesView.vue';
+import SearchRoutes from '../page/SearchRoutesView.vue';
 let chooseAllUsers = ref(false);
 let chooseAllBookings = ref(false);
 let chooseAllRoutes = ref(false);

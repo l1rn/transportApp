@@ -79,9 +79,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Ref, ref, watch} from 'vue'
+import { computed } from 'vue'
 import { useRouteStore } from '@/shared/stores/useRouteStore';
-import { PaginatedRoute } from '@/shared/types/route';
 import { storeToRefs } from 'pinia';
 import { bookingService } from '@/shared/services/bookingService';
 import { useModalStore } from '@/shared/stores/useModalStore';
@@ -92,13 +91,23 @@ import { useFormatUtils } from '@/shared/utils/formatUlils';
 const modalStore = useModalStore();
 const formatUlils = useFormatUtils();
 
+const routeStore = useRouteStore();
+const { routeData } = storeToRefs(routeStore)
+
+const searchResults = computed(
+  () => routeData.value
+);
+
 const bookTheRoute = async (routeId: number) => {
+  if(routeData.value?.content[routeId].arrivalTime !== undefined){
+
+  }
   try{
     const response = await bookingService.createBooking(routeId);
     if (response.status === HttpStatusCode.Created){
       notification.success("Ваш маршрут у вас в профиле!");
+      routeStore.minusAvailableSeat(routeId);
     }
-    console.log("status:", response.status);
   }
   catch(error){
     const axiosError = error as AxiosError;
@@ -112,21 +121,9 @@ const bookTheRoute = async (routeId: number) => {
   }
 }
 
-const searchResults: Ref<PaginatedRoute | null> = ref(null);
-
-const routeStore = useRouteStore();
-const { routeData } = storeToRefs(routeStore);
-
 const getStatus = (seats: number) => {
   return seats > 0 ? 'ОТКРЫТО' : 'ЗАКРЫТО';
 };
-
-watch(routeData, (newVal) => {
-  if(newVal){
-    searchResults.value = newVal;
-    console.log(searchResults.value);
-  }
-})
 </script>
 <style scoped lang="sass">
 @use "../../../assets/styles/molecule/home/route-view"

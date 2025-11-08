@@ -14,11 +14,9 @@ import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCancel
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.BadRequestException;
-import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.model.*;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.repo.PaymentRepository;
-import com.example.transport_marketplace.repo.RouteRepository;
 import com.example.transport_marketplace.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -226,7 +223,7 @@ public class PaymentService {
         }
 
         Booking booking = payment.getBooking();
-        booking.setStatus(BookingStatus.CANCELED);
+        booking.setStatus(BookingStatus.CANCELLED);
         payment.setPaymentStatus(PaymentStatus.CANCELLED);
         bookingRepository.save(booking);
         paymentRepository.save(payment);

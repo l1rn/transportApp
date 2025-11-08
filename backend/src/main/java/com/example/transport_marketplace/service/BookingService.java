@@ -94,7 +94,7 @@ public class BookingService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Бронирование не найдено"));
 
-        if (booking.getStatus() == BookingStatus.CANCELED) {
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
             return false;
         }
 
@@ -104,7 +104,7 @@ public class BookingService {
             routeRepository.save(route);
         }
 
-        booking.setStatus(BookingStatus.CANCELED);
+        booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
 
         return true;
@@ -123,7 +123,7 @@ public class BookingService {
             throw new AccessDeniedException("Нет прав для отмены бронирования");
         }
 
-        if (booking.getStatus() == BookingStatus.CANCELED) {
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
             return false;
         }
 
@@ -134,7 +134,7 @@ public class BookingService {
             routeRepository.save(route);
         }
 
-        booking.setStatus(BookingStatus.CANCELED);
+        booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
 
         return true;
@@ -142,6 +142,6 @@ public class BookingService {
     @Scheduled(fixedRate = 3600000)
     @Transactional
     public void deleteCanceledBookings(){
-        bookingRepository.deleteByStatus(BookingStatus.CANCELED);
+        bookingRepository.deleteByStatus(BookingStatus.CANCELLED);
     }
 }

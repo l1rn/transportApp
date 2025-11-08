@@ -3,16 +3,16 @@
     <slot />
     
     <teleport to="body">
-        <div class="modal-container">
-            <component 
-                v-for="modal in modals.values()"
-                :key="modal.id"
-                :is="modal.component"
-                v-bind="modal.props"
-                v-model:isOpen="modal.isOpen"
-                @close="closeModal(modal.id)"
-            />
-        </div>
+      <div class="modal-container">
+        <component 
+            v-for="modal in modals.values()"
+            :key="modal.id"
+            :is="modal.component"
+            v-bind="modal.props"
+            v-model:isOpen="modal.isOpen"
+            @close="closeModal(modal.id)"
+        />
+      </div>
     </teleport>
   </div>
 </template>

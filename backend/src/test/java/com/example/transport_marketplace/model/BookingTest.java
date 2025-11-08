@@ -45,11 +45,11 @@ public class BookingTest {
         booking.setId(200);
         booking.setRoute(route);
         booking.setUser(user);
-        booking.setStatus(BookingStatus.CANCELED);
+        booking.setStatus(BookingStatus.CANCELLED);
 
         assertEquals(200, booking.getId());
         assertEquals(route, booking.getRoute());
         assertEquals(user, booking.getUser());
-        assertEquals(BookingStatus.CANCELED, booking.getStatus());
+        assertEquals(BookingStatus.CANCELLED, booking.getStatus());
     }
 }
