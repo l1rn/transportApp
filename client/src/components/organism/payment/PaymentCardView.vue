@@ -39,7 +39,7 @@
             <button @click.stop="createPayment();">
                 Оплатить
             </button>
-            <a @click="router.replace('/home')">
+            <a @click="cancelPayment()">
                 Отказаться от оплаты и вернуться на главную
             </a>
         </div>
@@ -126,6 +126,22 @@ const confirmPayment = async() => {
         console.log(axiosError.status);
     }
 }
+
+const cancelPayment = async() => {
+    if(!localStorage.getItem('externalId')){
+        return;
+    }
+    try{
+        await paymentService.cancelPayment(localStorage.getItem('externalId'));
+        notification.success("Заказ был успешно отменен!");
+        router.push("/home");
+    }
+    catch(e){
+        const axiosError = e as AxiosError;
+        console.log(axiosError.code);
+    }
+}
+
 const { setView, checkAvailability } = usePaymentNavigation();
 
 onMounted(async() => {
@@ -155,6 +171,7 @@ onMounted(async() => {
     }
 })
 </script>
+
 <style scoped lang="scss">
 @use "../../../assets/styles/static/mixin" as mixins;
 @use "../../../assets/styles/static/color" as colors;

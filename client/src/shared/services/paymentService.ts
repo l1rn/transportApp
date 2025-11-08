@@ -24,6 +24,10 @@ class PaymentService{
                 code: code
             })
         }
+    
+    public async cancelPayment(externalId: string | null): Promise<AxiosResponse>{
+        return await api.post(`/payments/cancel?externalId=${externalId}`);
+    }
 }
 
 export const paymentService = new PaymentService();

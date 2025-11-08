@@ -2,6 +2,9 @@ package com.example.transport_marketplace.controllers;
 
 import com.example.transport_marketplace.dto.payment.ConfirmPaymentRequest;
 import com.example.transport_marketplace.enums.PaymentMethod;
+import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCanceledException;
+import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
+import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
 import com.example.transport_marketplace.service.PaymentService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,7 +51,16 @@ public class PaymentController {
         try {
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(paymentService.createPayment(userDetails.getUsername(), bookingId, paymentMethod));
-        } catch (RuntimeException e) {
+        }
+        catch(PaymentAlreadyCanceledException e){
+            return ResponseEntity.status(HttpStatus.GONE)
+                    .body(e.getMessage());
+        }
+        catch (PaymentAlreadyFailedException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(e.getMessage());
+        }
+        catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Internal server error: " + e.getMessage());
         }
@@ -63,7 +75,19 @@ public class PaymentController {
         try {
             paymentService.confirmPayment(userDetails.getUsername(), request);
             return ResponseEntity.ok("Payment was successfully confirmed!");
-        } catch (RuntimeException e) {
+        }
+        catch (PaymentAlreadyConfirmedException e){
+            return ResponseEntity.ok("CONFIRMED");
+        }
+        catch (PaymentAlreadyFailedException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(e.getMessage());
+        }
+        catch (PaymentAlreadyCanceledException e){
+            return ResponseEntity.status(HttpStatus.GONE)
+                    .body(e.getMessage());
+        }
+        catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Internal server error: " + e.getMessage());
         }
@@ -76,7 +100,9 @@ public class PaymentController {
         @RequestParam String externalId
     ) {
         try{
-            paymentService.cancelPayment(externalId);
+            if(!paymentService.cancelPayment(externalId)){
+                return ResponseEntity.ok("Payment is already canceled!");
+            }
             return ResponseEntity.ok("Payment was successfully canceled!");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

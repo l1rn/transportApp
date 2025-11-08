@@ -10,6 +10,10 @@ import com.example.transport_marketplace.enums.PaymentMethod;
 import com.example.transport_marketplace.enums.PaymentStatus;
 import com.example.transport_marketplace.events.ConfirmationCodeEvent;
 import com.example.transport_marketplace.events.PaymentSuccessEvent;
+import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCanceledException;
+import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
+import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
+import com.example.transport_marketplace.exceptions.routes.Exceptions.BadRequestException;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.model.*;
 import com.example.transport_marketplace.repo.BookingRepository;
@@ -73,6 +77,14 @@ public class PaymentService {
 
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking was not found by this id"));
+
+        if(paymentRepository.findByBookingIdAndPaymentStatus(bookingId, PaymentStatus.CANCELLED).isPresent()){
+            throw new PaymentAlreadyCanceledException("Этот платеж был уже отменен!");
+        }
+
+        if(paymentRepository.findByBookingIdAndPaymentStatus(bookingId, PaymentStatus.FAILED).isPresent()){
+            throw new PaymentAlreadyFailedException("Этот платеж столкнулся с проблемой!");
+        }
 
         Optional<Payment> existingPendingPayment = paymentRepository
                 .findByBookingIdAndPaymentStatus(bookingId, PaymentStatus.PENDING);
@@ -153,19 +165,23 @@ public class PaymentService {
         Booking booking = payment.getBooking();
 
         if(!Objects.equals(payment.getConfirmationCode(), request.getCode())){
-            throw new RuntimeException("Коды не совпадают!");
+            throw new BadRequestException();
         }
 
         if(!Objects.equals(payment.getUser().getUsername(), username)){
-            throw new RuntimeException("Вы не можете подтвердить этот платеж");
+            throw new BadRequestException();
+        }
+
+        if(payment.getPaymentStatus() == PaymentStatus.FAILED){
+            throw new PaymentAlreadyFailedException("Этот платеж столкнулся с проблемой!");
         }
 
         if(payment.getPaymentStatus() == PaymentStatus.CANCELLED){
-            throw new RuntimeException("Платеж отменен, создайте новый!");
+            throw new PaymentAlreadyCanceledException("Платеж отменен, создайте новый!");
         }
 
         if(payment.getPaymentStatus() == PaymentStatus.SUCCEEDED){
-            throw new RuntimeException("Платеж уже подтвержден!");
+            throw new PaymentAlreadyConfirmedException("Платеж уже подтвержден!");
         }
 
         booking.setStatus(BookingStatus.PAID);
@@ -201,12 +217,12 @@ public class PaymentService {
     }
 
     @Transactional
-    public void cancelPayment(String externalId){
+    public boolean cancelPayment(String externalId){
         Payment payment = paymentRepository.findByExternalId(UUID.fromString(externalId))
                 .orElseThrow(() -> new RuntimeException("Платеж не найден"));
 
         if(payment.getPaymentStatus() == PaymentStatus.CANCELLED) {
-            throw new RuntimeException("Платеж был уже отменен!");
+            return false;
         }
 
         Booking booking = payment.getBooking();
@@ -214,6 +230,7 @@ public class PaymentService {
         payment.setPaymentStatus(PaymentStatus.CANCELLED);
         bookingRepository.save(booking);
         paymentRepository.save(payment);
+        return true;
     }
 
     public PaginatedResponse<PaymentResponse> getMyPayments(
