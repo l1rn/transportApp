@@ -1,10 +1,12 @@
 package com.example.transport_marketplace.service;
 import com.example.transport_marketplace.config.CodeGenerator;
+import com.example.transport_marketplace.config.EncryptionConfig;
 import com.example.transport_marketplace.dto.users.UserSettingsResponse;
 import com.example.transport_marketplace.enums.Role;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.model.*;
 import com.example.transport_marketplace.repo.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -95,17 +97,31 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь c ID" + id + " не найден"));
     }
 
-    public UserSettingsResponse getInfoByUsername(String username){
+    public UserSettingsResponse getInfoByUsername(String username, HttpServletRequest request){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         List<Device> devices = deviceRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Не найдено ни одно устройсто"));
+
+        String fingerPrint = EncryptionConfig.fingerPrintBuilder(
+                request.getHeader("User-Agent"),
+                request.getRemoteAddr()
+        );
+        Device currentDevice = devices.stream()
+                .filter(d -> d.getDeviceFingerprint().equals(fingerPrint))
+                .findFirst()
+                .orElse(null);
+
+        if(currentDevice == null){
+            throw new RuntimeException("Не удалось найти current device");
+        }
 
         return UserSettingsResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .role(user.getRole())
                 .balance(user.getBalance())
+                .currentDevice(currentDevice)
                 .devices(devices)
                 .build();
     }

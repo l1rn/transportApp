@@ -86,10 +86,14 @@ public class UsersController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public ResponseEntity<?> getMyDevices(
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal UserDetails userDetails,
+            HttpServletRequest request
     ){
         try {
-            return ResponseEntity.ok(userService.getInfoByUsername(userDetails.getUsername()));
+            return ResponseEntity.ok(userService.getInfoByUsername(
+                    userDetails.getUsername(),
+                    request
+            ));
         } catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Не удалось получать информацию о вас");
         }

@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.service;
 
+import com.example.transport_marketplace.config.EncryptionConfig;
 import com.example.transport_marketplace.dto.auth.SignInRequest;
 import com.example.transport_marketplace.dto.auth.SignUpRequest;
 import com.example.transport_marketplace.dto.users.ChangePasswordRequest;
@@ -83,9 +84,10 @@ public class AuthenticationService {
 
         String userAgent = httpServletRequest.getHeader("User-Agent");
         String ipAddress = httpServletRequest.getRemoteAddr();
-        String deviceFingerprint = "agent:" + userAgent + "!ip:" + ipAddress;
+        String deviceFingerprint = EncryptionConfig.fingerPrintBuilder(userAgent, ipAddress);
 
-        String mac = hmacSha256Base64(hmacSecretKey, deviceFingerprint);
+        String mac = EncryptionConfig.hmacSha256Base64(hmacSecretKey, deviceFingerprint);
+
         Device newDevice = Device.builder()
                 .deviceFingerprint(mac)
                 .userAgent(userAgent)
@@ -230,17 +232,5 @@ public class AuthenticationService {
     public void deleteRefreshToken(String refreshToken) {
         refreshTokenRepository.findByToken(refreshToken)
                 .ifPresent(refreshTokenRepository::delete);
-    }
-
-    public static String hmacSha256Base64(String secretKey, String message){
-        try {
-            Mac mac = Mac.getInstance("HmacSHA256");
-            SecretKeySpec keySpec = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
-            mac.init(keySpec);
-            byte[] rawHmac = mac.doFinal(message.getBytes(StandardCharsets.UTF_8));
-            return Base64.getEncoder().encodeToString(rawHmac);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -19,5 +19,6 @@ public class UserSettingsResponse {
     private String email;
     private Role role;
     private double balance;
+    private Device currentDevice;
     private List<Device> devices;
 }
