@@ -22,12 +22,13 @@ export const getDateSource = (route, isArrival = false) => {
     
 export const formatDate = (dateString) => {
     try {
-    const [month, day] = dateString.split('-');
-    return `${day}-${month}`;
-    } catch {
-    return '??-??';
+        const [month, day] = dateString.split('-');
+        return `${day}-${month}`;
+    } 
+    catch {
+        return '??-??';
     }
-    };
+};
     
 export const formatTime = (timeString) => {
     try {

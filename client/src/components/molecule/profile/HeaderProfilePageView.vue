@@ -83,7 +83,7 @@ const handlePayments = () => {
       }
       .space {
         width: 100%;
-        background: colors.$light-gray;
+        background: colors.$light-grey;
         height: 2px;
         margin: 1.5rem 0 0 0;
       }

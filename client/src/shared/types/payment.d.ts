@@ -18,7 +18,7 @@ export interface PaymentData {
     amount: number;
     method: string;
     description: string;
-    createdAt: Date;
+    createdAt: string;
     username: string;
     status: string;
     route: Array<PaymentRouteData>;

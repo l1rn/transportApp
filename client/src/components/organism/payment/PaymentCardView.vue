@@ -162,7 +162,7 @@ onMounted(async() => {
 .payment-container {
     @include mixins.display-column();
     width: 80%;
-    background: colors.$light-gray;
+    background: colors.$light-grey;
     max-width: 1024px;
     padding: 2rem 2rem 1.25rem;
     margin-top: 2rem;

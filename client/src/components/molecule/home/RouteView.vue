@@ -14,7 +14,7 @@
 
     <div class="header">
       <div class="transport-icon">
-        {{ checkRoutesEmoji(route.transport) }}
+        {{ formatUlils.formatTransportStringToEmoji(route.transport) }}
       </div>
       <div>
         <div class="info-label">
@@ -87,17 +87,10 @@ import { bookingService } from '@/shared/services/bookingService';
 import { useModalStore } from '@/shared/stores/useModalStore';
 import { AxiosError, HttpStatusCode } from 'axios';
 import notification from '@/shared/plugins/notifications';
-
-const checkRoutesEmoji = (transport: string) =>{
-  switch(transport){
-    case 'Поезд': return '🚂'
-    case 'Авиа': return '✈️'
-    case 'Автобус': return '🚌'
-    default: return ''
-  }
-}
+import { useFormatUtils } from '@/shared/utils/formatUlils';
 
 const modalStore = useModalStore();
+const formatUlils = useFormatUtils();
 
 const bookTheRoute = async (routeId: number) => {
   try{

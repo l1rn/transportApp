@@ -294,7 +294,7 @@ watch(isDropdownOpen, (newValue) => {
             cursor: pointer;
             padding: 0.3rem 1rem;
             font-weight: 600;
-            border-bottom: 1px solid colors.$light-gray;
+            border-bottom: 1px solid colors.$light-grey;
             &:hover {
                 background: colors.$hover-white;
             }

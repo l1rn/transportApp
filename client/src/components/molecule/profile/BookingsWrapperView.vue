@@ -6,13 +6,26 @@
       <div class="booking-container">
         <div class="header-container">
           <div class="first-section">
-            {{ booking.route.transport }}
-            <span class="id">
-              ID#{{ booking.id }}
+            <div class="transport-icon">
+              {{ formatUtils.formatTransportStringToEmoji(booking.route.transport) }}
+            </div>
+            <span class="id-container">
+              <div class="top-string">
+                ID Маршрута
+              </div>
+              <div class="botton-string">
+                #{{ booking.id }}
+              </div>
             </span>
           </div>
-          <div class="second-section">
-            {{ booking.status }}
+          <div 
+          class="second-section"
+          :class="{ 
+            'paid': booking.status === 'PAID',
+            'pending': booking.status === 'PENDING',
+            'canceled': booking.status === 'CANCELED'
+          }">
+            {{ formatUtils.formatBookingStatus(booking.status) }}
           </div>
         </div>
         <div class="place-container">
@@ -86,6 +99,7 @@ import { useProfilePage } from '@/composable/useProfilePage';
 import notification from '@/shared/plugins/notifications';
 import { bookingService } from '@/shared/services/bookingService';
 import { BookingResponse } from '@/shared/types/booking';
+import { useFormatUtils } from '@/shared/utils/formatUlils';
 import { Ref } from 'vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -99,6 +113,7 @@ const isLoading = ref(false);
 const { openForm } = useProfilePage();
 
 const router = useRouter();
+const formatUtils = useFormatUtils();
 
 const getBookings = async () => {
   isLoading.value = true;
