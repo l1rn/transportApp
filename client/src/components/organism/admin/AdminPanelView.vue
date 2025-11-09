@@ -25,7 +25,7 @@
             :class="{ active: chooseAllRoutesForLook }"
             @click="chooseNav('allrouteslooks')"
           >
-            Все маршруты
+            Поиск маршрутов
           </button>
         </div>
         <div class="content-container">

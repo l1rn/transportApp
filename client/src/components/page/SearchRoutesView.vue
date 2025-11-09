@@ -78,7 +78,7 @@
       @click="handleBackward"
       :disabled="page <= 0">Назад</button>
       <span class="page-container">
-        Страниц {{ page + 1 }} из {{ routeData?.totalPages || 1 }}
+        Страница {{ page + 1 }} из {{ routeData?.totalPages || 1 }}
       </span>
       <button 
       :disabled="page >= routeData?.totalPages! - 1"

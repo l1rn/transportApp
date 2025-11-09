@@ -9,7 +9,7 @@ export interface AdminGetAllBookings {
     arrivalTime: string;
     transport: string;
     username: string;
-    bookingStatus: string;
+    status: string;
     price: number;
 }
 

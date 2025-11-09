@@ -38,7 +38,7 @@
                     />
             </div>
             <div class="input-container">
-                <label for="transport">Желаемый транспорт</label>
+                <label for="transport">Транспорт</label>
                 <InputSuggestionView
                     id="transport"
                     v-model="filter.transport" 
@@ -118,6 +118,7 @@ const handleClear = () => {
     box-shadow: 0 0 8px rgba($color: #000000, $alpha: 0.15);
     .input-block {
         display: flex;
+        align-items: center;
         gap: 0.5rem;
         width: 80%;
         .input-container{

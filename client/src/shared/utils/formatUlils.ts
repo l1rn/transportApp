@@ -1,4 +1,8 @@
-import { RouteFilter } from "../types/route"
+import { RouteFilter } from "../types/route";
+import pendingIcon from "../../assets/icons/payment/statuses/pending.svg";
+import succeededIcon from "../../assets/icons/payment/statuses/succeeded.svg";
+import failedIcon from "../../assets/icons/payment/statuses/failed.svg";
+import cancelledIcon from "../../assets/icons/payment/statuses/cancelled.svg";
 
 export const useFormatUtils = () => {
     const formatTransportStringToEmoji = (transport: string) => {
@@ -36,11 +40,21 @@ export const useFormatUtils = () => {
             default: return 'ОШИБКА'
         }
     }
+    
+    const getStatusIconFromBookingStatus = (status: string): string => {
+        switch(status) {
+            case 'PAID': return succeededIcon;
+            case 'PENDING': return pendingIcon;
+            case 'CANCELLED': return cancelledIcon;
+            default: return pendingIcon
+        }
+    }
 
     return {
         removeEmojiForTransport,
         formatTransportStringToEmoji,
         formatISOString,
-        formatBookingStatus
+        formatBookingStatus,
+        getStatusIconFromBookingStatus
     }
 }

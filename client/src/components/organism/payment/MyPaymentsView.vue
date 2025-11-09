@@ -55,7 +55,7 @@
                 src="../../../assets/icons/payment/statuses/failed.svg" alt="">
                 <img 
                 v-else-if="payment.status === 'CANCELLED'"
-                src="../../../assets/icons/payment/statuses/canceled.svg" alt="">
+                src="../../../assets/icons/payment/statuses/cancelled.svg" alt="">
                 <img 
                 v-else-if="payment.status === 'PENDING'"
                 src="../../../assets/icons/payment/statuses/pending.svg" alt="">
