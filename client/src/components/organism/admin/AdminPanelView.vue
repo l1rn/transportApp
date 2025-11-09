@@ -1,43 +1,47 @@
 <template>
   <div>
-    <div class="custom-main-container">
-      <div class="custom-main">
-        <button
-          :class="{ active: chooseAllUsers }"
-          @click="chooseNav('allusers')"
-        >
-          Все пользователи
-        </button>
-        <button
-          :class="{ active: chooseAllBookings }"
-          @click="chooseNav('allbookings')"
-        >
-          Все брони пользователей
-        </button>
-        <button
-          :class="{ active: chooseAllRoutes }"
-          @click="chooseNav('allroutes')"
-        >
-          Маршруты
-        </button>
-        <button
-          :class="{ active: allrouteslooks }"
-          @click="chooseNav('allrouteslooks')"
-        >
-          Все маршруты
-        </button>
-      </div>
-      <div v-if="chooseAllUsers">
-        <AdminAllUsersView />
-      </div>
-      <div v-if="chooseAllBookings">
-        <AdminAllBookingsView />
-      </div>
-      <div v-if="chooseAllRoutes">
-        <AdminAllRoutesView />
-      </div>
-      <div v-if="chooseAllRoutesForLook">
-        <SearchRoutesView />
+    <div class="admin-panel-wrapper">
+      <div class="admin-panel-container">
+        <div class="button-container">
+          <button
+            :class="{ active: chooseAllUsers }"
+            @click="chooseNav('allusers')"
+          >
+            Все пользователи
+          </button>
+          <button
+            :class="{ active: chooseAllBookings }"
+            @click="chooseNav('allbookings')"
+          >
+            Все брони пользователей
+          </button>
+          <button
+            :class="{ active: chooseAllRoutes }"
+            @click="chooseNav('allroutes')"
+          >
+            Маршруты
+          </button>
+          <button
+            :class="{ active: allrouteslooks }"
+            @click="chooseNav('allrouteslooks')"
+          >
+            Все маршруты
+          </button>
+        </div>
+        <div class="content-container">
+          <template v-if="chooseAllUsers">
+            <AdminAllUsersView />
+          </template>
+          <template v-if="chooseAllBookings">
+            <AdminAllBookingsView />
+          </template>
+          <template v-if="chooseAllRoutes">
+            <AdminAllRoutesView />
+          </template>
+          <template v-if="chooseAllRoutesForLook">
+            <SearchRoutesView />
+          </template>
+        </div>
       </div>
     </div>
   </div>
@@ -62,38 +66,38 @@ const chooseNav = (type) => {
 </script>
 
 <style scoped lang="scss">
-$primary-color: #d19a01;
+@use "../../../assets/styles/static/mixin" as mixins;
+@use "../../../assets/styles/static/color" as colors;
 
 * {
   font-family: Montserrat, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.custom-main {
+.admin-panel-wrapper {
+  @include mixins.display-center();  
+}
+
+.admin-panel-container{
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  white-space: nowrap;
-  margin-bottom: 2rem;
+  width: 80%;
+  gap: 1rem;
+  .button-container {
+    @include mixins.display-column();
+    button {
+      @include mixins.button-clear(colors.$medium-grey, white);
+      padding: 0.6rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.3s ease;
 
-  button {
-    padding: 0.6rem 2rem;
-    border-radius: 8px;
-    border: 0;
-    background: linear-gradient(
-      -30deg,
-      darken($primary-color, 2%),
-      lighten($primary-color, 3%)
-    );
-    transition: all 0.3s ease;
-    color: #f5f0fd;
-    font-weight: 600;
-    max-width: 300px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
-
-    &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+      &:hover {
+      }
     }
+  }
+  .content-container {
+    height: 100%;
+    width: 100%;
   }
 }
 
