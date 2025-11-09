@@ -14,18 +14,12 @@
             <div class="grid-cell">{{ formatRole(user.role) }}</div>
             <div class="grid-cell">{{ user.username }}</div>
             <div class="grid-cell button-container">
-              <button
-                v-if="roleNotAdmin.find((u) => u.id === user.id)?.notAdmin"
-                class="give-permission-button"
-                @click="getPermissionAdmin(user.id)"
-              >
+              <button v-if="roleNotAdmin.find((u) => u.id === user.id)?.notAdmin" class="give-permission-button"
+                @click="getPermissionAdmin(user.id)">
                 Дать права
               </button>
-              <button
-                :disabled="user.role === 'ROLE_ADMIN' || deletingId === user.id"
-                class="delete-user-button"
-                @click="deleteUser(user.id)"
-              >
+              <button :disabled="user.role === 'ROLE_ADMIN' || deletingId === user.id" class="delete-user-button"
+                @click="deleteUser(user.id)">
                 <span v-if="deletingId === user.id">Удаление...</span>
                 <span v-else>Удалить</span>
               </button>
@@ -116,65 +110,76 @@ onMounted(() => {
 
 $grid-columns: 0.5fr 1fr 2fr 2fr;
 
-.grid-wrapper{
+.grid-wrapper {}
 
-}
+.grid-table {
 
-.grid-table{
-  .grid-header, .grid-row{
+  .grid-header,
+  .grid-row {
     display: grid;
     grid-template-columns: $grid-columns;
   }
 
-  .grid-header{
+  .grid-header {
     background: #d9d5f8;
     border-radius: 16px 16px 0 0;
     color: #111111;
     font-weight: 600;
   }
 
-  .grid-row{
-  background: #ffffff;
-  transition: all 0.3s ease;
-  
-  &:nth-child(even){
-    background: #f5f6fa;
-  }
-  
-  &:last-child{
-    border-radius: 0 0 16px 16px;
-  }
-  
-  &:hover{
-    border-radius: 8px;
-    transform: scale(1.01);
-    background: #ede7f6;
-  }
-}
+  .grid-row {
+    background: #ffffff;
+    transition: all 0.3s ease;
 
-  .grid-cell{
+    &:nth-child(even) {
+      background: #f5f6fa;
+    }
+
+    &:last-child {
+      border-radius: 0 0 16px 16px;
+    }
+
+    &:hover {
+      background: #ede7f6;
+    }
+  }
+
+  .grid-cell {
     @include mixins.display-center();
     text-align: center;
     padding: .5rem;
   }
-  .button-container{
+
+  .button-container {
     display: flex;
-    button{
+    gap: 0.5rem;
+    button {
       width: 100%;
       padding: 0.5rem 0;
       font-size: 1.05rem;
       border-radius: 0.5rem;
       font-weight: 600;
-    }
-    .give-permission-button{
-      @include mixins.button-clear(colors.$medium-green, white);
       transition: all 0.3s ease;
-      &:hover{
-        background: colors.$dark-green;
-      }
-    } 
-    .delete-user-button{
+    }
 
+    .give-permission-button {
+      @include mixins.button-clear(#6A9F6F, white);
+      
+
+      &:hover {
+        background: #5C8F61;
+      }
+    }
+
+    .delete-user-button {
+      @include mixins.button-clear(#C46A6F, white);
+      &:hover{
+        background: #B05A5F;
+      }
+      &:disabled{
+        @include mixins.button-clear(colors.$medium-grey, white);
+        cursor: not-allowed;
+      }
     }
   }
 }

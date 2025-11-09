@@ -1,5 +1,7 @@
 package com.example.transport_marketplace.service;
 
+import com.example.transport_marketplace.dto.PaginatedResponse;
+import com.example.transport_marketplace.dto.booking.AdminGetBookingsResponse;
 import com.example.transport_marketplace.dto.booking.BookingsResponse;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.model.Booking;
@@ -15,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -54,8 +58,20 @@ public class BookingService {
                 .toList();
     }
 
-    public List<Booking> getAllBookings() {
-        return bookingRepository.findAll();
+    public PaginatedResponse<AdminGetBookingsResponse> getAllBookings(Pageable pageable) {
+        Page<Booking> bookings = bookingRepository.findAllPageable(pageable);
+
+        List<AdminGetBookingsResponse> content = bookings.stream()
+                .map(AdminGetBookingsResponse::from)
+                .toList();
+
+        return new PaginatedResponse<>(
+                content,
+                bookings.getNumber(),
+                bookings.getSize(),
+                bookings.getTotalElements(),
+                bookings.getTotalPages()
+        );
     }
 
     @Cacheable(value = "booking", key = "#id")

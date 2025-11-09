@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -77,8 +78,15 @@ public class BookingController {
     })
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<Booking>> getAllBookingsForAdmin() {
-        return ResponseEntity.ok(bookingService.getAllBookings());
+    public ResponseEntity<?> getAllBookingsForAdmin(
+            Pageable pageable
+    ) {
+        try{
+            return ResponseEntity.ok(bookingService.getAllBookings(pageable));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Не удалось получить корзины пользователей: " + e.getMessage());
+        }
     }
 
     @Operation(

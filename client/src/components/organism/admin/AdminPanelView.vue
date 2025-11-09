@@ -22,7 +22,7 @@
             Маршруты
           </button>
           <button
-            :class="{ active: allrouteslooks }"
+            :class="{ active: chooseAllRoutesForLook }"
             @click="chooseNav('allrouteslooks')"
           >
             Все маршруты
@@ -52,7 +52,7 @@ import AdminAllUsersView from "@/components/molecule/admin/AdminAllUsersView.vue
 import AdminAllBookingsView from "@/components/molecule/admin/AdminAllBookingsView.vue";
 import AdminAllRoutesView from "@/components/molecule/admin/AdminAllRoutesView.vue";
 import SearchRoutesView from "@/components/page/SearchRoutesView.vue";
-let chooseAllUsers = ref(false);
+let chooseAllUsers = ref(true);
 let chooseAllBookings = ref(false);
 let chooseAllRoutes = ref(false);
 let chooseAllRoutesForLook = ref(false);
@@ -79,21 +79,36 @@ const chooseNav = (type) => {
 
 .admin-panel-container{
   display: flex;
-  width: 80%;
+  width: 82.5%;
   gap: 1rem;
   .button-container {
     @include mixins.display-column();
+    background: #F5F8FA;
+    padding: 1rem 1.25rem;
+    gap: 0.5rem;
+    border-radius: 8px;
+    height: 100%;
     button {
-      @include mixins.button-clear(colors.$medium-grey, white);
+      @include mixins.button-clear(white, #7A9BB3);
+      border: 2px solid #7A9BB3;
       padding: 0.6rem 2rem;
       border-radius: 8px;
       font-weight: 600;
       font-size: 15px;
       transition: all 0.3s ease;
-
+      word-break: keep-all;
+      text-align: center;
+      width: 100%;
       &:hover {
+        background: #f1f9fe;
+      }
+      &.active{
+        transform: translateX(5px);
+        background: #7A9BB3;
+        color: white;
       }
     }
+    
   }
   .content-container {
     height: 100%;

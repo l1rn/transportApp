@@ -5,6 +5,8 @@ import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.model.User;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +19,8 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
     List<Booking> findByUserId(int userId);
     List<Booking> findByUser(User user);
+    @Query("SELECT b FROM Booking")
+    Page<Booking> findAllPageable(Pageable pageable);
     @Modifying
     @Transactional
     @Query("DELETE FROM Booking b WHERE b.user.id = :userId")
