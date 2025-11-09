@@ -12,24 +12,31 @@
           ID
         </div>
         <div class="grid-cell">
+          <img src="../../assets/icons/route/dest.svg" alt="">
           Откуда
         </div>
         <div class="grid-cell">
+          <img src="../../assets/icons/route/arrival.svg" alt="">
           Куда
         </div>
         <div class="grid-cell">
+          <img src="../../assets/icons/route/transport.svg" alt="">
           Транспорт
         </div>
         <div class="grid-cell">
+          <img src="../../assets/icons/route/clock.svg" alt="">
           Время вылета
         </div>
         <div class="grid-cell">
+          <img src="../../assets/icons/route/clock.svg" alt="">
           Время прилета
         </div>
         <div class="grid-cell">
+          <img src="../../assets/icons/route/seats.svg" alt="">
           Мест осталось
         </div>
         <div class="grid-cell">
+          <img src="../../assets/icons/route/price.svg" alt="">
           Цена
         </div>
       </div>
@@ -60,19 +67,23 @@
                 {{ route.availableSeats }}
               </div>
               <div class="grid-cell">
-                {{ route.price }}
+                {{ route.price }} Р.
               </div>
             </div>
         </template>
       </div>
     </div>
     <div class="button-container">
-      <button @click="handleBackward">Назад</button>
+      <button 
+      @click="handleBackward"
+      :disabled="page <= 0">Назад</button>
       <span class="page-container">
         Страниц {{ page + 1 }} из {{ routeData?.totalPages || 1 }}
       </span>
-      <button @click="handleForward">Вперед</button>
-    </div>`
+      <button 
+      :disabled="page >= routeData?.totalPages! - 1"
+      @click="handleForward">Вперед</button>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -130,7 +141,11 @@ const handleSearch = async(filter: RouteFilter, page?: number) => {
 @use "../../assets/styles/static/color" as colors;
 @use "../../assets/styles/static/mixin" as mixins;
 
-$grid-columns: 0.5fr 2fr 2fr 1.25fr 1.5fr 1.5fr 1fr 1fr;
+$grid-columns: 0.5fr 2fr 2fr 1.25fr 1.5fr 1.5fr 1.5fr 1fr;
+img {
+  width: 24px;
+  height: 24px;
+}
 
 .grid-wrapper{
   @include mixins.display-column($jc: center, $ai: center);
@@ -138,6 +153,27 @@ $grid-columns: 0.5fr 2fr 2fr 1.25fr 1.5fr 1.5fr 1fr 1fr;
   gap: 1rem;
   .header-container {
     width: 90%;
+  }
+
+  .button-container{
+    @include mixins.display-center();
+    gap: 2.5rem;
+    margin-bottom: 1rem;
+    button{
+      @include mixins.button-clear(colors.$accent, white);
+      padding: 1rem 2rem;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      &:hover{
+        background: colors.$primary-blue;
+      }
+      &:disabled{
+        background: #6c757d;
+        cursor: not-allowed;
+      }
+    }
   }
 }
 
@@ -182,6 +218,7 @@ $grid-columns: 0.5fr 2fr 2fr 1.25fr 1.5fr 1.5fr 1fr 1fr;
     @include mixins.display-center();
     text-align: center;
     padding: 1rem 0.5rem;
+    gap: 0.25rem;
   }
 }
 </style>

@@ -168,19 +168,6 @@ const clearError = () => {
     successMessage.value = ''
 }
 
-// const resetForm = () => {
-//     formData.value = {
-//         routeFrom: '',
-//         routeTo: '',
-//         date: '',
-//         departureTime: '',
-//         arrivalTime: '',
-//         transport: '',
-//         availableSeats: 1,
-//         price: 0
-//     }
-// }
-
 const formatDateTime = (datetime) => {
     if(!datetime) return ''
     return formatToDatabase(datetime)
@@ -209,6 +196,6 @@ const handleSubmit = async () => {
     }
 }
 </script>
-<style scoped lang="sass">
-@use "../../../assets/styles/adminObjects/add-route-form.sass"
+<style scoped lang="scss">
+
 </style>
