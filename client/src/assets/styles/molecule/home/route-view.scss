@@ -1,3 +1,6 @@
+@use "../../static/color" as colors;
+@use "../../static/mixin" as mixins;
+
 $primary: #007bff;
 $accent: #6c5ce7;
 $background: #f8f9fa;
@@ -6,12 +9,6 @@ $border-radius: 16px;
 $shadow: 0 8px 32px rgba(0,0,0,0.08);
 $transition: all 0.3s ease;
 
-* {
-  font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-.space {
-  margin-top: 0;
-}
 .flight-card {
   background: linear-gradient(135deg, $card-bg 0%, rgba(255,255,255,0.95) 100%);
   border-radius: $border-radius;
@@ -37,6 +34,14 @@ $transition: all 0.3s ease;
     font-weight: 600;
     text-transform: uppercase;
     animation: pulse 2s infinite;
+  }
+  .on-time{
+    background: linear-gradient(135deg, #50c878, #00a86b);
+    color: white;
+  }
+  .closed {
+    background: linear-gradient(135deg, #e0115f, #b22222);
+    color: white;
   }
 
   .header {
@@ -74,14 +79,12 @@ $transition: all 0.3s ease;
       }
     }
     .arrow {
+      @include mixins.display-center();
       width: 40px;
       height: 40px;
       background: linear-gradient(45deg, $accent, lighten($accent, 15%));
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
+      color: rgb(230, 216, 255);
       font-size: 24px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       transition: transform 0.3s;
@@ -133,6 +136,7 @@ $transition: all 0.3s ease;
       border: none;
       cursor: pointer;
       transition: $transition;
+      font-size: 1.05rem;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 
       &:not(:disabled):hover {

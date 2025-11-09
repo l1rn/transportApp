@@ -29,8 +29,12 @@ class RouteService {
         return await api.get(`/routes`);
     }
 
-    public async findAllCities(q: string): Promise<AxiosResponse> {
-        return await api.get(`/routes/s/cities?q=${q}`)
+    public async findCitiesFrom(q: string): Promise<AxiosResponse> {
+        return await api.get(`/routes/s/cities-from?q=${q}`)
+    }
+
+    public async findCitiesTo(q: string): Promise<AxiosResponse> {
+        return await api.get(`/routes/s/cities-to?q=${q}`)
     }
 }
 

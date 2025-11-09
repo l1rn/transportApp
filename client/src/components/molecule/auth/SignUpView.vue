@@ -1,10 +1,11 @@
 <template>
   <div
-    ref="containerRef"
-    class="sign-in-container"
-  >
-    <div class="main-container">
-      <div class="main-wrapper">
+    class="sign-in-container">
+    <div 
+    class="main-container">
+      <div 
+      ref="containerRef"
+      class="main-wrapper">
         <div class="close">
           <img
             src="../../../assets/icons/close.png"

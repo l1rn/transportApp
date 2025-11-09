@@ -1,3 +1,4 @@
+import { RouteFilter } from "../types/route"
 
 export const useFormatUtils = () => {
     const formatTransportStringToEmoji = (transport: string) => {
@@ -17,6 +18,15 @@ export const useFormatUtils = () => {
             hour12: false
         });
     }
+    
+    const removeEmojiForTransport = (f: RouteFilter): RouteFilter => {
+        const removeEmoji = (s?: string) => s?.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+
+        return {
+            ...f,
+            transport: removeEmoji(f?.transport) === "Любой" ? "" : removeEmoji(f?.transport)
+        }
+    }
 
     const formatBookingStatus = (status: string) => {
         switch(status) {
@@ -28,6 +38,7 @@ export const useFormatUtils = () => {
     }
 
     return {
+        removeEmojiForTransport,
         formatTransportStringToEmoji,
         formatISOString,
         formatBookingStatus

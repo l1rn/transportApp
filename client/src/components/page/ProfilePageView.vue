@@ -23,14 +23,16 @@
   </div>
 </template>
 <script setup lang="ts">
-import UserSettingsControlView from "../molecule/profile/UserSettingsControlView.vue";
 import { onMounted, onUnmounted, ref, watch  } from "vue";
+
 import AdminPanelView from "@/components/admin/AdminPanelView.vue";
 import BookingsWrapperView from "@/components/molecule/profile/BookingsWrapperView.vue";
+import UserSettingsControlView from "@/components/organism/profile/UserSettingsControlView.vue";
+import HeaderProfilePageView from "../molecule/profile/HeaderProfilePageView.vue";
+
 import { userService } from "@/shared/services/userService";
 import { AxiosResponse } from "axios";
 import { UserInfo } from "@/shared/types/userData";
-import HeaderProfilePageView from "../molecule/profile/HeaderProfilePageView.vue";
 import { useModalStore } from "@/shared/stores/useModalStore";
 
 const username = ref<string>("");

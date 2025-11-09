@@ -1,10 +1,10 @@
 <template>
   <div
-    ref="containerRef"
-    class="sign-in-container"
-  >
+    class="sign-in-container">
     <div class="main-container">
-      <div class="main-wrapper">
+      <div 
+      ref="containerRef"
+      class="main-wrapper">
         <div class="close">
           <img
             src="../../../assets/icons/close.png"
@@ -98,5 +98,5 @@ useConditionalClickOutside(
 </script>
 
 <style scoped lang="scss">
-@use '../../../assets/styles/molecule/auth/signForm.sass';
+@use '../../../assets/styles/molecule/auth/signForm';
 </style>

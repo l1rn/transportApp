@@ -1,11 +1,11 @@
-import { AxiosResponse } from "axios";
+import { AxiosHeaders, AxiosResponse } from "axios";
 import { api } from "./api";
 import { ChangePasswordRequest, UserInfo } from "@/shared/types/userData";
 
 class UserService {
     // user basic
-    public async getMyStatus(): Promise<AxiosResponse>{
-        return await api.get('/users/my-status');
+    public async getMyStatus(headers: any): Promise<AxiosResponse>{
+        return await api.get('/users/my-status', { headers });
     }
 
     public async getUserInfo(): Promise<AxiosResponse<UserInfo>> {

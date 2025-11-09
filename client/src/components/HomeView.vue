@@ -1,12 +1,5 @@
 <template>
-  <div 
-  v-if="isAuthFormOpen" 
-  class="modal-auth-form">
-    <div class="auth-form">
-      <AsyncSignUpView v-if="currentForm === 'register'" />
-      <AsyncSignInView v-else-if="currentForm === 'login'" />
-    </div>
-  </div>
+
 
   <!-- header  -->
   <div class="header-container-custom">
@@ -78,21 +71,11 @@ import { ref, onMounted, onBeforeUnmount, nextTick, defineAsyncComponent } from 
 import SearchContainerView from './molecule/home/SearchContainerView.vue';
 import RouteView from './molecule/home/RouteView.vue';
 import ProfileButtonView from './atom/ProfileButtonView.vue';
-import { useAuthForms } from '@/composable/useAuthForms';
-
-const AsyncSignUpView = defineAsyncComponent(() => 
-  import("@/components/molecule/auth/SignUpView.vue")
-)
-
-const AsyncSignInView = defineAsyncComponent(() =>
-  import("@/components/molecule/auth/SignInView.vue")
-)
 
 const isSticky = ref<boolean>(false);
 const isScrolled = ref<boolean>(false);
 const searchContainer = ref<HTMLElement | null>(null);
 
-const { currentForm, isAuthFormOpen } = useAuthForms();
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;

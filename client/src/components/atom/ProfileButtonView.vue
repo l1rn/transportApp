@@ -4,7 +4,7 @@
   >
     <button
       class="custom-profile-btn"
-      @click.stop="modalStore.toggle('profile-menu')"
+      @click.stop="modalStore.open('profile-menu');"
     >
       Профиль
     </button>
@@ -41,11 +41,11 @@ import { authorizationService } from '@/shared/services/authorizationService';
 import { userService } from '@/shared/services/userService';
 import { useAuthStore } from '@/shared/stores/useLoginStore';
 import { useModalStore } from '@/shared/stores/useModalStore';
+import { AxiosError } from 'axios';
 import { storeToRefs } from 'pinia';
-import { onMounted, ref } from 'vue';
+import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const { openForm } = useAuthForms();
 
 const router = useRouter();
 
@@ -60,6 +60,8 @@ const handleProfileClick = () => {
   modalStore.close('profile-menu');
 }
 
+const { openForm } = useAuthForms();
+
 const logoutProfileMenu = async() => {
   try {
     modalStore.close('profile-menu');
@@ -72,11 +74,25 @@ const logoutProfileMenu = async() => {
   }
 }
 
-onMounted(async() => {
-  const response = await userService.getMyStatus();
-  if(response.data === true && response.status === 200){
-    authStore.login();
+const handleOpen = async() => {
+  try{
+    const response = await userService.getMyStatus({
+      headers: {
+        'X-Skip-Auth-Redirect': 'true'
+      }
+    });
+    if(response.data === true && response.status === 200){
+      authStore.login();
+    }
   }
+  catch(e){
+    const axiosError = e as AxiosError;
+    console.log(axiosError.status);
+  }
+}
+
+onMounted(() => {
+  handleOpen();
 })
 
 useConditionalClickOutside(
@@ -91,6 +107,23 @@ useConditionalClickOutside(
 
 *{
   font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+.modal-auth-form {
+  position: absolute;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  background: #00000040;
+  left: 0;
+  top: 0;
+  .auth-form {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
 }
 
 .custom-profile-btn {

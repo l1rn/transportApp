@@ -9,7 +9,7 @@ export interface Route {
     arrivalTime: string;
     availableSeats: number;
     price: number;
-}
+} 
 
 export interface RouteFilter {
   routeFrom?: string;

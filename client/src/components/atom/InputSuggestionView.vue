@@ -8,8 +8,7 @@
                 v-model="localValue" 
                 :type="props.type" 
                 :placeholder="props.placeholder"
-                :readonly="props.type === 'select' && !isSelectActive"
-                @click="handleInputClick"
+                :readonly="props.type === 'select'"
                 @focus="handleInputFocus"
                 @blur="handleInputBlur"
                 @keydown="handleKeydown"
@@ -17,9 +16,8 @@
             <span 
                 class="select-icon" 
                 :class="{ 'isActive': isDropdownOpen }"
-                v-if="props.type === 'select'"
-                @mousedown="handleIconMouseDown"
-                @click="handleInputClick">
+                @mousedown="handleInputFocus"
+                v-if="props.type === 'select'">
                 <img src="../../assets/icons/dropdown.svg" alt="select">
             </span>
 
@@ -27,7 +25,6 @@
                 <div 
                 v-if="isDropdownOpen" 
                 class="suggestions-list"
-                @mousedown="handleSuggestionsMouseDown"
                 >
                     <ul>
                         <template 
@@ -36,7 +33,7 @@
                         :key="idx"
                         >
                             <li 
-                            @click="selectSuggestion(el)">
+                            @mousedown="selectSuggestion(el)">
                                 {{ el }}
                             </li>
                         </template>
@@ -45,7 +42,7 @@
                         v-for="method in props.suggestionList"
                         :key="method">
                             <li
-                            @click="selectSuggestion(method)">{{ method }}</li>
+                            @mousedown="selectSuggestion(method)">{{ method }}</li>
                         </template>
                     </ul>
                 </div>
@@ -56,16 +53,14 @@
 <script setup lang="ts">
 import { useTypeDetection } from '@/composable/useTypeDetection';
 import { routesService } from '@/shared/services/routeService';
-import { defineProps, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { defineProps, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { prop } from 'vue-class-component';
 
 const { onTypeStart, onTypeEnd, cancelTypeDetection } = useTypeDetection();
 
 const isDropdownOpen = ref(false);
-const isSelectActive = ref(false);
 const isLoading = ref(false);
 const isProcessingSelection = ref(false);
-const ignoreNextBlur = ref(false);
-const isIconClick = ref(false);
 
 const containerRef = ref<HTMLElement | null>(null);
 const inputRef = ref<HTMLInputElement | null>(null);
@@ -84,16 +79,16 @@ const localValue = defineModel<string | null>({
 
 const handleClickOutside = (event: Event) => {
     if(containerRef.value && !containerRef.value.contains(event.target as Node)){
-        closeDropdown();
+        handleInputBlur();
     }
 }
 
 const handleKeydown = (event: KeyboardEvent) => {
     if (props.type === 'select') {
         if (event.key === 'Escape') {
-            closeDropdown();
+            handleInputBlur();
         } else if (event.key === 'Enter' && !isDropdownOpen.value) {
-            openDropdown();
+            handleInputFocus();
         }
     }
 };
@@ -106,72 +101,17 @@ onBeforeUnmount(() => {
     document.removeEventListener('mousedown', handleClickOutside);
 })
 
-const handleInputClick = (event: MouseEvent) => {
-    if(props.type === 'select'){
-        event.preventDefault();
-        event.stopPropagation();
-        
-        if(!isDropdownOpen.value){
-            openDropdown();
-        }
-    }
-}
-
 const handleInputFocus = () => {
-    if(props.type === 'select' && !isIconClick.value){
-        openDropdown();
-    }
-    isIconClick.value = false;
+    isDropdownOpen.value = true;    
 }
 
 const handleInputBlur = () => {
-    if (!ignoreNextBlur.value && !isIconClick.value) {
-        setTimeout(() => {
-            if (!isProcessingSelection.value) {
-                closeDropdown();
-            }
-        }, 150);
-    }
-    ignoreNextBlur.value = false;
+    setTimeout(() => {
+        if(!isProcessingSelection.value){
+            isDropdownOpen.value = false
+        }
+    }, 100);
 };
-
-const handleSuggestionsMouseDown = () => {
-    ignoreNextBlur.value = true;
-}
-
-const handleIconMouseDown = (event: MouseEvent) => {
-    event.preventDefault();
-    ignoreNextBlur.value = true;
-}
-
-const openDropdown = () => {
-    if (props.type === 'select') {
-        isDropdownOpen.value = true;
-        isSelectActive.value = true;
-        
-        nextTick(() => {
-            inputRef.value?.focus();
-            
-            if (props.suggestionType && !localValue.value) {
-                fetchSuggestions('');
-            }
-        });
-    }
-}
-
-const closeDropdown = () => {
-    isDropdownOpen.value = false;
-    isSelectActive.value = false;
-};
-
-const toggleDropdown = () => {
-    if(isDropdownOpen.value){
-        closeDropdown();
-    }
-    else{
-        openDropdown();
-    }
-}
 
 const apiResults = ref<string[]>([]);
 
@@ -184,7 +124,12 @@ const fetchSuggestions = async (q: string | null) => {
     isLoading.value = true;
     try {
         let response = null;
-        response = await routesService.findAllCities(q);
+        if(props.suggestionType === 'from'){
+            response = await routesService.findCitiesFrom(q);
+        }
+        else if(props.suggestionType === 'to'){
+            response = await routesService.findCitiesTo(q);
+        }
         apiResults.value = response?.data.data || [];
     }
     catch (error: any) {
@@ -200,7 +145,7 @@ const selectSuggestion = (item: any) => {
     setTimeout(() => {
         localValue.value = item;
         apiResults.value = [];
-        closeDropdown();
+        handleInputBlur();
         setTimeout(() => {
             isProcessingSelection.value = false;
         }, 50);
@@ -280,6 +225,7 @@ watch(isDropdownOpen, (newValue) => {
     left: 0;
     z-index: 10;
     border-radius: 8px;
+    box-shadow: 0 0 8px rgba($color: #000000, $alpha: 0.15);
 
     ul {
         padding-left: 0;

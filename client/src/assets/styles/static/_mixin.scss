@@ -20,10 +20,10 @@
     align-items: center;
 }
 
-@mixin display-column($js: none, $ai: none){
+@mixin display-column($jc: none, $ai: none){
     display: flex;
     flex-direction: column;
-    justify-content: $js;
+    justify-content: $jc;
     align-items: $ai;
 }
 

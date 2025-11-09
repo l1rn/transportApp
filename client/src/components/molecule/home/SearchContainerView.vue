@@ -64,12 +64,8 @@ const transportList = ref<Array<string>>([
   "🏍️ Любой"
 ])
 
-const filter = ref<RouteFilter>({
-  routeFrom: "",
-  routeTo: "",
-  date: "",
-  transport: ""
-});
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
+const filter = ref<RouteFilter>({});
 
 const transportTransform = (f: RouteFilter): RouteFilter => {
   const removeEmoji = (s?: string) => s?.replace(/^[^\p{L}\p{N}]+/u, '').trim();
@@ -93,12 +89,7 @@ const searchRoutesByFilter = async() => {
 }
 
 const clearSearchContainer = () => {
-  filter.value = {
-    routeFrom: "",
-    routeTo: "",
-    date: "",
-    transport: ""
-  };
+  filter.value = {};
 }
 </script>
 <style scoped lang="sass">

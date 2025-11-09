@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.service;
 
+import com.example.transport_marketplace.dto.suggestions.SuggestionDTO;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,9 +86,32 @@ public class RouteService {
         return routeRepository.searchRoutes(routeFrom, routeTo, date, transport, minPrice, maxPrice);
     }
 
-    public List<String> findCitiesByQuery(String query, int limit){
+    public SuggestionDTO findCitiesToByQuery(String query, int limit){
         String lowerQuery = query.toLowerCase(Locale.ROOT);
-        return routeRepository.findAll()
+        List<String> routes = routeRepository.findAll()
+                .stream()
+                .map(Route::getRouteTo)
+                .distinct()
+                .filter(c -> c.toLowerCase(Locale.ROOT).contains(lowerQuery))
+                .sorted(Comparator
+                        .comparing((String city) ->
+                                !city.toLowerCase(Locale.ROOT).startsWith(lowerQuery))
+                        .thenComparing(String::compareToIgnoreCase)
+                )
+                .limit(limit)
+                .collect(Collectors.toList());
+
+        return SuggestionDTO
+                .builder()
+                .data(routes)
+                .limit(routes.size())
+                .query(lowerQuery)
+                .build();
+    }
+
+    public SuggestionDTO findCitiesFromByQuery(String query, int limit){
+        String lowerQuery = query.toLowerCase(Locale.ROOT);
+        List<String> routes = routeRepository.findAll()
                 .stream()
                 .map(Route::getRouteFrom)
                 .distinct()
@@ -99,5 +123,12 @@ public class RouteService {
                 )
                 .limit(limit)
                 .collect(Collectors.toList());
+
+        return SuggestionDTO
+                .builder()
+                .data(routes)
+                .limit(routes.size())
+                .query(lowerQuery)
+                .build();
     }
 }

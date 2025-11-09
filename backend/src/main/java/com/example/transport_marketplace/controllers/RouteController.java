@@ -164,23 +164,29 @@ public class RouteController {
         );
     }
 
-    @GetMapping("/s/cities")
-    public ResponseEntity<?> getCitySuggestions(
+    @GetMapping("/s/cities-to")
+    public ResponseEntity<?> getCitiesToSuggestions(
             @RequestParam String q,
             @RequestParam(defaultValue = "10") int limit){
 
         try{
-            List<String> cities = routeService.findCitiesByQuery(q, limit);
-
-            SuggestionDTO dto = SuggestionDTO
-                    .builder()
-                    .data(cities)
-                    .limit(cities.size())
-                    .query(q)
-                    .build();
-
-            return ResponseEntity.ok(dto);
+            return ResponseEntity.ok(routeService.findCitiesToByQuery(q, limit));
         } catch (RuntimeException e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Failed to fetch cities");
+            errorResponse.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
+
+    @GetMapping("/s/cities-from")
+    public ResponseEntity<?> getCitiesFromSuggestions(
+            @RequestParam String q,
+            @RequestParam(defaultValue = "10") int limit){
+        try{
+            return ResponseEntity.ok(routeService.findCitiesFromByQuery(q, limit));
+        }
+        catch (RuntimeException e) {
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("error", "Failed to fetch cities");
             errorResponse.put("message", e.getMessage());

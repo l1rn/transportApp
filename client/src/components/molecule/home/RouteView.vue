@@ -7,7 +7,10 @@
   >
     <div
       class="status"
-      :class="{'on-time': route.availableSeats > 0, 'closed': route.availableSeats >= 0}"
+      :class="{
+        'on-time': route.availableSeats > 0, 
+        'closed': route.availableSeats <= 0
+      }"
     >
       {{ getStatus(route.availableSeats) }}
     </div>
@@ -31,7 +34,7 @@
         {{ route.routeFrom }}
       </div>
       <div class="arrow">
-        →
+        ➔
       </div>
       <div class="info-value">
         {{ route.routeTo }}

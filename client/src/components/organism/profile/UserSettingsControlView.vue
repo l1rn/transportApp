@@ -156,7 +156,7 @@ import { authorizationService } from '@/shared/services/authorizationService';
 import { userService } from '@/shared/services/userService';
 import { useModalStore } from '@/shared/stores/useModalStore';
 import { UserInfo } from '@/shared/types/userData';
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 
 import { ModalPropsView } from "@/shared/types/component";
 import { useRequestHandler } from "@/composable/useRequestHandler";
@@ -285,6 +285,17 @@ const deleteSession = async(id: number) => {
     notification.error("Не удалось удалить сессию!");
   }
 }
+
+watchEffect(() => {
+  if(activeModal.value || modalStore.isOpen('change-password-form')){
+      document.body.style.overflowY = 'hidden';
+      document.documentElement.style.overflowY = 'hidden';
+  } 
+  else {
+      document.body.style.overflowY = 'auto';
+      document.documentElement.style.overflowY = 'auto';
+  }
+})
 </script>
 <style scoped lang="sass">
 @use '../../../assets/styles/molecule/profile/user-setting.sass'
