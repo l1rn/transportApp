@@ -14,24 +14,38 @@ const routes = [
     { 
         path: '/profile', 
         component: ProfilePageView, 
-        meta: {requiresAuth: true} 
+        meta: {
+            requiresAuth: true
+        } 
     },
     { 
         path: '/routes', 
-        component: AllRoutesView
+        component: AllRoutesView,
+        meta: {
+            requiresAuth: false
+        }
     },
     { 
         path: '/routes/search', 
-        component: SearchRoutesView
+        component: SearchRoutesView,
+        meta: {
+            requiresAuth: false
+        }
     },
     { 
         path:'/panel/admin', 
-        component: AdminPanelView
+        component: AdminPanelView,
+        meta: {
+            requiresAuth: true
+        }
     },
     { 
         path: '/home', 
         component: HomeView, 
-        meta: { showHeaders: false }
+        meta: { 
+            showHeaders: false,
+            requiresAuth: false
+        }
     },
     {
         name: 'payment',
@@ -39,7 +53,8 @@ const routes = [
         component: PaymentPageView,
         meta: { 
             title: 'ololoseller',    
-            showHeaders: false 
+            showHeaders: false,
+            requiresAuth: true
         }
     },
     { 

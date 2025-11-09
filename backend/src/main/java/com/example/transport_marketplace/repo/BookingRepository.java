@@ -19,7 +19,7 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
     List<Booking> findByUserId(int userId);
     List<Booking> findByUser(User user);
-    @Query("SELECT b FROM Booking")
+    @Query("SELECT b FROM Booking b")
     Page<Booking> findAllPageable(Pageable pageable);
     @Modifying
     @Transactional

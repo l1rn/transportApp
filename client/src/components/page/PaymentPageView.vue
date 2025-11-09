@@ -35,7 +35,7 @@ const { currentView, setView } = usePaymentNavigationProvider();
     .page-content{
         @include mixins.display-center();
         width: 100%;
-    
+        overflow-y: hidden;
     }
 }
 </style>

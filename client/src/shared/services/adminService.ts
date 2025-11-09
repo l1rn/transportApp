@@ -1,29 +1,30 @@
+import { AxiosResponse } from "axios"
 import { api } from "./api"
 
 class AdminService {
-    getAllUsers(){
-        return api.get(`/users/all`)
+    public async getAllUsers(): Promise<AxiosResponse> {
+        return await api.get(`/users/all`)
     }
-    getAllBookings(){
-        return api.get(`/profile/bookings/all`)
+    public async getAllBookings(page: number = 0, size: number = 10): Promise<AxiosResponse> {
+        return await api.get(`/profile/bookings/all?page=${page}&size=${size}`);
     }
-    addRoute(routeData: any){
-        return api.post(`/routes/panel/add`, routeData)
+    public async addRoute(routeData: any): Promise<AxiosResponse> {
+        return await api.post(`/routes/panel/add`, routeData);
     }
-    deleteRoute(routeId: number){
-        return api.delete(`/routes/panel/delete/${routeId}`)
+    public async deleteRoute(routeId: number): Promise<AxiosResponse> {
+        return await api.delete(`/routes/panel/delete/${routeId}`);
     }
-    putRoute(routeId: number, routeData: any){
-        return api.put(`/routes/panel/update/${routeId}`, routeData)
+    public async putRoute(routeId: number, routeData: any): Promise<AxiosResponse> {
+        return await api.put(`/routes/panel/update/${routeId}`, routeData);
     }
-    postSetRoleAdmin(userId: number){
-        return api.post(`/users/admin/${userId}`)
+    public async postSetRoleAdmin(userId: number): Promise<AxiosResponse> {
+        return await api.post(`/users/admin/${userId}`);
     }
-    deleteUser(userId: number){
-        return api.delete(`/users/admin/delete/${userId}`)
+    public async deleteUser(userId: number): Promise<AxiosResponse> {
+        return await api.delete(`/users/admin/delete/${userId}`)
     }
-    patchBooking(bookingId: number){
-        return api.patch(`/profile/bookings/cancel/${bookingId}`)
+    public async patchBooking(bookingId: number): Promise<AxiosResponse> {
+        return await api.patch(`/profile/bookings/cancel/${bookingId}`)
     }
 }
 

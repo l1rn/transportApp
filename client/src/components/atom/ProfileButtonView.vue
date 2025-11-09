@@ -76,11 +76,7 @@ const logoutProfileMenu = async() => {
 
 const handleOpen = async() => {
   try{
-    const response = await userService.getMyStatus({
-      headers: {
-        'X-Skip-Auth-Redirect': 'true'
-      }
-    });
+    const response = await userService.getMyStatus();
     if(response.data === true && response.status === 200){
       authStore.login();
     }

@@ -4,7 +4,7 @@ import { ChangePasswordRequest, UserInfo } from "@/shared/types/userData";
 
 class UserService {
     // user basic
-    public async getMyStatus(headers: any): Promise<AxiosResponse>{
+    public async getMyStatus(headers?: any): Promise<AxiosResponse>{
         return await api.get('/users/my-status', { headers });
     }
 

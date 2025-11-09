@@ -115,10 +115,11 @@ class ApiInterceptor {
 
 
     private async handleUnauthorizedError(originalRequest: CustomAxiosRequestConfig): Promise<AxiosResponse> {
-        if(originalRequest.headers?.['X-Skip-Auth-Redirect'] === 'true'){
-            return Promise.reject(new Error("Unauthorized - skip redirect"));
-        }
-
+        const currentRoute = router.currentRoute.value;
+        if(currentRoute.meta.requiresAuth === false){
+            console.warn("Authentication failed but skipping redirect due to route meta:");
+            return Promise.reject("Unauthorized User!");
+        } 
         originalRequest._retryCount = originalRequest._retryCount || 0;
 
         if(originalRequest._retryCount >= CONFIG.MAX_RETRY_ATTEMPTS){
@@ -208,15 +209,12 @@ class ApiInterceptor {
         console.log('✅ Token refresh scheduled in', refreshTime, 'ms');
     }
 
-    private async handleAuthError(
-        reason: string, 
-        originalRequest?: CustomAxiosRequestConfig
-    ): Promise<void>{
-        if (originalRequest?.headers?.['X-Skip-Auth-Redirect'] === 'true') {
-            console.warn("Authentication failed but skipping redirect:", reason);
+    private async handleAuthError(reason: string): Promise<void>{  
+        const currentRoute = router.currentRoute.value;
+        if(currentRoute.meta.requiresAuth === false){
+            console.warn("Authentication failed but skipping redirect due to route meta:", reason);
             return;
-        }
-        
+        } 
         console.error("Authentication failed: ", reason);
 
         this.cancelTokenRefresh();

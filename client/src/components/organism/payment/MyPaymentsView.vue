@@ -97,6 +97,7 @@ img{
   margin: 0;
   padding: 0;
 }
+
 .my-payments-container{
   width: 80%;
   .grid-table{

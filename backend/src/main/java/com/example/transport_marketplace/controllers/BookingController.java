@@ -65,22 +65,9 @@ public class BookingController {
         }
     }
 
-    @Operation(
-            summary = "Получение всех бронирований (для администраторов)",
-            description = "Возвращает список всех бронирований в системе."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Список всех бронирований",
-                    content = @Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = Booking.class)))),
-            @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован"),
-            @ApiResponse(responseCode = "403", description = "Доступ запрещён (не администратор)")
-    })
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> getAllBookingsForAdmin(
-            Pageable pageable
-    ) {
+    public ResponseEntity<?> getAllBookingsForAdmin(Pageable pageable) {
         try{
             return ResponseEntity.ok(bookingService.getAllBookings(pageable));
         } catch (RuntimeException e) {
