@@ -86,14 +86,14 @@ public class RouteController {
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/panel/add")
-    public ResponseEntity<?> addRoute(
-            @RequestBody RouteRequest request)
-    {
+    public ResponseEntity<?> addRoute(@RequestBody RouteRequest request){
         try{
-            Integer id = routeService.addRoute(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Маршрут #" + route.getId() + "Был создан");
+            routeService.addRoute(request);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Маршрут был создан");
         }catch(RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Не удалось создать маршрут");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Не удалось создать маршрут" + e.getMessage());
         }
     }
 

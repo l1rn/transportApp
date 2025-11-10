@@ -4,7 +4,7 @@ import ProfilePageView from '@/components/page/ProfilePageView.vue';
 import PaymentPageView from '@/components/page/PaymentPageView.vue';
 import AllRoutesView from '@/components/page/AllRoutesView.vue';
 import SearchRoutesView from '@/components/page/SearchRoutesView.vue';
-import AdminPanelView from '@/components/organism/admin/AdminPanelView.vue';
+import AdminPanelView from '@/components/page/AdminPanelView.vue';
 
 const routes = [
     {

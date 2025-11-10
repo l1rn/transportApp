@@ -24,7 +24,6 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -169,7 +168,7 @@ public class RouteControllerWithEndpointsTest {
                 .routeTo("123")
                 .date("2022-12-22")
                 .transport("Поезд")
-                .time("2022-12-22 12:12:12")
+                .destinationTime("2022-12-22 12:12:12")
                 .arrivalTime("2022-12-22 16:00:00")
                 .availableSeats(152)
                 .price(7777)

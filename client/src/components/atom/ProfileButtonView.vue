@@ -43,7 +43,7 @@ import { useAuthStore } from '@/shared/stores/useLoginStore';
 import { useModalStore } from '@/shared/stores/useModalStore';
 import { AxiosError } from 'axios';
 import { storeToRefs } from 'pinia';
-import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 
@@ -100,10 +100,6 @@ useConditionalClickOutside(
 <style scoped lang="scss">
 @use "../../assets/styles/static/color" as colors;
 @use "../../assets/styles/static/mixin" as mixins;
-
-*{
-  font-family: Montserrat, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-}
 
 .modal-auth-form {
   position: absolute;

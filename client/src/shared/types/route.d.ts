@@ -1,5 +1,5 @@
 
-export interface  Route { 
+export interface Route { 
     id?: number;
     routeFrom: string;
     routeTo: string;
@@ -7,8 +7,8 @@ export interface  Route {
     transport: string;
     destinationTime: string;
     arrivalTime: string;
-    availableSeats: number;
-    price: number;
+    availableSeats: number | null;
+    price: number | null;
 } 
 
 export interface RouteFilter {

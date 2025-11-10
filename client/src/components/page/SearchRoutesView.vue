@@ -88,11 +88,12 @@
 </template>
 <script setup lang="ts">
 import { routesService } from "@/shared/services/routeService";
-import { PaginatedRoute, RouteFilter } from "@/shared/types/route";
+import { PaginatedRoute, Route, RouteFilter } from "@/shared/types/route";
 import { onMounted, ref } from 'vue';
 import SearchPageSearchBoxView from "../molecule/search-page/SearchPageSearchBoxView.vue";
+import { PaginatedResponse } from "@/shared/types/response";
 
-const routeData = ref<PaginatedRoute | null>(null);
+const routeData = ref<PaginatedResponse<Route> | null>(null);
 const page = ref(0);
 const currentFilter = ref<RouteFilter>({});
 

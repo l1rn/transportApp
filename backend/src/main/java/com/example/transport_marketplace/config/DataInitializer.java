@@ -112,14 +112,14 @@ public class DataInitializer {
     }
 
     private void createRouteIfNotExists(String from, String to, String date,
-                                        String time, String arrivalTime,
+                                        String destinationTime, String arrivalTime,
                                         String transport, int seats, double price) {
         if (!routeRepository.existsByRouteFromAndRouteToAndDate(from, to, date)) {
             Route route = Route.builder()
                     .routeFrom(from)
                     .routeTo(to)
                     .date(date)
-                    .time(time)
+                    .destinationTime(destinationTime)
                     .arrivalTime(arrivalTime)
                     .transport(transport)
                     .availableSeats(seats)

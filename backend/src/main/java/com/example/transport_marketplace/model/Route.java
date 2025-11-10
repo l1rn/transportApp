@@ -12,7 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "routes")
-public class    Route implements Serializable{
+public class Route implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,8 +30,8 @@ public class    Route implements Serializable{
     @Column(name = "transport", unique = false, nullable = false)
     private String transport;
 
-    @Column(name = "time", unique = false, nullable = false)
-    private String time;
+    @Column(name = "destination_time", unique = false, nullable = false)
+    private String destinationTime;
 
     @Column(name = "arrival_time", unique = false, nullable = false, updatable = true)
     private String arrivalTime;

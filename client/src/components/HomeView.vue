@@ -76,7 +76,6 @@ const isSticky = ref<boolean>(false);
 const isScrolled = ref<boolean>(false);
 const searchContainer = ref<HTMLElement | null>(null);
 
-
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
   if (searchContainer.value) {

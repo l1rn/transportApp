@@ -39,7 +39,7 @@
                         </template>
                         <template 
                         v-if="props.arrayType"
-                        v-for="method in props.suggestionList"
+                        v-for="method in dropdownList"
                         :key="method">
                             <li
                             @mousedown="selectSuggestion(method)">{{ method }}</li>
@@ -92,8 +92,23 @@ const handleKeydown = (event: KeyboardEvent) => {
     }
 };
 
+const dropdownList = ref<Array<string>>();
+
+const transportList = ref<Array<string>>([
+  "🚌 Автобус",
+  "✈️ Авиа",
+  "🚆 Поезд",
+  "🏍️ Любой"
+])
+
 onMounted(() => {
     document.addEventListener('mousedown', handleClickOutside);
+    if(props.arrayType === 'transport'){
+        dropdownList.value = transportList.value;
+    }
+    else{
+        dropdownList.value = props.suggestionList;
+    }
 })
 
 onBeforeUnmount(() => {

@@ -32,22 +32,18 @@ public class RouteService {
         return routeRepository.findById(id);
     }
 
-    @CachePut(value = "route", key = "#route.id")
-    public Integer addRoute(RouteRequest request) {
-        Route route = routeRepository.save(
-                Route.builder()
-                        .routeFrom(request.getRouteFrom())
-                        .routeTo(request.getRouteTo())
-                        .date(request.getDate())
-                        .transport(request.getTransport())
-                        .time(request.getDestinationTime())
-                        .arrivalTime(request.getArrivalTime())
-                        .availableSeats(request.getAvailableSeats())
-                        .price(request.getPrice())
-                        .build()
-        );
-
-        return route.getId();
+    public void addRoute(RouteRequest request) {
+        Route route =  Route.builder()
+                .routeFrom(request.getRouteFrom())
+                .routeTo(request.getRouteTo())
+                .date(request.getDate())
+                .transport(request.getTransport())
+                .destinationTime(request.getDestinationTime())
+                .arrivalTime(request.getArrivalTime())
+                .availableSeats(request.getAvailableSeats())
+                .price(request.getPrice())
+                .build();
+        routeRepository.save(route);
     }
 
     @Caching(
@@ -73,7 +69,7 @@ public class RouteService {
             route.setRouteFrom(updatedRoute.getRouteFrom());
             route.setRouteTo(updatedRoute.getRouteTo());
             route.setDate(updatedRoute.getDate());
-            route.setTime(updatedRoute.getTime());
+            route.setDestinationTime(updatedRoute.getDestinationTime());
             route.setArrivalTime(updatedRoute.getArrivalTime());
             route.setTransport(updatedRoute.getTransport());
             route.setAvailableSeats(updatedRoute.getAvailableSeats());

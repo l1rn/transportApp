@@ -1,4 +1,4 @@
-import { RouteFilter } from "../types/route";
+import { Route, RouteFilter } from "../types/route";
 import pendingIcon from "../../assets/icons/payment/statuses/pending.svg";
 import succeededIcon from "../../assets/icons/payment/statuses/succeeded.svg";
 import failedIcon from "../../assets/icons/payment/statuses/failed.svg";
@@ -23,7 +23,7 @@ export const useFormatUtils = () => {
         });
     }
     
-    const removeEmojiForTransport = (f: RouteFilter): RouteFilter => {
+    const removeEmojiForTransport = (f: RouteFilter | Route): RouteFilter => {
         const removeEmoji = (s?: string) => s?.replace(/^[^\p{L}\p{N}]+/u, '').trim();
 
         return {

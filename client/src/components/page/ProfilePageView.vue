@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch  } from "vue";
 
-import AdminPanelView from "../organism/admin/AdminPanelView.vue";
+import AdminPanelView from "./AdminPanelView.vue";
 import BookingsWrapperView from "@/components/molecule/profile/BookingsWrapperView.vue";
 import UserSettingsControlView from "@/components/organism/profile/UserSettingsControlView.vue";
 import HeaderProfilePageView from "../molecule/profile/HeaderProfilePageView.vue";

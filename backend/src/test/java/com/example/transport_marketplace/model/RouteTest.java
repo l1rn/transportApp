@@ -14,7 +14,7 @@ class RouteTest {
         assertEquals("Saint Petersburg", route.getRouteTo());
         assertEquals("2025-03-10", route.getDate());
         assertEquals("Train", route.getTransport());
-        assertEquals("10:00", route.getTime());
+        assertEquals("10:00", route.getDestinationTime());
         assertEquals("14:00", route.getArrivalTime());
         assertEquals(50, route.getAvailableSeats());
         assertEquals(1000.50, route.getPrice());
@@ -27,7 +27,7 @@ class RouteTest {
         route.setRouteTo("Kazan");
         route.setDate("2025-03-12");
         route.setTransport("Bus");
-        route.setTime("08:00");
+        route.setDestinationTime("08:00");
         route.setArrivalTime("16:00");
         route.setAvailableSeats(40);
         route.setPrice(750.75);
@@ -36,7 +36,7 @@ class RouteTest {
         assertEquals("Kazan", route.getRouteTo());
         assertEquals("2025-03-12", route.getDate());
         assertEquals("Bus", route.getTransport());
-        assertEquals("08:00", route.getTime());
+        assertEquals("08:00", route.getDestinationTime());
         assertEquals("16:00", route.getArrivalTime());
         assertEquals(40, route.getAvailableSeats());
         assertEquals(750.75, route.getPrice());

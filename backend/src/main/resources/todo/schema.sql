@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS routes (
     route_to VARCHAR(255) NOT NULL,
     date VARCHAR(50) NOT NULL,
     transport VARCHAR(50) NOT NULL,
-    time VARCHAR(50) NOT NULL,
+    destinationTime VARCHAR(50) NOT NULL,
     arrival_time VARCHAR(50) NOT NULL,
     available_seats INT NOT NULL,
     price DECIMAL(10,2) NOT NULL

@@ -1,13 +1,14 @@
 import { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { api } from "./api";
-import { PaginatedRoute, RouteFilter } from "@/shared/types/route";
+import { PaginatedRoute, Route, RouteFilter } from "@/shared/types/route";
+import { PaginatedResponse } from "../types/response";
 
 class RouteService {
     public async searchRoutes(
         routeFilter: RouteFilter,
         page: number = 0, 
         size: number = 10
-    ): Promise<AxiosResponse<PaginatedRoute>> {
+    ): Promise<AxiosResponse<PaginatedResponse<Route>>> {
         const searchParams = new URLSearchParams();
         
         Object.entries(routeFilter).forEach(([key, value]) => {

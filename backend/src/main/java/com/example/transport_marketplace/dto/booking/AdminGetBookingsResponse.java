@@ -21,7 +21,7 @@ public record AdminGetBookingsResponse(
                 booking.getRoute().getId(),
                 booking.getRoute().getRouteFrom(),
                 booking.getRoute().getRouteTo(),
-                booking.getRoute().getTime(),
+                booking.getRoute().getDestinationTime(),
                 booking.getRoute().getArrivalTime(),
                 booking.getRoute().getTransport(),
                 booking.getUser().getUsername(),
