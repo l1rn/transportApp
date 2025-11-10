@@ -1,6 +1,7 @@
 package com.example.transport_marketplace.controllers;
 import com.example.transport_marketplace.dto.RouteRequest;
 import com.example.transport_marketplace.dto.suggestions.SuggestionDTO;
+import com.example.transport_marketplace.exceptions.FailedToUpdateModelException;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.service.RouteService;
@@ -66,7 +67,7 @@ public class RouteController {
         try {
             int routeId = Integer.parseInt(id);
             Route route = routeService.getRouteById(routeId)
-                    .orElseThrow(() -> new RouteNotFoundException(routeId));
+                    .orElseThrow(() -> new RouteNotFoundException("Не удалось найти маршрут#" + routeId));
             return new ResponseEntity<>(route, HttpStatus.OK);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Невозможно найти маршрут по этому id");
@@ -109,16 +110,30 @@ public class RouteController {
     @Operation(summary = "Обновление маршрута")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/panel/update/{id}")
-    public ResponseEntity<?> updateRoute(@PathVariable int id, @RequestBody Route updatedRoute){
+    public ResponseEntity<?> updateRoute(
+            @PathVariable int id,
+            @RequestBody RouteRequest request
+    ) {
 
         try {
-            Route route = routeService.updateRoute(id, updatedRoute);
-            if(route == null){
-                throw new RouteNotFoundException(id);
+            boolean updated = routeService.updateRoute(id, request);
+            if(!updated){
+                throw new FailedToUpdateModelException("Не удалось обновить модель!");
             }
-            return ResponseEntity.status(HttpStatus.OK).body(route);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не удалось обновить маршут");
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Маршрут был успешно изменен");
+        }
+        catch (FailedToUpdateModelException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Не удалось обновить маршрут: " + e.getMessage());
+        }
+        catch (RouteNotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Не удалось найти маршрут: " + e.getMessage());
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Не удалось обновить маршрут: " + e.getMessage());
         }
     }
 

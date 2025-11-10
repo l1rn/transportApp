@@ -2,6 +2,7 @@ package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.dto.RouteRequest;
 import com.example.transport_marketplace.dto.suggestions.SuggestionDTO;
+import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -61,22 +63,24 @@ public class RouteService {
         return false;
     }
 
-    @CachePut(value = "route", key = "#id")
-    public Route updateRoute(int id, Route updatedRoute){
-        Optional<Route> existingRoute = routeRepository.findById(id);
-        if(existingRoute.isPresent()){
-            Route route = existingRoute.get();
-            route.setRouteFrom(updatedRoute.getRouteFrom());
-            route.setRouteTo(updatedRoute.getRouteTo());
-            route.setDate(updatedRoute.getDate());
-            route.setDestinationTime(updatedRoute.getDestinationTime());
-            route.setArrivalTime(updatedRoute.getArrivalTime());
-            route.setTransport(updatedRoute.getTransport());
-            route.setAvailableSeats(updatedRoute.getAvailableSeats());
-            route.setPrice(updatedRoute.getPrice());
-            return routeRepository.save(route);
+    @Transactional
+    public boolean updateRoute(int id, RouteRequest request){
+        Route route = routeRepository.findById(id)
+                .orElseThrow(() -> new RouteNotFoundException("Маршрут не был найден #" + id));
+
+        if(route != null){
+            route.setRouteFrom(request.getRouteFrom());
+            route.setRouteTo(request.getRouteTo());
+            route.setDate(request.getDate());
+            route.setTransport(request.getTransport());
+            route.setAvailableSeats(request.getAvailableSeats());
+            route.setArrivalTime(request.getArrivalTime());
+            route.setDestinationTime(request.getDestinationTime());
+            route.setPrice(request.getPrice());
+            routeRepository.save(route);
+            return true;
         }
-        return null;
+        return false;
     }
 
     public List<Route> searchRoutes(String routeFrom,

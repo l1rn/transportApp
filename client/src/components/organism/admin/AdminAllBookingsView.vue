@@ -65,7 +65,7 @@
             <div class="grid-cell">
               <button 
               class="cancel-button"
-              :disabled="isCanceled(booking.status)" 
+              :disabled="booking.status === 'CANCELLED'" 
               @click="cancelBooking(booking.id)">
                 Отменить
               </button>
@@ -135,14 +135,6 @@ const resetPage = () => {
   page.value = 0;
   loadBookings(page.value);
 }
-
-const hasCanceled = ref(false);
-
-const isCanceled = (status: string) => {
-  if (status === "CANCELED") return (hasCanceled.value = true);
-
-  return (hasCanceled.value = false);
-};
 
 const formatStatus = (type: string) => {
   switch (type) {
@@ -276,6 +268,10 @@ $grid-columns: 0.3fr 1.5fr 1.5fr 1fr 1fr 1.25fr 1.5fr 1.5fr 0.75fr 1fr;
       transition: all 0.3s ease;
       &:hover{
         background: #e74c3c;
+      }
+      &:disabled{
+        background: colors.$medium-grey;
+        cursor: not-allowed;
       }
     }
   }

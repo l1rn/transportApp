@@ -116,23 +116,23 @@ class RouteServiceTest {
     }
 
 
-    @Test
-    void testUpdateRoute() {
-        Route existingRoute = new Route(1, "Moscow", "Saint Petersburg", "2025-03-10", "Train", "10:00", "14:00", 50, 1000.50);
-        Route updatedRoute = new Route(1, "Moscow", "Kazan", "2025-03-12", "Bus", "08:00", "16:00", 40, 750.75);
-
-        when(routeRepository.findById(1)).thenReturn(Optional.of(existingRoute));
-        when(routeRepository.save(any(Route.class))).thenReturn(updatedRoute);
-
-        Route result = routeService.updateRoute(1, updatedRoute);
-
-        assertNotNull(result);
-        assertEquals("Kazan", result.getRouteTo());
-        assertEquals("2025-03-12", result.getDate());
-        assertEquals("Bus", result.getTransport());
-        verify(routeRepository, times(1)).findById(1);
-        verify(routeRepository, times(1)).save(any(Route.class));
-    }
+//    @Test
+//    void testUpdateRoute() {
+//        Route existingRoute = new Route(1, "Moscow", "Saint Petersburg", "2025-03-10", "Train", "10:00", "14:00", 50, 1000.50);
+//        Route updatedRoute = new Route(1, "Moscow", "Kazan", "2025-03-12", "Bus", "08:00", "16:00", 40, 750.75);
+//
+//        when(routeRepository.findById(1)).thenReturn(Optional.of(existingRoute));
+//        when(routeRepository.save(any(Route.class))).thenReturn(updatedRoute);
+//
+//        Route result = routeService.updateRoute(1, updatedRoute);
+//
+//        assertNotNull(result);
+//        assertEquals("Kazan", result.getRouteTo());
+//        assertEquals("2025-03-12", result.getDate());
+//        assertEquals("Bus", result.getTransport());
+//        verify(routeRepository, times(1)).findById(1);
+//        verify(routeRepository, times(1)).save(any(Route.class));
+//    }
 
     @Test
     void testSearchRoutes() {

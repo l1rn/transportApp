@@ -52,7 +52,7 @@
 import { ref } from "vue";
 import InputSuggestionView from "@/components/atom/InputSuggestionView.vue";
 import { RouteFilter } from "@/shared/types/route";
-import { routesService } from "@/shared/services/routeService";
+import { routesService } from "@/shared/services/routesService";
 import { useRouteStore } from "@/shared/stores/useRouteStore";
 
 const routeStore = useRouteStore();

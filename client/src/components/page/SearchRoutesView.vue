@@ -87,7 +87,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { routesService } from "@/shared/services/routeService";
+import { routesService } from "@/shared/services/routesService";
 import { PaginatedRoute, Route, RouteFilter } from "@/shared/types/route";
 import { onMounted, ref } from 'vue';
 import SearchPageSearchBoxView from "../molecule/search-page/SearchPageSearchBoxView.vue";

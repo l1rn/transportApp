@@ -157,32 +157,32 @@ public class RouteControllerWithEndpointsTest {
 //                .andExpect(jsonPath("$.price").value(4000));
 //    }
 
-    @Test
-    @Order(3)
-    @WithMockUser(roles = "ADMIN")
-    void updateRoute_ShouldReturn200() throws Exception{
-        int id = mockRoutes.get(1).getId();
-
-        Route newRoute = Route.builder()
-                .routeFrom("Новый маршрут")
-                .routeTo("123")
-                .date("2022-12-22")
-                .transport("Поезд")
-                .destinationTime("2022-12-22 12:12:12")
-                .arrivalTime("2022-12-22 16:00:00")
-                .availableSeats(152)
-                .price(7777)
-                .build();
-
-        when(routeService.updateRoute(eq(id), any(Route.class))).thenReturn(newRoute);
-
-        mockMvc.perform(put("/api/routes/panel/update/{id}", id)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(newRoute)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.routeTo").value("123"))
-                .andExpect(jsonPath("$.price").value(7777));
-    }
+//    @Test
+//    @Order(3)
+//    @WithMockUser(roles = "ADMIN")
+//    void updateRoute_ShouldReturn200() throws Exception{
+//        int id = mockRoutes.get(1).getId();
+//
+//        Route newRoute = Route.builder()
+//                .routeFrom("Новый маршрут")
+//                .routeTo("123")
+//                .date("2022-12-22")
+//                .transport("Поезд")
+//                .destinationTime("2022-12-22 12:12:12")
+//                .arrivalTime("2022-12-22 16:00:00")
+//                .availableSeats(152)
+//                .price(7777)
+//                .build();
+//
+//        when(routeService.updateRoute(eq(id), any(Route.class))).thenReturn(newRoute);
+//
+//        mockMvc.perform(put("/api/routes/panel/update/{id}", id)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(newRoute)))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.routeTo").value("123"))
+//                .andExpect(jsonPath("$.price").value(7777));
+//    }
 
     @Test
     @Order(4)

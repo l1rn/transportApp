@@ -1,5 +1,11 @@
 <template>
   <div class="routes-container">
+    <ChangeRouteFormView
+      v-if="isFormVisible"
+      :route-data="selectedRoute!"
+      @close="closeEditForm"
+      @submit="handleFormSubmit"
+    />
     <div class="grid-table">
       <div class="grid-header">
         <div class="grid-cell">
@@ -68,7 +74,7 @@
             </div>
             <div class="grid-cell">
               <div class="actions-container">
-                <button>
+                <button @click="openEditForm(route)">
                   Изменить
                 </button>
                 <button @click="deleteRoute(route.id!)">
@@ -93,13 +99,31 @@
   </div>
 </template>
 <script setup lang="ts">
+import ChangeRouteFormView from "@/components/atom/admin/ChangeRouteFormView.vue";
 import notification from "@/shared/plugins/notifications";
 import { adminService } from "@/shared/services/adminService";
-import { routesService } from "@/shared/services/routeService";
+import { routesService } from "@/shared/services/routesService";
 import { PaginatedResponse } from "@/shared/types/response";
 import { Route } from "@/shared/types/route";
 import { useFormatUtils } from "@/shared/utils/formatUlils";
 import { ref, onMounted } from "vue";
+
+const isFormVisible = ref(false);
+const selectedRoute = ref<Route | null>(null);
+
+const openEditForm = (route: Route) => {
+  selectedRoute.value = route;
+  isFormVisible.value = true;
+}
+
+const closeEditForm = () => {
+  isFormVisible.value = false;
+  selectedRoute.value = null;
+}
+
+const handleFormSubmit = async() => {
+  await routesService.updateRoute(selectedRoute.value?.id!, );
+}
 
 const formatUlils = useFormatUtils();
 const page = ref(0);
@@ -122,6 +146,7 @@ const loadRoutes = async (page: number = 0) => {
   routes.value = response.data;
   console.log(routes.value);
 };
+
 onMounted(() => {
   loadRoutes();
 });

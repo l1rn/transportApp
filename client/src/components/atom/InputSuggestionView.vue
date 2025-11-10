@@ -52,7 +52,7 @@
 </template>
 <script setup lang="ts">
 import { useTypeDetection } from '@/composable/useTypeDetection';
-import { routesService } from '@/shared/services/routeService';
+import { routesService } from '@/shared/services/routesService';
 import { defineProps, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 const { onTypeStart, onTypeEnd, cancelTypeDetection } = useTypeDetection();

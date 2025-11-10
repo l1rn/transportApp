@@ -52,6 +52,7 @@ import AddRouteView from "@/components/molecule/admin/AddRouteView.vue";
 import EditRouteView from "@/components/molecule/admin/EditRouteView.vue";
 import { ActionType } from "@/shared/types/component";
 import { ref } from "vue";
+
 const typeSelected = ref<ActionType>("add");
 
 const selectType = (type: ActionType) => {
