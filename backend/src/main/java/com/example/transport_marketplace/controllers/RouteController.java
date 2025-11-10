@@ -1,4 +1,5 @@
 package com.example.transport_marketplace.controllers;
+import com.example.transport_marketplace.dto.RouteRequest;
 import com.example.transport_marketplace.dto.suggestions.SuggestionDTO;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
 import com.example.transport_marketplace.model.Route;
@@ -86,10 +87,11 @@ public class RouteController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/panel/add")
     public ResponseEntity<?> addRoute(
-            @RequestBody Route route)
+            @RequestBody RouteRequest request)
     {
         try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(routeService.addRoute(route));
+            Integer id = routeService.addRoute(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Маршрут #" + route.getId() + "Был создан");
         }catch(RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Не удалось создать маршрут");
         }

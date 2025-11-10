@@ -54,7 +54,6 @@
 import { useTypeDetection } from '@/composable/useTypeDetection';
 import { routesService } from '@/shared/services/routeService';
 import { defineProps, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { prop } from 'vue-class-component';
 
 const { onTypeStart, onTypeEnd, cancelTypeDetection } = useTypeDetection();
 

@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios"
 import { api } from "./api"
+import { Route } from "../types/route";
 
 class AdminService {
     public async getAllUsers(): Promise<AxiosResponse> {
@@ -8,7 +9,7 @@ class AdminService {
     public async getAllBookings(page: number = 0, size: number = 10): Promise<AxiosResponse> {
         return await api.get(`/profile/bookings/all?page=${page}&size=${size}`);
     }
-    public async addRoute(routeData: any): Promise<AxiosResponse> {
+    public async addRoute(routeData: Route): Promise<AxiosResponse> {
         return await api.post(`/routes/panel/add`, routeData);
     }
     public async deleteRoute(routeId: number): Promise<AxiosResponse> {

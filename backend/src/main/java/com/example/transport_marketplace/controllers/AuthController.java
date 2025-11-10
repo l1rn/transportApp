@@ -84,12 +84,15 @@ public class AuthController {
     public ResponseEntity<?> signIn(@RequestBody SignInRequest request,
                                     HttpServletRequest httpServletRequest,
                                     HttpServletResponse response) {
-        JwtAuthenticationResponse authenticationResponse = authenticationService.signIn(request, httpServletRequest);
-
-        response.setHeader("X-Token-Expires", String.valueOf(accessExpirationMs));
-
-        setAuthCookies(response, authenticationResponse.getAccessToken(), authenticationResponse.getRefreshToken());
-        return ResponseEntity.ok("Authorized");
+        try{
+            JwtAuthenticationResponse authenticationResponse = authenticationService.signIn(request, httpServletRequest);
+            response.setHeader("X-Token-Expires", String.valueOf(accessExpirationMs));
+            setAuthCookies(response, authenticationResponse.getAccessToken(), authenticationResponse.getRefreshToken());
+            return ResponseEntity.ok("Authorized");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Не удалось авторизоваться: " + e.getMessage());
+        }
     }
 
     @Operation(

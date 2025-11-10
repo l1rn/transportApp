@@ -45,7 +45,7 @@
               Время вылета
             </div>
             <div class="content">
-              {{ booking.route.time }}
+              {{ booking.route.destinationTime }}
             </div>
           </span>
           <span class="arrival-time">

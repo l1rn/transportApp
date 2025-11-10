@@ -1,11 +1,11 @@
 
-export interface Route { 
+export interface  Route { 
     id?: number;
     routeFrom: string;
     routeTo: string;
     date: string;
     transport: string;
-    time: string;
+    destinationTime: string;
     arrivalTime: string;
     availableSeats: number;
     price: number;

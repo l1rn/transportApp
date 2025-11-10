@@ -1,5 +1,7 @@
 import { Ref } from "vue";
 
+export type ActionType = "add" | "edit" | "delete"
+
 export interface ModalPropsView {
     icon: string;
     title: string;

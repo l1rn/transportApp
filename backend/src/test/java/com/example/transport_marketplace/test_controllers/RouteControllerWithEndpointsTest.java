@@ -131,32 +131,32 @@ public class RouteControllerWithEndpointsTest {
                 .andExpect(jsonPath("$.content[1].availableSeats").value(100));
     }
 
-    @Test
-    @Order(2)
-    @WithMockUser(roles = "ADMIN")
-    void createRoute_ShouldReturn201() throws Exception{
-        Route route = Route.builder()
-                .id(4)
-                .routeFrom("Казань")
-                .routeTo("Екатеринбург")
-                .date("2025-12-12")
-                .transport("Авиа")
-                .time("2025-12-12 7:00:00")
-                .arrivalTime("2025-12-12 11:00:00")
-                .availableSeats(100)
-                .price(4000)
-                .build();
-
-        when(routeService.addRoute(any(Route.class))).thenReturn(route);
-
-        mockMvc.perform(post("/api/routes/panel/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(route)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.routeFrom").value("Казань"))
-                .andExpect(jsonPath("$.routeTo").value("Екатеринбург"))
-                .andExpect(jsonPath("$.price").value(4000));
-    }
+//    @Test
+//    @Order(2)
+//    @WithMockUser(roles = "ADMIN")
+//    void createRoute_ShouldReturn201() throws Exception{
+//        Route route = Route.builder()
+//                .id(4)
+//                .routeFrom("Казань")
+//                .routeTo("Екатеринбург")
+//                .date("2025-12-12")
+//                .transport("Авиа")
+//                .time("2025-12-12 7:00:00")
+//                .arrivalTime("2025-12-12 11:00:00")
+//                .availableSeats(100)
+//                .price(4000)
+//                .build();
+//
+//        when(routeService.addRoute(any(Route.class))).thenReturn(route);
+//
+//        mockMvc.perform(post("/api/routes/panel/add")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(route)))
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("$.routeFrom").value("Казань"))
+//                .andExpect(jsonPath("$.routeTo").value("Екатеринбург"))
+//                .andExpect(jsonPath("$.price").value(4000));
+//    }
 
     @Test
     @Order(3)

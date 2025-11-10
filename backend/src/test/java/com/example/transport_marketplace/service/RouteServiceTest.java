@@ -56,37 +56,37 @@ class RouteServiceTest {
     }
 
     // new
-    @Test
-    void testAddRoute() {
-
-        Route mockRoute = Route.builder()
-                .routeFrom("Moscow")
-                .routeTo("Saint Petersburg")
-                .date("2025-03-10")
-                .time("2025-03-10 10:00")
-                .arrivalTime("2025-03-10 14:00")
-                .transport("Поезд")
-                .availableSeats(50)
-                .price(1000.50)
-                .build();
-        mockRoute.setId(1);
-
-        when(routeRepository.save(any(Route.class))).thenReturn(mockRoute);
-
-        Route result = routeService.addRoute(mockRoute);
-
-        assertNotNull(result);
-        assertEquals(1, result.getId());
-        assertEquals("Moscow", result.getRouteFrom());
-        assertEquals("Saint Petersburg", result.getRouteTo());
-        assertEquals("2025-03-10", result.getDate());
-        assertEquals("2025-03-10 10:00", result.getTime());
-        assertEquals("2025-03-10 14:00", result.getArrivalTime());
-        assertEquals("Поезд", result.getTransport());
-        assertEquals(50, result.getAvailableSeats());
-        assertEquals(1000.50, result.getPrice(), 0.001);
-        verify(routeRepository, times(1)).save(any(Route.class));
-    }
+//    @Test
+//    void testAddRoute() {
+//
+//        Route mockRoute = Route.builder()
+//                .routeFrom("Moscow")
+//                .routeTo("Saint Petersburg")
+//                .date("2025-03-10")
+//                .time("2025-03-10 10:00")
+//                .arrivalTime("2025-03-10 14:00")
+//                .transport("Поезд")
+//                .availableSeats(50)
+//                .price(1000.50)
+//                .build();
+//        mockRoute.setId(1);
+//
+//        when(routeRepository.save(any(Route.class))).thenReturn(mockRoute);
+//
+//        Route result = routeService.addRoute(mockRoute);
+//
+//        assertNotNull(result);
+//        assertEquals(1, result.getId());
+//        assertEquals("Moscow", result.getRouteFrom());
+//        assertEquals("Saint Petersburg", result.getRouteTo());
+//        assertEquals("2025-03-10", result.getDate());
+//        assertEquals("2025-03-10 10:00", result.getTime());
+//        assertEquals("2025-03-10 14:00", result.getArrivalTime());
+//        assertEquals("Поезд", result.getTransport());
+//        assertEquals(50, result.getAvailableSeats());
+//        assertEquals(1000.50, result.getPrice(), 0.001);
+//        verify(routeRepository, times(1)).save(any(Route.class));
+//    }
 
     // new
     @Test

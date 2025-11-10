@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.service;
 
+import com.example.transport_marketplace.dto.RouteRequest;
 import com.example.transport_marketplace.dto.suggestions.SuggestionDTO;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
@@ -32,8 +33,21 @@ public class RouteService {
     }
 
     @CachePut(value = "route", key = "#route.id")
-    public Route addRoute(Route route) {
-        return routeRepository.save(route);
+    public Integer addRoute(RouteRequest request) {
+        Route route = routeRepository.save(
+                Route.builder()
+                        .routeFrom(request.getRouteFrom())
+                        .routeTo(request.getRouteTo())
+                        .date(request.getDate())
+                        .transport(request.getTransport())
+                        .time(request.getDestinationTime())
+                        .arrivalTime(request.getArrivalTime())
+                        .availableSeats(request.getAvailableSeats())
+                        .price(request.getPrice())
+                        .build()
+        );
+
+        return route.getId();
     }
 
     @Caching(
