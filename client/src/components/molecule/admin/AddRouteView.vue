@@ -83,11 +83,11 @@ import InputSuggestionView from "@/components/atom/InputSuggestionView.vue";
 import { Route } from "@/shared/types/route";
 import notification from "@/shared/plugins/notifications";
 import { useFormatUtils } from "@/shared/utils/formatUlils";
+import { AxiosError } from "axios";
 
 const formData = ref<Route>({
   routeFrom: "",
   routeTo: "",
-  date: "",
   transport: "",
   destinationTime: "",
   arrivalTime: "",
@@ -101,7 +101,6 @@ const handleSubmit = async () => {
   const newFilter = formatUtils.removeEmojiForTransport(formData.value);
   formData.value.transport = newFilter.transport;
 
-  formData.value.date = formData.value.destinationTime;
   if (!formData.value) {
     notification.error("Не найден объект, который надо создать!");
     return;
@@ -120,7 +119,19 @@ const handleSubmit = async () => {
   try {
     await adminService.addRoute(formData.value);
     notification.success("Маршрут был успешно добавлен!");
-  } catch (error) {}
+    formData.value = {
+      routeFrom: "",
+      routeTo: "",
+      transport: "",
+      destinationTime: "",
+      arrivalTime: "",
+      availableSeats: null,
+      price: null,
+    };
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error(`${axiosError.message}: `, axiosError.status)
+  }
 };
 </script>
 <style scoped lang="scss">

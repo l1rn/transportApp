@@ -52,15 +52,13 @@
               {{ route.routeTo }}
             </div>
             <div class="grid-cell time-cell">
-              <span class="time">{{ formatTime(route.destinationTime) }} </span>
-              <span class="date">{{ formatDate(getDateSource(route)) }}</span>
+              <span class="time">{{ route.destinationTime.split('T')[1] }} </span>
             </div>
             <div class="grid-cell time-cell">
-              <span class="time">{{ formatTime(route.arrivalTime) }} </span>
-              <span class="date">{{ formatDate(getDateSource(route)) }}</span>
+              <span class="time">{{ route.arrivalTime.split('T')[1] }} </span>
             </div>
             <div class="grid-cell">
-              {{ route.date }}
+              {{ route.destinationTime.split('T')[0] }}
             </div>
             <div class="grid-cell">
               <span class="transport-icon">{{ formatUlils.formatTransportStringToEmoji(route.transport) }}</span>
@@ -74,7 +72,7 @@
             </div>
             <div class="grid-cell">
               <div class="actions-container">
-                <button @click="openEditForm(route)">
+                <button @click.stop="openEditForm(route)">
                   Изменить
                 </button>
                 <button @click="deleteRoute(route.id!)">
@@ -106,6 +104,7 @@ import { routesService } from "@/shared/services/routesService";
 import { PaginatedResponse } from "@/shared/types/response";
 import { Route } from "@/shared/types/route";
 import { useFormatUtils } from "@/shared/utils/formatUlils";
+import { AxiosError } from "axios";
 import { ref, onMounted } from "vue";
 
 const isFormVisible = ref(false);
@@ -121,8 +120,18 @@ const closeEditForm = () => {
   selectedRoute.value = null;
 }
 
-const handleFormSubmit = async() => {
-  await routesService.updateRoute(selectedRoute.value?.id!, );
+const handleFormSubmit = async(updatedData: Route) => {
+  try{
+    await routesService.updateRoute(selectedRoute.value?.id!, updatedData);
+    notification.success(`Маршрут #${updatedData.id} был успешно изменен!`);
+    closeEditForm();
+    loadRoutes();
+  }
+  catch(e){
+    const axiosError = e as AxiosError;
+    console.error(axiosError.code);
+    notification.error("Не удалось обновить маршрут");
+  }
 }
 
 const formatUlils = useFormatUtils();

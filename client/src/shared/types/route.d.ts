@@ -3,7 +3,6 @@ export interface Route {
     id?: number;
     routeFrom: string;
     routeTo: string;
-    date: string;
     transport: string;
     destinationTime: string;
     arrivalTime: string;

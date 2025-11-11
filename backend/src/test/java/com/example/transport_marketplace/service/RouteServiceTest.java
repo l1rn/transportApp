@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +33,26 @@ class RouteServiceTest {
     @Test
     void testGetRoutes() {
         List<Route> routes = Arrays.asList(
-                new Route(1, "Moscow", "Saint Petersburg", "2025-03-10", "Train", "10:00", "14:00", 50, 1000.50),
-                new Route(2, "Moscow", "Kazan", "2025-03-12", "Bus", "08:00", "16:00", 40, 750.75)
+                Route.builder()
+                        .id(1)
+                        .routeFrom("Moscow")
+                        .routeTo("Saint Petersburg")
+                        .transport("Train")
+                        .destinationTime(LocalDateTime.of(2026, 10, 24, 20, 20))
+                        .arrivalTime(LocalDateTime.of(2026, 10, 24, 22, 20))
+                        .availableSeats(50)
+                        .price(1000)
+                        .build(),
+                Route.builder()
+                        .id(1)
+                        .routeFrom("Moscow")
+                        .routeTo("Kazan")
+                        .transport("Train")
+                        .destinationTime(LocalDateTime.of(2026, 10, 24, 20, 20))
+                        .arrivalTime(LocalDateTime.of(2026, 10, 24, 22, 20))
+                        .availableSeats(50)
+                        .price(1000)
+                        .build()
         );
         when(routeRepository.findAll()).thenReturn(routes);
 
@@ -45,7 +64,16 @@ class RouteServiceTest {
 
     @Test
     void testGetRouteById() {
-        Route route = new Route(1, "Moscow", "Saint Petersburg", "2025-03-10", "Train", "10:00", "14:00", 50, 1000.50);
+        Route route = Route.builder()
+                .id(1)
+                .routeFrom("Moscow")
+                .routeTo("Saint Petersburg")
+                .transport("Train")
+                .destinationTime(LocalDateTime.of(2026, 10, 24, 20, 20))
+                .arrivalTime(LocalDateTime.of(2026, 10, 24, 22, 20))
+                .availableSeats(50)
+                .price(1000)
+                .build();
         when(routeRepository.findById(1)).thenReturn(Optional.of(route));
 
         Optional<Route> result = routeService.getRouteById(1);
@@ -137,14 +165,32 @@ class RouteServiceTest {
     @Test
     void testSearchRoutes() {
         List<Route> routes = Arrays.asList(
-                new Route(1, "Moscow", "Saint Petersburg", "2025-03-10", "Train", "10:00", "14:00", 50, 1000.50),
-                new Route(2, "Moscow", "Kazan", "2025-03-12", "Bus", "08:00", "16:00", 40, 750.75)
+                Route.builder()
+                        .id(1)
+                        .routeFrom("Moscow")
+                        .routeTo("Saint Petersburg")
+                        .transport("Train")
+                        .destinationTime(LocalDateTime.of(2026, 10, 24, 20, 20))
+                        .arrivalTime(LocalDateTime.of(2026, 10, 24, 22, 20))
+                        .availableSeats(50)
+                        .price(1000)
+                        .build(),
+                Route.builder()
+                        .id(1)
+                        .routeFrom("Moscow")
+                        .routeTo("Kazan")
+                        .transport("Train")
+                        .destinationTime(LocalDateTime.of(2026, 10, 24, 20, 20))
+                        .arrivalTime(LocalDateTime.of(2026, 10, 24, 22, 20))
+                        .availableSeats(50)
+                        .price(1000)
+                        .build()
         );
-        when(routeRepository.searchRoutes("Moscow", null, null, null, null, null)).thenReturn(routes);
+        when(routeRepository.searchRoutes("Moscow", null,  null, null, null)).thenReturn(routes);
 
-        List<Route> result = routeService.searchRoutes("Moscow", null, null, null, null, null);
+        List<Route> result = routeService.searchRoutes("Moscow", null, null, null, null);
 
         assertEquals(2, result.size());
-        verify(routeRepository, times(1)).searchRoutes("Moscow", null, null, null, null, null);
+        verify(routeRepository, times(1)).searchRoutes("Moscow", null, null, null, null);
     }
 }

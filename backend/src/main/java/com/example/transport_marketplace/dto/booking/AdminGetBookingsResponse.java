@@ -3,13 +3,15 @@ package com.example.transport_marketplace.dto.booking;
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.model.Booking;
 
+import java.time.LocalDateTime;
+
 public record AdminGetBookingsResponse(
         Integer id,
         Integer routeId,
         String routeFrom,
         String routeTo,
-        String destinationTime,
-        String arrivalTime,
+        LocalDateTime destinationTime,
+        LocalDateTime arrivalTime,
         String transport,
         String username,
         BookingStatus status,

@@ -149,7 +149,6 @@ public class RouteController {
     public ResponseEntity<?> searchRoutes(
             @RequestParam(required = false) String routeFrom,
             @RequestParam(required = false) String routeTo,
-            @RequestParam(required = false) String date,
             @RequestParam(required = false) String transport,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
@@ -160,8 +159,7 @@ public class RouteController {
                     .body("Максимальная цена должна быть больше минимальной");
         }
 
-        List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, date,
-                transport, minPrice, maxPrice);
+        List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, transport, minPrice, maxPrice);
 
         int start = page * size;
         int end = Math.min(start + size, filteredRoutes.size());

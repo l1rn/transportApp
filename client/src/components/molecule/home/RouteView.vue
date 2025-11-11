@@ -8,11 +8,11 @@
     <div
       class="status"
       :class="{
-        'on-time': route.availableSeats > 0, 
+        'on-time': route.availableSeats! > 0, 
         'closed': route.availableSeats <= 0
       }"
     >
-      {{ getStatus(route.availableSeats) }}
+      {{ getStatus(route.availableSeats!) }}
     </div>
 
     <div class="header">
@@ -44,21 +44,21 @@
     <div class="route-info">
       <div class="info-item">
         <span class="info-label">ОТПРАВЛЕНИЕ</span>
-        <span class="info-value">{{ route.time }}</span>
-      </div>
+        <span class="info-value">{{ route.destinationTime.split('T')[1] }}</span>
+      </div>  
       <div class="info-item">
         <span class="info-label">ПРИБЫТИЕ</span>
-        <span class="info-value">{{ route.arrivalTime }}</span>
+        <span class="info-value">{{ route.arrivalTime.split('T')[1] }}</span>
       </div>
       <div class="info-item">
         <span class="info-label">ДАТА</span>
-        <span class="info-value">{{ route.date }}</span>
+        <span class="info-value">{{ route.destinationTime.split('T')[0] }}</span>
       </div>
       <div class="info-item">
         <span class="info-label">ОСТАЛОСЬ МЕСТ</span>
-        <span class="info-value">{{ Math.max(0, route.availableSeats) }}
+        <span class="info-value">{{ Math.max(0, route.availableSeats!) }}
           <span
-            v-if="route.availableSeats <= 0"
+            v-if="route.availableSeats! <= 0"
             class="sold-out-text"
           >(мест нет)</span>
         </span>
@@ -72,7 +72,7 @@
         </div>
       </div>
         <button
-        :disabled="route.availableSeats <= 0"
+        :disabled="route.availableSeats! <= 0"
         class="book-button"
         @click="bookTheRoute(route.id!)"
       >
@@ -105,7 +105,7 @@ const bookTheRoute = async (routeId: number) => {
   if(routeData.value?.content[routeId].arrivalTime !== undefined){
 
   }
-  try{
+  try {
     const response = await bookingService.createBooking(routeId);
     if (response.status === HttpStatusCode.Created){
       notification.success("Ваш маршрут у вас в профиле!");
@@ -114,6 +114,7 @@ const bookTheRoute = async (routeId: number) => {
   }
   catch(error){
     const axiosError = error as AxiosError;
+    console.error(axiosError.message);
     if(axiosError.status === 500){
       notification.error("Не удалось добавить в корзину!");
     }

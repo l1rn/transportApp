@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,14 +67,49 @@ public class RouteControllerWithEndpointsTest {
                 .defaultRequest(get("/").with(csrf()).characterEncoding(StandardCharsets.UTF_8))
                 .build();
         mockRoutes = List.of(
-                new Route(1,"Челябинск", "Омск", "2026-12-27", "Авиа",
-                        "2026-12-27 08:00:00", "2026-12-27 12:30:00", 55, 3100),
-                new Route(2, "Москва", "Санкт-Петербург", "2026-07-15", "Поезд",
-                        "2026-07-15 10:30:00", "2026-07-15 14:45:00", 120, 2500),
-                new Route(3, "Новосибирск", "Красноярск", "2026-08-01", "Авиа",
-                        "2026-08-01 07:45:00", "2026-08-01 10:15:00", 40, 4200),
-                new Route(5,"Челябинск", "Омск", "2026-12-24", "Поезд",
-                        "2026-12-27 08:00:00", "2026-12-27 12:30:00", 100, 3200)
+                Route.builder()
+                        .id(1)
+                        .routeFrom("Челябинск")
+                        .routeTo("Омск")
+                        .transport("Авиа")
+                        .destinationTime(LocalDateTime.of(2026, 12, 27, 8, 0))
+                        .arrivalTime(LocalDateTime.of(2026, 12, 27, 12, 30))
+                        .availableSeats(55)
+                        .price(3100)
+                        .build(),
+
+                Route.builder()
+                        .id(2)
+                        .routeFrom("Москва")
+                        .routeTo("Санкт-Петербург")
+                        .transport("Поезд")
+                        .destinationTime(LocalDateTime.of(2026, 7, 15, 10, 30))
+                        .arrivalTime(LocalDateTime.of(2026, 7, 15, 14, 45))
+                        .availableSeats(120)
+                        .price(2500)
+                        .build(),
+
+                Route.builder()
+                        .id(3)
+                        .routeFrom("Новосибирск")
+                        .routeTo("Красноярск")
+                        .transport("Авиа")
+                        .destinationTime(LocalDateTime.of(2026, 8, 1, 7, 45))
+                        .arrivalTime(LocalDateTime.of(2026, 8, 1, 10, 15))
+                        .availableSeats(40)
+                        .price(4200)
+                        .build(),
+
+                Route.builder()
+                        .id(5)
+                        .routeFrom("Челябинск")
+                        .routeTo("Омск")
+                        .transport("Поезд")
+                        .destinationTime(LocalDateTime.of(2026, 12, 27, 8, 0))
+                        .arrivalTime(LocalDateTime.of(2026, 12, 27, 12, 30))
+                        .availableSeats(100)
+                        .price(3200)
+                        .build()
         );
         sizeof = mockRoutes.size();
     }
@@ -105,7 +141,7 @@ public class RouteControllerWithEndpointsTest {
     @Test
     @Order(1)
     void searchRoutes_WithDifferentFilters_ShouldReturnFilteredRoutes() throws Exception{
-        when(routeService.searchRoutes(null, null, null, null, null, null))
+        when(routeService.searchRoutes(null, null, null, null, null))
                 .thenReturn(mockRoutes);
 
         mockMvc.perform(get("/api/routes/search"))
@@ -117,7 +153,7 @@ public class RouteControllerWithEndpointsTest {
                 .filter(r -> r.getRouteFrom().equals("Челябинск"))
                 .toList();
 
-        when(routeService.searchRoutes("Челябинск", null, null, null, null, null))
+        when(routeService.searchRoutes("Челябинск", null, null, null, null))
                 .thenReturn(filteredByFrom);
 
         mockMvc.perform(get("/api/routes/search")

@@ -22,7 +22,11 @@ export const useFormatUtils = () => {
             hour12: false
         });
     }
-    
+    const removeEmojiFromRouteData = (transport: string) => {
+        const removeEmoji = (s?: string) => s?.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+        return transport === "Любой" ? "" : removeEmoji(transport)
+    }
+
     const removeEmojiForTransport = (f: RouteFilter | Route): RouteFilter => {
         const removeEmoji = (s?: string) => s?.replace(/^[^\p{L}\p{N}]+/u, '').trim();
 
@@ -52,6 +56,7 @@ export const useFormatUtils = () => {
 
     return {
         removeEmojiForTransport,
+        removeEmojiFromRouteData,
         formatTransportStringToEmoji,
         formatISOString,
         formatBookingStatus,

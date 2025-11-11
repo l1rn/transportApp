@@ -66,7 +66,7 @@ import { routesService } from '@/shared/services/routesService';
 import { ref, computed, onMounted } from 'vue';
 
 const routes = ref([]);
-const currentPage = ref(1);
+const currentPage = ref(0);
 
 const paginatedRoutes = computed(() => {
   return routes.value.content;

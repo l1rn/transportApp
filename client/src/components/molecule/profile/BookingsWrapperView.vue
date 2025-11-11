@@ -45,7 +45,7 @@
               Время вылета
             </div>
             <div class="content">
-              {{ booking.route.destinationTime }}
+              {{ booking.route.destinationTime.split('T')[1] }}
             </div>
           </span>
           <span class="arrival-time">
@@ -53,7 +53,7 @@
               Время прилета
             </div>
             <div class="content">
-              {{ booking.route.arrivalTime }}
+              {{ booking.route.arrivalTime.split('T')[1] }}
             </div>
           </span>
         </div>
@@ -62,7 +62,7 @@
             <div class="text">
               Дата
             </div>
-            {{ booking.route.date }}
+            {{ booking.route.destinationTime.split('T')[0] }}
           </div>
           <div class="price-container">
             <div class="text">

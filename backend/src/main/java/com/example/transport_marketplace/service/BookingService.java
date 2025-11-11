@@ -3,6 +3,8 @@ package com.example.transport_marketplace.service;
 import com.example.transport_marketplace.dto.PaginatedResponse;
 import com.example.transport_marketplace.dto.booking.AdminGetBookingsResponse;
 import com.example.transport_marketplace.dto.booking.BookingsResponse;
+import com.example.transport_marketplace.exceptions.routes.Exceptions.NoAvailableSeatsException;
+import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
 import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.repo.BookingRepository;
@@ -62,6 +64,7 @@ public class BookingService {
         Page<Booking> bookings = bookingRepository.findAllPageable(pageable);
 
         List<AdminGetBookingsResponse> content = bookings.stream()
+                .filter(b -> b.getRoute() != null)
                 .map(AdminGetBookingsResponse::from)
                 .toList();
 
@@ -81,12 +84,12 @@ public class BookingService {
 
     @CachePut(value = "booking", key = "#result.id")
     @Transactional
-    public Booking createBooking(int routeId, int userId){
-
+    public Booking createBooking(Integer routeId, Integer userId){
         Route route = routeRepository.findById(routeId)
-                .orElseThrow(() -> new RuntimeException("Маршрут не найден"));
+                .orElseThrow(() -> new RouteNotFoundException("Маршрут не найден"));
+
         if(route.getAvailableSeats() <= 0){
-            throw new RuntimeException("Нет свободных мест");
+            throw new NoAvailableSeatsException("Нет свободных мест");
         }
 
         route.setAvailableSeats(route.getAvailableSeats() - 1);

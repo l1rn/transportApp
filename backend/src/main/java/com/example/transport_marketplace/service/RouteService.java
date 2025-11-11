@@ -38,7 +38,6 @@ public class RouteService {
         Route route =  Route.builder()
                 .routeFrom(request.getRouteFrom())
                 .routeTo(request.getRouteTo())
-                .date(request.getDate())
                 .transport(request.getTransport())
                 .destinationTime(request.getDestinationTime())
                 .arrivalTime(request.getArrivalTime())
@@ -71,7 +70,6 @@ public class RouteService {
         if(route != null){
             route.setRouteFrom(request.getRouteFrom());
             route.setRouteTo(request.getRouteTo());
-            route.setDate(request.getDate());
             route.setTransport(request.getTransport());
             route.setAvailableSeats(request.getAvailableSeats());
             route.setArrivalTime(request.getArrivalTime());
@@ -85,19 +83,17 @@ public class RouteService {
 
     public List<Route> searchRoutes(String routeFrom,
                                     String routeTo,
-                                    String date,
                                     String transport,
                                     Double minPrice,
                                     Double maxPrice){
         if(routeFrom == null &&
                 routeTo == null &&
-                date == null &&
                 transport == null &&
                 minPrice == null &&
                 maxPrice == null) {
             return getRoutes();
         }
-        return routeRepository.searchRoutes(routeFrom, routeTo, date, transport, minPrice, maxPrice);
+        return routeRepository.searchRoutes(routeFrom, routeTo, transport, minPrice, maxPrice);
     }
 
     public SuggestionDTO findCitiesToByQuery(String query, int limit){

@@ -58,10 +58,24 @@
                 {{ route.transport }}
               </div>
               <div class="grid-cell">
-                {{ route.time }}
+                <div class="time-block">
+                  <div class="time">
+                    {{ route.destinationTime.split('T')[1] }}
+                  </div>
+                  <div class="date">
+                    {{ route.destinationTime.split('T')[0] }}
+                  </div>
+                </div>
               </div>
               <div class="grid-cell">
-                {{ route.arrivalTime }}
+                <div class="time-block">
+                  <div class="time">
+                    {{ route.arrivalTime.split('T')[1] }}
+                  </div>
+                  <div class="date">
+                    {{ route.arrivalTime.split('T')[0] }}
+                  </div>
+                </div>
               </div>
               <div class="grid-cell">
                 {{ route.availableSeats }}

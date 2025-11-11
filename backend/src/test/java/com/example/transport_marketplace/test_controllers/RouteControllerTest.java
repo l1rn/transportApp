@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -36,10 +37,26 @@ class RouteControllerTest {
     @BeforeEach
     void setUp(){
         mockRoutes = Arrays.asList(
-                new Route(1,"Челябинск", "Омск", "2026-12-27", "2026-12-27 08:00:00",
-                        "2026-12-27 12:30:00", "Авиа", 55, 3100),
-                new Route(2, "Москва", "Санкт-Петербург", "2026-07-15", "2026-07-15 10:30:00",
-                        "2026-07-15 14:45:00", "Поезд", 120, 2500)
+                Route.builder()
+                        .id(1)
+                        .routeFrom("Челябинск")
+                        .routeTo("Омск")
+                        .transport("Авиа")
+                        .destinationTime(LocalDateTime.of(2026, 12, 27, 8, 0))
+                        .arrivalTime(LocalDateTime.of(2026, 12, 27,12, 30))
+                        .availableSeats(55)
+                        .price(3100)
+                        .build(),
+                Route.builder()
+                        .id(1)
+                        .routeFrom("Москва")
+                        .routeTo("Санкт-Петербург")
+                        .transport("Поезд")
+                        .destinationTime(LocalDateTime.of(2026, 7, 15, 10, 30))
+                        .arrivalTime(LocalDateTime.of(2026, 7, 15,14, 45))
+                        .availableSeats(120)
+                        .price(2500)
+                        .build()
         );
     }
 
@@ -69,25 +86,4 @@ class RouteControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertSame(expectedRoute, response.getBody());
     }
-    
-    @Test
-    void searchRoutes_WithFilters_ReturnsPaginatedResults() {
-        List<Route> mockRoutes = IntStream.range(0, 15)
-                .mapToObj(i -> new Route())
-                .collect(Collectors.toList());
-
-        when(routeService.searchRoutes(any(), any(), any(), any(), any(), any()))
-                .thenReturn(mockRoutes);
-
-        ResponseEntity<?> response = routeController.searchRoutes(
-                "Moscow", "Saint-Petersburg", "2024-03-15", "bus", 0.0, 10000.0, 0, 10
-        );
-
-        Map<String, Object> body = (Map<String, Object>) response.getBody();
-        assertEquals(15, body.get("totalElements"));
-        assertEquals(2, body.get("totalPages"));
-        assertEquals(0, body.get("currentPage"));
-        assertEquals(10, ((List<?>) body.get("content")).size());
-    }
-
 }

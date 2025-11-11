@@ -20,23 +20,3 @@ export const getDateSource = (route, isArrival = false) => {
     return route.date;
     };
     
-export const formatDate = (dateString) => {
-    try {
-        const [month, day] = dateString.split('-');
-        return `${day}-${month}`;
-    } 
-    catch {
-        return '??-??';
-    }
-};
-    
-export const formatTime = (timeString) => {
-    try {
-    const timePart = timeString.includes(' ') 
-      ? timeString.split(' ')[1] 
-      : timeString;
-    return timePart.slice(0, 5);
-    } catch {
-    return '--:--';
-    }
-};

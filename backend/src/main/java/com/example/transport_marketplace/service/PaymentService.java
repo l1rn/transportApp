@@ -55,7 +55,7 @@ public class PaymentService {
                         booking.getRoute().getRouteFrom() + " -> " +
                         booking.getRoute().getRouteTo() + "; " +
                         booking.getRoute().getTransport() + "; Дата: " +
-                        booking.getRoute().getDate()
+                        booking.getRoute().getDestinationTime() + " - " + booking.getRoute().getArrivalTime()
                 )
                 .paymentMethods(Arrays.stream(PaymentMethod.values()).toList())
                 .price(booking.getRoute().getPrice())
@@ -193,7 +193,8 @@ public class PaymentService {
         Route route = payment.getBooking().getRoute();
         String routeInfo = route.getRouteFrom() + " - " +
                 route.getRouteTo() + "; " +
-                route.getDate() + "; " +
+                route.getDestinationTime() + "; " +
+                route.getArrivalTime() + ";" +
                 route.getTransport();
 
         PaymentSuccessEvent event = PaymentSuccessEvent.builder()

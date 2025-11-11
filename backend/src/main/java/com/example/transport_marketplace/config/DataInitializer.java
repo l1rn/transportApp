@@ -15,6 +15,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -82,9 +83,8 @@ public class DataInitializer {
         createRouteIfNotExists(
                 "Челябинск",
                 "Омск",
-                "2026-12-27",
-                "2026-12-27 08:00:00",
-                "2026-12-27 12:30:00",
+                LocalDateTime.of(2026, 12, 27, 9, 45),
+                LocalDateTime.of(2026, 12, 27, 12, 30),
                 "Авиа",
                 55,
                 3100
@@ -92,9 +92,8 @@ public class DataInitializer {
         createRouteIfNotExists(
                 "Москва",
                 "Санкт-Петербург",
-                "2026-07-15",
-                "2026-07-15 10:30:00",
-                "2026-07-15 14:45:00",
+                LocalDateTime.of(2026, 8, 1, 10, 30),
+                LocalDateTime.of(2026, 8, 1, 14, 45),
                 "Поезд",
                 120,
                 2500
@@ -102,23 +101,21 @@ public class DataInitializer {
         createRouteIfNotExists(
                 "Новосибирск",
                 "Красноярск",
-                "2026-08-01",
-                "2026-08-01 07:45:00",
-                "2026-08-01 10:15:00",
+                LocalDateTime.of(2026, 8, 1, 7, 45),
+                LocalDateTime.of(2026, 8, 1, 10, 15),
                 "Авиа",
                 40,
                 4200
         );
     }
 
-    private void createRouteIfNotExists(String from, String to, String date,
-                                        String destinationTime, String arrivalTime,
+    private void createRouteIfNotExists(String from, String to,
+                                        LocalDateTime destinationTime, LocalDateTime arrivalTime,
                                         String transport, int seats, double price) {
-        if (!routeRepository.existsByRouteFromAndRouteToAndDate(from, to, date)) {
+        if (!routeRepository.existsByRouteFromAndRouteToAndDestinationTime(from, to, destinationTime)) {
             Route route = Route.builder()
                     .routeFrom(from)
                     .routeTo(to)
-                    .date(date)
                     .destinationTime(destinationTime)
                     .arrivalTime(arrivalTime)
                     .transport(transport)
@@ -137,29 +134,29 @@ public class DataInitializer {
                 "demo_admin",
                 "Москва",
                 "Санкт-Петербург",
-                "2026-07-15"
+                LocalDateTime.of(2026, 8, 1, 10, 30)
         );
         createBookingIfNotExists(
                 "manager",
                 "Челябинск",
                 "Омск",
-                "2026-12-27"
+                LocalDateTime.of(2026, 12, 27, 9, 45)
         );
         createBookingIfNotExists(
                 "test_user",
                 "Новосибирск",
                 "Красноярск",
-                "2026-08-01"
+                LocalDateTime.of(2026, 8, 1, 7, 45)
         );
     }
 
     private void createBookingIfNotExists(String username, String from,
-                                          String to, String routeDate) {
+                                          String to, LocalDateTime destinationTime) {
         try {
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("User " + username + " not found"));
 
-            Route route = routeRepository.findByRouteFromAndRouteToAndDate(from, to, routeDate);
+            Route route = routeRepository.findByRouteFromAndRouteToAndDestinationTime(from, to, destinationTime);
 
             if (!bookingRepository.existsByUserAndRoute(user, route)) {
                 Booking booking = Booking.builder()

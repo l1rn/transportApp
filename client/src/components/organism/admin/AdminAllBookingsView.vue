@@ -28,20 +28,20 @@
             <div class="grid-cell">
               <div class="time-block">
                 <span class="time">
-                  {{ formatTime(booking.destinationTime) }}
+                  {{ booking.destinationTime.split('T')[1] }}
                 </span>
                 <span class="date">
-                  {{ formatDate(booking.destinationTime) }}
+                  {{ booking.destinationTime.split('T')[0] }}
                 </span>
               </div>
             </div>
             <div class="grid-cell">
               <div class="time-block">
                 <span class="time">
-                  {{ formatTime(booking.arrivalTime) }}
+                  {{ booking.arrivalTime.split('T')[1] }}
                 </span>
                 <span class="date">
-                  {{ formatDate(booking.arrivalTime) }}
+                  {{ booking.arrivalTime.split('T')[0] }}
                 </span>
               </div>
             </div>
@@ -92,10 +92,6 @@
 <script setup lang="ts">
 import { adminService } from "@/shared/services/adminService";
 import { onMounted, ref } from "vue";
-import {
-  formatDate,
-  formatTime,
-} from "@/shared/utils/formatTime";
 import { PaginatedResponse } from "@/shared/types/response";
 import { AdminGetAllBookings } from "@/shared/types/booking";
 import { useFormatUtils } from "@/shared/utils/formatUlils";

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -24,17 +25,14 @@ public class Route implements Serializable{
     @Column(name = "route_to", unique = false, nullable = false)
     private String routeTo;
 
-    @Column(name = "date", unique = false, nullable = false)
-    private String date;
-
     @Column(name = "transport", unique = false, nullable = false)
     private String transport;
 
     @Column(name = "destination_time", unique = false, nullable = false)
-    private String destinationTime;
+    private LocalDateTime destinationTime;
 
     @Column(name = "arrival_time", unique = false, nullable = false, updatable = true)
-    private String arrivalTime;
+    private LocalDateTime arrivalTime;
 
     @Column(name = "available_seats", unique = false, nullable = true)
     private int availableSeats;

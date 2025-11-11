@@ -36,7 +36,16 @@ class RouteService {
     
     // admin
     public async updateRoute(routeId: number, routeData: Route): Promise<AxiosResponse> {
-        return await api.put(`/routes/panel/update/${routeId}`, routeData);
+        return await api.put(`/routes/panel/update/${routeId}`, {
+            routeFrom: routeData.routeFrom,
+            routeTo: routeData.routeTo,
+            destinationTime: routeData.destinationTime,
+            arrivalTime: routeData.arrivalTime,
+            date: routeData.date,
+            transport: routeData.transport,
+            availableSeats: routeData.availableSeats,
+            price: routeData.price
+        });
     }
 }
 

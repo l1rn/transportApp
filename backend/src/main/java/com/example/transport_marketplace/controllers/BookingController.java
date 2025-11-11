@@ -5,6 +5,7 @@ import com.example.transport_marketplace.dto.booking.BookingsResponse;
 import com.example.transport_marketplace.dto.booking.CancelBookingRequest;
 import com.example.transport_marketplace.exceptions.booking.AccessDeniedException;
 import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
+import com.example.transport_marketplace.exceptions.routes.Exceptions.NoAvailableSeatsException;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.User;
@@ -55,7 +56,7 @@ public class BookingController {
     })
     @GetMapping("/my")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getMyBooking(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<?> getMyBookings(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
         try {
             List<BookingsResponse> bookings = bookingService.getBookingByUser(username);
@@ -102,6 +103,10 @@ public class BookingController {
         catch(RouteNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Route not found!");
+        }
+        catch (NoAvailableSeatsException e){
+            return ResponseEntity.status(HttpStatus.GONE)
+                    .body("Все места были заняты!");
         }
         catch (UsernameNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
