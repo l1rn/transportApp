@@ -73,15 +73,15 @@
 
 <script setup lang='ts'>
 import { paymentService } from '@/shared/services/paymentService';
-import { PaginatedPayment } from '@/shared/types/payment';
+import { PaymentData } from '@/shared/types/payment';
+import { PaginatedResponse } from '@/shared/types/response';
 import { useFormatUtils } from '@/shared/utils/formatUlils';
 import { onMounted, ref } from 'vue';
 
-const paymentsData = ref<PaginatedPayment | null>();
+const paymentsData = ref<PaginatedResponse<PaymentData> | null>();
 onMounted(async() => {
   const response = await paymentService.getMyPayments();
   paymentsData.value = response.data;
-  
 })
 
 const formatUtils = useFormatUtils();

@@ -141,14 +141,20 @@ public class PaymentController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/history")
     public ResponseEntity<?> getHistoryOfBooking(
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam Integer bookingId,
             Pageable pageable
     ) {
         try{
             return ResponseEntity.ok(paymentService.getHistoryByBookingId(
+                    userDetails.getUsername(),
                     bookingId,
                     pageable
             ));
+        }
+        catch(BookingDoesNotBelongUserException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
         }
         catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

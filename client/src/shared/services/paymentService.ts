@@ -1,9 +1,10 @@
 import { AxiosResponse } from "axios";
 import { api } from "./api";
-import { OrderInfoResponse, PaginatedPayment } from "../types/payment";
+import { OrderInfoResponse, PaymentData, PaymentHistoryResponse } from "../types/payment";
+import { PaginatedResponse } from "../types/response";
 
 class PaymentService{
-    public async getMyPayments(): Promise<AxiosResponse<PaginatedPayment>>{
+    public async getMyPayments(): Promise<AxiosResponse<PaginatedResponse<PaymentData>>>{
         return await api.get(`/payments/get-my?page=0&size=5`);
     }
 
@@ -25,9 +26,17 @@ class PaymentService{
             })
         }
     
-    public async cancelPayment(externalId: string | null): Promise<AxiosResponse>{
+    public async cancelPayment(externalId: string | null): Promise<AxiosResponse> {
         return await api.post(`/payments/cancel?externalId=${externalId}`);
     }
+
+    public async getPaymentHistoryByBookingId(
+        bookingId: number, 
+        page: number = 0, 
+        size: number = 10
+    ): Promise<AxiosResponse<PaginatedResponse<PaymentHistoryResponse>>> {
+        return await api.get(`/payments/history?bookingId=${bookingId}&page=${page}&size=${size}`);
+    } 
 }
 
 export const paymentService = new PaymentService();

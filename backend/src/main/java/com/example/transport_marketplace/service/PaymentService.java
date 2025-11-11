@@ -259,7 +259,13 @@ public class PaymentService {
         );
     }
 
-    public PaginatedResponse<PaymentResponse> getHistoryByBookingId(Integer bookingId, Pageable pageable) {
+    public PaginatedResponse<PaymentResponse> getHistoryByBookingId(String username, Integer bookingId, Pageable pageable) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Данный пользователь не был найден!"));
+        if(!bookingRepository.existsByUserIdAndId(user.getId(), bookingId)){
+            throw new BookingDoesNotBelongUserException("Этот букинг не принадлежит вам!");
+        }
+
         Page<Payment> payments = paymentRepository.findAllByBookingId(bookingId, pageable);
 
         List<PaymentResponse> content = payments.stream()

@@ -86,6 +86,7 @@
             Отменить
           </button>
           <button
+          @click="handlePaymentHistory(booking.id)"
           class="history-button">
             История
           </button>
@@ -99,8 +100,12 @@
 import { useProfilePage } from '@/composable/useProfilePage';
 import notification from '@/shared/plugins/notifications';
 import { bookingService } from '@/shared/services/bookingService';
+import { paymentService } from '@/shared/services/paymentService';
 import { BookingResponse } from '@/shared/types/booking';
+import { PaymentHistoryResponse } from '@/shared/types/payment';
+import { PaginatedResponse } from '@/shared/types/response';
 import { useFormatUtils } from '@/shared/utils/formatUlils';
+import { AxiosError } from 'axios';
 import { Ref } from 'vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -108,6 +113,9 @@ import { useRouter } from 'vue-router';
 const props = defineProps<{
   hasEmail: boolean;
 }>();
+
+const page = ref(0);
+const paymentHistory = ref<PaginatedResponse<PaymentHistoryResponse>>();
 
 const bookings: Ref<BookingResponse[]> = ref([]);
 const isLoading = ref(false);
@@ -141,6 +149,30 @@ const handlePayment = (id: number) => {
     },
   });
   window.open(routeData.href, '_blank');
+}
+
+
+const handleForward = () => {
+  if(!paymentHistory.value) return;
+  if(page.value >= paymentHistory.value?.totalPages - 1) return;
+  page.value++;
+}
+
+const handleBackward = () => {
+  if(!paymentHistory.value) return;
+  if(page.value <= 0) return;
+  page.value--;
+}
+
+const handlePaymentHistory = async(bookingId: number) => {
+  try{
+    const response = await paymentService.getPaymentHistoryByBookingId(bookingId);
+    paymentHistory.value = response.data;
+    console.log(paymentHistory.value);
+  }
+  catch(e){
+    const axiosError = e as AxiosError;
+  }
 }
 
 onMounted(async () => {

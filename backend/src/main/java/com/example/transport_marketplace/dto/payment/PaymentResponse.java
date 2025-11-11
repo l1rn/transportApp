@@ -21,8 +21,7 @@ public record PaymentResponse (
     String description,
     LocalDateTime createdAt,
     String username,
-    RouteResponseForPayment route
-
+    Integer routeId
 ) {
     public static PaymentResponse from(Payment payment){
         return new PaymentResponse(
@@ -33,7 +32,7 @@ public record PaymentResponse (
                 payment.getDescription(),
                 payment.getCreatedAt(),
                 payment.getUser().getUsername(),
-                RouteResponseForPayment.from(payment.getBooking().getRoute())
+                payment.getBooking().getRoute().getId()
         );
     }
 }
