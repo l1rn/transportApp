@@ -117,7 +117,7 @@ class ApiInterceptor {
     private async handleUnauthorizedError(originalRequest: CustomAxiosRequestConfig): Promise<AxiosResponse> {
         const currentRoute = router.currentRoute.value;
         if(currentRoute.meta.requiresAuth === false){
-            console.warn("Authentication failed but skipping redirect due to route meta:");
+            console.warn("Authentication failed but skipping redirect due to route meta");
             return Promise.reject("Unauthorized User!");
         } 
         originalRequest._retryCount = originalRequest._retryCount || 0;

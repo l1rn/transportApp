@@ -43,8 +43,7 @@ const routes = [
         path: '/home', 
         component: HomeView, 
         meta: { 
-            showHeaders: false,
-            requiresAuth: false
+            showHeaders: false
         }
     },
     {

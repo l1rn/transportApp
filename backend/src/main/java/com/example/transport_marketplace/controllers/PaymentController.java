@@ -2,6 +2,8 @@ package com.example.transport_marketplace.controllers;
 
 import com.example.transport_marketplace.dto.payment.ConfirmPaymentRequest;
 import com.example.transport_marketplace.enums.PaymentMethod;
+import com.example.transport_marketplace.exceptions.booking.BookingDoesNotBelongUserException;
+import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCanceledException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
@@ -35,7 +37,16 @@ public class PaymentController {
     ){
         try{
             return ResponseEntity.ok(paymentService.prepareOrder(userDetails.getUsername(), bookingId));
-        } catch (RuntimeException e) {
+        }
+        catch (BookingDoesNotBelongUserException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
+        catch (BookingNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Бронирование не было найдено по данному запросу!");
+        }
+        catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Internal server error: " + e.getMessage());
         }
@@ -128,7 +139,7 @@ public class PaymentController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/history/bookingId")
+    @GetMapping("/history")
     public ResponseEntity<?> getHistoryOfBooking(
             @RequestParam Integer bookingId,
             Pageable pageable

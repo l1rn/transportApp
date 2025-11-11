@@ -64,7 +64,7 @@ import InputSuggestionView from '@/components/atom/InputSuggestionView.vue';
 import notification from '@/shared/plugins/notifications';
 import { paymentService } from '@/shared/services/paymentService';
 import { useModalStore } from '@/shared/stores/useModalStore';
-import { AxiosError } from 'axios';
+import { AxiosError, HttpStatusCode } from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { OrderInfoResponse } from "@/shared/types/payment";
@@ -163,7 +163,13 @@ onMounted(async() => {
     }
     catch(e) {
         const axiosError = e as AxiosError;
-        if(axiosError.status === 403) {
+        if(axiosError.status === HttpStatusCode.NotFound || axiosError.status === HttpStatusCode.BadRequest){
+            checkAvailability(true);
+            notification.error("Этого букинга нету в вашем профиле!");
+            setView('my-payments');
+            return;
+        }
+        if(axiosError.status === HttpStatusCode.Forbidden) {
             notification.error("Для доступа на эту страницу, нужно авторизоваться");
             router.push("/home");
             return;

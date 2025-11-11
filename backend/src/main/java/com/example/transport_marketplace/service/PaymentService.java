@@ -10,6 +10,8 @@ import com.example.transport_marketplace.enums.PaymentMethod;
 import com.example.transport_marketplace.enums.PaymentStatus;
 import com.example.transport_marketplace.events.ConfirmationCodeEvent;
 import com.example.transport_marketplace.events.PaymentSuccessEvent;
+import com.example.transport_marketplace.exceptions.booking.BookingDoesNotBelongUserException;
+import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCanceledException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
@@ -48,7 +50,11 @@ public class PaymentService {
                 .orElseThrow(() -> new RuntimeException("User was not found by this token"));
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Не удалось найти заказ по данному id#" + bookingId));
+                .orElseThrow(() -> new BookingNotFoundException("Не удалось найти заказ по данному id#" + bookingId));
+
+        if(booking.getUser() != user){
+            throw new BookingDoesNotBelongUserException("Этот букинг не принадлежит этому юзеру!");
+        }
 
         return PreparationOrderResponse.builder()
                 .orderFullName(
