@@ -1,8 +1,8 @@
 <template>
+  <PaymentHistoryView v-if="isHistoryOpen" :payment-history="paymentHistory!" :page="page"
+    :is-history-open="isHistoryOpen" @close="handleModalClose" @forward="handleForward" @backward="handleBackward" />
   <div class="booking-wrapper">
-    <template 
-    v-for="booking in bookings" 
-    :key="booking.id">
+    <template v-for="booking in bookings" :key="booking.id">
       <div class="booking-container">
         <div class="header-container">
           <div class="first-section">
@@ -18,9 +18,7 @@
               </div>
             </span>
           </div>
-          <div 
-          class="second-section"
-          :class="{ 
+          <div class="second-section" :class="{
             'paid': booking.status === 'PAID',
             'pending': booking.status === 'PENDING',
             'canceled': booking.status === 'CANCELED'
@@ -74,20 +72,13 @@
         </div>
 
         <div class="button-container">
-          <button 
-          class="payment-button"
-          v-if="booking.status === 'PENDING'"
-          @click="handlePayment(booking.id)">
+          <button class="payment-button" v-if="booking.status === 'PENDING'" @click="handlePayment(booking.id)">
             Оплатить
           </button>
-          <button
-          v-if="booking.status === 'PENDING'"
-          class="cancel-button">
+          <button v-if="booking.status === 'PENDING'" class="cancel-button">
             Отменить
           </button>
-          <button
-          @click="handlePaymentHistory(booking.id)"
-          class="history-button">
+          <button @click.stop="handlePaymentHistory(booking.id)" class="history-button">
             История
           </button>
         </div>
@@ -106,15 +97,17 @@ import { PaymentHistoryResponse } from '@/shared/types/payment';
 import { PaginatedResponse } from '@/shared/types/response';
 import { useFormatUtils } from '@/shared/utils/formatUlils';
 import { AxiosError } from 'axios';
-import { Ref } from 'vue';
+import { Ref, watchEffect } from 'vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import PaymentHistoryView from './PaymentHistoryView.vue';
 
 const props = defineProps<{
   hasEmail: boolean;
 }>();
 
 const page = ref(0);
+const isHistoryOpen = ref(false);
 const paymentHistory = ref<PaginatedResponse<PaymentHistoryResponse>>();
 
 const bookings: Ref<BookingResponse[]> = ref([]);
@@ -137,7 +130,7 @@ const getBookings = async () => {
 };
 
 const handlePayment = (id: number) => {
-  if(props.hasEmail === false){
+  if (props.hasEmail === false) {
     notification.error("Сначало нужно привязать почту!");
     openForm("profile-page-settings");
     return;
@@ -153,24 +146,29 @@ const handlePayment = (id: number) => {
 
 
 const handleForward = () => {
-  if(!paymentHistory.value) return;
-  if(page.value >= paymentHistory.value?.totalPages - 1) return;
+  if (!paymentHistory.value) return;
+  if (page.value >= paymentHistory.value?.totalPages - 1) return;
   page.value++;
 }
 
 const handleBackward = () => {
-  if(!paymentHistory.value) return;
-  if(page.value <= 0) return;
+  if (!paymentHistory.value) return;
+  if (page.value <= 0) return;
   page.value--;
 }
 
-const handlePaymentHistory = async(bookingId: number) => {
-  try{
+const handleModalClose = () => {
+  isHistoryOpen.value = false;
+}
+
+const handlePaymentHistory = async (bookingId: number) => {
+  try {
     const response = await paymentService.getPaymentHistoryByBookingId(bookingId);
     paymentHistory.value = response.data;
+    isHistoryOpen.value = true;
     console.log(paymentHistory.value);
   }
-  catch(e){
+  catch (e) {
     const axiosError = e as AxiosError;
   }
 }
@@ -178,6 +176,17 @@ const handlePaymentHistory = async(bookingId: number) => {
 onMounted(async () => {
   await getBookings();
 });
+
+watchEffect(() => {
+  if (isHistoryOpen.value) {
+    document.body.style.overflow === 'hidden';
+    document.documentElement.style.overflowY = 'hidden';
+  }
+  else {
+    document.body.style.overflowY = "auto";
+    document.documentElement.style.overflowY = "auto";
+  }
+})
 </script>
 
 <style scoped lang="scss">
