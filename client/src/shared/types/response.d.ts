@@ -1,3 +1,4 @@
+
 export interface PaginatedResponse<T> {
     content: Array<T>;
     pageSize: number;

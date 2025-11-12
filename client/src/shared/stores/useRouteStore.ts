@@ -1,4 +1,4 @@
-import { PaginatedRoute, Route } from "@/shared/types/route";
+import { Route } from "@/shared/types/route";
 import { defineStore } from "pinia";
 import { ref, Ref } from "vue";
 import { PaginatedResponse } from "../types/response";

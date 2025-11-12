@@ -1,6 +1,6 @@
 import { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { api } from "./api";
-import { PaginatedRoute, Route, RouteFilter } from "@/shared/types/route";
+import { Route, RouteFilter } from "@/shared/types/route";
 import { PaginatedResponse } from "../types/response";
 
 class RouteService {

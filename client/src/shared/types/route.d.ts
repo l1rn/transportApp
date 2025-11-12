@@ -16,10 +16,3 @@ export interface RouteFilter {
   date?: string;
   transport?: string;
 }
-
-export interface PaginatedRoute {
-    totalPages: number;
-    contentPage: number;
-    content: Array<Route>;
-    totalElements: number;
-}
