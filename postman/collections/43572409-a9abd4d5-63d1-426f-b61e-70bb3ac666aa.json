@@ -128,6 +128,7 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "6f22ff1b-48ed-49a8-9d88-3cb30aaf2182",
 								"exec": [
 									"const response = pm.response.code\r",
 									"\r",
@@ -143,15 +144,19 @@
 								],
 								"type": "text/javascript",
 								"packages": {},
-								"id": "6f22ff1b-48ed-49a8-9d88-3cb30aaf2182"
+								"requests": {}
 							}
 						},
 						{
 							"listen": "prerequest",
 							"script": {
-								"exec": [],
+								"id": "503cf8eb-0468-46af-9635-a584c69f438f",
+								"exec": [
+									""
+								],
 								"type": "text/javascript",
-								"id": "503cf8eb-0468-46af-9635-a584c69f438f"
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -172,9 +177,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/profile/bookings/my/cancel",
+							"raw": "{{host}}/profile/bookings/my/cancel",
 							"host": [
-								"{{baseURL}}"
+								"{{host}}"
 							],
 							"path": [
 								"profile",
