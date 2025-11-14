@@ -63,7 +63,7 @@ jobs:
       
       - name: Run User interaction API tests
         run: |
-          postman collection run "43572409-74e0a3ba-6468-464e-91fa-bb5d24343ce0 -i 43572409-ffa8c082-f8ae-4446-a720-7fd286a8d211"
+          postman collection run "43572409-74e0a3ba-6468-464e-91fa-bb5d24343ce0"
           
       - name: Run Booking API tests
         run: |
