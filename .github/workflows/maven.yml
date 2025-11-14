@@ -59,19 +59,15 @@ jobs:
     
       - name: Run Routes API tests
         run: |
-          postman collection run "43572409-a9abd4d5-63d1-426f-b61e-70bb3ac666aa"
+          postman collection run "43572409-440e5bcd-73d9-406b-a466-0f97cb34e92a"
       
       - name: Run User interaction API tests
         run: |
-          postman collection run "43572409-440e5bcd-73d9-406b-a466-0f97cb34e92a"
+          postman collection run "43572409-74e0a3ba-6468-464e-91fa-bb5d24343ce0 -i 43572409-ffa8c082-f8ae-4446-a720-7fd286a8d211"
           
       - name: Run Booking API tests
         run: |
-          postman collection run "42372019-1cd358b1-2029-4cd4-a91d-0595d1d9c644"
-
-      - name: Run Sessions API tests
-        run: |
-          postman collection run "42372019-282a7c4c-4440-4459-a335-6cb4d38f3f7d"
+          postman collection run "43572409-a9abd4d5-63d1-426f-b61e-70bb3ac666aa"
 
       - name: Run k6 tests with 10 vus
         uses: grafana/k6-action@v0.3.0
