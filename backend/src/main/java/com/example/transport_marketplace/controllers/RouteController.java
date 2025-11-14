@@ -101,10 +101,16 @@ public class RouteController {
     @Operation(summary = "Удаление маршрута")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/panel/delete/{id}")
-    public ResponseEntity<Void> deleteRoute(@PathVariable int id){
-        boolean deleted = routeService.deleteRoute(id);
-        return deleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                        : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> deleteRoute(@PathVariable int id){
+        try{
+            routeService.deleteRoute(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("Маршрут#" + id + " был успешно удален");
+        }
+        catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Не удалось удалить маршрут: " + e.getMessage());
+        }
     }
 
     @Operation(summary = "Обновление маршрута")

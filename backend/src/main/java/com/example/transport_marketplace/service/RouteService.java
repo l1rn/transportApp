@@ -53,13 +53,8 @@ public class RouteService {
                     @CacheEvict(value = "routes", allEntries = true)
             }
     )
-    public boolean deleteRoute(int id){
-        Optional<Route> route = routeRepository.findById(id);
-        if(route.isPresent()){
-            routeRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteRoute(int id){
+        routeRepository.deleteById(id);
     }
 
     @Transactional
