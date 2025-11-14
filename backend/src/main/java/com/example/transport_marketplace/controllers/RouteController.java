@@ -107,6 +107,10 @@ public class RouteController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
                     .body("Маршрут#" + id + " был успешно удален");
         }
+        catch (RouteNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
         catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Не удалось удалить маршрут: " + e.getMessage());

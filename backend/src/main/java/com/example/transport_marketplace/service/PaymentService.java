@@ -70,7 +70,7 @@ public class PaymentService {
                 .build();
     }
 
-    public String createPayment(String username, Integer bookingId, PaymentMethod method) {
+    public UUID createPayment(String username, Integer bookingId, PaymentMethod method) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Данный пользователь не был найден"));
 
@@ -96,7 +96,7 @@ public class PaymentService {
             Payment pendingPayment = existingPendingPayment.get();
 
             if(pendingPayment.getCodeExpiresAt().isAfter(LocalDateTime.now())){
-                return pendingPayment.getExternalId().toString();
+                return pendingPayment.getExternalId();
             }
 
             else{
@@ -109,20 +109,17 @@ public class PaymentService {
 
                 sendConfirmationCode(user, storedCode, pendingPayment);
                 sendConfirmationCode(user, storedCode, pendingPayment);
-                return pendingPayment.getExternalId().toString();
+                return pendingPayment.getExternalId();
             }
         }
 
         String storedCode = CodeGenerator.generateCode();
         LocalDateTime codeExpiration = CodeGenerator.generateExpiryTime();
 
-        UUID uuid = UUID.randomUUID();
-
         Payment payment = Payment.builder()
                 .amount(booking.getRoute().getPrice())
                 .paymentStatus(PaymentStatus.PENDING)
                 .paymentMethod(method)
-                .externalId(uuid)
                 .description("Оплата бронирования #" + booking.getId()
                         + " ("  + booking.getRoute().getRouteFrom() + " - " + booking.getRoute().getRouteTo() + ")")
                 .confirmationCode(storedCode)
@@ -134,7 +131,7 @@ public class PaymentService {
         paymentRepository.save(payment);
 
         sendConfirmationCode(user, storedCode, payment);
-        return uuid.toString();
+        return payment.getExternalId();
     }
 
     public void sendConfirmationCode(User user, String code, Payment payment){

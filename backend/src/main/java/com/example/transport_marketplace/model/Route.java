@@ -35,8 +35,8 @@ public class Route implements Serializable{
     private LocalDateTime arrivalTime;
 
     @Column(name = "available_seats", unique = false, nullable = true)
-    private int availableSeats;
+    private Integer availableSeats;
 
     @Column(name = "price", unique = false, nullable = false, updatable = true)
-    private double price;
+    private Double price;
 }

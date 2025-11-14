@@ -18,7 +18,7 @@ class RouteTest {
                 .destinationTime(LocalDateTime.of(2026, 10, 24, 20, 20))
                 .arrivalTime(LocalDateTime.of(2026, 10, 24, 22, 20))
                 .availableSeats(50)
-                .price(1000)
+                .price(1000.00)
                 .build();
 
         assertEquals(1, route.getId());
@@ -28,7 +28,7 @@ class RouteTest {
         assertEquals(LocalDateTime.of(2026, 10, 24, 20, 20), route.getDestinationTime());
         assertEquals(LocalDateTime.of(2026, 10, 24, 22, 20), route.getArrivalTime());
         assertEquals(50, route.getAvailableSeats());
-        assertEquals(1000.50, route.getPrice());
+        assertEquals(1000.00, route.getPrice());
     }
 
     @Test

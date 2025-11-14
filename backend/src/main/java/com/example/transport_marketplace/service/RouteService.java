@@ -53,7 +53,10 @@ public class RouteService {
                     @CacheEvict(value = "routes", allEntries = true)
             }
     )
-    public void deleteRoute(int id){
+    public void deleteRoute(Integer id){
+        if(routeRepository.findById(id) == null){
+            throw new RouteNotFoundException("Не удалось найти маршрут с id#" + id);
+        }
         routeRepository.deleteById(id);
     }
 

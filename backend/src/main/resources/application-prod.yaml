@@ -20,20 +20,28 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+      format-sql: true
 
   datasource:
     url: jdbc:postgresql://localhost:5432/transport_db
     driverClassName: org.postgresql.Driver
     username: postgres # ${DB_USERNAME}
     password: 123 # ${DB_PASSWORD}
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hikari:
       minimum-idle: 1
       maximum-pool-size: 5
 
-  sql:
-    init:
-      mode: always
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    validate-on-migrate: true
+    baseline-on-migrate: true
+
+#  sql:
+#    init:
+#      mode: always
 #      data-locations: classpath:data.sql
   cache:
     type: redis

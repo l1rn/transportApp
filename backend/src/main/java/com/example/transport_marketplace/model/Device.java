@@ -15,14 +15,21 @@ import java.io.Serializable;
 @Table(
         name = "devices",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = { "device_fingerprint, user_id"})
+                @UniqueConstraint(
+                        name = "uk_device_user",
+                        columnNames = { "device_fingerprint", "user_id"}
+                )
         }
 )
 public class Device implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "device_fingerprint")
     private String deviceFingerprint;
+
+    @Column(name = "user_agent")
     private String userAgent;
 
     @ManyToOne

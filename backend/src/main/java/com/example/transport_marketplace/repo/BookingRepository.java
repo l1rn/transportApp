@@ -30,6 +30,5 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Transactional
     @Query("DELETE FROM Booking b WHERE b.status = :status")
     void deleteByStatus(@Param("status") BookingStatus status);
-
-        boolean existsByUserIdAndId(Integer userId, Integer bookingId);
+    boolean existsByUserIdAndId(Integer userId, Integer bookingId);
 }

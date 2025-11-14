@@ -22,18 +22,27 @@ public class Payment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "external_id")
     private UUID externalId;
-    private double amount;
 
+    @Column(name = "amount")
+    private Double amount;
+
+    @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
+    @Column(name = "payment_status")
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "confirmation_code")
     private String confirmationCode;
+
+    @Column(name = "code_expires_at")
     private LocalDateTime codeExpiresAt;
 
     @Column(name = "created_at")
@@ -50,6 +59,9 @@ public class Payment implements Serializable {
 
     @PrePersist
     protected void onCreate(){
+        if (externalId == null) {
+            externalId = UUID.randomUUID();
+        }
         createdAt = LocalDateTime.now();
     }
 }

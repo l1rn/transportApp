@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,9 @@ public class Booking implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "created_at", nullable = true)
+    private LocalDateTime createdAt;
+
     @JsonBackReference
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
@@ -45,5 +49,10 @@ public class Booking implements Serializable {
         return payments.stream()
                 .filter(p -> p.getPaymentStatus() == PaymentStatus.SUCCEEDED)
                 .findFirst();
+    }
+
+    @PrePersist
+    private void onCreate() {
+        createdAt = LocalDateTime.now();
     }
 }
