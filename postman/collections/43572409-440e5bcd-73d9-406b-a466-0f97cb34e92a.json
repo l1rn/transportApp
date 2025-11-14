@@ -306,7 +306,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"routeFrom\": \"Челябинск\",\n    \"routeTo\": \"Омск\",\n    \"transport\": \"Авиа\",\n    \"destinationTime\": \"2025-12-22 04:00:00\",\n    \"arrivalTime\": \"2026-12-27 8:30:00\",\n    \"availableSeats\": 100,\n    \"price\": 5555.0\n}",
+					"raw": "{\n    \"routeFrom\": \"Челябинск\",\n    \"routeTo\": \"Омск\",\n    \"transport\": \"Авиа\",\n    \"destinationTime\": \"2025-12-22T04:00:00\",\n    \"arrivalTime\": \"2026-12-27T8:30:00\",\n    \"availableSeats\": 100,\n    \"price\": 5555.0\n}",
 					"options": {
 						"raw": {
 							"language": "json"
