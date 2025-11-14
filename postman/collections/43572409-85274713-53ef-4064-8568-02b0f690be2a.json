@@ -1,0 +1,423 @@
+{
+	"info": {
+		"_postman_id": "43572409-85274713-53ef-4064-8568-02b0f690be2a",
+		"name": "Authentication Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "59ade007-415a-4fbf-a2f3-b5851d6784fd",
+						"exec": [
+							"pm.test(\"Status 201\", () => pm.response.to.have.status(201))"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4364eddc-10be-484a-bc13-591e693e3b8a",
+						"exec": [
+							"function randomString(lenght){",
+							"    const chars = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890-+'",
+							"    let result = ''",
+							"    for(let i = 0; i < lenght; i++){",
+							"        result += chars.charAt(Math.floor(Math.random() * chars.length))",
+							"    }",
+							"    return result",
+							"}",
+							"",
+							"const username = randomString(10)",
+							"const password = randomString(10)",
+							"",
+							"pm.collectionVariables.set(\"username\", username)",
+							"pm.collectionVariables.set(\"password\", password)",
+							"",
+							"console.log(\"user - \", username)",
+							"console.log(\"pwd - \", password)"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "43572409-b8ec0cf3-a7dd-420f-aaa5-61798b4a2187",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/sign-up",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"sign-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "715e3b98-5205-45ec-ad54-ff59ea755f67",
+						"exec": [
+							"pm.test(\"Status 200\", () => pm.response.to.have.status(200))"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ce429fb1-5ae1-49a4-b637-03db3ba4c4f1",
+						"exec": [
+							"const username = pm.collectionVariables.get(\"username\")",
+							"const password = pm.collectionVariables.get(\"password\")",
+							"",
+							"pm.request.body.raw = JSON.stringify({",
+							"    username: username,",
+							"    password: password",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "43572409-33f8eee6-1d91-4e85-b65b-5b4e42d6a2fa",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/sign-in",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check authorization",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check auth - success\", () => pm.response.to.have.status(200))"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"id": "6ebfbb5b-913b-404a-8983-e6bd8c5cd205"
+					}
+				}
+			],
+			"id": "43572409-5834312d-9a4d-4014-b143-636d4531b7cd",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/auth/check",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh token",
+			"id": "43572409-a61c0067-5141-4c22-8aeb-463cd2b07446",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/auth/refresh",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"password\", pm.collectionVariables.get(\"newPassword\"))"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"id": "9a206c44-ba97-4bc4-9cc3-429d70d48efa"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const newPassword = \"newPassword\";",
+							"pm.collectionVariables.set(\"newPassword\", newPassword)"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"id": "f898ef32-9c11-4e5d-905e-cfa03bd554ee"
+					}
+				}
+			],
+			"id": "43572409-cb50a399-1f25-4168-b5f4-6e7ad0b7c7e1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldPassword\": \"{{password}}\",\r\n    \"newPassword\": \"{{newPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/change/password",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"change",
+						"password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get device ID from context",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"id": "1e64a63a-3d92-4dec-9848-850a1fe2770e"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check device now - success\", () => pm.response.to.have.status(200))",
+							"pm.collectionVariables.set(\"deviceId\", pm.response.json().deviceId)",
+							"console.log(pm.response.json().deviceId)"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"id": "ddef74fc-9f69-436f-bcf9-b592a19d14d7"
+					}
+				}
+			],
+			"id": "43572409-54474c70-4101-4db9-a304-f32003f8c6b3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/auth/session/now",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"session",
+						"now"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete session",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"id": "b6238831-8615-4e16-ac50-db2ec79d1f7b"
+					}
+				}
+			],
+			"id": "43572409-1a32dda8-43e9-4e99-b8ce-6a690003ebce",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/auth/session/delete/{{deviceId}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"session",
+						"delete",
+						"{{deviceId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log out",
+			"id": "43572409-f1cc7c7a-05a0-4f84-b2f2-c30024a74e28",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/auth/logout",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				],
+				"id": "9e58ad5f-6b19-4f44-b32c-5fcfff1d2036"
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				],
+				"id": "d5bc1847-d86e-4cff-b552-2deb6df559a3"
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "username",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "baseURL",
+			"value": "localhost:8080/api",
+			"type": "string"
+		},
+		{
+			"key": "newPassword",
+			"value": ""
+		},
+		{
+			"key": "deviceId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
