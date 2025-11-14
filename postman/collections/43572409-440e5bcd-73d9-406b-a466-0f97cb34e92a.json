@@ -134,7 +134,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/routes/search?routeFrom=Челябинск&transport=Авиа&page=&size=5",
+					"raw": "{{host}}/routes/search?routeFrom=Челябинск&transport=Авиа&page=0&size=5",
 					"host": [
 						"{{host}}"
 					],
@@ -153,7 +153,7 @@
 						},
 						{
 							"key": "page",
-							"value": ""
+							"value": "0"
 						},
 						{
 							"key": "size",
