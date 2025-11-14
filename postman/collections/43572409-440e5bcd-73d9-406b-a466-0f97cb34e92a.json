@@ -134,7 +134,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/routes/search?routeFrom=Москва&transport=Автобус&page=3&size=5",
+					"raw": "{{host}}/routes/search?routeFrom=Челябинск&transport=Авиа&page=&size=5",
 					"host": [
 						"{{host}}"
 					],
@@ -145,15 +145,15 @@
 					"query": [
 						{
 							"key": "routeFrom",
-							"value": "Москва"
+							"value": "Челябинск"
 						},
 						{
 							"key": "transport",
-							"value": "Автобус"
+							"value": "Авиа"
 						},
 						{
 							"key": "page",
-							"value": "3"
+							"value": ""
 						},
 						{
 							"key": "size",
