@@ -56,20 +56,25 @@
 				{
 					"listen": "test",
 					"script": {
+						"id": "049195f7-48df-4bf6-83e7-db108018fc09",
 						"exec": [
 							"pm.test(\"Get route by ID - success\", () => pm.response.to.have.status(200))"
 						],
 						"type": "text/javascript",
 						"packages": {},
-						"id": "049195f7-48df-4bf6-83e7-db108018fc09"
+						"requests": {}
 					}
 				},
 				{
 					"listen": "prerequest",
 					"script": {
-						"exec": [],
+						"id": "69610bf8-3799-489c-a408-a048e5949b21",
+						"exec": [
+							""
+						],
 						"type": "text/javascript",
-						"id": "69610bf8-3799-489c-a408-a048e5949b21"
+						"packages": {},
+						"requests": {}
 					}
 				}
 			],
@@ -81,13 +86,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/routes/5",
+					"raw": "{{host}}/routes/3",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"routes",
-						"5"
+						"3"
 					]
 				}
 			},
