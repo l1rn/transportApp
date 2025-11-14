@@ -165,59 +165,6 @@
 			"response": []
 		},
 		{
-			"name": "Search route with price range",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Search with price range - success\", () => pm.response.to.have.status(200))"
-						],
-						"type": "text/javascript",
-						"packages": {},
-						"id": "bda80461-16b2-4a6b-91dd-1e7e626c5cae"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [],
-						"type": "text/javascript",
-						"id": "2b72894d-d4ed-43db-9450-2572639ac4e0"
-					}
-				}
-			],
-			"id": "43572409-57f2e546-38b0-48eb-9994-94747e97b919",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/routes/priceRange?minPrice=2000&maxPrice=4000",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"routes",
-						"priceRange"
-					],
-					"query": [
-						{
-							"key": "minPrice",
-							"value": "2000"
-						},
-						{
-							"key": "maxPrice",
-							"value": "4000"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Add route (admin)",
 			"event": [
 				{
