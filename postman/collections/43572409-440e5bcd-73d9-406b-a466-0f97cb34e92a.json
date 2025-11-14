@@ -226,7 +226,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"routeFrom\": \"11\",\r\n    \"routeTo\": \"11\",\r\n    \"destinationTime\": \"2025-03-30 14:54:00\",\r\n    \"arrivalTime\": \"2025-04-04 19:54:00\",\r\n    \"transport\": \"Поезд\",\r\n    \"availableSeats\": 231,\r\n    \"price\": 123213\r\n}",
+					"raw": "{\r\n    \"routeFrom\": \"11\",\r\n    \"routeTo\": \"11\",\r\n    \"destinationTime\": \"2025-03-30T14:54:00\",\r\n    \"arrivalTime\": \"2025-04-04T19:54:00\",\r\n    \"transport\": \"Поезд\",\r\n    \"availableSeats\": 231,\r\n    \"price\": 123213\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -314,7 +314,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/routes/panel/update/4",
+					"raw": "{{host}}/routes/panel/update/1",
 					"host": [
 						"{{host}}"
 					],
@@ -322,7 +322,7 @@
 						"routes",
 						"panel",
 						"update",
-						"4"
+						"1"
 					]
 				}
 			},
