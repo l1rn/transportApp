@@ -55,15 +55,15 @@ jobs:
 
       - name: Run Authentication API tests
         run: |
-          postman collection run "42372019-1cd358b1-2029-4cd4-a91d-0595d1d9c644"
+          postman collection run "43572409-85274713-53ef-4064-8568-02b0f690be2a"
     
       - name: Run Routes API tests
         run: |
-          postman collection run "42372019-afef468b-f654-47e2-8789-27f9dc54a074"
+          postman collection run "43572409-a9abd4d5-63d1-426f-b61e-70bb3ac666aa"
       
       - name: Run User interaction API tests
         run: |
-          postman collection run "42372019-73fbe162-beb0-4c27-b64b-6cc67d706cc9"
+          postman collection run "43572409-440e5bcd-73d9-406b-a466-0f97cb34e92a"
           
       - name: Run Booking API tests
         run: |

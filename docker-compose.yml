@@ -1,5 +1,21 @@
 
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports: 
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - transport-network
+
+  mailhog: 
+    image: mailhog/mailhog
+    ports: 
+      - 8025:8025
+      - 1025:1025
+    networks:
+    - transport-network
+
   redis: 
     image: redis:alpine
     ports:
@@ -11,6 +27,27 @@ services:
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
+      timeout: 3s
+      retries: 3
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: transport_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - transport-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   backend:
     build:
       context: ./backend
@@ -22,8 +59,11 @@ services:
       - ACCESS_TOKEN_EXP=600000
       - JWT_SIGNING_KEY=4ca9f2b1d0481c33acb8dcbeaf08a6d1aba6cc2e0a24401493365361308677998b291cda035f59e1587fa3b847e477b4e9baf200e9a748856845c3f65c71db98
       - REFRESH_TOKEN_EXP=604800000
-      - DB_USERNAME=root
-      - DB_PASSWORD=root
+      - DB_USERNAME=postrgres
+      - DB_PASSWORD=123
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_name=transport_db
     ports:
       - "8080:8080"
     volumes:
@@ -31,7 +71,11 @@ services:
     networks:
       - transport-network
     depends_on:
+      rabbitmq:
+        condition: service_started
       redis:
+        condition: service_healthy
+      postgres:
         condition: service_healthy
 
   frontend:
@@ -46,6 +90,7 @@ services:
 volumes:
   h2_data:
   redis_data:
+  postgres_data:
 
 networks:
   transport-network:
