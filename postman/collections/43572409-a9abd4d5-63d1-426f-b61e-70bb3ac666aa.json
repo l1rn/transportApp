@@ -297,7 +297,7 @@
 					"response": []
 				},
 				{
-					"name": "Cancel booking trat already cancelled by Admin",
+					"name": "Cancel booking that already cancelled by Admin",
 					"event": [
 						{
 							"listen": "test",
