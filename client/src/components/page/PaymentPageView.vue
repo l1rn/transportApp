@@ -17,7 +17,7 @@ import MyPaymentsView from '../organism/payment/MyPaymentsView.vue';
 import { usePaymentNavigationProvider } from '@/composable/usePaymentNavigation';
 import PromocodesView from '../organism/payment/PromocodesView.vue';
 
-const { currentView, setView } = usePaymentNavigationProvider();
+const { currentView } = usePaymentNavigationProvider();
 </script>
 <style scoped lang="scss">
 @use "../../assets/styles/static/mixin" as mixins;

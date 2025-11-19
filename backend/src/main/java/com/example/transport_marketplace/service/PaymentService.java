@@ -16,6 +16,7 @@ import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCancel
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
 import com.example.transport_marketplace.exceptions.routes.Exceptions.BadRequestException;
+import com.example.transport_marketplace.exceptions.user.UserHasNoEmailException;
 import com.example.transport_marketplace.model.*;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.repo.PaymentRepository;
@@ -71,16 +72,30 @@ public class PaymentService {
     }
 
     public UUID createPayment(String username, Integer bookingId, PaymentMethod method) {
+        User user = getUserOfThrowError(username);
+        Booking booking = getBookingOrThrowError(bookingId);
+
+        validatePaymentEligibility(bookingId);
+
+        return handlePendingPaymentOrCreateNew(user, booking, method);
+    }
+
+    private User getUserOfThrowError(String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Данный пользователь не был найден"));
 
         if(user.getEmail() == null){
-            throw new RuntimeException("Email не был привязан!");
+            throw new UserHasNoEmailException("Email не был привязан!");
         }
+        return user;
+    }
 
-        Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking was not found by this id"));
+    private Booking getBookingOrThrowError(Integer bookingId) {
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException("Booking was not found by this id"));
+    }
 
+    private void validatePaymentEligibility(Integer bookingId){
         if(paymentRepository.findByBookingIdAndPaymentStatus(bookingId, PaymentStatus.CANCELLED).isPresent()){
             throw new PaymentAlreadyCanceledException("Этот платеж был уже отменен!");
         }
@@ -88,31 +103,37 @@ public class PaymentService {
         if(paymentRepository.findByBookingIdAndPaymentStatus(bookingId, PaymentStatus.FAILED).isPresent()){
             throw new PaymentAlreadyFailedException("Этот платеж столкнулся с проблемой!");
         }
+    }
 
-        Optional<Payment> existingPendingPayment = paymentRepository
-                .findByBookingIdAndPaymentStatus(bookingId, PaymentStatus.PENDING);
+    private UUID handlePendingPaymentOrCreateNew(User user, Booking booking, PaymentMethod method){
+        Optional<Payment> pendingOpt = paymentRepository
+                .findByBookingIdAndPaymentStatus(booking.getId(), PaymentStatus.PENDING);
 
-        if(existingPendingPayment.isPresent()){
-            Payment pendingPayment = existingPendingPayment.get();
-
-            if(pendingPayment.getCodeExpiresAt().isAfter(LocalDateTime.now())){
-                return pendingPayment.getExternalId();
-            }
-
-            else{
-                String storedCode = CodeGenerator.generateCode();
-                LocalDateTime codeExpiration = CodeGenerator.generateExpiryTime();
-
-                pendingPayment.setConfirmationCode(storedCode);
-                pendingPayment.setCodeExpiresAt(codeExpiration);
-                paymentRepository.save(pendingPayment);
-
-                sendConfirmationCode(user, storedCode, pendingPayment);
-                sendConfirmationCode(user, storedCode, pendingPayment);
-                return pendingPayment.getExternalId();
-            }
+        if(pendingOpt.isPresent()){
+            return handleExistingPendingPayment(pendingOpt.get(), user);
         }
 
+        return createNewPayment(user, booking, method).getExternalId();
+    }
+
+    private UUID handleExistingPendingPayment(Payment payment, User user) {
+        if (payment.getCodeExpiresAt().isAfter(LocalDateTime.now())) {
+            return payment.getExternalId();
+        }
+
+        String newCode = CodeGenerator.generateCode();
+        LocalDateTime newExpiry = CodeGenerator.generateExpiryTime();
+
+        payment.setConfirmationCode(newCode);
+        payment.setCodeExpiresAt(newExpiry);
+
+        paymentRepository.save(payment);
+        sendConfirmationCode(user, newCode, payment);
+
+        return payment.getExternalId();
+    }
+
+    private Payment createNewPayment(User user, Booking booking, PaymentMethod method){
         String storedCode = CodeGenerator.generateCode();
         LocalDateTime codeExpiration = CodeGenerator.generateExpiryTime();
 
@@ -129,9 +150,8 @@ public class PaymentService {
                 .build();
 
         paymentRepository.save(payment);
-
         sendConfirmationCode(user, storedCode, payment);
-        return payment.getExternalId();
+        return payment;
     }
 
     public void sendConfirmationCode(User user, String code, Payment payment){
@@ -156,6 +176,8 @@ public class PaymentService {
             log.error("Failed to send confirmation code to user {}", user.getEmail(), e);
         }
     }
+
+
 
     @Transactional
     public void confirmPayment(String username, ConfirmPaymentRequest request){

@@ -12,11 +12,11 @@
           :has-email="userInfo?.email !== null" 
         />  
       </template>
-      <template v-if="modalStore.isOpen('profile-page-settings')">
+      <template v-else-if="modalStore.isOpen('profile-page-settings')">
           <UserSettingsControlView 
           :user-info="userInfo" />
         </template>
-      <template v-if="modalStore.isOpen('profile-page-admin-panel')">
+      <template v-else-if="modalStore.isOpen('profile-page-admin-panel')">
         <AdminPanelView />
       </template>
     </div>

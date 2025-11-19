@@ -70,8 +70,6 @@ import { useRoute, useRouter } from 'vue-router';
 import { OrderInfoResponse } from "@/shared/types/payment";
 import { usePaymentNavigation } from "@/composable/usePaymentNavigation";
 
-const modalStore = useModalStore();
-
 const route = useRoute();
 const router = useRouter();
 
@@ -95,7 +93,6 @@ const createPayment = async () => {
             paymentMethod.value
         );
         notification.success('Ваша заявка была создана! Код был отправлен вам на почту')
-        localStorage.setItem('externalId', response.data);
         isCodeSent.value = true;
     }
     catch (e) {
@@ -142,6 +139,12 @@ const cancelPayment = async() => {
     }
 }
 
+const handleAxiosError = (e: unknown, defaultMsg: string) => {
+    const axiosError = e as AxiosError;
+    console.error(axiosError);
+
+}
+
 const { setView, checkAvailability } = usePaymentNavigation();
 
 onMounted(async() => {
@@ -153,10 +156,7 @@ onMounted(async() => {
         }
         const info = await paymentService.getOrderInfo(Number(bookingId));
         if(info.data.paid) {
-            checkAvailability(info.data.paid);
-            notification.success("Вы уже оплатили этот платеж!");
-            setView('my-payments');
-            return;
+            window.close();
         }
         orderData.value = info.data;
         paymentMethods.value = info.data.paymentMethods;

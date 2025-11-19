@@ -7,6 +7,7 @@ import com.example.transport_marketplace.exceptions.booking.BookingNotFoundExcep
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCanceledException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
+import com.example.transport_marketplace.exceptions.user.UserHasNoEmailException;
 import com.example.transport_marketplace.service.PaymentService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,6 +63,14 @@ public class PaymentController {
         try {
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(paymentService.createPayment(userDetails.getUsername(), bookingId, paymentMethod));
+        }
+        catch (BookingNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+        catch (UserHasNoEmailException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
         }
         catch(PaymentAlreadyCanceledException e){
             return ResponseEntity.status(HttpStatus.GONE)
