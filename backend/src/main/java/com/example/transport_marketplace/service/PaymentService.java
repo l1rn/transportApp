@@ -15,12 +15,13 @@ import com.example.transport_marketplace.exceptions.booking.BookingNotFoundExcep
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCanceledException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
-import com.example.transport_marketplace.exceptions.routes.Exceptions.BadRequestException;
+import com.example.transport_marketplace.exceptions.routes.BadRequestException;
 import com.example.transport_marketplace.exceptions.user.UserHasNoEmailException;
 import com.example.transport_marketplace.model.*;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.repo.PaymentRepository;
 import com.example.transport_marketplace.repo.UserRepository;
+import com.example.transport_marketplace.service.validators.PaymentValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -45,6 +46,8 @@ public class PaymentService {
     private final UserRepository userRepository;
     @Autowired
     private final BookingRepository bookingRepository;
+    @Autowired
+    private final PaymentValidator paymentValidator;
 
     public PreparationOrderResponse prepareOrder(String username, Integer bookingId){
         User user = userRepository.findByUsername(username)
@@ -72,37 +75,12 @@ public class PaymentService {
     }
 
     public UUID createPayment(String username, Integer bookingId, PaymentMethod method) {
-        User user = getUserOfThrowError(username);
-        Booking booking = getBookingOrThrowError(bookingId);
-
-        validatePaymentEligibility(bookingId);
-
-        return handlePendingPaymentOrCreateNew(user, booking, method);
-    }
-
-    private User getUserOfThrowError(String username){
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Данный пользователь не был найден"));
-
-        if(user.getEmail() == null){
-            throw new UserHasNoEmailException("Email не был привязан!");
-        }
-        return user;
-    }
-
-    private Booking getBookingOrThrowError(Integer bookingId) {
-        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Не удалось найти пользователя"));
+        Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking was not found by this id"));
-    }
-
-    private void validatePaymentEligibility(Integer bookingId){
-        if(paymentRepository.findByBookingIdAndPaymentStatus(bookingId, PaymentStatus.CANCELLED).isPresent()){
-            throw new PaymentAlreadyCanceledException("Этот платеж был уже отменен!");
-        }
-
-        if(paymentRepository.findByBookingIdAndPaymentStatus(bookingId, PaymentStatus.FAILED).isPresent()){
-            throw new PaymentAlreadyFailedException("Этот платеж столкнулся с проблемой!");
-        }
+        paymentValidator.validatePaymentEligibility(user, booking);
+        return handlePendingPaymentOrCreateNew(user, booking, method);
     }
 
     private UUID handlePendingPaymentOrCreateNew(User user, Booking booking, PaymentMethod method){

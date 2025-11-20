@@ -1,8 +1,7 @@
 package com.example.transport_marketplace.controllers;
 import com.example.transport_marketplace.dto.RouteRequest;
-import com.example.transport_marketplace.dto.suggestions.SuggestionDTO;
 import com.example.transport_marketplace.exceptions.FailedToUpdateModelException;
-import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
+import com.example.transport_marketplace.exceptions.routes.RouteNotFoundException;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.service.RouteService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -3,10 +3,9 @@ package com.example.transport_marketplace.controllers;
 import com.example.transport_marketplace.dto.booking.BookingRequest;
 import com.example.transport_marketplace.dto.booking.BookingsResponse;
 import com.example.transport_marketplace.dto.booking.CancelBookingRequest;
-import com.example.transport_marketplace.exceptions.booking.AccessDeniedException;
 import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
-import com.example.transport_marketplace.exceptions.routes.Exceptions.NoAvailableSeatsException;
-import com.example.transport_marketplace.exceptions.routes.Exceptions.RouteNotFoundException;
+import com.example.transport_marketplace.exceptions.routes.NoAvailableSeatsException;
+import com.example.transport_marketplace.exceptions.routes.RouteNotFoundException;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.service.BookingService;
@@ -144,8 +143,6 @@ public class BookingController {
             }
         } catch (BookingNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (AccessDeniedException e){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -182,8 +179,6 @@ public class BookingController {
             }
         } catch (BookingNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (AccessDeniedException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

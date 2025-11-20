@@ -120,11 +120,11 @@ public class UsersController {
             return ResponseEntity.ok(userService.setUserEmail(userDetails.getUsername(), emailDTO.getEmail()));
         }
         catch (NullPointerException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Null pointer error: " + e.getMessage());
         }
         catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
