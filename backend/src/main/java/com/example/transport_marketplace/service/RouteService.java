@@ -54,9 +54,6 @@ public class RouteService {
             }
     )
     public void deleteRoute(Integer id){
-        if(routeRepository.findById(id) == null){
-            throw new RouteNotFoundException("Не удалось найти маршрут с id#" + id);
-        }
         routeRepository.deleteById(id);
     }
 

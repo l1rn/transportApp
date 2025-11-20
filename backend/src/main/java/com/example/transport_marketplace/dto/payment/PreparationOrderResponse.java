@@ -13,8 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PreparationOrderResponse {
+    private Integer routeId;
     private String orderFullName;
-    private double price;
+    private Double price;
     private List<PaymentMethod> paymentMethods;
     private boolean hasEmail;
     private boolean paid;

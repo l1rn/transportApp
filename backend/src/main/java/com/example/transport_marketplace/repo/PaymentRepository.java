@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,4 +31,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
             @Param("bookingId") Integer bookingId,
             Pageable pageable
     );
+    Optional<Payment> findByExternalIdAndUserUsername(UUID externalId, String username);
+    boolean existsByBookingIdAndPaymentStatusIn(Integer bookingId, List<PaymentStatus> paymentStatusIn);
 }

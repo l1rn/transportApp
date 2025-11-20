@@ -2,15 +2,17 @@ package com.example.transport_marketplace.controllers;
 
 import com.example.transport_marketplace.dto.payment.ConfirmPaymentRequest;
 import com.example.transport_marketplace.enums.PaymentMethod;
+import com.example.transport_marketplace.exceptions.booking.BookingCancelledException;
 import com.example.transport_marketplace.exceptions.booking.BookingDoesNotBelongUserException;
 import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
+import com.example.transport_marketplace.exceptions.booking.BookingPaidException;
+import com.example.transport_marketplace.exceptions.payment.ConfirmationCodeExpiredException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCanceledException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
 import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
 import com.example.transport_marketplace.exceptions.user.UserHasNoEmailException;
-import com.example.transport_marketplace.service.PaymentService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.transport_marketplace.service.PaymentConfirmationService;
+import com.example.transport_marketplace.service.PaymentFactoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -21,14 +23,16 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
 public class PaymentController {
     @Autowired
-    private final PaymentService paymentService;
+    private final PaymentFactoryService paymentFactoryService;
+    @Autowired
+    private final PaymentConfirmationService paymentConfirmationService;
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/get-info")
@@ -37,7 +41,7 @@ public class PaymentController {
         @RequestParam int bookingId
     ){
         try{
-            return ResponseEntity.ok(paymentService.prepareOrder(userDetails.getUsername(), bookingId));
+            return ResponseEntity.ok(paymentFactoryService.prepareOrder(userDetails.getUsername(), bookingId));
         }
         catch (BookingDoesNotBelongUserException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -45,7 +49,7 @@ public class PaymentController {
         }
         catch (BookingNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Бронирование не было найдено по данному запросу!");
+                    .body("Booking was not found");
         }
         catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -57,12 +61,12 @@ public class PaymentController {
     @PostMapping("/create")
     public ResponseEntity<?> createPayment(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam int bookingId,
+            @RequestParam Integer bookingId,
             @RequestParam PaymentMethod paymentMethod
     ) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(paymentService.createPayment(userDetails.getUsername(), bookingId, paymentMethod));
+                    .body(paymentFactoryService.createPayment(userDetails.getUsername(), bookingId, paymentMethod));
         }
         catch (BookingNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -72,12 +76,8 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }
-        catch(PaymentAlreadyCanceledException e){
+        catch(BookingCancelledException | BookingPaidException e){
             return ResponseEntity.status(HttpStatus.GONE)
-                    .body(e.getMessage());
-        }
-        catch (PaymentAlreadyFailedException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(e.getMessage());
         }
         catch (RuntimeException e) {
@@ -87,24 +87,40 @@ public class PaymentController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @PostMapping("/resend-code")
+    public ResponseEntity<?> resendCodeConfirmation(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam UUID paymentId
+    ) {
+        try{
+            paymentConfirmationService.resendConfirmationCode(userDetails.getUsername(), paymentId);
+            return ResponseEntity.ok("Code was sent to user's email");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/confirm")
     public ResponseEntity<?> confirmPayment(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ConfirmPaymentRequest request
             ) {
         try {
-            paymentService.confirmPayment(userDetails.getUsername(), request);
+            paymentConfirmationService.confirmPayment(userDetails.getUsername(), request);
             return ResponseEntity.ok("Payment was successfully confirmed!");
         }
         catch (PaymentAlreadyConfirmedException e){
             return ResponseEntity.ok("CONFIRMED");
         }
-        catch (PaymentAlreadyFailedException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT)
+        catch (PaymentAlreadyCanceledException | PaymentAlreadyFailedException e){
+            return ResponseEntity.status(HttpStatus.GONE)
                     .body(e.getMessage());
         }
-        catch (PaymentAlreadyCanceledException e){
-            return ResponseEntity.status(HttpStatus.GONE)
+        catch (ConfirmationCodeExpiredException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }
         catch (RuntimeException e) {
@@ -120,7 +136,7 @@ public class PaymentController {
         @RequestParam String externalId
     ) {
         try{
-            if(!paymentService.cancelPayment(externalId)){
+            if(!paymentFactoryService.cancelPayment(externalId)){
                 return ResponseEntity.ok("Payment is already canceled!");
             }
             return ResponseEntity.ok("Payment was successfully canceled!");
@@ -137,7 +153,7 @@ public class PaymentController {
             Pageable pageable
     ) {
         try {
-            return ResponseEntity.ok(paymentService.getMyPayments(
+            return ResponseEntity.ok(paymentFactoryService.getMyPayments(
                     userDetails.getUsername(),
                     pageable
             ));
@@ -155,7 +171,7 @@ public class PaymentController {
             Pageable pageable
     ) {
         try{
-            return ResponseEntity.ok(paymentService.getHistoryByBookingId(
+            return ResponseEntity.ok(paymentFactoryService.getHistoryByBookingId(
                     userDetails.getUsername(),
                     bookingId,
                     pageable

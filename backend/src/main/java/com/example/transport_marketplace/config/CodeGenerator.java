@@ -13,7 +13,7 @@ public class CodeGenerator {
     }
 
     public static LocalDateTime generateExpiryTime(){
-        return LocalDateTime.now().plusMinutes(5);
+        return LocalDateTime.now().plusSeconds(5);
     }
 
     public static boolean isCodeValid(String inputCode, String storedCode, LocalDateTime expiryTime){

@@ -2,21 +2,14 @@ package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.config.CodeGenerator;
 import com.example.transport_marketplace.dto.PaginatedResponse;
-import com.example.transport_marketplace.dto.payment.ConfirmPaymentRequest;
 import com.example.transport_marketplace.dto.payment.PaymentResponse;
 import com.example.transport_marketplace.dto.payment.PreparationOrderResponse;
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.PaymentMethod;
 import com.example.transport_marketplace.enums.PaymentStatus;
 import com.example.transport_marketplace.events.ConfirmationCodeEvent;
-import com.example.transport_marketplace.events.PaymentSuccessEvent;
 import com.example.transport_marketplace.exceptions.booking.BookingDoesNotBelongUserException;
 import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
-import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCanceledException;
-import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
-import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
-import com.example.transport_marketplace.exceptions.routes.BadRequestException;
-import com.example.transport_marketplace.exceptions.user.UserHasNoEmailException;
 import com.example.transport_marketplace.model.*;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.repo.PaymentRepository;
@@ -28,6 +21,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +31,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PaymentService {
+public class PaymentFactoryService {
     @Autowired
     private final RabbitTemplate rabbitTemplate;
     @Autowired
@@ -54,18 +48,17 @@ public class PaymentService {
                 .orElseThrow(() -> new RuntimeException("User was not found by this token"));
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new BookingNotFoundException("Не удалось найти заказ по данному id#" + bookingId));
+                .orElseThrow(() -> new BookingNotFoundException("Cannot found the booking by id#" + bookingId));
 
         if(booking.getUser() != user){
             throw new BookingDoesNotBelongUserException("Этот букинг не принадлежит этому юзеру!");
         }
 
         return PreparationOrderResponse.builder()
+                .routeId(booking.getRoute().getId())
                 .orderFullName(
-                        booking.getRoute().getRouteFrom() + " -> " +
-                        booking.getRoute().getRouteTo() + "; " +
-                        booking.getRoute().getTransport() + "; Дата: " +
-                        booking.getRoute().getDestinationTime() + " - " + booking.getRoute().getArrivalTime()
+                        booking.getRoute().getRouteFrom() + " → " +
+                        booking.getRoute().getRouteTo()
                 )
                 .paymentMethods(Arrays.stream(PaymentMethod.values()).toList())
                 .price(booking.getRoute().getPrice())
@@ -76,7 +69,7 @@ public class PaymentService {
 
     public UUID createPayment(String username, Integer bookingId, PaymentMethod method) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Не удалось найти пользователя"));
+                .orElseThrow(() -> new UsernameNotFoundException("Не удалось найти пользователя: " + username));
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking was not found by this id"));
         paymentValidator.validatePaymentEligibility(user, booking);
@@ -153,68 +146,6 @@ public class PaymentService {
         } catch (Exception e) {
             log.error("Failed to send confirmation code to user {}", user.getEmail(), e);
         }
-    }
-
-
-
-    @Transactional
-    public void confirmPayment(String username, ConfirmPaymentRequest request){
-        Payment payment = paymentRepository.findByExternalId(UUID.fromString(request.getExternalId()))
-                .orElseThrow(() -> new RuntimeException("Не удалось найти платеж по id"));
-
-        Booking booking = payment.getBooking();
-
-        if(!Objects.equals(payment.getConfirmationCode(), request.getCode())){
-            throw new BadRequestException();
-        }
-
-        if(!Objects.equals(payment.getUser().getUsername(), username)){
-            throw new BadRequestException();
-        }
-
-        if(payment.getPaymentStatus() == PaymentStatus.FAILED){
-            throw new PaymentAlreadyFailedException("Этот платеж столкнулся с проблемой!");
-        }
-
-        if(payment.getPaymentStatus() == PaymentStatus.CANCELLED){
-            throw new PaymentAlreadyCanceledException("Платеж отменен, создайте новый!");
-        }
-
-        if(payment.getPaymentStatus() == PaymentStatus.SUCCEEDED){
-            throw new PaymentAlreadyConfirmedException("Платеж уже подтвержден!");
-        }
-
-        booking.setStatus(BookingStatus.PAID);
-        payment.setPaymentStatus(PaymentStatus.SUCCEEDED);
-        paymentRepository.save(payment);
-        bookingRepository.save(booking);
-
-        sendPaymentSuccessEvent(payment);
-    }
-
-    private void sendPaymentSuccessEvent(Payment payment){
-        Route route = payment.getBooking().getRoute();
-        String routeInfo = route.getRouteFrom() + " - " +
-                route.getRouteTo() + "; " +
-                route.getDestinationTime() + "; " +
-                route.getArrivalTime() + ";" +
-                route.getTransport();
-
-        PaymentSuccessEvent event = PaymentSuccessEvent.builder()
-                .paymentId(payment.getId())
-                .bookingId(payment.getBooking().getId())
-                .amount(payment.getAmount())
-                .routeNumber(routeInfo)
-                .userEmail(payment.getUser().getEmail())
-                .userName(payment.getUser().getUsername())
-                .paymentMethod(payment.getPaymentMethod())
-                .build();
-
-        rabbitTemplate.convertAndSend(
-                "payment.exchange",
-                "payment.success",
-                event
-        );
     }
 
     @Transactional
