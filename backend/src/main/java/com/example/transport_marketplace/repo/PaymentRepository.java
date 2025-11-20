@@ -32,5 +32,5 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
             Pageable pageable
     );
     Optional<Payment> findByExternalIdAndUserUsername(UUID externalId, String username);
-    boolean existsByBookingIdAndPaymentStatusIn(Integer bookingId, List<PaymentStatus> paymentStatusIn);
+    Optional<Payment> findFirstByBookingIdAndPaymentStatusInOrderByCreatedAtDesc(Integer bookingId, List<PaymentStatus> paymentStatusIn);
 }

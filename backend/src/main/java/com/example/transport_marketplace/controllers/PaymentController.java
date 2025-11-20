@@ -6,10 +6,8 @@ import com.example.transport_marketplace.exceptions.booking.BookingCancelledExce
 import com.example.transport_marketplace.exceptions.booking.BookingDoesNotBelongUserException;
 import com.example.transport_marketplace.exceptions.booking.BookingNotFoundException;
 import com.example.transport_marketplace.exceptions.booking.BookingPaidException;
-import com.example.transport_marketplace.exceptions.payment.ConfirmationCodeExpiredException;
-import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyCanceledException;
-import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyConfirmedException;
-import com.example.transport_marketplace.exceptions.payment.PaymentAlreadyFailedException;
+import com.example.transport_marketplace.exceptions.payment.*;
+import com.example.transport_marketplace.exceptions.routes.BadRequestException;
 import com.example.transport_marketplace.exceptions.user.UserHasNoEmailException;
 import com.example.transport_marketplace.service.PaymentConfirmationService;
 import com.example.transport_marketplace.service.PaymentFactoryService;
@@ -23,6 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -72,9 +71,13 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
         }
-        catch (UserHasNoEmailException e){
+        catch (UserHasNoEmailException | BookingDoesNotBelongUserException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
+        }
+        catch (PaymentHasProcessedException e){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(e.getExistingPaymentId());
         }
         catch(BookingCancelledException | BookingPaidException e){
             return ResponseEntity.status(HttpStatus.GONE)
@@ -95,7 +98,12 @@ public class PaymentController {
         try{
             paymentConfirmationService.resendConfirmationCode(userDetails.getUsername(), paymentId);
             return ResponseEntity.ok("Code was sent to user's email");
-        } catch (RuntimeException e) {
+        }
+        catch (BadRequestException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
+        catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
         }
@@ -119,7 +127,7 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.GONE)
                     .body(e.getMessage());
         }
-        catch (ConfirmationCodeExpiredException e) {
+        catch (ConfirmationCodeExpiredException | BadRequestException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }

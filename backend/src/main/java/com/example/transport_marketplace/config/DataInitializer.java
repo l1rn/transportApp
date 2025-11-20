@@ -46,6 +46,7 @@ public class DataInitializer {
         if (!userRepository.existsByUsername("admin")) {
             User admin = User.builder()
                     .username("admin")
+                    .email("admin@example.com")
                     .password(passwordEncoder.encode("secure_admin"))
                     .role(Role.ROLE_ADMIN)
                     .build();
@@ -58,6 +59,7 @@ public class DataInitializer {
         if (!userRepository.existsByUsername("user")){
             User user = User.builder()
                     .username("user")
+                    .email("user@example.com")
                     .password(passwordEncoder.encode("user_password"))
                     .role(Role.ROLE_USER)
                     .build();

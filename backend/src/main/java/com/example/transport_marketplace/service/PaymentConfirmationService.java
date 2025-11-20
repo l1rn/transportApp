@@ -32,8 +32,7 @@ public class PaymentConfirmationService {
 
     @Transactional
     public void confirmPayment(String username, ConfirmPaymentRequest request){
-        Payment payment = paymentRepository.findByExternalId(UUID.fromString(request.getExternalId()))
-                .orElseThrow(() -> new RuntimeException("Не удалось найти платеж по id"));
+        Payment payment = getValidPaymentForConfirmation(username, request);
 
         payment.setPaymentStatus(PaymentStatus.SUCCEEDED);
         payment.getBooking().setStatus(BookingStatus.PAID);
@@ -48,11 +47,11 @@ public class PaymentConfirmationService {
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
 
         if (!payment.getUser().getUsername().equals(username)) {
-            throw new BadRequestException();
+            throw new BadRequestException("This user can't pay for this payment");
         }
 
         if (!payment.getConfirmationCode().equals(request.getCode())) {
-            throw new BadRequestException();
+            throw new BadRequestException("Code request isn't equals to the original");
         }
 
         validatePaymentStatus(payment);
@@ -66,16 +65,16 @@ public class PaymentConfirmationService {
 
     private void validatePaymentStatus(Payment payment){
         switch (payment.getPaymentStatus()){
-            case SUCCEEDED:
+            case PaymentStatus.SUCCEEDED:
                 throw new PaymentAlreadyConfirmedException("Payment already confirmed");
-            case CANCELLED:
+            case PaymentStatus.CANCELLED:
                 throw new PaymentAlreadyCanceledException("Payment was cancelled");
-            case FAILED:
+            case PaymentStatus.FAILED:
                 throw new PaymentAlreadyFailedException("Payment failed previously");
-            case PENDING:
+            case PaymentStatus.PENDING:
                 break;
             default:
-                throw new BadRequestException();
+                throw new BadRequestException("Status unavailable");
         }
     }
 
@@ -85,7 +84,7 @@ public class PaymentConfirmationService {
                 .orElseThrow(PaymentNotFoundException::new);
 
         if(payment.getPaymentStatus() != PaymentStatus.PENDING){
-            throw new BadRequestException();
+            throw new BadRequestException("Cannot send a new code because payment isn't in pending status");
         }
 
         String newCode = CodeGenerator.generateCode();
