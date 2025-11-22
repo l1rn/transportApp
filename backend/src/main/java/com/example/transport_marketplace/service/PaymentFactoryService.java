@@ -63,8 +63,23 @@ public class PaymentFactoryService {
                 .paymentMethods(Arrays.stream(PaymentMethod.values()).toList())
                 .price(booking.getRoute().getPrice())
                 .hasEmail(user.getEmail() != null)
+                .inProgress(paymentValidator.checkPaymentPendingByBooking(booking))
                 .paid(booking.getStatus() == BookingStatus.PAID)
                 .build();
+    }
+
+    public UUID getExternalId(String username, Integer bookingId){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Не удалось найти пользователя: " + username));
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException("Booking was not found by this id"));
+        if(user != booking.getUser()){
+            throw new BookingDoesNotBelongUserException("Этот заказ не принадлежит этому юзеру!");
+        }
+
+        Optional<Payment> payment = paymentRepository
+                .findByBookingIdAndPaymentStatus(booking.getId(), PaymentStatus.PENDING);
+        return payment.map(Payment::getExternalId).orElse(null);
     }
 
     public UUID createPayment(String username, Integer bookingId, PaymentMethod method) {

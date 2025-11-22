@@ -119,20 +119,20 @@
             }
             .payment-button{
                 @include mixins.button-clear(
-                    colors.$dark-green,
-                    colors.$white
+                    #F0F8FF,
+                    colors.$light-black
                 );
             }
             .cancel-button{
                 @include mixins.button-clear(
-                    colors.$dark-red,
-                    colors.$white
+                    #F0F8FF,
+                    colors.$light-black
                 );
             }
             .history-button{
                 @include mixins.button-clear(
-                    colors.$dark-brown,
-                    colors.$white
+                    #F0F8FF,
+                    colors.$light-black
                 );
             }
         }

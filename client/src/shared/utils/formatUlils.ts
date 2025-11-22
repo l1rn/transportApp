@@ -40,7 +40,7 @@ export const useFormatUtils = () => {
         switch(status) {
             case 'PAID': return 'Оплачен'
             case 'PENDING': return 'В обработке'
-            case 'CANCELED': return 'Отменен'
+            case 'CANCELLED': return 'Отменен'
             default: return 'ОШИБКА'
         }
     }

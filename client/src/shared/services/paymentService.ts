@@ -12,11 +12,19 @@ class PaymentService{
         : Promise<AxiosResponse<OrderInfoResponse>> {
         return await api.get(`/payments/get-info?bookingId=${bookingId}`);
     }
+    
+    public async getExternalId(bookingId: number): Promise<AxiosResponse<string | null>>{
+        return await api.get(`/payments/get-id?bookingId=${bookingId}`);
+    }
 
     public async createPayment(bookingId: number, paymentMethod: string)    
         : Promise<AxiosResponse> {
-            return await api.post(`/payments/create?bookingId=${bookingId}&paymentMethod=${paymentMethod}`)
+            return await api.post(`/payments/create?bookingId=${bookingId}&paymentMethod=${paymentMethod}`);
         }
+
+    public async resendConfirmationCode(paymentId: string): Promise<AxiosResponse>{
+        return await api.post(`/payments/resend-code?paymentId=${paymentId}`);
+    }
 
     public async confirmPayment(externalId: string | null, code: string)
         :Promise<AxiosResponse> {

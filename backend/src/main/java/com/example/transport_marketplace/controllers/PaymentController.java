@@ -21,7 +21,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -49,6 +48,25 @@ public class PaymentController {
         catch (BookingNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Booking was not found");
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal server error: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/get-id")
+    public ResponseEntity<?> getPaymentId(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam int bookingId
+    ) {
+        try{
+            return ResponseEntity.ok(paymentFactoryService.getExternalId(userDetails.getUsername(), bookingId));
+        }
+        catch (BookingDoesNotBelongUserException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
         }
         catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

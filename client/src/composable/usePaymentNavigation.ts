@@ -1,8 +1,15 @@
-import { inject, provide, ref } from "vue";
+import { inject, InjectionKey, provide, ref } from "vue";
 
 type PaymentView = 'current-payment' | 'my-payments' | 'promocodes';
 
-const PaymentNavigationSymbol = Symbol("payment-navigation");
+interface PaymentNavigation {
+    isCurrentPaymentAvailable: { value: boolean };
+    currentView: { value: PaymentView };
+    setView: (view: PaymentView) => void;
+    checkPaymentStatus: (paid: boolean) => void
+}
+
+const PaymentNavigationSymbol: InjectionKey<PaymentNavigation> = Symbol("payment-navigation");
 
 export const usePaymentNavigationProvider = () => {
     const currentView = ref<PaymentView>("current-payment");
@@ -12,7 +19,7 @@ export const usePaymentNavigationProvider = () => {
         currentView.value = view;
     };
 
-    const checkAvailability = (paid: boolean) => {
+    const checkPaymentStatus = (paid: boolean) => {
         if(paid === true) {
             isCurrentPaymentAvailable.value = false;
         }
@@ -25,14 +32,14 @@ export const usePaymentNavigationProvider = () => {
         isCurrentPaymentAvailable,
         currentView,
         setView,
-        checkAvailability
+        checkPaymentStatus
     });
 
     return {
         isCurrentPaymentAvailable,
         currentView,
         setView,
-        checkAvailability
+        checkPaymentStatus
     };
 }
 

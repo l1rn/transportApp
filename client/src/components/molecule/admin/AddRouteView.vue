@@ -78,7 +78,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { adminService } from "@/shared/services/adminService";
-import { formatToDatabase } from "@/shared/utils/formatTime";
 import InputSuggestionView from "@/components/atom/InputSuggestionView.vue";
 import { Route } from "@/shared/types/route";
 import notification from "@/shared/plugins/notifications";

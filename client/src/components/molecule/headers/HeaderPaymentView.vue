@@ -5,10 +5,10 @@
         </div>
         <div class="nav-bar-container">
             <div 
-            v-if="isCurrentPaymentAvailable"
+            v-if="currentPaymentState"
             @click="setView('current-payment')"
             class="current-payment-container"
-            :class="{ 'active': currentView === 'current-payment' }">
+            :class="{ 'active': currentView.value === 'current-payment' }">
                 <a>
                     Текущий платеж
                 </a>
@@ -16,7 +16,7 @@
             <div 
             @click="setView('my-payments')"
             class="my-payments-container"
-            :class="{ 'active': currentView === 'my-payments' }">
+            :class="{ 'active': currentView.value === 'my-payments' }">
                 <a>
                     Мои покупки
                 </a>
@@ -24,7 +24,7 @@
             <div 
             @click="setView('promocodes')" 
             class="promocodes-container"
-            :class="{ 'active': currentView === 'promocodes' }">
+            :class="{ 'active': currentView.value === 'promocodes' }">
                 <a>
                     Мои промокоды
                 </a>
@@ -34,6 +34,7 @@
 </template>
 <script setup lang="ts">
 import { usePaymentNavigation } from '@/composable/usePaymentNavigation';
+import { ref, watchEffect } from 'vue';
 
 const { 
     currentView, 
@@ -41,6 +42,16 @@ const {
     isCurrentPaymentAvailable
 } = usePaymentNavigation();
 
+const currentPaymentState = ref<boolean>(true);
+
+watchEffect(() => {
+    if(isCurrentPaymentAvailable.value){
+        currentPaymentState.value = true;
+    }
+    else {
+        currentPaymentState.value = false;
+    }
+})
 </script>
 <style lang="scss">
 @use "../../../assets/styles/static/color" as colors;

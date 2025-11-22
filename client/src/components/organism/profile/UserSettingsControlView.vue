@@ -196,6 +196,7 @@ const submitEmailCodeConfirm = async(): Promise<void> => {
     'confirm-code-form',
     codeValue
   )
+  window.location.reload();
 }
 
 const submitTopUpCodeConfirm = async(): Promise<void> => {

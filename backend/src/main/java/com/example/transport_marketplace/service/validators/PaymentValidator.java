@@ -26,6 +26,15 @@ public class PaymentValidator {
     @Autowired
     private final PaymentRepository paymentRepository;
 
+    public boolean checkPaymentPendingByBooking(Booking booking){
+        return paymentRepository
+                .findFirstByBookingIdAndPaymentStatusInOrderByCreatedAtDesc(
+                        booking.getId(),
+                        List.of(PaymentStatus.PENDING)
+                )
+                .isPresent();
+    }
+
     public void validatePaymentEligibility(User user, Booking booking){
         validateUserEligibility(user, booking);
         validateBookingEligibility(booking);

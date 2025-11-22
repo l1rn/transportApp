@@ -4,6 +4,7 @@ export interface OrderInfoResponse {
     price: number;
     paymentMethods: Array<string>;
     hasEmail: boolean;
+    inProgress: boolean;
     paid: boolean;
 }
 

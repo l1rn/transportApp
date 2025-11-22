@@ -53,6 +53,7 @@
                     <button @click="confirmPayment">
                         Подтвердить
                     </button>
+                    <a @click="resendCode(externalId)">Отправить код повторно</a>
                 </div>
             </div>
         </template>
@@ -63,7 +64,6 @@ import EmailSectionView from "@/components/molecule/payment/EmailSectionView.vue
 import InputSuggestionView from '@/components/atom/InputSuggestionView.vue';
 import notification from '@/shared/plugins/notifications';
 import { paymentService } from '@/shared/services/paymentService';
-import { useModalStore } from '@/shared/stores/useModalStore';
 import { AxiosError, HttpStatusCode } from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -73,12 +73,12 @@ import { usePaymentNavigation } from "@/composable/usePaymentNavigation";
 const route = useRoute();
 const router = useRouter();
 
-const bookingId = route.query.bookingId;
 const orderData = ref<OrderInfoResponse>();
 
 const paymentMethod = ref<string>("SIMULATION");
 const paymentMethods = ref<Array<string>>();
 
+const externalId = ref<string | null>(null);
 const isCodeSent = ref(false);
 const confirmationCode = ref<string | null>(null);
 
@@ -89,7 +89,7 @@ const createPayment = async () => {
     }
     try {
         const response = await paymentService.createPayment(
-            Number(bookingId),
+            Number(route.query.bookingId),
             paymentMethod.value
         );
         notification.success('Ваша заявка была создана! Код был отправлен вам на почту')
@@ -109,13 +109,13 @@ const confirmPayment = async() => {
     }
     try {
         await paymentService.confirmPayment(
-            localStorage.getItem('externalId'),
+            externalId.value,
             confirmationCode.value
         );
         notification.success("Ваш заказ успешно подтвержден, проверьте почту!");
         confirmationCode.value = "";
         isCodeSent.value = false;
-        setView('my-payments');
+        redirectToMyPayments();
     }
     catch (e) {
         const axiosError = e as AxiosError;
@@ -129,7 +129,7 @@ const cancelPayment = async() => {
         return;
     }
     try{
-        await paymentService.cancelPayment(localStorage.getItem('externalId'));
+        await paymentService.cancelPayment(externalId.value);
         notification.success("Заказ был успешно отменен!");
         router.push("/home");
     }
@@ -139,24 +139,34 @@ const cancelPayment = async() => {
     }
 }
 
-const handleAxiosError = (e: unknown, defaultMsg: string) => {
-    const axiosError = e as AxiosError;
-    console.error(axiosError);
-
+const redirectToMyPayments = () => {
+    checkPaymentStatus(true);
+    setView('my-payments');
+    return;
 }
 
-const { setView, checkAvailability } = usePaymentNavigation();
+const { setView, checkPaymentStatus } = usePaymentNavigation();
 
 onMounted(async() => {
+    await initializePayment();
+})
+
+const initializePayment = async() => {
+    const bookingId = route.query.bookingId;
+    if(!bookingId){
+        redirectToMyPayments()
+    }
+
     try {
-        if(!bookingId){
-            checkAvailability(true);
-            setView('my-payments');
-            return;
-        }
         const info = await paymentService.getOrderInfo(Number(bookingId));
         if(info.data.paid) {
-            window.close();
+            notification.success("Ваш заказ был уже оплачен!");
+            redirectToMyPayments();
+        }
+        if(info.data.inProgress) {
+            const response = await paymentService.getExternalId(Number(bookingId));
+            isCodeSent.value = true;
+            externalId.value = response.data;
         }
         orderData.value = info.data;
         paymentMethods.value = info.data.paymentMethods;
@@ -164,9 +174,8 @@ onMounted(async() => {
     catch(e) {
         const axiosError = e as AxiosError;
         if(axiosError.status === HttpStatusCode.NotFound || axiosError.status === HttpStatusCode.BadRequest){
-            checkAvailability(true);
             notification.error("Этого букинга нету в вашем профиле!");
-            setView('my-payments');
+            redirectToMyPayments();
             return;
         }
         if(axiosError.status === HttpStatusCode.Forbidden) {
@@ -175,7 +184,18 @@ onMounted(async() => {
             return;
         }
     }
-})
+}
+
+const resendCode = async(externalId: string | null) => {
+    if(!externalId) return;
+    try {
+        await paymentService.resendConfirmationCode(externalId);
+        notification.success("Новый код подтверждения был отправлен на почту!");
+    }
+    catch(e){
+        notification.error("Не удалось отправить новый код подтверждения вам на почту!");
+    }
+}
 </script>
 
 <style scoped lang="scss">
@@ -270,15 +290,27 @@ onMounted(async() => {
         @include mixins.display-column();
         gap: 0.25rem;
         justify-content: center;
+        .input-block {
+            display: flex;
+            gap: 0.5rem;
+        }
         input{
             @include mixins.custom-input();
-            margin-right: 0.5rem;
         }
         button{
             @include mixins.button-clear(colors.$medium-green, colors.$white);
             padding: 0.5rem 1rem;
             border-radius: 8px;
             font-size: 1.05rem;
+            margin-right: 2rem;
+        }
+        a {
+            @include mixins.display-center();
+            color: #3d7de5;
+            cursor: pointer;
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 }

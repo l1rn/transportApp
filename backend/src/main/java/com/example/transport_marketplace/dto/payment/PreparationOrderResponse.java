@@ -18,5 +18,6 @@ public class PreparationOrderResponse {
     private Double price;
     private List<PaymentMethod> paymentMethods;
     private boolean hasEmail;
+    private boolean inProgress;
     private boolean paid;
 }

@@ -21,7 +21,7 @@
           <div class="second-section" :class="{
             'paid': booking.status === 'PAID',
             'pending': booking.status === 'PENDING',
-            'canceled': booking.status === 'CANCELED'
+            'canceled': booking.status === 'CANCELLED'
           }">
             {{ formatUtils.formatBookingStatus(booking.status) }}
           </div>
