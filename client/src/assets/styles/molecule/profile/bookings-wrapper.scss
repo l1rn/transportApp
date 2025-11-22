@@ -1,140 +1,244 @@
-@use "../../static/color" as colors;
-@use "../../static/mixin" as mixins;
+@use "../../static/color"as colors;
+@use "../../static/mixin"as mixins;
 
-.booking-wrapper{
-    @include mixins.display-center();
-    flex-direction: column;
-    gap: 1.25rem;
-    .confirm-payment-container{
-        @include mixins.display-modal();
+.booking-wrapper {
+  @include mixins.display-center();
+  flex-direction: column;
+  gap: 1.25rem;
+
+  .booking-container {
+    @include mixins.display-column();
+    gap: 1.5rem;
+    background: colors.$white;
+    width: 70%;
+    border-radius: 20px;
+    max-width: 1000px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(#000000, 0.1);
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(#000000, 0.15);
     }
-    .booking-container{
-        @include mixins.display-column();
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      .first-section {
+        @include mixins.display-center();
         gap: 0.75rem;
-        background: colors.$white;
-        width: 70%;
-        border-radius: 16px;
-        max-width: 1000px;
-        padding: 1.25rem 2rem;
-        box-shadow: 0 0 8px rgba($color: #000000, $alpha: 0.25);
-        transition: transform 0.3s ease;
-        &:hover{
-            transform: scale(1.01);
+
+        .transport-icon {
+          @include mixins.display-center();
+          background: linear-gradient(135deg, #bda2fd, #e5c6ff);
+          min-width: 32px;
+          min-height: 32px;
+          padding: 0.75rem;
+          border-radius: 12px;
+          font-size: 1.2rem;
         }
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            .first-section {
-                @include mixins.display-center();
-                gap: 0.5rem;
-                .transport-icon{
-                    @include mixins.display-center();
-                    background: linear-gradient(135deg, #bda2fd, #e5c6ff);
-                    min-width: 24px;
-                    min-height: 24px;
-                    padding: 0.75rem;
-                    border-radius: 8px;
-                }
-                .id-container {
-                    
-                }
-            }   
-            .second-section{
-                @include mixins.display-center();
-                padding: 0.5rem;
-                border-radius: 16px;
-                
-            }
-            .pending{
-                background: linear-gradient(135deg, #e6c300, #ce922a);
-                color: white;
-                
-            }
-            .paid {
-                background: linear-gradient(135deg, #51CF66, #16A34A);
-                color: white;
-            }
-            .canceled{
-                background: linear-gradient(135deg, #FF6B6B, #DC2626);
-                color: white;
-            }
+
+        .id-container {
+          .top-string {
+            font-size: 0.75rem;
+            color: #666;
+            font-weight: 500;
+          }
+
+          .botton-string {
+            font-size: 1rem;
+            font-weight: 700;
+            color: colors.$light-black;
+          }
         }
-        .place-container{
-            display: flex;
-            justify-content: space-around;
-            padding: 0.5rem 0;
-            font-size: 20px;
-            cursor: default;
-            .route{
-                &:hover{
-                    text-decoration: underline;
-                }
-            }
-            .arrow-container{
-                background: #FEEFC3;
-                color: colors.$dark-grey;
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                @include mixins.display-center();
-                transition: 0.3s all ease;
-                &:hover{
-                    transform: rotate(25deg);
-                }
-            }
+      }
+
+      .second-section {
+        @include mixins.display-center();
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        &.PENDING {
+          background: linear-gradient(135deg, #e6c300, #ce922a);
+          color: white;
         }
-        .time-container{
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            text-transform: uppercase;
-            .text{
-                color: #797c82;
-                letter-spacing: 0.05rem;
-            }
+
+        &.PAID {
+          background: linear-gradient(135deg, #51CF66, #16A34A);
+          color: white;
         }
-        .last-section{
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            text-transform: uppercase;
-            .text{
-                color: #797c82;
-                letter-spacing: 0.05rem;
-            }
-            .date-container{
-                
-            }
+
+        &.CANCELLED {
+          background: linear-gradient(135deg, #FF6B6B, #DC2626);
+          color: white;
         }
-        .button-container{
-            display: flex;
-            gap: 0.25rem;
-            
-            button{
-                width: 100%;
-                padding: 0.5rem 0;
-                font-size: 1.005rem;
-                font-weight: 600;
-                border-radius: 8px;
-            }
-            .payment-button{
-                @include mixins.button-clear(
-                    #F0F8FF,
-                    colors.$light-black
-                );
-            }
-            .cancel-button{
-                @include mixins.button-clear(
-                    #F0F8FF,
-                    colors.$light-black
-                );
-            }
-            .history-button{
-                @include mixins.button-clear(
-                    #F0F8FF,
-                    colors.$light-black
-                );
-            }
-        }
+      }
     }
+
+    .route-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid #f0f0f0;
+
+      .city {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: colors.$light-black;
+        flex: 1;
+
+        &.from {
+          text-align: left;
+        }
+
+        &.to {
+          text-align: right;
+        }
+      }
+
+      .line-container {
+        width: 100%;
+        padding: 0 2rem;
+
+        .line {
+          height: 2px;
+          background: repeating-linear-gradient(to right,
+              #d1d5db 0px,
+              #d1d5db 4px,
+              transparent 4px,
+              transparent 8px);
+        }
+      }
+    }
+
+    .details-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+
+      .detail-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+
+        .detail-icon {
+          font-size: 1.1rem;
+          margin-top: 0.1rem;
+        }
+
+        .detail-content {
+          .detail-label {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+          }
+
+          .detail-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: colors.$light-black;
+            margin: 0.1rem 0;
+          }
+
+          .detail-date {
+            font-size: 0.9rem;
+            color: #888;
+          }
+        }
+      }
+    }
+
+    .footer-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid #f0f0f0;
+
+      .price-display {
+        text-align: left;
+
+        .price-label {
+          font-size: 0.8rem;
+          color: #666;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          font-weight: 600;
+        }
+
+        .price-value {
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: colors.$light-black;
+        }
+      }
+
+      .button-container {
+        display: flex;
+        gap: 0.75rem;
+
+        button {
+          padding: 0.75rem 1.5rem;
+          font-size: 0.9rem;
+          font-weight: 600;
+          border-radius: 10px;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          min-width: 100px;
+
+          &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(#000000, 0.2);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+        }
+
+        .payment-button {
+          background: linear-gradient(135deg, #4F46E5, #7C3AED);
+          color: white;
+
+          &:hover {
+            background: linear-gradient(135deg, #4338CA, #6D28D9);
+          }
+        }
+
+        .cancel-button {
+          background: #F3F4F6;
+          color: #4B5563;
+          border: 1px solid #D1D5DB;
+
+          &:hover {
+            background: #E5E7EB;
+            color: #374151;
+          }
+        }
+
+        .history-button {
+          background: #FEF3C7;
+          color: #92400E;
+          border: 1px solid #FCD34D;
+
+          &:hover {
+            background: #FDE68A;
+            color: #78350F;
+          }
+        }
+      }
+    }
+  }
 }

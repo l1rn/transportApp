@@ -7,80 +7,67 @@
         <div class="header-container">
           <div class="first-section">
             <div class="transport-icon">
-              {{ formatUtils.formatTransportStringToEmoji(booking.route.transport) }}
+              {{
+                formatUtils.formatTransportStringToEmoji(
+                  booking.route.transport
+                )
+              }}
             </div>
             <span class="id-container">
-              <div class="top-string">
-                ID Маршрута
-              </div>
-              <div class="botton-string">
-                #{{ booking.id }}
-              </div>
+              <div class="top-string">ID Маршрута</div>
+              <div class="botton-string">#{{ booking.id }}</div>
             </span>
           </div>
-          <div class="second-section" :class="{
-            'paid': booking.status === 'PAID',
-            'pending': booking.status === 'PENDING',
-            'canceled': booking.status === 'CANCELLED'
-          }">
+          <div class="second-section" :class="booking.status">
             {{ formatUtils.formatBookingStatus(booking.status) }}
           </div>
         </div>
-        <div class="place-container">
-          <div class="route">
-            {{ booking.route.routeFrom }}
+
+        <div class="route-section">
+          <div class="city from">{{ booking.route.routeFrom }}</div>
+          <div class="line-container">
+            <div class="line"></div>
           </div>
-          <div class="arrow-container">
-            ➔
-          </div>
-          <div class="route">
-            {{ booking.route.routeTo }}
-          </div>
+          <div class="city to">{{ booking.route.routeTo }}</div>
         </div>
-        <div class="time-container">
-          <span class="departure-time">
-            <div class="text">
-              Время вылета
+
+        <div class="details-section">
+          <div class="detail-item">
+            <span class="detail-icon">🕒</span>
+            <div class="detail-content">
+              <div class="detail-label">Вылет</div>
+              <div class="detail-value">
+                {{ booking.route.destinationTime.split("T")[0] }} {{  booking.route.destinationTime.split("T")[1] }}
+              </div>
             </div>
-            <div class="content">
-              {{ booking.route.destinationTime.split('T')[1] }}
-            </div>
-          </span>
-          <span class="arrival-time">
-            <div class="text">
-              Время прилета
-            </div>
-            <div class="content">
-              {{ booking.route.arrivalTime.split('T')[1] }}
-            </div>
-          </span>
-        </div>
-        <div class="last-section">
-          <div class="date-container">
-            <div class="text">
-              Дата
-            </div>
-            {{ booking.route.destinationTime.split('T')[0] }}
           </div>
-          <div class="price-container">
-            <div class="text">
-              Цена
+          <div class="detail-item">
+            <span class="detail-icon">🕒</span>
+            <div class="detail-content">
+              <div class="detail-label">Прилет</div>
+              <div class="detail-value">
+                {{ booking.route.arrivalTime.split("T")[0] }} {{  booking.route.arrivalTime.split("T")[1] }}
+              </div>
             </div>
-            {{ booking.route.price }}
-            Р.
           </div>
         </div>
 
-        <div class="button-container">
-          <button class="payment-button" v-if="booking.status === 'PENDING'" @click="handlePayment(booking.id)">
-            Оплатить
-          </button>
-          <button v-if="booking.status === 'PENDING'" class="cancel-button">
-            Отменить
-          </button>
-          <button @click.stop="handlePaymentHistory(booking.id)" class="history-button">
-            История
-          </button>
+        <div class="footer-section">
+          <div class="price-display">
+            <div class="price-label">Итого</div>
+            <div class="price-value">{{ booking.route.price }} Р.</div>
+          </div>
+          <div class="button-container">
+            <button class="payment-button" v-if="booking.status === 'PENDING'" @click="handlePayment(booking.id)">
+              Оплатить
+            </button>
+            <button v-if="booking.status === 'PENDING'" class="cancel-button">
+              Отменить
+            </button>
+            <button @click.stop="handlePaymentHistory(booking.id)" class="history-button">
+              История
+            </button>
+          </div>
         </div>
       </div>
     </template>
@@ -88,19 +75,19 @@
 </template>
 
 <script setup lang="ts">
-import { useProfilePage } from '@/composable/useProfilePage';
-import notification from '@/shared/plugins/notifications';
-import { bookingService } from '@/shared/services/bookingService';
-import { paymentService } from '@/shared/services/paymentService';
-import { BookingResponse } from '@/shared/types/booking';
-import { PaymentHistoryResponse } from '@/shared/types/payment';
-import { PaginatedResponse } from '@/shared/types/response';
-import { useFormatUtils } from '@/shared/utils/formatUlils';
-import { AxiosError } from 'axios';
-import { Ref, watchEffect } from 'vue';
-import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import PaymentHistoryView from './PaymentHistoryView.vue';
+import { useProfilePage } from "@/composable/useProfilePage";
+import notification from "@/shared/plugins/notifications";
+import { bookingService } from "@/shared/services/bookingService";
+import { paymentService } from "@/shared/services/paymentService";
+import { BookingResponse } from "@/shared/types/booking";
+import { PaymentHistoryResponse } from "@/shared/types/payment";
+import { PaginatedResponse } from "@/shared/types/response";
+import { useFormatUtils } from "@/shared/utils/formatUlils";
+import { AxiosError } from "axios";
+import { Ref, watchEffect } from "vue";
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import PaymentHistoryView from "./PaymentHistoryView.vue";
 
 const props = defineProps<{
   hasEmail: boolean;
@@ -136,42 +123,41 @@ const handlePayment = (id: number) => {
     return;
   }
   const routeData = router.resolve({
-    name: 'payment',
+    name: "payment",
     query: {
-      bookingId: JSON.stringify(id)
+      bookingId: JSON.stringify(id),
     },
   });
-  window.open(routeData.href, '_blank');
-}
-
+  window.open(routeData.href, "_blank");
+};
 
 const handleForward = () => {
   if (!paymentHistory.value) return;
   if (page.value >= paymentHistory.value?.totalPages - 1) return;
   page.value++;
-}
+};
 
 const handleBackward = () => {
   if (!paymentHistory.value) return;
   if (page.value <= 0) return;
   page.value--;
-}
+};
 
 const handleModalClose = () => {
   isHistoryOpen.value = false;
-}
+};
 
 const handlePaymentHistory = async (bookingId: number) => {
   try {
-    const response = await paymentService.getPaymentHistoryByBookingId(bookingId);
+    const response =
+      await paymentService.getPaymentHistoryByBookingId(bookingId);
     paymentHistory.value = response.data;
     isHistoryOpen.value = true;
     console.log(paymentHistory.value);
-  }
-  catch (e) {
+  } catch (e) {
     const axiosError = e as AxiosError;
   }
-}
+};
 
 onMounted(async () => {
   await getBookings();
@@ -179,14 +165,13 @@ onMounted(async () => {
 
 watchEffect(() => {
   if (isHistoryOpen.value) {
-    document.body.style.overflow === 'hidden';
-    document.documentElement.style.overflowY = 'hidden';
-  }
-  else {
+    document.body.style.overflow === "hidden";
+    document.documentElement.style.overflowY = "hidden";
+  } else {
     document.body.style.overflowY = "auto";
     document.documentElement.style.overflowY = "auto";
   }
-})
+});
 </script>
 
 <style scoped lang="scss">
