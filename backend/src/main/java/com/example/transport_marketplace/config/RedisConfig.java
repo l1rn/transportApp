@@ -1,19 +1,21 @@
 package com.example.transport_marketplace.config;
 
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.codec.ByteArrayCodec;
-import io.lettuce.core.codec.RedisCodec;
-import io.lettuce.core.codec.StringCodec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
+
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.web.config.SpringDataJackson3Configuration;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.cfg.MapperBuilder;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 public class RedisConfig {
@@ -22,35 +24,32 @@ public class RedisConfig {
     @Value("${spring.redis.port}")
     private int redisPort;
 
-    @Bean(destroyMethod = "shutdown")
-    public RedisClient redisClient(){
-        return RedisClient.create(RedisURI.builder()
-                .withHost(redisHost)
-                .withPort(redisPort)
-                .withSsl(false)
-                .build());
-    }
-
     @Bean
     public LettuceConnectionFactory redisConnectionFactory(){
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(redisHost, redisPort);
-        return new LettuceConnectionFactory(configuration);
+        LettuceClientConfiguration clientConfiguration = LettuceClientConfiguration.builder()
+                .build();
+        LettuceConnectionFactory factory = new LettuceConnectionFactory(configuration);
+        factory.afterPropertiesSet();
+        return factory;
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(){
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory());
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        template.afterPropertiesSet();
-        return template;
+    public ObjectMapper objectMapper() {
+        return JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .build();
     }
 
-    @Bean(destroyMethod = "close")
-    public StatefulRedisConnection<String, byte[]> statefulRedisConnection(){
-        return redisClient().connect(
-                RedisCodec.of(StringCodec.UTF8, ByteArrayCodec.INSTANCE)
-        );
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
+
+        template.setHashKeySerializer(new GenericJacksonJsonRedisSerializer(objectMapper()));
+        template.setHashValueSerializer(new GenericJacksonJsonRedisSerializer(objectMapper()));
+        return template;
     }
 }

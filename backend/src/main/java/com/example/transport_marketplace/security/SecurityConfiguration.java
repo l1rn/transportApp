@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                     CorsConfiguration corsConfig = new CorsConfiguration();
                     corsConfig.setAllowedOrigins(List.of("http://localhost:8081",
                                                 "http://localhost",
-                                                "http://localhost:80")); // frontend address
+                                                "http://localhost:80"));
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
                     corsConfig.setExposedHeaders(List.of(
@@ -67,7 +67,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/rabbitmq/**").permitAll()
-                        .requestMatchers("swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/routes/**").permitAll()
                         .requestMatchers("/api/suggestions/**").permitAll()
