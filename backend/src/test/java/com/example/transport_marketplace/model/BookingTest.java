@@ -4,6 +4,8 @@ import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.Role;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class BookingTest {
 
     @Test

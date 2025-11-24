@@ -19,7 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "bookings")
-public class Route implements Serializable {
+public class Booking implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

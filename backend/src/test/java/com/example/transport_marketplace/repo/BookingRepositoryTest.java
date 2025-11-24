@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.repo;
 
+import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.fixtures.TestFixtures;
 import com.example.transport_marketplace.model.Booking;
 import org.junit.jupiter.api.AfterEach;
@@ -9,12 +10,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class BookingRepositoryTest {
@@ -27,6 +32,38 @@ public class BookingRepositoryTest {
     @BeforeEach
     public void setUp() {
         testBooking = TestFixtures.createTestBooking();
+    }
+
+    @Test
+    public void testSaveBooking() {
+        when(bookingRepository.save(any(Booking.class))).thenReturn(testBooking);
+        Booking savedBooking = bookingRepository.save(testBooking);
+
+        assertNotNull(savedBooking);
+        assertEquals(1, savedBooking.getId());
+
+        verify(bookingRepository).save(testBooking);
+    }
+
+    @Test
+    public void testGetListOfBookings() {
+        Booking testBooking2 = Booking.builder()
+                .id(2)
+                .status(BookingStatus.CANCELLED)
+                .build();
+        when(bookingRepository.save(any(Booking.class))).thenReturn(testBooking2);
+
+        List<Booking> mockBookings = Arrays.asList(testBooking, testBooking2);
+        when(bookingRepository.findAll()).thenReturn(mockBookings);
+
+        List<Booking> bookings = bookingRepository.findAll();
+
+        assertNotNull(bookings);
+        assertEquals(2, bookings.size());
+        assertEquals(BookingStatus.CANCELLED, bookings.get(1).getStatus());
+        assertEquals(1, bookings.get(0).getId());
+
+        verify(bookingRepository).findAll();
     }
 
     @Test
