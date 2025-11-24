@@ -32,11 +32,25 @@ jobs:
 
       - name: Start Spring Boot (Background)
         run: |
+          echo "Available JARs:" && ls -la target/
           nohup java -jar target/*.jar > app.log 2>&1 &
           echo $! > app.pid
-          until curl -s http://localhost:8080/actuator/health; do
+          echo "Waiting for Spring Boot to start..."
+          
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/actuator/health | grep UP; then
+              echo "Spring Boot is UP"
+              break
+            fi
+            echo "Still starting... attempt $i"
             sleep 2
           done
+          
+          if ! curl -s http://localhost:8080/actuator/health | grep UP; then
+            echo "Spring FAILED to start:"
+            cat app.log
+            exit 1
+          fi
           
       - name: Test Health Endpoint
         run: |
