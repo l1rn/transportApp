@@ -11,8 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -27,6 +26,37 @@ public class RouteRepositoryTest {
     @BeforeEach
     public void setUp() {
         testRoute = TestFixtures.createTestRoute();
+    }
+
+    @Test
+    public void testSaveRoute() {
+        when(routeRepository.save(any(Route.class))).thenReturn(testRoute);
+        Route savedRoute = routeRepository.save(testRoute);
+
+        assertNotNull(savedRoute);
+        assertEquals("Moscow", savedRoute.getRouteFrom());
+
+        verify(routeRepository).save(testRoute);
+    }
+
+    @Test
+    public void testUpdateRoute() {
+        when(routeRepository.save(any(Route.class))).thenReturn(testRoute);
+        when(routeRepository.findById(testRoute.getId())).thenReturn(Optional.of(testRoute));
+
+        assertNotNull(testRoute);
+        assertEquals("Moscow", testRoute.getRouteFrom());
+        testRoute.setRouteFrom("Yekaterinburg");
+        routeRepository.save(testRoute);
+
+        Route foundRoute = routeRepository.findById(testRoute.getId())
+                .orElse(null);
+
+        assertNotNull(foundRoute);
+        assertEquals("Yekaterinburg", foundRoute.getRouteFrom());
+
+        verify(routeRepository).save(testRoute);
+        verify(routeRepository).findById(testRoute.getId());
     }
 
     @Test
@@ -46,6 +76,19 @@ public class RouteRepositoryTest {
 
         verify(routeRepository).save(testRoute);
         verify(routeRepository).findById(testRoute.getId());
+    }
+
+    @Test
+    public void testDeleteRoute() {
+        doNothing().when(routeRepository).deleteById(testRoute.getId());
+        when(routeRepository.save(any(Route.class))).thenReturn(testRoute);
+
+        routeRepository.deleteById(testRoute.getId());
+        routeRepository.save(testRoute);
+        assertFalse(routeRepository.findById(testRoute.getId()).isPresent());
+
+        verify(routeRepository).deleteById(testRoute.getId());
+        verify(routeRepository).save(testRoute);
     }
 
     @AfterEach

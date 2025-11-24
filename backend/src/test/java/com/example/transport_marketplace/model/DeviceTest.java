@@ -18,7 +18,6 @@ class DeviceTest {
                 .role(Role.ROLE_USER)
                 .build();
 
-
         Device device = Device.builder()
                 .id(1)
                 .deviceFingerprint("finger")

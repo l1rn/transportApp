@@ -94,9 +94,9 @@ public class UserService {
     }
 
     @Cacheable(value = "users", key = "#id")
-    public User getById(int id){
+    public User getById(Integer id){
         return userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь c ID" + id + " не найден"));
+                .orElseThrow(() -> new UsernameNotFoundException("User with ID" + id + " wasn't found"));
     }
 
     public UserSettingsResponse getInfoByUsername(String username, HttpServletRequest request){
