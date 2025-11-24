@@ -2,7 +2,6 @@ package com.example.transport_marketplace.repo;
 
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.model.Booking;
-import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;

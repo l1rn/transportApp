@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.repo;
 
+import com.example.transport_marketplace.fixtures.TestFixtures;
 import com.example.transport_marketplace.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -27,11 +28,7 @@ class UserRepositoryTest {
     private User testUser;
     @BeforeEach
     public void setUp(){
-        testUser = User.builder()
-                .id(1)
-                .username("123")
-                .password("123")
-                .build();
+        testUser = TestFixtures.createTestUser();
     }
 
     @Test

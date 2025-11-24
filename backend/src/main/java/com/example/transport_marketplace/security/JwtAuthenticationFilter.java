@@ -1,6 +1,8 @@
 
-package com.example.transport_marketplace.jwt;
+package com.example.transport_marketplace.security;
 
+import com.example.transport_marketplace.jwt.JwtService;
+import com.example.transport_marketplace.jwt.TokenBlacklist;
 import com.example.transport_marketplace.service.impl.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -75,10 +77,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     return cookie.getValue();
                 }
             }
-        }
-        String headerAuth = request.getHeader("Authorization");
-        if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7);
         }
         return null;
     }

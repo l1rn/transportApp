@@ -9,7 +9,6 @@ import com.example.transport_marketplace.jwt.JwtService;
 import com.example.transport_marketplace.model.Booking;
 import com.example.transport_marketplace.repo.BookingRepository;
 import com.example.transport_marketplace.enums.BookingStatus;
-import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
 import com.example.transport_marketplace.model.User;
 import com.example.transport_marketplace.repo.UserRepository;

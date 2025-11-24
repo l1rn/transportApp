@@ -8,14 +8,8 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
 
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.data.web.config.SpringDataJackson3Configuration;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.cfg.MapperBuilder;
-import tools.jackson.databind.json.JsonMapper;
-import tools.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 public class RedisConfig {
@@ -33,14 +27,6 @@ public class RedisConfig {
         factory.afterPropertiesSet();
         return factory;
     }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        return JsonMapper.builder()
-                .addModule(new JavaTimeModule())
-                .build();
-    }
-
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -48,8 +34,8 @@ public class RedisConfig {
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new StringRedisSerializer());
 
-        template.setHashKeySerializer(new GenericJacksonJsonRedisSerializer(objectMapper()));
-        template.setHashValueSerializer(new GenericJacksonJsonRedisSerializer(objectMapper()));
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new StringRedisSerializer());
         return template;
     }
 }

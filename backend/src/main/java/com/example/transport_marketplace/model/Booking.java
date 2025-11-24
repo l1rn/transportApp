@@ -3,7 +3,6 @@ package com.example.transport_marketplace.model;
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.enums.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "bookings")
-public class Booking implements Serializable {
+public class Route implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

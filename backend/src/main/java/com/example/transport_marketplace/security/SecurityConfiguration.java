@@ -1,6 +1,5 @@
 package com.example.transport_marketplace.security;
 
-import com.example.transport_marketplace.jwt.JwtAuthenticationFilter;
 import com.example.transport_marketplace.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    @Autowired
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    @Autowired
     private final UserService userService;
 
     @Bean
@@ -64,15 +61,22 @@ public class SecurityConfiguration {
                 )
                 .anonymous(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/rabbitmq/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/api/routes/**").permitAll()
-                        .requestMatchers("/api/suggestions/**").permitAll()
-                        .requestMatchers("/api/users/**").authenticated()
-                        .requestMatchers("/api/bookings/**").authenticated()
+                        .requestMatchers(
+                                "/h2-console/**",
+                                "/api/auth/**",
+                                "/api/rabbitmq/**",
+                                "/swagger-ui/**",
+                                "/swagger-resources/*",
+                                "/v3/api-docs/**",
+                                "/actuator/**",
+                                "/api/routes/**",
+                                "/api/suggestions/**"
+                        ).permitAll()
+                        .requestMatchers(
+                                "/api/users/**",
+                                "/api/bookings/**",
+                                "/api/payments/**"
+                        ).authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager
