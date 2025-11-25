@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import router from "@/routers/router";
 
-import { useLoginStore } from "@/shared/stores/authStore";
 import { createPinia, setActivePinia } from "pinia";
 import { useAuthStore } from "../stores/useLoginStore";
 
@@ -15,7 +14,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 export const CONFIG = {
     MAX_RETRY_ATTEMPTS: 3,
     REFRESH_BUFFER_MS: 1000 * 50,
-    BASE_URL: "http://localhost:8081/api",
+    BASE_URL: "http://localhost:8080/api",
     TIMEOUT: 10000
 };
 

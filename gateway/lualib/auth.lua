@@ -3,6 +3,21 @@ local jwt = require "resty.jwt"
 
 local JWT_SECRET = "4ca9f2b1d0481c33acb8dcbeaf08a6d1aba6cc2e0a24401493365361308677998b291cda035f59e1587fa3b847e477b4e9baf200e9a748856845c3f65c71db98"
 
+local PUBLIC_ROUTES = {
+    ["/api/auth"] = true,
+    ["/api/routes"] = true,
+    ["/h2-console"] = true
+}
+
+local request_path = ngx.var.uri
+
+local is_public = PUBLIC_ROUTES[request_path] or false
+
+if is_public then
+    ngx.log(ngx.INFO, "Public route accessed: ", request_path)
+    return
+end
+
 local function authenticate()
     local cookie_header = ngx.req.get_headers()['Cookie']
     if not cookie_header then
