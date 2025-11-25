@@ -3,10 +3,13 @@ package com.example.transport_marketplace.repo;
 import com.example.transport_marketplace.enums.BookingStatus;
 import com.example.transport_marketplace.fixtures.TestFixtures;
 import com.example.transport_marketplace.model.Booking;
+import com.example.transport_marketplace.model.User;
+import com.example.transport_marketplace.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -86,6 +89,7 @@ public class BookingRepositoryTest {
         verify(bookingRepository).save(testBooking);
         verify(bookingRepository).findById(testBooking.getId());
     }
+
 
     @AfterEach
     public void tearDown(){

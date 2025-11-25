@@ -78,8 +78,9 @@ public class BookingService {
     }
 
     @Cacheable(value = "booking", key = "#id")
-    public Optional<Booking> getBookingById(int id){
-        return bookingRepository.findById(id);
+    public Booking getBookingById(int id){
+        return bookingRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("This booking was not found"));
     }
 
     @CachePut(value = "booking", key = "#result.id")

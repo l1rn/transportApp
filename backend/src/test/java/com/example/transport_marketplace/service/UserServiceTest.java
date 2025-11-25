@@ -45,6 +45,4 @@ public class UserServiceTest {
 
         verify(userRepository).findById(testUser.getId());
     }
-
-
 }
