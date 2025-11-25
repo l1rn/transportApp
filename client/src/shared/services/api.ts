@@ -15,7 +15,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 export const CONFIG = {
     MAX_RETRY_ATTEMPTS: 3,
     REFRESH_BUFFER_MS: 1000 * 50,
-    BASE_URL: "http://localhost:8080/api",
+    BASE_URL: "http://localhost:8081/api",
     TIMEOUT: 10000
 };
 

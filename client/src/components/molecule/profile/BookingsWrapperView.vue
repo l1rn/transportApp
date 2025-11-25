@@ -61,7 +61,9 @@
             <button class="payment-button" v-if="booking.status === 'PENDING'" @click="handlePayment(booking.id)">
               Оплатить
             </button>
-            <button v-if="booking.status === 'PENDING'" class="cancel-button">
+            <button 
+            @click="cancelBooking(booking.id)"
+            v-if="booking.status === 'PENDING'" class="cancel-button">
               Отменить
             </button>
             <button @click.stop="handlePaymentHistory(booking.id)" class="history-button">
@@ -98,22 +100,31 @@ const isHistoryOpen = ref(false);
 const paymentHistory = ref<PaginatedResponse<PaymentHistoryResponse>>();
 
 const bookings: Ref<BookingResponse[]> = ref([]);
-const isLoading = ref(false);
 const { openForm } = useProfilePage();
 
 const router = useRouter();
 const formatUtils = useFormatUtils();
 
+const cancelBooking = async(bookingId: number) => {
+  try {
+    await await bookingService.cancelBooking(bookingId);
+    notification.success(`Заказ#${bookingId} был успешно отменен!`);
+    getBookings();
+  }
+  catch(e){
+    const axiosError = e as AxiosError;
+    notification.success(`Не удалось отменить Заказ#${bookingId}: ${axiosError.message}`);
+    console.error(axiosError.status);
+  }
+}
+
 const getBookings = async () => {
-  isLoading.value = true;
   try {
     const response = await bookingService.getMyBooking();
     bookings.value = response.data;
   } catch (error) {
     console.error(error);
-  } finally {
-    isLoading.value = false;
-  }
+  } 
 };
 
 const handlePayment = (id: number) => {
