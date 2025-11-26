@@ -10,7 +10,7 @@ export default defineConfig({
     }
   },  
   server: {
-    port: 8082,
+    port: parseInt(process.env.VUE_APP_PORT || '8082'),
     host: true,
     hmr: {
       overlay: true

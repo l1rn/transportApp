@@ -1,43 +1,41 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2024",
+    "useDefineForClassFields": true,
+    "lib": ["es2024", "dom", "dom.iterable"],
     "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
+
+
+    /* bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
     "allowJs": true,
-    "skipLibCheck": true,
+    "jsx": "preserve",
+
+    /* linting */
+    "strict": true,
     "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": true,
     "sourceMap": true,
-    "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "jest"
-    ],
+    "rootDir": ".",
+    "types": ["vite/client", "node"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["./src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "vite.config.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "references": [{"path": "./tsconfig.node.json"}]
 }
