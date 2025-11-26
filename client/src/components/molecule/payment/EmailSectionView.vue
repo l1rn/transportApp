@@ -165,6 +165,11 @@ watch(
         gap: 0.25rem;
             input {
                 @include mixins.custom-input();
+                background: #f5f5f5;
+                &:disabled {
+                    background: #efeeee;
+                    cursor: not-allowed;
+                }
             }
         }
         .button-block{

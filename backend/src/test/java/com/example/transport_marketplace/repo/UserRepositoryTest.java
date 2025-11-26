@@ -25,7 +25,6 @@ class UserRepositoryTest {
 
     @Mock
     private UserRepository userRepository;
-    private AutoCloseable closeable;
 
     private User testUser;
     @BeforeEach

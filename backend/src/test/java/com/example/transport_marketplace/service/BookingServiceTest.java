@@ -94,6 +94,6 @@ public class BookingServiceTest {
 
     @AfterEach
     public void tearDown(){
-        reset(bookingRepository);
+        reset(bookingService, bookingRepository, userRepository, routeRepository);
     }
 }

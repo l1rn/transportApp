@@ -206,12 +206,13 @@ const resendCode = async(externalId: string | null) => {
 .payment-container {
     @include mixins.display-column();
     width: 80%;
-    background: colors.$light-grey;
+    background: white;
     max-width: 1024px;
     padding: 2rem 2rem 1.25rem;
     margin-top: 2rem;
     border-radius: 16px;
     gap: 1.5rem;
+    box-shadow: 0 0 8px rgba($color: #000000, $alpha: 0.15);
 
     .header-container {
         @include mixins.display-column();

@@ -1,21 +1,37 @@
 
 local jwt = require "resty.jwt"
+local _M = {}
 
 local JWT_SECRET = "4ca9f2b1d0481c33acb8dcbeaf08a6d1aba6cc2e0a24401493365361308677998b291cda035f59e1587fa3b847e477b4e9baf200e9a748856845c3f65c71db98"
 
 local PUBLIC_ROUTES = {
     ["/api/auth"] = true,
     ["/api/routes"] = true,
+    ["/h2-console"] = true,
+}
+
+local PUBLIC_PREFIXES = {
+    ["/api/auth"] = true,
+    ["/api/routes"] = true,
     ["/h2-console"] = true
 }
 
-local request_path = ngx.var.uri
+local function is_public_route(path)
+    if PUBLIC_ROUTES[path] then
+        return true
+    end
+    
+    for prefix, _ in pairs(PUBLIC_PREFIXES) do
+        if string.sub(path, 1, string.len(prefix)) == prefix then
+            return true
+        end
+    end
 
-local is_public = PUBLIC_ROUTES[request_path] or false
+    return false
+end
 
-if is_public then
-    ngx.log(ngx.INFO, "Public route accessed: ", request_path)
-    return
+local function extract_tokens_from_cookies()
+    
 end
 
 local function authenticate()

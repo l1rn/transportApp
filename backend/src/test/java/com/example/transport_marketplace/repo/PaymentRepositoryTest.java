@@ -34,8 +34,10 @@ public class PaymentRepositoryTest {
     @Test
     public void givenPayment_whenSaved_thenCanBeFoundById() {
         when(paymentRepository.save(any(Payment.class))).thenReturn(testPayment);
-        when(paymentRepository.findById(testPayment.getId())).thenReturn(Optional.of(testPayment));
-        when(paymentRepository.findByExternalId(testPayment.getExternalId())).thenReturn(Optional.of(testPayment));
+        when(paymentRepository.findById(testPayment.getId()))
+                .thenReturn(Optional.of(testPayment));
+        when(paymentRepository.findByExternalId(testPayment.getExternalId()))
+                .thenReturn(Optional.of(testPayment));
 
         Payment savedPayment = paymentRepository.save(testPayment);
         Payment foundPayment = paymentRepository.findById(testPayment.getId())
