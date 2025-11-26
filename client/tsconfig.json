@@ -5,7 +5,6 @@
     "lib": ["es2024", "dom", "dom.iterable"],
     "module": "esnext",
 
-
     /* bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,

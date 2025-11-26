@@ -145,5 +145,5 @@ useConditionalClickOutside(
 </script>
 
 <style scoped lang="scss">
-@use '../../../assets/styles/molecule/auth/signForm.sass';
+@use '../../../assets/styles/molecule/auth/signForm';
 </style>

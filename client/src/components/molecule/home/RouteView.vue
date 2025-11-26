@@ -74,7 +74,7 @@
         <button
         :disabled="route.availableSeats! <= 0"
         class="book-button"
-        @click="bookTheRoute(route.id!)"
+        @click="createBooking(route.id!)"
       >
         Добавить в корзину
       </button>
@@ -101,10 +101,7 @@ const searchResults = computed(
   () => routeData.value
 );
 
-const bookTheRoute = async (routeId: number) => {
-  if(routeData.value?.content[routeId].arrivalTime !== undefined){
-
-  }
+const createBooking = async (routeId: number) => {
   try {
     const response = await bookingService.createBooking(routeId);
     if (response.status === HttpStatusCode.Created){

@@ -14,7 +14,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 export const CONFIG = {
     MAX_RETRY_ATTEMPTS: 3,
     REFRESH_BUFFER_MS: 1000 * 50,
-    BASE_URL: `${import.meta.env.VUE_APP_BACKEND_URL}`,
+    BASE_URL: import.meta.env.VITE_BACKEND_URL,
     TIMEOUT: 10000
 };
 

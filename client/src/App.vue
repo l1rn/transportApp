@@ -44,6 +44,8 @@ watchEffect(() => {
     document.documentElement.style.overflowY = 'auto';
   }
 });
+
+console.log("url: ", import.meta.env.VITE_BACKEND_URL)
 </script>
 
 <style lang="scss" scoped>

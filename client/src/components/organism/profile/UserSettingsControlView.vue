@@ -196,7 +196,6 @@ const submitEmailCodeConfirm = async(): Promise<void> => {
     'confirm-code-form',
     codeValue
   )
-  window.location.reload();
 }
 
 const submitTopUpCodeConfirm = async(): Promise<void> => {
@@ -299,5 +298,5 @@ watchEffect(() => {
 })
 </script>
 <style scoped lang="sass">
-@use '../../../assets/styles/molecule/profile/user-setting.sass'
+@use '../../../assets/styles/molecule/profile/user-setting.scss'
 </style>

@@ -92,6 +92,6 @@ const clearSearchContainer = () => {
   filter.value = {};
 }
 </script>
-<style scoped lang="sass">
-@use "../../../assets/styles/molecule/home/search-container"
+<style scoped lang="scss">
+@use "../../../assets/styles/molecule/home/search-container.scss";
 </style>

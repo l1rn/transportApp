@@ -93,6 +93,7 @@ const createPayment = async () => {
             paymentMethod.value
         );
         notification.success('Ваша заявка была создана! Код был отправлен вам на почту')
+        externalId.value = response.data;
         isCodeSent.value = true;
     }
     catch (e) {
