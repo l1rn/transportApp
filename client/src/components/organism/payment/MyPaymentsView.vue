@@ -100,6 +100,7 @@ img{
 
 .my-payments-container{
   width: 80%;
+  padding: 1rem;
   .grid-table{
     @include mixins.display-column();
     margin-top: 1rem;

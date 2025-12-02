@@ -1,9 +1,9 @@
 spring:
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${SPRING_RABBITMQ_HOST}
+    port: ${SPRING_RABBITMQ_PORT}
+    username: ${SPRING_RABBITMQ_USERNAME}
+    password: ${SPRING_RABBITMQ_PASSWORD}
     listener:
       simple:
         missing-queues-fatal: false
@@ -11,10 +11,10 @@ spring:
       default-receive-queue: ""
 
   mail:
-    host: localhost
-    port: 1025
-    username: root
-    password: root
+    host: ${SPRING_MAILHOG_HOST}
+    port: ${SPRING_MAILHOG_PORT}
+    username: ${SPRING_MAILHOG_USERNAME}
+    password: ${SPRING_MAILHOG_PASSWORD}
 
   jpa:
     database: POSTGRESQL
