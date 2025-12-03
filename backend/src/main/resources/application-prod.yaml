@@ -1,9 +1,9 @@
 spring:
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PASSWORD:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
     listener:
       simple:
         missing-queues-fatal: false
@@ -11,10 +11,13 @@ spring:
       default-receive-queue: ""
 
   mail:
-    host: localhost
-    port: 1025
-    username: root
-    password: root
+    host: ${SPRING_MAILHOG_HOST:localhost}
+    port: ${SPRING_MAILHOG_PORT:1025}
+    username: ${SPRING_MAILHOG_USERNAME:root}
+    password: ${SPRING_MAILHOG_PASSWORD:root}
+
+  jooq:
+    dialect: POSTGRES
 
   jpa:
     database: POSTGRESQL
@@ -24,10 +27,10 @@ spring:
       format-sql: true
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:transport_db}
     driverClassName: org.postgresql.Driver
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:123}
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hikari:
       minimum-idle: 1
@@ -52,7 +55,7 @@ spring:
 
   redis:
     host: ${SPRING_REDIS_HOST:localhost}
-    port: ${SPRING_REDIS_PORT}
+    port: ${SPRING_REDIS_PORT:6379}
 
 server:
   port: 8080
@@ -68,11 +71,11 @@ springdoc:
 
 token:
   signing:
-    key: 4ca9f2b1d0481c33acb8dcbeaf08a6d1aba6cc2e0a24401493365361308677998b291cda035f59e1587fa3b847e477b4e9baf200e9a748856845c3f65c71db98 # ${JWT_SIGNING_KEY}
+    key: ${JWT_SIGNING_KEY:value} # remove ":value" if start for real production
 
 hmac:
-  key: 5+7r3Kss9Wr1zUy1l1uaWfG6s9Yt2QBXWUrC/Hcjzko=
+  key: ${HMAC_KEY:value} # remove ":value" if start for real production
 
 jwt:
-  access-token-expiration: ${ACCESS_TOKEN_EXP}
-  refresh-token-expiration: ${REFRESH_TOKEN_EXP}
+  access-token-expiration: ${ACCESS_TOKEN_EXP:600000}
+  refresh-token-expiration: ${REFRESH_TOKEN_EXP:604800000}

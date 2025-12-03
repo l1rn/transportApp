@@ -53,18 +53,32 @@ services:
       dockerfile: Dockerfile
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_REDIS_PORT=6379
+
       - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+
+      - SPRING_MAILHOG_HOST=mailhog
+      - SPRING_MAILHOG_PORT=1025
+      - SPRING_MAILHOG_USERNAME=root
+      - SPRING_MAILHOG_PASSWORD=root
+
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+
       - ACCESS_TOKEN_EXP=600000
       - JWT_SIGNING_KEY=4ca9f2b1d0481c33acb8dcbeaf08a6d1aba6cc2e0a24401493365361308677998b291cda035f59e1587fa3b847e477b4e9baf200e9a748856845c3f65c71db98
+      - HMAC_KEY=5+7r3Kss9Wr1zUy1l1uaWfG6s9Yt2QBXWUrC/Hcjzko=
       - REFRESH_TOKEN_EXP=604800000
+
       - DB_USERNAME=postgres
       - DB_PASSWORD=123
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=transport_db
     ports:
-      - "8081:8081"
+      - "8080:8080"
     volumes:
       - h2_data:/app/data
     networks:

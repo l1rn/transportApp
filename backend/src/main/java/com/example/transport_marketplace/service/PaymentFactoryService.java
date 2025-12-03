@@ -51,14 +51,14 @@ public class PaymentFactoryService {
                 .orElseThrow(() -> new BookingNotFoundException("Cannot found the booking by id#" + bookingId));
 
         if(booking.getUser() != user){
-            throw new BookingDoesNotBelongUserException("Этот букинг не принадлежит этому юзеру!");
+            throw new BookingDoesNotBelongUserException("This booking does not belong to this user!");
         }
 
         return PreparationOrderResponse.builder()
                 .routeId(booking.getRoute().getId())
                 .orderFullName(
                         booking.getRoute().getRouteFrom() + " → " +
-                        booking.getRoute().getRouteTo()
+                                booking.getRoute().getRouteTo()
                 )
                 .paymentMethods(Arrays.stream(PaymentMethod.values()).toList())
                 .price(booking.getRoute().getPrice())
@@ -70,11 +70,11 @@ public class PaymentFactoryService {
 
     public UUID getExternalId(String username, Integer bookingId){
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Не удалось найти пользователя: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("Cannot find user: " + username));
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking was not found by this id"));
         if(user != booking.getUser()){
-            throw new BookingDoesNotBelongUserException("Этот заказ не принадлежит этому юзеру!");
+            throw new BookingDoesNotBelongUserException("This booking does not belong to the user!");
         }
 
         Optional<Payment> payment = paymentRepository
@@ -84,7 +84,7 @@ public class PaymentFactoryService {
 
     public UUID createPayment(String username, Integer bookingId, PaymentMethod method) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Не удалось найти пользователя: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("User was not found: " + username));
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking was not found by this id"));
         paymentValidator.validatePaymentEligibility(user, booking);
@@ -166,7 +166,7 @@ public class PaymentFactoryService {
     @Transactional
     public boolean cancelPayment(String externalId){
         Payment payment = paymentRepository.findByExternalId(UUID.fromString(externalId))
-                .orElseThrow(() -> new RuntimeException("Платеж не найден"));
+                .orElseThrow(() -> new RuntimeException("Payment was not found: " + externalId));
 
         if(payment.getPaymentStatus() == PaymentStatus.CANCELLED) {
             return false;
@@ -185,7 +185,7 @@ public class PaymentFactoryService {
             Pageable pageable
     ){
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Данный пользователь не был найден!"));
+                .orElseThrow(() -> new RuntimeException("User was not found: " + username));
 
         Page<Payment> payments = paymentRepository.findAllByUserId(user.getId(), pageable);
 
@@ -204,9 +204,9 @@ public class PaymentFactoryService {
 
     public PaginatedResponse<PaymentResponse> getHistoryByBookingId(String username, Integer bookingId, Pageable pageable) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Данный пользователь не был найден!"));
+                .orElseThrow(() -> new RuntimeException("User was not found: " + username));
         if(!bookingRepository.existsByUserIdAndId(user.getId(), bookingId)){
-            throw new BookingDoesNotBelongUserException("Этот букинг не принадлежит вам!");
+            throw new BookingDoesNotBelongUserException("This booking does not belong to this user!");
         }
 
         Page<Payment> payments = paymentRepository.findAllByBookingId(bookingId, pageable);

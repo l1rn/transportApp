@@ -10,7 +10,7 @@ export default defineConfig({
     }
   },  
   server: {
-    port: parseInt(process.env.VITE_FRONTEND_PORT || '8082'),
+    port: parseInt(process.env.VITE_FRONTEND_PORT || '8081'),
     host: true,
     hmr: {
       overlay: true

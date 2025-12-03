@@ -39,7 +39,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:8082",
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:8081",
                                                 "http://localhost",
                                                 "http://localhost:80",
                                                 "http://localhost:8080"));

@@ -1,22 +1,78 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PASSWORD:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        missing-queues-fatal: false
+    template:
+      default-receive-queue: ""
+
+  mail:
+    host: ${SPRING_MAILHOG_HOST:localhost}
+    port: ${SPRING_MAILHOG_PORT:1025}
+    username: ${SPRING_MAILHOG_USERNAME:root}
+    password: ${SPRING_MAILHOG_PASSWORD:root}
+
   jpa:
-    hibernate:
-      ddl-auto: create
+    database: POSTGRESQL
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    hibernate:
+      ddl-auto: create-drop
+      format-sql: true
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:transport_db}
+    driverClassName: org.postgresql.Driver
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:123}
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 5
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    validate-on-migrate: true
+    baseline-on-migrate: true
+
+  #  sql:
+  #    init:
+  #      mode: always
+  #      data-locations: classpath:data.sql
   cache:
-    type: none
+    type: redis
+    redis:
+      time-to-live: "10m"
+      use-key-prefix: true
+      cache-null-values: false
+
   redis:
-    host: localhost
-    port: 6379
+    host: ${SPRING_REDIS_HOST:localhost}
+    port: ${SPRING_REDIS_PORT:6379}
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-stacktrace: always
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+token:
+  signing:
+    key: ${JWT_SIGNING_KEY:value} # remove ":value" if start for real production
+
+hmac:
+  key: ${HMAC_KEY:value} # remove ":value" if start for real production
+
+jwt:
+  access-token-expiration: ${ACCESS_TOKEN_EXP:600000}
+  refresh-token-expiration: ${REFRESH_TOKEN_EXP:604800000}
