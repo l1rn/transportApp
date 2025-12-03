@@ -2,9 +2,7 @@ package com.example.transport_marketplace.jooq;
 
 import com.example.transport_marketplace.dto.routes.RouteResponse;
 import com.example.transport_marketplace.dto.routes.RouteSearchRequest;
-import com.example.transport_marketplace.jooq.tables.Routes.ROUTES;
 import com.example.transport_marketplace.jooq.tables.records.RoutesRecord;
-import com.example.transport_marketplace.model.Route;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;

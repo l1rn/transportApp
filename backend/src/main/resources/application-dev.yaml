@@ -36,6 +36,8 @@ spring:
       minimum-idle: 1
       maximum-pool-size: 5
 
+  jooq:
+    sql-dialect: H2
   jpa:
     hibernate:
       ddl-auto: update
