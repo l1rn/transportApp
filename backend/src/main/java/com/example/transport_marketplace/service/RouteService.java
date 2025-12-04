@@ -5,7 +5,6 @@ import com.example.transport_marketplace.dto.routes.RouteResponse;
 import com.example.transport_marketplace.dto.routes.RouteSearchRequest;
 import com.example.transport_marketplace.dto.suggestions.SuggestionDTO;
 import com.example.transport_marketplace.exceptions.routes.RouteNotFoundException;
-import com.example.transport_marketplace.jooq.JooqRouteRepository;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +28,6 @@ import java.util.stream.Collectors;
 public class RouteService {
     @Autowired
     private RouteRepository routeRepository;
-    @Autowired
-    private JooqRouteRepository jooqRouteRepository;
 
     @CachePut(value = "route")
     public List<Route> getRoutes(){
@@ -84,7 +82,30 @@ public class RouteService {
     }
 
     public Page<RouteResponse> searchRoutes(RouteSearchRequest request, Pageable pageable){
-        return jooqRouteRepository.searchRoutes(request, pageable);
+        Page<Route> routes = routeRepository.searchRoutes(
+                request.getRouteFrom(),
+                request.getRouteTo(),
+                request.getTransport(),
+                pageable
+        );
+
+        List<RouteResponse> responses = routes.getContent().stream()
+                .map(this::mapToRouteResponse)
+                .collect(Collectors.toList());
+        return new PageImpl<>(responses, pageable, routes.getTotalElements());
+    }
+
+    public RouteResponse mapToRouteResponse(Route record){
+        return new RouteResponse(
+                record.getId(),
+                record.getRouteFrom(),
+                record.getRouteTo(),
+                record.getTransport(),
+                record.getDestinationTime(),
+                record.getArrivalTime(),
+                record.getAvailableSeats(),
+                record.getPrice()
+        );
     }
 
     public SuggestionDTO findCitiesToByQuery(String query, int limit){

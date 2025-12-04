@@ -39,9 +39,6 @@ public class MailConfig {
         props.put("mail.smtp.connectiontimeout", "5000");
         props.put("mail.smtp.writetimeout", "5000");
 
-        props.put("mail.smtp.localhost", "localhost");
-        props.put("mail.smtp.localaddress", "localhost");
-
         return mailSender;
     }
 }

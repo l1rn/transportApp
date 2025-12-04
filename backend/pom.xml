@@ -28,8 +28,8 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
-		<jooq.version>3.20.9</jooq.version>
 		<postgresql.version>42.7.7</postgresql.version>
+		<h2.version>2.3.232</h2.version>
 		<project.name>transport_marketplace</project.name>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
@@ -63,30 +63,6 @@
 			<version>${postgresql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jooq</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jooq</groupId>
-			<artifactId>jooq</artifactId>
-			<version>${jooq.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jooq</groupId>
-			<artifactId>jooq-meta</artifactId>
-			<version>${jooq.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jooq</groupId>
-			<artifactId>jooq-codegen</artifactId>
-			<version>${jooq.version}</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -311,60 +287,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.jooq</groupId>
-				<artifactId>jooq-codegen-maven</artifactId>
-				<version>${jooq.version}</version>
-				<executions>
-					<execution>
-						<id>generate-jooq</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<jdbc>
-						<driver>org.postgresql.Driver</driver>
-						<url>jdbc:postgresql://localhost:5432/transport_db</url>
-						<user>postgres</user>
-						<password>123</password>
-					</jdbc>
-					<generator>
-						<name>org.jooq.codegen.DefaultGenerator</name>
-						<database>
-							<name>org.jooq.meta.postgres.PostgresDatabase</name>
-							<includes>.*</includes>
-							<excludes>
-								flyway_schema_history
-							</excludes>
-							<inputSchema>public</inputSchema>
-						</database>
-						<generate>
-							<deprecated>false</deprecated>
-							<records>true</records>
-							<immutablePojos>true</immutablePojos>
-							<fluentSetters>true</fluentSetters>
-							<pojos>true</pojos>
-							<daos>false</daos>
-							<javaTimeTypes>true</javaTimeTypes>
-							<generatedAnnotation>true</generatedAnnotation>
-						</generate>
-						<target>
-							<packageName>com.example.${project.name}.jooq</packageName>
-							<directory>src/main/java</directory>
-						</target>
-					</generator>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.postgresql</groupId>
-						<artifactId>postgresql</artifactId>
-						<version>${postgresql.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
+
 		</plugins>
 	</build>
 	<profiles>
