@@ -1,8 +1,11 @@
 package com.example.transport_marketplace.service;
 
 import com.example.transport_marketplace.dto.RouteRequest;
+import com.example.transport_marketplace.dto.routes.RouteResponse;
+import com.example.transport_marketplace.dto.routes.RouteSearchRequest;
 import com.example.transport_marketplace.dto.suggestions.SuggestionDTO;
 import com.example.transport_marketplace.exceptions.routes.RouteNotFoundException;
+import com.example.transport_marketplace.jooq.JooqRouteRepository;
 import com.example.transport_marketplace.model.Route;
 import com.example.transport_marketplace.repo.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +28,8 @@ import java.util.stream.Collectors;
 public class RouteService {
     @Autowired
     private RouteRepository routeRepository;
+    @Autowired
+    private JooqRouteRepository jooqRouteRepository;
 
     @CachePut(value = "route")
     public List<Route> getRoutes(){
@@ -76,19 +83,8 @@ public class RouteService {
         return false;
     }
 
-    public List<Route> searchRoutes(String routeFrom,
-                                    String routeTo,
-                                    String transport,
-                                    Double minPrice,
-                                    Double maxPrice){
-        if(routeFrom == null &&
-                routeTo == null &&
-                transport == null &&
-                minPrice == null &&
-                maxPrice == null) {
-            return getRoutes();
-        }
-        return routeRepository.searchRoutes(routeFrom, routeTo, transport, minPrice, maxPrice);
+    public Page<RouteResponse> searchRoutes(RouteSearchRequest request, Pageable pageable){
+        return jooqRouteRepository.searchRoutes(request, pageable);
     }
 
     public SuggestionDTO findCitiesToByQuery(String query, int limit){

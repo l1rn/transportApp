@@ -1,5 +1,6 @@
 package com.example.transport_marketplace.controllers;
 import com.example.transport_marketplace.dto.RouteRequest;
+import com.example.transport_marketplace.dto.routes.RouteSearchRequest;
 import com.example.transport_marketplace.exceptions.FailedToUpdateModelException;
 import com.example.transport_marketplace.exceptions.routes.RouteNotFoundException;
 import com.example.transport_marketplace.model.Route;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -156,36 +158,16 @@ public class RouteController {
     })
     @GetMapping("/search")
     public ResponseEntity<?> searchRoutes(
-            @RequestParam(required = false) String routeFrom,
-            @RequestParam(required = false) String routeTo,
-            @RequestParam(required = false) String transport,
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size){
-        if (minPrice != null && maxPrice != null && minPrice > maxPrice){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Максимальная цена должна быть больше минимальной");
+            RouteSearchRequest request,
+            Pageable pageable
+        ){
+        try{
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(routeService.searchRoutes(request, pageable));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Cannot search the route: " + e.getMessage());
         }
-
-        List<Route> filteredRoutes = routeService.searchRoutes(routeFrom, routeTo, transport, minPrice, maxPrice);
-
-        int start = page * size;
-        int end = Math.min(start + size, filteredRoutes.size());
-
-        List<Route> paginatedResult = start < end
-                ? filteredRoutes.subList(start, end)
-                : List.of();
-
-        return new ResponseEntity<>(
-                new HashMap<String, Object>(){{
-                    put("content", paginatedResult);
-                    put("totalElements", filteredRoutes.size());
-                    put("totalPages", (int) Math.ceil((double) filteredRoutes.size() / size));
-                    put("currentPage", page);
-                }},
-                HttpStatus.OK
-        );
     }
 
     @GetMapping("/s/cities-to")
